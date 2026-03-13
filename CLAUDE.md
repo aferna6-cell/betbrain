@@ -15,13 +15,15 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 ## Key Directories
 
 - `src/app/` — Pages and layouts (App Router)
-- `src/app/api/` — API route handlers
+- `src/app/api/` — API route handlers (analysis, odds, stats, picks, stripe)
 - `src/components/` — React components
 - `src/lib/api/` — Shared API route/auth/error helpers
-- `src/lib/sports/` — Sports API wrappers (odds, stats)
+- `src/lib/ai/` — Claude API analysis (structured output, caching)
+- `src/lib/sports/` — Sports API wrappers (odds, stats, config)
 - `src/lib/supabase/` — Supabase client + helpers
+- `src/lib/stripe.ts` — Stripe client singleton
 - `scripts/daily/` — Health-check and daily review automation
-- `docs/daily-logs/` — Current handoff + day-by-day review logs
+- `docs/dev-knowledge/` — Architecture decisions, schema log, bug patterns
 
 ## Commands
 
