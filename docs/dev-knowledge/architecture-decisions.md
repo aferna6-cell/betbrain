@@ -54,6 +54,18 @@
 **Decision:** Hard-code `className="dark"` on the root `<html>` element.
 **Why:** CLAUDE.md mandates "dark theme throughout the dashboard." No light mode toggle is planned for MVP. This avoids flash-of-light-theme and keeps it simple.
 
+### Sports API wrappers: cache-first with fallback to stale data
+**Decision:** Both The Odds API and balldontlie wrappers follow: check fresh cache -> call API on miss -> write cache -> fallback to stale cache on API error. Each returns an envelope (`OddsResult` / `StatsResult<T>`) with `fromCache`, `warning`, and usage metadata.
+**Why:** The Odds API free tier is 500 requests/month. Cache-first prevents waste. Stale data fallback means the dashboard never shows empty when the API is down. Usage tracking in `api_usage` enables the dashboard to show remaining quota and hard-stop before hitting limits.
+
+### Odds API: system-level usage tracking (null user_id)
+**Decision:** Track API calls with `user_id = null` in `api_usage` since The Odds API key is shared across all users. balldontlie uses a UUID sentinel `00000000-0000-0000-0000-000000000000`.
+**Why:** Rate limits apply to the API key, not per-user. System-level tracking gives one counter the dashboard can display. The sentinel UUID approach for balldontlie allows the RPC function to work without schema changes.
+
+### balldontlie: NBA only, graceful non-NBA handling
+**Decision:** `isSupportedSport()` guard + `UNSUPPORTED_SPORT_NOTE` constant. Non-NBA requests return empty results with an informational note.
+**Why:** balldontlie v1 only covers NBA. Rather than error on NFL/MLB/NHL, we return a helpful note. Future: add additional API sources for other sports.
+
 ---
 
 _Add new decisions below._
