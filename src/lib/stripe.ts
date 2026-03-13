@@ -11,5 +11,3 @@ export function getStripe(): Stripe {
   }
   return stripeInstance
 }
-
-export const PRO_MONTHLY_PRICE = 2900 // $29.00 in cents

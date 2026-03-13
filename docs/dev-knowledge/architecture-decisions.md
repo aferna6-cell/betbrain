@@ -98,6 +98,14 @@
 **Decision:** Profile `subscription_tier` is updated only via Stripe webhooks, never directly by the client. Checkout creates a session; when Stripe confirms payment, the webhook flips the user from `free` to `pro`.
 **Why:** Webhook is the single source of truth. Client-side "I paid" signals can be faked. If a webhook fails, Stripe retries. The `stripe_customer_id` and `stripe_subscription_id` columns on `profiles` enable lookup in both directions (Supabase → Stripe, Stripe → Supabase).
 
+### Smart Signals: cache-only detection, no extra API calls
+**Decision:** Smart Signals detects value by analyzing existing cached odds data (bookmaker variance) and cached AI insights (confidence, value assessment). It does NOT trigger new API calls or new AI analyses.
+**Why:** The Odds API is rate-limited (500 req/month free tier). Signals runs on every page load — hitting APIs per-visit would burn quota instantly. Instead, signals are only as fresh as the cached data, which is acceptable. Users can trigger AI analysis manually from game detail if they want a fresh insight.
+
+### Smart Signals: server-side detection, client-side display
+**Decision:** Signal detection runs server-side in the page component (RSC), passing results to a client component for rendering. The API route exists for programmatic access (future: alerts, email digest).
+**Why:** Server-side detection can query Supabase directly without CORS/auth overhead. The API route uses `withAuthenticatedRoute` for consistency with other endpoints. Both share the same `detectSmartSignals()` function.
+
 ---
 
 _Add new decisions below._

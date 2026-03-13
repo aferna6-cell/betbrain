@@ -7,6 +7,7 @@ import type { User } from '@supabase/supabase-js'
 
 const navLinks = [
   { href: '/dashboard', label: 'Dashboard' },
+  { href: '/dashboard/signals', label: 'Signals' },
   { href: '/dashboard/picks', label: 'Picks' },
   { href: '/dashboard/billing', label: 'Billing' },
   { href: '/dashboard/profile', label: 'Profile' },
