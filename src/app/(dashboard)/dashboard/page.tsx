@@ -1,15 +1,34 @@
 import { createClient } from '@/lib/supabase/server'
+import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
+import { GamesDashboard } from '@/components/games-dashboard'
 import type { Database } from '@/lib/supabase/types'
+import type { NormalizedGame } from '@/lib/sports/config'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 
 export default async function DashboardPage() {
   const supabase = await createClient()
-  const { data } = await supabase
-    .from('profiles')
-    .select('*')
-    .single()
+  const { data } = await supabase.from('profiles').select('*').single()
   const profile = data as Profile | null
+
+  // Fetch odds for all sports and API usage in parallel
+  const [oddsMap, apiUsage] = await Promise.all([
+    getAllOdds(),
+    getOddsApiUsage(),
+  ])
+
+  // Build the serializable data structure for the client component
+  const gamesBySport: Record<string, NormalizedGame[]> = {}
+  const dataNotices: string[] = []
+
+  for (const [sport, result] of oddsMap) {
+    gamesBySport[sport] = result.games
+    if (result.dataNotice) {
+      dataNotices.push(result.dataNotice)
+    }
+  }
+
+  const totalGames = Object.values(gamesBySport).flat().length
 
   return (
     <div className="space-y-6">
@@ -24,7 +43,7 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border border-border bg-card p-6">
           <p className="text-sm text-muted-foreground">Subscription</p>
           <p className="mt-1 text-2xl font-semibold capitalize">
@@ -41,14 +60,20 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="rounded-lg border border-border bg-card p-6">
+          <p className="text-sm text-muted-foreground">Games Today</p>
+          <p className="mt-1 text-2xl font-semibold">{totalGames}</p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-6">
           <p className="text-sm text-muted-foreground">Status</p>
           <p className="mt-1 text-lg font-medium text-green-500">Active</p>
         </div>
       </div>
 
-      <p className="text-sm text-muted-foreground italic">
-        Games and analysis coming soon. Check back for today&apos;s matchups across NBA, NFL, MLB, and NHL.
-      </p>
+      <GamesDashboard
+        gamesBySport={gamesBySport}
+        apiUsage={apiUsage}
+        dataNotices={dataNotices}
+      />
     </div>
   )
 }

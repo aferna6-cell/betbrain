@@ -66,6 +66,14 @@
 **Decision:** `isSupportedSport()` guard + `UNSUPPORTED_SPORT_NOTE` constant. Non-NBA requests return empty results with an informational note.
 **Why:** balldontlie v1 only covers NBA. Rather than error on NFL/MLB/NHL, we return a helpful note. Future: add additional API sources for other sports.
 
+### Dashboard data flow: server-fetch, client-filter
+**Decision:** The dashboard page is a server component that calls `getAllOdds()` directly (no HTTP round-trip). It serializes all games by sport into a plain object and passes it to a client `GamesDashboard` component that handles league filtering and rendering.
+**Why:** Server components can call data functions directly — no need to route through `/api/odds`. This avoids an HTTP request, keeps auth simple (layout already guards the route), and reduces latency. The client component receives pre-fetched data and only manages UI state (active league filter). Game cards are leaf components that receive a single `NormalizedGame` prop.
+
+### AI analysis: POST route with free-tier gating
+**Decision:** AI analysis is behind `POST /api/analysis` (takes `gameId` + `sport`). The route looks up the game from odds data, checks the user's daily analysis count, calls Claude, caches the result in `ai_insights`, and increments the counter. Free tier gets 3/day; Pro gets unlimited. A GET endpoint returns the current limit status.
+**Why:** POST avoids accidental re-analysis from browser reloads. Free-tier gating prevents runaway Claude API costs before Stripe is wired up. Caching in `ai_insights` means the same game isn't re-analyzed for 6 hours (odds don't change that fast). The structured JSON response format (summary, key factors, value assessment, risk level, confidence) maps directly to the `ai_insights` schema.
+
 ---
 
 _Add new decisions below._

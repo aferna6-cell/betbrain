@@ -51,6 +51,10 @@ export function getBalldontlieApiKey(): string {
   return getRequiredEnvVar('BALLDONTLIE_API_KEY')
 }
 
+export function getAnthropicApiKey(): string {
+  return getRequiredEnvVar('ANTHROPIC_API_KEY')
+}
+
 export function getSiteUrl(): string {
   const configuredSiteUrl = readEnvVar('NEXT_PUBLIC_SITE_URL')
   if (configuredSiteUrl) {

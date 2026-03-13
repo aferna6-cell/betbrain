@@ -13,6 +13,7 @@
     "morning:health": "node scripts/daily/health-check.mjs --label morning"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@base-ui/react": "^1.3.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.99.1",
