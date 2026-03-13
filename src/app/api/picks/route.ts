@@ -14,7 +14,13 @@ const VALID_SPORTS = ['nba', 'nfl', 'mlb', 'nhl']
 
 export async function POST(request: Request) {
   return withAuthenticatedRoute(request, 'create-pick', async ({ user }) => {
-    const body = await request.json()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let body: any
+    try {
+      body = await request.json()
+    } catch {
+      return badRequest('Invalid JSON body')
+    }
 
     const {
       externalGameId,

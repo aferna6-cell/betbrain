@@ -239,6 +239,35 @@ async function writeOddsCache(games: NormalizedGame[], sport: Sport): Promise<vo
   if (error) {
     console.error('[odds] cache write failed:', error.message)
   }
+
+  // Also insert into odds_history for line movement tracking.
+  const now = new Date().toISOString()
+  const historyRows = rows
+    .filter((r): r is OddsCacheInsert & { market: string } => !!r.market)
+    .map((r) => ({
+      external_game_id: r.external_game_id,
+      sport: r.sport as string,
+      bookmaker: r.bookmaker,
+      market: r.market,
+      home_odds: r.home_odds,
+      away_odds: r.away_odds,
+      draw_odds: r.draw_odds,
+      spread_home: r.spread_home,
+      spread_away: r.spread_away,
+      spread_line: r.spread_line,
+      total_over: r.total_over,
+      total_under: r.total_under,
+      total_line: r.total_line,
+      fetched_at: now,
+    }))
+
+  const { error: historyError } = await supabase
+    .from('odds_history')
+    .insert(historyRows)
+
+  if (historyError) {
+    console.error('[odds] history write failed:', historyError.message)
+  }
 }
 
 /**
@@ -478,6 +507,41 @@ export async function getGameById(gameId: string): Promise<NormalizedGame | null
 
   const games = hydrateGamesFromCache(rows)
   return games[0] ?? null
+}
+
+/**
+ * Fetches historical odds snapshots for a game, used by the line movement chart.
+ *
+ * @param gameId - The external game id.
+ * @param market - Market to fetch history for (default: 'h2h').
+ * @returns Array of historical snapshots sorted by fetched_at ascending.
+ */
+export async function getOddsHistory(
+  gameId: string,
+  market: string = 'h2h'
+): Promise<OddsHistorySnapshot[]> {
+  const supabase = await createServiceClient()
+
+  const { data, error } = await supabase
+    .from('odds_history')
+    .select('bookmaker, home_odds, away_odds, fetched_at')
+    .eq('external_game_id', gameId)
+    .eq('market', market)
+    .order('fetched_at', { ascending: true })
+
+  if (error) {
+    console.error('[odds] history read failed:', error.message)
+    return []
+  }
+
+  return (data ?? []) as OddsHistorySnapshot[]
+}
+
+export interface OddsHistorySnapshot {
+  bookmaker: string
+  home_odds: number | null
+  away_odds: number | null
+  fetched_at: string
 }
 
 /**

@@ -16,7 +16,7 @@
 
 ## Features — Growth
 
-- [ ] **Line movement chart** — Show odds movement over time per game. Recharts line chart. AI flags sharp moves.
+- [x] **Line movement chart** — Show odds movement over time per game. Recharts line chart. odds_history table + chart tab. _(Cycle 11)_
 - [x] **Smart Signals** — Games where stats + odds + trends all align. Highlighted badge on dashboard. Separate Smart Signals page. _(Cycle 10)_
 - [x] **Pick tracker** — Log picks with sport, type, odds, units. History table + stats summary (record, profit, ROI). _(Cycle 8)_
 - [ ] **Custom alerts** — "Notify me when [line moves past X]". Email notifications via Resend.

@@ -108,4 +108,8 @@
 
 ---
 
+### Line movement: separate odds_history table, not modifying odds_cache
+**Decision:** Created a new `odds_history` append-only table instead of changing the `odds_cache` upsert strategy. Both are written to on each fetch: cache gets upserted (latest), history gets inserted (append).
+**Why:** Changing odds_cache to allow multiple rows would break all existing cache-read logic (hydration, TTL checks, game lookup). A separate table isolates history concerns. If history grows too large, we can truncate it without affecting the cache.
+
 _Add new decisions below._

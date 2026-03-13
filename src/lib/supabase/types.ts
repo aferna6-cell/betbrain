@@ -149,6 +149,60 @@ export interface Database {
         }
         Relationships: []
       }
+      odds_history: {
+        Row: {
+          id: string
+          external_game_id: string
+          sport: string
+          bookmaker: string
+          market: string
+          home_odds: number | null
+          away_odds: number | null
+          draw_odds: number | null
+          spread_home: number | null
+          spread_away: number | null
+          spread_line: number | null
+          total_over: number | null
+          total_under: number | null
+          total_line: number | null
+          fetched_at: string
+        }
+        Insert: {
+          id?: string
+          external_game_id: string
+          sport: string
+          bookmaker: string
+          market: string
+          home_odds?: number | null
+          away_odds?: number | null
+          draw_odds?: number | null
+          spread_home?: number | null
+          spread_away?: number | null
+          spread_line?: number | null
+          total_over?: number | null
+          total_under?: number | null
+          total_line?: number | null
+          fetched_at?: string
+        }
+        Update: {
+          id?: string
+          external_game_id?: string
+          sport?: string
+          bookmaker?: string
+          market?: string
+          home_odds?: number | null
+          away_odds?: number | null
+          draw_odds?: number | null
+          spread_home?: number | null
+          spread_away?: number | null
+          spread_line?: number | null
+          total_over?: number | null
+          total_under?: number | null
+          total_line?: number | null
+          fetched_at?: string
+        }
+        Relationships: []
+      }
       ai_insights: {
         Row: {
           id: string

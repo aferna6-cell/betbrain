@@ -81,3 +81,27 @@ _Every database schema change. Check before writing queries._
 
 - Rolling this back would reintroduce duplicate/null system counters unless the sports wrappers are also reverted away from `user_id = null`.
 - If production data already contains multiple null-keyed rows per API/month, deduplication order matters; this migration keeps one surviving row per duplicate set before adding the new indexes.
+
+---
+
+## Migration 003: Odds History (2026-03-13)
+
+**File:** `supabase/migrations/003_odds_history.sql`
+
+### Summary
+
+- Creates `odds_history` table for line movement chart data
+- Columns mirror `odds_cache` odds fields (home_odds, away_odds, draw_odds, spread_*, total_*) plus `fetched_at` timestamp
+- No unique constraint — allows multiple snapshots per game/bookmaker/market
+- Indexes: `(external_game_id, fetched_at desc)` for game lookups, `(fetched_at)` for cleanup
+- RLS enabled, service-role only (no direct user access)
+
+### Why It Matters
+
+- `odds_cache` uses upsert (latest only), so line movement requires a separate append-only table
+- Each odds fetch now inserts into both `odds_cache` (latest) and `odds_history` (append)
+- Enables the Line Movement chart on game detail pages
+
+### TypeScript Types
+
+- Added `odds_history` table type to `src/lib/supabase/types.ts`
