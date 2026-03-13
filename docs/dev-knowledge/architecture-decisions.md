@@ -90,6 +90,14 @@
 **Decision:** 500 error responses return only a generic message. Internal error details are logged server-side only.
 **Why:** Leaking error.message to clients exposes database structure, API key patterns, and internal service names. OWASP top 10 violation. The `details` field was removed from `routeErrorResponse`.
 
+### Stripe: hosted Checkout, not custom forms
+**Decision:** Use Stripe Checkout (hosted page) for subscription creation, not embedded forms or Stripe Elements.
+**Why:** PCI compliance is handled by Stripe. No card data touches our servers. Faster to implement. Stripe handles SCA, 3D Secure, tax, and receipt emails. The trade-off (less UI control) is acceptable for MVP.
+
+### Stripe: webhook-driven subscription state
+**Decision:** Profile `subscription_tier` is updated only via Stripe webhooks, never directly by the client. Checkout creates a session; when Stripe confirms payment, the webhook flips the user from `free` to `pro`.
+**Why:** Webhook is the single source of truth. Client-side "I paid" signals can be faked. If a webhook fails, Stripe retries. The `stripe_customer_id` and `stripe_subscription_id` columns on `profiles` enable lookup in both directions (Supabase → Stripe, Stripe → Supabase).
+
 ---
 
 _Add new decisions below._

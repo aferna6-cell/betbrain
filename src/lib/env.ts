@@ -55,6 +55,18 @@ export function getAnthropicApiKey(): string {
   return getRequiredEnvVar('ANTHROPIC_API_KEY')
 }
 
+export function getStripeSecretKey(): string {
+  return getRequiredEnvVar('STRIPE_SECRET_KEY')
+}
+
+export function getStripeWebhookSecret(): string {
+  return getRequiredEnvVar('STRIPE_WEBHOOK_SECRET')
+}
+
+export function getStripePriceId(): string {
+  return getRequiredEnvVar('STRIPE_PRO_PRICE_ID')
+}
+
 export function getSiteUrl(): string {
   const configuredSiteUrl = readEnvVar('NEXT_PUBLIC_SITE_URL')
   if (configuredSiteUrl) {
