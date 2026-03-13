@@ -351,15 +351,6 @@ export class RateLimitError extends Error {
   }
 }
 
-export class UsageLimitWarning extends Error {
-  constructor(public usageCount: number) {
-    super(
-      `The Odds API usage at ${usageCount}/${ODDS_API_MONTHLY_LIMIT} calls — serving cache only`
-    )
-    this.name = 'UsageLimitWarning'
-  }
-}
-
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -460,6 +451,33 @@ export async function getAllOdds(): Promise<Map<Sport, OddsResult>> {
   }
 
   return results
+}
+
+/**
+ * Fetches a single game by its external id from the odds_cache.
+ *
+ * Returns the most recent cached version (even if expired) so the detail page
+ * can always display something. The `isFresh` flag on the returned game
+ * tells the caller whether the data is still within TTL.
+ *
+ * @param gameId - The external game id from The Odds API.
+ * @returns A NormalizedGame or null if the game has never been cached.
+ */
+export async function getGameById(gameId: string): Promise<NormalizedGame | null> {
+  const supabase = await createServiceClient()
+
+  const { data } = await supabase
+    .from('odds_cache')
+    .select('*')
+    .eq('external_game_id', gameId)
+    .order('expires_at', { ascending: false })
+    .limit(1)
+
+  const rows = (data as OddsCache[] | null) ?? []
+  if (rows.length === 0) return null
+
+  const games = hydrateGamesFromCache(rows)
+  return games[0] ?? null
 }
 
 /**

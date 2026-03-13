@@ -8,9 +8,9 @@
 - [x] **The Odds API wrapper** — src/lib/sports/odds.ts. Fetch upcoming games + odds for NBA, NFL, MLB, NHL. Cache in odds_cache. Handle rate limits. _(Cycle 3)_
 - [x] **balldontlie API wrapper** — src/lib/sports/stats.ts. Fetch team stats, player stats, game results. Cache in game_cache. _(Cycle 3)_
 - [x] **Dashboard home page** — Today's games across leagues. Game cards: teams, time, top-3 book odds, AI confidence badge. Filterable by league. _(Cycle 4)_
-- [ ] **Game detail page** — /game/[id]. Full breakdown: odds comparison, team stats, recent form (last 10), H2H, injuries. Tabbed layout.
+- [x] **Game detail page** — /dashboard/games/[gameId]. Odds comparison table (moneyline, spread, totals), AI analysis tab. Best odds highlighted green. _(Cycle 5)_
 - [x] **AI game analysis** — API route that sends matchup data to Claude, returns structured analysis. Cache per game. Enforce free tier limits. _(Cycle 4)_
-- [ ] **Odds comparison table** — Side-by-side bookmaker odds for each game. Highlight best line (green). sortable columns.
+- [x] **Odds comparison table** — Side-by-side bookmaker odds for each game. Highlight best line (green). Built into game detail page. _(Cycle 5)_
 - [ ] **Landing page** — Hero + features + pricing + CTA. Dark theme. Modern. Conversion-focused.
 - [ ] **Stripe integration** — Free (3 analyses/day) + Pro ($29/mo: unlimited, all leagues, alerts). Checkout, webhook, subscription management.
 

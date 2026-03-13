@@ -74,6 +74,14 @@
 **Decision:** AI analysis is behind `POST /api/analysis` (takes `gameId` + `sport`). The route looks up the game from odds data, checks the user's daily analysis count, calls Claude, caches the result in `ai_insights`, and increments the counter. Free tier gets 3/day; Pro gets unlimited. A GET endpoint returns the current limit status.
 **Why:** POST avoids accidental re-analysis from browser reloads. Free-tier gating prevents runaway Claude API costs before Stripe is wired up. Caching in `ai_insights` means the same game isn't re-analyzed for 6 hours (odds don't change that fast). The structured JSON response format (summary, key factors, value assessment, risk level, confidence) maps directly to the `ai_insights` schema.
 
+### Game detail page: cache-only lookup, no live API calls
+**Decision:** `/dashboard/games/[gameId]` loads game data from `odds_cache` only (via `getGameById`). If the game has never been cached, it 404s. No live Odds API calls are triggered from the detail page.
+**Why:** Every live API call costs against the 500/month quota. Games on the dashboard are already cached from `getAllOdds()`. If a user navigates to a detail page, the data is already in cache. Serving even expired cache (with a stale notice) is better than burning API calls. The `isFresh` flag tells the UI whether the data is within TTL.
+
+### Game detail page: tabbed odds + analysis layout
+**Decision:** The game detail page uses a two-tab layout: Odds (full bookmaker comparison table) and AI Analysis (inline analysis panel). Stats/H2H/Injuries tabs are deferred to future cycles when team-matching and additional data sources are available.
+**Why:** Odds comparison across all bookmakers is the core value prop of the detail page and only requires data already available in `NormalizedGame`. AI analysis reuses the existing `/api/analysis` POST endpoint. Stats require matching The Odds API team names to balldontlie team IDs, which is nontrivial and should be its own feature.
+
 ---
 
 _Add new decisions below._

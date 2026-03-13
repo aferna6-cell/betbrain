@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -127,8 +128,14 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         </div>
       )}
 
-      <div className="mt-3">
+      <div className="mt-3 flex gap-2">
         <AnalyzeButton game={game} />
+        <Link
+          href={`/dashboard/games/${game.id}`}
+          className="inline-flex h-8 flex-1 items-center justify-center rounded-md border border-border bg-transparent px-3 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          View Details
+        </Link>
       </div>
 
       {!game.isFresh && (
