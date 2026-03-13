@@ -30,6 +30,30 @@
 **Decision:** Every AI-generated analysis includes "For informational purposes only. Not financial advice."
 **Why:** Legal protection. Gambling advice regulations vary by state. The disclaimer must be mandatory and non-removable.
 
+### Row Level Security (RLS) strategy
+**Decision:** Three access patterns: (1) user reads/writes own rows (profiles, saved_analyses, user_picks), (2) authenticated users read cached data, service role writes it (game_cache, odds_cache, ai_insights), (3) hybrid for api_usage (user reads own, service role writes).
+**Why:** Cached data is shared — any user should see the same odds. User data is private. API routes run with the service role key to write cache data, while the browser client uses the anon key and RLS handles isolation.
+
+### Supabase SSR client pattern
+**Decision:** Three client types: (1) browser client via `createBrowserClient`, (2) server client via `createServerClient` with cookie adapter for Server Components/Route Handlers, (3) service client via `createClient` with service role key for admin operations.
+**Why:** Next.js App Router needs different client initialization depending on context. The cookie adapter ensures auth sessions are refreshed on every server request via middleware. The service client bypasses RLS for cache writes.
+
+### TypeScript-first database types
+**Decision:** Hand-written `Database` interface in `src/lib/supabase/types.ts` matching the SQL schema exactly. Row/Insert/Update variants per table.
+**Why:** Type-safe queries prevent column name typos and wrong types at compile time. The types mirror the SQL — when the schema changes, the types file is the single place to update. Future option: auto-generate from Supabase CLI.
+
+### Auth flow: server actions + middleware route protection
+**Decision:** Auth operations (login, signup, password reset) use Next.js server actions. Route protection uses Supabase middleware that checks `getUser()` and redirects unauthenticated users from `/dashboard/*` to `/login`. Auth pages redirect logged-in users to `/dashboard`.
+**Why:** Server actions provide seamless form handling with progressive enhancement. Middleware-based protection is more reliable than per-page checks — every request is guarded. Route groups `(auth)` and `(dashboard)` keep layouts separate.
+
+### Supabase Database type workaround
+**Decision:** Explicit `as Profile | null` casts on `.from('profiles').select('*').single()` results instead of relying on inferred types.
+**Why:** supabase-js v2.99+ with `@supabase/ssr` v0.5 has a type resolution issue where the `Database` generic doesn't flow through to `from()` query results (resolves to `never`). The `Relationships` field on `GenericTable` changed in newer versions. Explicit casts maintain type safety until upstream is fixed or types are auto-generated.
+
+### Dark mode: static `className="dark"` on `<html>`
+**Decision:** Hard-code `className="dark"` on the root `<html>` element.
+**Why:** CLAUDE.md mandates "dark theme throughout the dashboard." No light mode toggle is planned for MVP. This avoids flash-of-light-theme and keeps it simple.
+
 ---
 
 _Add new decisions below._

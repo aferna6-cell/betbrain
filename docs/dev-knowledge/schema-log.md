@@ -4,4 +4,45 @@ _Every database schema change. Check before writing queries._
 
 ---
 
-_Schema not yet created. Will be populated when Supabase tables are built._
+## Migration 001: Initial Schema (2026-03-12)
+
+**File:** `supabase/migrations/001_initial_schema.sql`
+
+### Tables Created
+
+| Table | Columns | RLS | Indexes |
+|-------|---------|-----|---------|
+| `profiles` | id (uuid PK → auth.users), email, display_name, subscription_tier (free/pro), stripe_customer_id, stripe_subscription_id, analyses_today, analyses_reset_at, created_at, updated_at | Users read/update own | — |
+| `game_cache` | id (uuid PK), external_game_id, sport, home_team, away_team, game_date, data (jsonb), expires_at, created_at, updated_at | Auth read, service write | sport+date, expires_at, external_game_id |
+| `odds_cache` | id (uuid PK), external_game_id, sport, bookmaker, market, home_odds, away_odds, draw_odds, spread_home, spread_away, total_over, total_under, total_line, spread_line, data (jsonb), expires_at, created_at, updated_at | Auth read, service write | external_game_id, sport, expires_at |
+| `ai_insights` | id (uuid PK), external_game_id, sport, summary, key_factors (jsonb), value_assessment (jsonb), risk_level (low/medium/high), confidence (0-100), raw_analysis (jsonb), model, disclaimer, expires_at, created_at, updated_at | Auth read, service write | external_game_id, sport, expires_at |
+| `saved_analyses` | id (uuid PK), user_id → profiles, insight_id → ai_insights, notes, created_at | Users own rows | user_id |
+| `user_picks` | id (uuid PK), user_id → profiles, external_game_id, sport, pick_type (moneyline/spread/over/under/prop), pick_team, pick_line, odds, units, outcome (win/loss/push/pending), profit, notes, game_date, resolved_at, created_at, updated_at | Users own rows | user_id, sport, game_date, user_id+outcome |
+| `api_usage` | id (uuid PK), user_id → profiles, api_name (odds/balldontlie/claude), call_count, month (text '2026-03'), updated_at | Users read own, service write | user_id+month |
+
+### Unique Constraints
+
+- `game_cache(external_game_id, sport)`
+- `odds_cache(external_game_id, bookmaker, market)`
+- `ai_insights(external_game_id, sport)`
+- `saved_analyses(user_id, insight_id)`
+- `user_picks` — no unique (user can have multiple picks per game)
+- `api_usage(user_id, api_name, month)`
+
+### Functions
+
+| Function | Purpose |
+|----------|---------|
+| `handle_new_user()` | Trigger: auto-creates profile row on auth.users insert |
+| `update_updated_at()` | Trigger: auto-updates updated_at on row update |
+| `increment_api_usage(user_id, api_name, month)` | Upserts API call count for rate limiting |
+| `reset_daily_analyses(user_id)` | Resets analyses_today if 24h have passed |
+
+### Enums (via CHECK constraints)
+
+- `sport`: nba, nfl, mlb, nhl
+- `subscription_tier`: free, pro
+- `risk_level`: low, medium, high
+- `pick_type`: moneyline, spread, over, under, prop
+- `outcome`: win, loss, push, pending
+- `api_name`: odds, balldontlie, claude
