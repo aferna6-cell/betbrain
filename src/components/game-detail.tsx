@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { LineMovementChart } from '@/components/line-movement-chart'
+import { InjuryImpactPanel } from '@/components/injury-impact'
 import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
 
 // ---------------------------------------------------------------------------
@@ -484,7 +485,8 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
             Odds ({game.bookmakers.length})
           </TabsTrigger>
           <TabsTrigger value={1}>Line Movement</TabsTrigger>
-          <TabsTrigger value={2}>AI Analysis</TabsTrigger>
+          <TabsTrigger value={2}>Injuries</TabsTrigger>
+          <TabsTrigger value={3}>AI Analysis</TabsTrigger>
         </TabsList>
 
         <TabsContent value={0} className="mt-4 rounded-lg border border-border bg-card p-6">
@@ -500,6 +502,15 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
         </TabsContent>
 
         <TabsContent value={2} className="mt-4 rounded-lg border border-border bg-card p-6">
+          <InjuryImpactPanel
+            gameId={game.id}
+            sport={game.sport}
+            homeTeam={game.homeTeam}
+            awayTeam={game.awayTeam}
+          />
+        </TabsContent>
+
+        <TabsContent value={3} className="mt-4 rounded-lg border border-border bg-card p-6">
           <AnalysisPanel game={game} />
         </TabsContent>
       </Tabs>

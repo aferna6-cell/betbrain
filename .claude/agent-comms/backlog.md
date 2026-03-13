@@ -21,7 +21,7 @@
 - [x] **Pick tracker** — Log picks with sport, type, odds, units. History table + stats summary (record, profit, ROI). _(Cycle 8)_
 - [ ] **Custom alerts** — "Notify me when [line moves past X]". Email notifications via Resend.
 - [x] **League dashboards** — /dashboard/league/[sport] pages with filtered games and odds. _(Cycle 9)_
-- [ ] **Injury impact analysis** — AI assesses how key injuries change win probability vs. current line.
+- [x] **Injury impact analysis** — AI assesses how key injuries change win probability vs. current line. _(Cycle 12)_
 - [ ] **H2H history page** — Last 10 meetings, ATS record, O/U trends, venue splits.
 - [ ] **Daily email digest** — Morning email: best value plays, significant moves, Smart Signals. Via Resend.
 
