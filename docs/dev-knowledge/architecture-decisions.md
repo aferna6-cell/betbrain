@@ -82,6 +82,14 @@
 **Decision:** The game detail page uses a two-tab layout: Odds (full bookmaker comparison table) and AI Analysis (inline analysis panel). Stats/H2H/Injuries tabs are deferred to future cycles when team-matching and additional data sources are available.
 **Why:** Odds comparison across all bookmakers is the core value prop of the detail page and only requires data already available in `NormalizedGame`. AI analysis reuses the existing `/api/analysis` POST endpoint. Stats require matching The Odds API team names to balldontlie team IDs, which is nontrivial and should be its own feature.
 
+### Landing page: self-contained, no shadcn dependencies
+**Decision:** The landing page uses raw Tailwind CSS only. No shadcn/ui components, no images, no external dependencies.
+**Why:** The landing page is a marketing page that should load as fast as possible. shadcn components pull in Base UI React which adds JS bundle size. The landing page is static content — no interactivity needed. Also allows the page to be redesigned independently of the dashboard UI system.
+
+### API error responses: no internal details to client
+**Decision:** 500 error responses return only a generic message. Internal error details are logged server-side only.
+**Why:** Leaking error.message to clients exposes database structure, API key patterns, and internal service names. OWASP top 10 violation. The `details` field was removed from `routeErrorResponse`.
+
 ---
 
 _Add new decisions below._

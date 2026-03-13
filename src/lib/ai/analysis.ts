@@ -145,7 +145,7 @@ export async function checkAnalysisLimit(
 
   // Reset counter if we've crossed midnight
   if (now > resetAt) {
-    await supabase
+    const { error: resetError } = await supabase
       .from('profiles')
       .update({
         analyses_today: 0,
@@ -156,6 +156,10 @@ export async function checkAnalysisLimit(
         ).toISOString(),
       })
       .eq('id', userId)
+
+    if (resetError) {
+      console.error('[ai] Failed to reset analysis count:', resetError.message)
+    }
 
     return { allowed: true, used: 0, limit }
   }
@@ -181,10 +185,14 @@ async function incrementAnalysisCount(userId: string): Promise<void> {
     'analyses_today'
   > | null
 
-  await supabase
+  const { error } = await supabase
     .from('profiles')
     .update({ analyses_today: (profile?.analyses_today ?? 0) + 1 })
     .eq('id', userId)
+
+  if (error) {
+    console.error('[ai] Failed to increment analysis count:', error.message)
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -11,7 +11,7 @@
 - [x] **Game detail page** — /dashboard/games/[gameId]. Odds comparison table (moneyline, spread, totals), AI analysis tab. Best odds highlighted green. _(Cycle 5)_
 - [x] **AI game analysis** — API route that sends matchup data to Claude, returns structured analysis. Cache per game. Enforce free tier limits. _(Cycle 4)_
 - [x] **Odds comparison table** — Side-by-side bookmaker odds for each game. Highlight best line (green). Built into game detail page. _(Cycle 5)_
-- [ ] **Landing page** — Hero + features + pricing + CTA. Dark theme. Modern. Conversion-focused.
+- [x] **Landing page** — Hero, features grid, pricing tiers (Free/Pro), how it works, responsible gambling disclaimer. Dark theme. _(Cycle 6)_
 - [ ] **Stripe integration** — Free (3 analyses/day) + Pro ($29/mo: unlimited, all leagues, alerts). Checkout, webhook, subscription management.
 
 ## Features — Growth

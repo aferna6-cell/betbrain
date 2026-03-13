@@ -19,16 +19,10 @@ export function routeErrorResponse(
   context: string,
   error: unknown
 ): NextResponse {
-  const details =
-    error instanceof Error ? error.message : 'Unknown error'
-
   console.error(`[api] ${context} failed:`, error)
 
   return NextResponse.json(
-    {
-      error: `${context} failed`,
-      details,
-    },
+    { error: `${context} failed. Please try again later.` },
     { status: 500 }
   )
 }
