@@ -9,6 +9,7 @@
  *      with a staleness notice.
  */
 
+import { getOddsApiKey } from '@/lib/env'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { Sport } from '@/lib/supabase/types'
 import type { Database } from '@/lib/supabase/types'
@@ -316,14 +317,9 @@ async function incrementApiUsage(): Promise<void> {
  * Throws if the response is not OK (caller decides how to handle).
  */
 async function fetchOddsFromApi(sport: Sport): Promise<OddsApiGame[]> {
-  const apiKey = process.env.THE_ODDS_API_KEY
-  if (!apiKey) {
-    throw new Error('THE_ODDS_API_KEY environment variable is not set')
-  }
-
   const sportKey = ODDS_API_SPORT_KEYS[sport]
   const url = new URL(`${ODDS_API_BASE_URL}/sports/${sportKey}/odds`)
-  url.searchParams.set('apiKey', apiKey)
+  url.searchParams.set('apiKey', getOddsApiKey())
   url.searchParams.set('regions', 'us')
   url.searchParams.set('markets', 'h2h,spreads,totals')
   url.searchParams.set('oddsFormat', 'american')

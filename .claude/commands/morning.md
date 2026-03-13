@@ -1,17 +1,18 @@
 Morning routine for BetBrain development:
 
-1. **Health Check** — Run the full health check:
-   - `npm run build`
-   - `npm run lint`
-   - Check for hardcoded keys
-   - Check .gitignore
+1. **Health Check** — Run `npm run health-check`.
+   - Reads and refreshes `docs/dev-knowledge/health-check-latest.md`
+   - Includes build, lint, typecheck, route hygiene, env coverage, and migration drift
 
 2. **Read Context** — Load:
    - CLAUDE.md
+   - `docs/daily-logs/current-tasks.md`
    - .claude/agent-comms/backlog.md
    - .claude/agent-comms/checkpoint.md (if exists)
    - docs/dev-knowledge/bug-patterns.md
+   - docs/dev-knowledge/health-check-latest.md
    - Recent git log
+   - Latest `docs/daily-logs/auto-evening-*.log` if present
 
 3. **Assess State** — Determine:
    - What was completed yesterday

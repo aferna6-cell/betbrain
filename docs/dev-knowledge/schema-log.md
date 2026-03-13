@@ -46,3 +46,38 @@ _Every database schema change. Check before writing queries._
 - `pick_type`: moneyline, spread, over, under, prop
 - `outcome`: win, loss, push, pending
 - `api_name`: odds, balldontlie, claude
+
+### Why It Matters
+
+- Establishes the auth/profile model, cached data tables, and AI insight storage that every MVP feature depends on.
+- Makes shared cached sports data readable to authenticated users while reserving writes for service-role API routes.
+- Encodes the mandatory AI disclaimer at the schema layer so analysis records cannot omit it accidentally.
+
+### Risks / Follow-Up
+
+- The original `api_usage` uniqueness model did not correctly support shared system counters with `user_id = null`; this is corrected in Migration 002.
+- `src/lib/supabase/types.ts` is hand-maintained, so future schema changes need a matching type update in the same workstream.
+
+---
+
+## Migration 002: Fix API Usage System Tracking (2026-03-12)
+
+**File:** `supabase/migrations/002_fix_api_usage_system_tracking.sql`
+
+### Summary
+
+- Removes duplicate system-scoped `api_usage` rows where `user_id is null`
+- Replaces the old single unique constraint with two partial unique indexes:
+  - `(user_id, api_name, month)` when `user_id is not null`
+  - `(api_name, month)` when `user_id is null`
+- Updates `increment_api_usage()` to upsert user-scoped and system-scoped counters correctly
+
+### Why It Matters
+
+- The Odds API and balldontlie keys are shared across all users, so rate limiting depends on one durable system counter per API per month.
+- Without this migration, shared usage tracking can silently drift or fail, which undermines cache-only safeguards and dashboard quota reporting.
+
+### Risks / Rollback Concerns
+
+- Rolling this back would reintroduce duplicate/null system counters unless the sports wrappers are also reverted away from `user_id = null`.
+- If production data already contains multiple null-keyed rows per API/month, deduplication order matters; this migration keeps one surviving row per duplicate set before adding the new indexes.

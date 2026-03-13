@@ -4,7 +4,7 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 
 ## Stack
 
-- **Framework:** Next.js 14 (App Router) — frontend + API routes in one
+- **Framework:** Next.js 16 (App Router) — frontend + API routes in one
 - **Styling:** Tailwind CSS + shadcn/ui
 - **Database:** Supabase (PostgreSQL + Auth)
 - **AI:** Anthropic Claude API for game analysis
@@ -17,10 +17,11 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - `src/app/` — Pages and layouts (App Router)
 - `src/app/api/` — API route handlers
 - `src/components/` — React components
+- `src/lib/api/` — Shared API route/auth/error helpers
 - `src/lib/sports/` — Sports API wrappers (odds, stats)
-- `src/lib/ai/` — Claude API integration
 - `src/lib/supabase/` — Supabase client + helpers
-- `src/lib/stripe/` — Stripe integration
+- `scripts/daily/` — Health-check and daily review automation
+- `docs/daily-logs/` — Current handoff + day-by-day review logs
 
 ## Commands
 
@@ -28,6 +29,9 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 npm run dev       # Local dev server
 npm run build     # Production build
 npm run lint      # Lint check
+npm run typecheck # TypeScript check
+npm run health-check # Write docs/dev-knowledge/health-check-latest.md
+npm run evening:auto # Run scripts/daily/evening-auto.sh
 ```
 
 ## Critical Rules

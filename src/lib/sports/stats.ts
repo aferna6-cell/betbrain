@@ -10,11 +10,12 @@
  * MLB, and NHL until balldontlie adds official coverage.
  */
 
+import { getBalldontlieApiKey } from '@/lib/env'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/types'
 
 // ---------------------------------------------------------------------------
-// Constants — will be consolidated into config.ts once that file is created.
+// Constants local to the balldontlie wrapper.
 // ---------------------------------------------------------------------------
 
 const BALLDONTLIE_BASE_URL = 'https://api.balldontlie.io/v1'
@@ -388,11 +389,6 @@ async function bdlFetch<T>(
   path: string,
   params: Record<string, string | number | string[] | number[] | undefined> = {}
 ): Promise<T> {
-  const apiKey = process.env.BALLDONTLIE_API_KEY
-  if (!apiKey) {
-    throw new Error('BALLDONTLIE_API_KEY environment variable is not set')
-  }
-
   const url = new URL(`${BALLDONTLIE_BASE_URL}${path}`)
 
   for (const [key, value] of Object.entries(params)) {
@@ -409,7 +405,7 @@ async function bdlFetch<T>(
 
   const response = await fetch(url.toString(), {
     headers: {
-      Authorization: apiKey,
+      Authorization: getBalldontlieApiKey(),
     },
     // Do not cache at the HTTP layer; caching is managed by Supabase.
     cache: 'no-store',
@@ -435,9 +431,8 @@ async function trackApiUsage(): Promise<void> {
     const supabase = await createServiceClient()
     const month = currentMonth()
 
-    // Upsert via the database function defined in the schema.
     await supabase.rpc('increment_api_usage', {
-      p_user_id: '00000000-0000-0000-0000-000000000000', // system sentinel
+      p_user_id: null,
       p_api_name: 'balldontlie',
       p_month: month,
     })
@@ -452,6 +447,7 @@ async function trackApiUsage(): Promise<void> {
       .select('call_count')
       .eq('api_name', 'balldontlie')
       .eq('month', month)
+      .is('user_id', null)
       .limit(1)
 
     const rows = data as Pick<ApiUsageRow, 'call_count'>[] | null

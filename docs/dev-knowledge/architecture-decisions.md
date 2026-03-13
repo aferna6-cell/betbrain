@@ -59,8 +59,8 @@
 **Why:** The Odds API free tier is 500 requests/month. Cache-first prevents waste. Stale data fallback means the dashboard never shows empty when the API is down. Usage tracking in `api_usage` enables the dashboard to show remaining quota and hard-stop before hitting limits.
 
 ### Odds API: system-level usage tracking (null user_id)
-**Decision:** Track API calls with `user_id = null` in `api_usage` since The Odds API key is shared across all users. balldontlie uses a UUID sentinel `00000000-0000-0000-0000-000000000000`.
-**Why:** Rate limits apply to the API key, not per-user. System-level tracking gives one counter the dashboard can display. The sentinel UUID approach for balldontlie allows the RPC function to work without schema changes.
+**Decision:** Track shared external API usage with `user_id = null` in `api_usage`, backed by a partial unique index on `(api_name, month)` for null-scoped rows.
+**Why:** The Odds API and balldontlie keys are shared across all users, so one durable system counter per API/month is more accurate than fake sentinel users or duplicated null rows.
 
 ### balldontlie: NBA only, graceful non-NBA handling
 **Decision:** `isSupportedSport()` guard + `UNSUPPORTED_SPORT_NOTE` constant. Non-NBA requests return empty results with an informational note.

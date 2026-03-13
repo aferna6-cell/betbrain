@@ -346,7 +346,7 @@ export interface Database {
     Functions: {
       increment_api_usage: {
         Args: {
-          p_user_id: string
+          p_user_id: string | null
           p_api_name: string
           p_month: string
         }
