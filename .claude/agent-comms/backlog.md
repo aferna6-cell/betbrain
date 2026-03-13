@@ -20,7 +20,7 @@
 - [ ] **Smart Signals** — Games where stats + odds + trends all align. Highlighted badge on dashboard. Separate Smart Signals page.
 - [x] **Pick tracker** — Log picks with sport, type, odds, units. History table + stats summary (record, profit, ROI). _(Cycle 8)_
 - [ ] **Custom alerts** — "Notify me when [line moves past X]". Email notifications via Resend.
-- [ ] **League dashboards** — Dedicated /nba, /nfl, /mlb, /nhl pages with league-specific stats and standings.
+- [x] **League dashboards** — /dashboard/league/[sport] pages with filtered games and odds. _(Cycle 9)_
 - [ ] **Injury impact analysis** — AI assesses how key injuries change win probability vs. current line.
 - [ ] **H2H history page** — Last 10 meetings, ATS record, O/U trends, venue splits.
 - [ ] **Daily email digest** — Morning email: best value plays, significant moves, Smart Signals. Via Resend.
@@ -45,7 +45,7 @@
 - [ ] Rate limiting — cache serves stale data when limit hit
 
 ## Content
-- [ ] Landing page copy — hero, features, pricing, FAQ
+- [x] Landing page copy — hero, features, pricing, FAQ _(Cycle 6 — built into landing page)_
 - [ ] "How BetBrain Works" explainer page
 - [ ] Legal disclaimer page
 - [ ] Onboarding email sequence (welcome, tutorial, pro nudge)

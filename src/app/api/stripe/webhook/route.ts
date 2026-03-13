@@ -64,27 +64,30 @@ export async function POST(request: Request) {
       const subscription = event.data.object as Stripe.Subscription
       const customerId = subscription.customer as string
 
-      // Find user by stripe_customer_id
-      const { data: profile } = await supabase
+      const { data: delProfile } = await supabase
         .from('profiles')
         .select('id')
         .eq('stripe_customer_id', customerId)
-        .single()
+        .maybeSingle()
 
-      if (profile) {
-        const { error } = await supabase
-          .from('profiles')
-          .update({
-            subscription_tier: 'free',
-            stripe_subscription_id: null,
-          })
-          .eq('id', (profile as { id: string }).id)
+      const delUserId = (delProfile as { id: string } | null)?.id
+      if (!delUserId) {
+        console.warn(`[stripe] No profile found for customer ${customerId} on subscription.deleted`)
+        break
+      }
 
-        if (error) {
-          console.error('[stripe] Failed to downgrade user:', error.message)
-        } else {
-          console.log(`[stripe] User ${(profile as { id: string }).id} downgraded to Free`)
-        }
+      const { error: delError } = await supabase
+        .from('profiles')
+        .update({
+          subscription_tier: 'free',
+          stripe_subscription_id: null,
+        })
+        .eq('id', delUserId)
+
+      if (delError) {
+        console.error('[stripe] Failed to downgrade user:', delError.message)
+      } else {
+        console.log(`[stripe] User ${delUserId} downgraded to Free`)
       }
       break
     }
@@ -93,22 +96,26 @@ export async function POST(request: Request) {
       const subscription = event.data.object as Stripe.Subscription
       const customerId = subscription.customer as string
 
-      const { data: profile } = await supabase
+      const { data: updProfile } = await supabase
         .from('profiles')
         .select('id')
         .eq('stripe_customer_id', customerId)
-        .single()
+        .maybeSingle()
 
-      if (profile) {
-        const tier = subscription.status === 'active' ? 'pro' : 'free'
-        const { error } = await supabase
-          .from('profiles')
-          .update({ subscription_tier: tier })
-          .eq('id', (profile as { id: string }).id)
+      const updUserId = (updProfile as { id: string } | null)?.id
+      if (!updUserId) {
+        console.warn(`[stripe] No profile found for customer ${customerId} on subscription.updated`)
+        break
+      }
 
-        if (error) {
-          console.error('[stripe] Failed to update subscription status:', error.message)
-        }
+      const tier = subscription.status === 'active' ? 'pro' : 'free'
+      const { error: updError } = await supabase
+        .from('profiles')
+        .update({ subscription_tier: tier })
+        .eq('id', updUserId)
+
+      if (updError) {
+        console.error('[stripe] Failed to update subscription status:', updError.message)
       }
       break
     }
