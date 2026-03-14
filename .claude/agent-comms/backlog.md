@@ -48,11 +48,11 @@
 - [x] Landing page copy — hero, features, pricing, FAQ _(Cycle 6 — built into landing page)_
 - [x] "How BetBrain Works" explainer page _(Cycle 22)_
 - [x] Legal disclaimer page _(Cycle 22)_
-- [ ] Onboarding email sequence (welcome, tutorial, pro nudge)
+- [x] Onboarding email sequence (welcome, tutorial, pro nudge) _(Cycle 25)_
 - [ ] SEO blog posts: "AI Sports Betting Analytics 2026", "How to Find Value in Betting Lines"
 
 ## Optimization
-- [ ] ISR for game pages (rebuild every 5 min)
+- [x] ISR for game pages (rebuild every 5 min) _(Cycle 25)_
 - [x] Loading skeletons on all data components _(Cycle 14)_
 - [ ] Lazy load charts
 - [x] SEO metadata on all pages _(Cycle 14)_

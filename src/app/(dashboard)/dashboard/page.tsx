@@ -1,4 +1,12 @@
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+
+export const metadata: Metadata = {
+  title: 'Dashboard — BetBrain',
+  description: "View today's games, odds, and AI-powered analysis across NBA, NFL, MLB, NHL.",
+}
+
+export const revalidate = 300 // Rebuild every 5 minutes
 import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
 import { GamesDashboard } from '@/components/games-dashboard'
 import type { Database } from '@/lib/supabase/types'

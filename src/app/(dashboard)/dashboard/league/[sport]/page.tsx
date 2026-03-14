@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getOddsForSport } from '@/lib/sports/odds'
 import { GameCard } from '@/components/game-card'
@@ -6,6 +7,17 @@ import Link from 'next/link'
 import type { Sport } from '@/lib/supabase/types'
 
 const VALID_SPORTS: Sport[] = ['nba', 'nfl', 'mlb', 'nhl']
+
+export const revalidate = 300 // Rebuild every 5 minutes
+
+export async function generateMetadata({ params }: { params: Promise<{ sport: string }> }): Promise<Metadata> {
+  const { sport } = await params
+  const label = sport.toUpperCase()
+  return {
+    title: `${label} Games — BetBrain`,
+    description: `${label} upcoming games with odds comparison and AI analysis.`,
+  }
+}
 
 const LEAGUE_INFO: Record<Sport, { name: string; fullName: string }> = {
   nba: { name: 'NBA', fullName: 'National Basketball Association' },
