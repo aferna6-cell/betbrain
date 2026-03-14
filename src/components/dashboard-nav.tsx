@@ -15,6 +15,7 @@ const navLinks = [
   { href: '/dashboard/parlay', label: 'Parlay' },
   { href: '/dashboard/backtesting', label: 'Backtest' },
   { href: '/dashboard/leaderboard', label: 'Leaders' },
+  { href: '/dashboard/api', label: 'API' },
   { href: '/dashboard/billing', label: 'Billing' },
   { href: '/dashboard/profile', label: 'Profile' },
 ]

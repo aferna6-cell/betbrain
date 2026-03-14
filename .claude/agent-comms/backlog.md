@@ -31,7 +31,7 @@
 - [x] **Parlay builder** — Multi-leg parlay form, AI assesses combined probability, EV, correlation. _(Cycle 17)_
 - [x] **Historical backtesting** — "If I followed Smart Signals last NBA season, what's my ROI?" _(Cycle 22)_
 - [x] **Public leaderboard** — Opt-in leaderboard of pick tracker records. Social proof. _(Cycle 23)_
-- [ ] **API access tier** — $49/mo: access BetBrain analysis via REST API for power users.
+- [x] **API access tier** — $49/mo: access BetBrain analysis via REST API for power users. _(Cycle 24)_
 
 ## Bugs
 - [ ] (none yet)
