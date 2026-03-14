@@ -42,7 +42,7 @@
 - [x] AI analysis — structured output validation, disclaimer present, limit error _(Cycle 14)_
 - [x] Auth flow — signup, login, protected routes, logout _(Cycle 19)_
 - [x] Stripe — free tier limits, pro access, webhook signature _(Cycle 20)_
-- [ ] Rate limiting — cache serves stale data when limit hit
+- [x] Rate limiting — cache serves stale data when limit hit _(Cycle 21)_
 
 ## Content
 - [x] Landing page copy — hero, features, pricing, FAQ _(Cycle 6 — built into landing page)_

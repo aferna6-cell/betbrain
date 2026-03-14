@@ -84,8 +84,8 @@ describe('Auth validation rules', () => {
     })
 
     it('requires passwords to match', () => {
-      const password = 'newpassword123'
-      const confirmPassword = 'differentpassword'
+      const password: string = 'newpassword123'
+      const confirmPassword: string = 'differentpassword'
       expect(password === confirmPassword).toBe(false)
     })
 

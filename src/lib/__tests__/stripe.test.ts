@@ -143,13 +143,15 @@ describe('Checkout session validation rules', () => {
   })
 
   it('free user should be allowed to checkout', () => {
-    const profile = { subscription_tier: 'free' as const }
+    const profile: { subscription_tier: string } = { subscription_tier: 'free' }
     const isAlreadyPro = profile.subscription_tier === 'pro'
     expect(isAlreadyPro).toBe(false)
   })
 
   it('null profile should be allowed to checkout', () => {
-    const profile: { subscription_tier: string } | null = null
+    // Simulate a missing profile (e.g., new user with no DB row)
+    const getProfile = (): { subscription_tier: string } | null => null
+    const profile = getProfile()
     const isAlreadyPro = profile?.subscription_tier === 'pro'
     expect(isAlreadyPro).toBe(false)
   })
