@@ -40,7 +40,7 @@
 - [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_
 - [x] Stats API wrapper — type compliance, isSupportedSport, constants, StatsResult shape _(Cycle 18)_
 - [x] AI analysis — structured output validation, disclaimer present, limit error _(Cycle 14)_
-- [ ] Auth flow — signup, login, protected routes, logout
+- [x] Auth flow — signup, login, protected routes, logout _(Cycle 19)_
 - [ ] Stripe — free tier limits, pro access, webhook signature
 - [ ] Rate limiting — cache serves stale data when limit hit
 
