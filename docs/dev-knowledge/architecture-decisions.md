@@ -132,4 +132,8 @@
 **Decision:** `generateDigest()` calls `getAllOdds()` and `detectSmartSignals()` which both read from cache. No new external API calls are made.
 **Why:** The digest may be generated on page load for any user. Burning Odds API quota per-pageview would be catastrophic for the 500/month budget.
 
+### Prop analyzer: no caching, shared analysis limit
+**Decision:** Prop analyses are not cached (each is unique — different player/line combos). They share the free-tier daily analysis limit with game analysis and injury impact.
+**Why:** Props are player+matchup+line specific — the cache key space is too large to be useful. Sharing the analysis limit keeps Claude API costs predictable and incentivizes Pro upgrades.
+
 _Add new decisions below._

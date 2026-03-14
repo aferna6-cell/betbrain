@@ -27,7 +27,7 @@
 
 ## Features — Premium
 
-- [ ] **Prop bet analyzer** — "Is LeBron O25.5 pts good?" AI considers usage, matchup, minutes, pace.
+- [x] **Prop bet analyzer** — AI-powered player prop analysis with projected ranges, edge estimates, and key factors. _(Cycle 16)_
 - [ ] **Parlay builder** — Build parlay, AI assesses combined probability vs payout odds. Flags +EV parlays.
 - [ ] **Historical backtesting** — "If I followed Smart Signals last NBA season, what's my ROI?"
 - [ ] **Public leaderboard** — Opt-in leaderboard of pick tracker records. Social proof.
