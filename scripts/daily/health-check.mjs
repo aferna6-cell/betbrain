@@ -268,8 +268,19 @@ function checkHardcodedSecrets() {
         : []
 
     for (const filePath of files) {
+      // Skip the health check output file (it quotes its own findings)
+      const rel = relative(filePath)
+      if (rel === 'docs/dev-knowledge/health-check-latest.md') {
+        continue
+      }
+
       for (const [index, line] of readLines(filePath).entries()) {
         if (target === '.env.example') {
+          continue
+        }
+
+        // Skip lines that are grep commands or documentation patterns
+        if (/grep\s+-r|`grep|"grep/.test(line)) {
           continue
         }
 
@@ -331,10 +342,23 @@ function checkDisclaimer() {
     fs.existsSync(architecturePath) &&
     fs.readFileSync(architecturePath, 'utf8').includes('Disclaimer on every insight')
 
+  // Check for runtime assertDisclaimer() enforcement in AI modules
+  const aiFiles = walkFiles(path.join(repoRoot, 'src', 'lib', 'ai'), (f) => f.endsWith('.ts'))
+  const hasRuntimeGuard = aiFiles.some((f) =>
+    fs.readFileSync(f, 'utf8').includes('assertDisclaimer')
+  )
+
+  if (hasSchemaGuard && hasArchitectureRule && hasRuntimeGuard) {
+    return {
+      status: 'PASS',
+      notes: ['Schema default, architecture rule, and runtime assertDisclaimer() guard all present.'],
+    }
+  }
+
   if (hasSchemaGuard && hasArchitectureRule) {
     return {
       status: 'PARTIAL',
-      notes: ['Schema default and architecture rule are present; AI route is not implemented yet.'],
+      notes: ['Schema default and architecture rule present; runtime assertDisclaimer() guard missing.'],
     }
   }
 
