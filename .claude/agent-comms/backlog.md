@@ -38,7 +38,7 @@
 
 ## Tests
 - [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_
-- [ ] Stats API wrapper — mocked responses, data normalization
+- [x] Stats API wrapper — type compliance, isSupportedSport, constants, StatsResult shape _(Cycle 18)_
 - [x] AI analysis — structured output validation, disclaimer present, limit error _(Cycle 14)_
 - [ ] Auth flow — signup, login, protected routes, logout
 - [ ] Stripe — free tier limits, pro access, webhook signature
