@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { SearchPalette } from '@/components/search'
 import type { User } from '@supabase/supabase-js'
 
 const navLinks = [
@@ -53,6 +54,7 @@ export function DashboardNav({ user }: { user: User }) {
           </nav>
         </div>
         <div className="flex items-center gap-4">
+          <SearchPalette />
           <span className="hidden text-sm text-muted-foreground sm:block">
             {user.email}
           </span>
