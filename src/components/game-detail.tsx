@@ -5,8 +5,21 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { LineMovementChart } from '@/components/line-movement-chart'
+import dynamic from 'next/dynamic'
+
+const LineMovementChart = dynamic(
+  () => import('@/components/line-movement-chart').then((m) => m.LineMovementChart),
+  {
+    loading: () => (
+      <div className="flex h-64 items-center justify-center">
+        <p className="text-sm text-muted-foreground">Loading chart...</p>
+      </div>
+    ),
+    ssr: false,
+  }
+)
 import { InjuryImpactPanel } from '@/components/injury-impact'
+import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
 import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
 
@@ -496,7 +509,8 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
           </TabsTrigger>
           <TabsTrigger value={1}>Line Movement</TabsTrigger>
           <TabsTrigger value={2}>Injuries</TabsTrigger>
-          <TabsTrigger value={3}>AI Analysis</TabsTrigger>
+          <TabsTrigger value={3}>H2H</TabsTrigger>
+          <TabsTrigger value={4}>AI Analysis</TabsTrigger>
         </TabsList>
 
         <TabsContent value={0} className="mt-4 rounded-lg border border-border bg-card p-6">
@@ -521,6 +535,13 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
         </TabsContent>
 
         <TabsContent value={3} className="mt-4 rounded-lg border border-border bg-card p-6">
+          <H2HHistory
+            homeTeam={game.homeTeam}
+            awayTeam={game.awayTeam}
+          />
+        </TabsContent>
+
+        <TabsContent value={4} className="mt-4 rounded-lg border border-border bg-card p-6">
           <AnalysisPanel game={game} />
         </TabsContent>
       </Tabs>

@@ -49,12 +49,12 @@
 - [x] "How BetBrain Works" explainer page _(Cycle 22)_
 - [x] Legal disclaimer page _(Cycle 22)_
 - [x] Onboarding email sequence (welcome, tutorial, pro nudge) _(Cycle 25)_
-- [ ] SEO blog posts: "AI Sports Betting Analytics 2026", "How to Find Value in Betting Lines"
+- [x] SEO blog posts: "AI Sports Betting Analytics 2026", "How to Find Value in Betting Lines" _(Cycle 26)_
 
 ## Optimization
 - [x] ISR for game pages (rebuild every 5 min) _(Cycle 25)_
 - [x] Loading skeletons on all data components _(Cycle 14)_
-- [ ] Lazy load charts
+- [x] Lazy load charts _(Cycle 26)_
 - [x] SEO metadata on all pages _(Cycle 14)_
 - [ ] OG images for social sharing
 - [ ] Edge runtime for API routes where possible
