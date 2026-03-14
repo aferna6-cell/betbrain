@@ -124,4 +124,12 @@
 **Decision:** Alert rules are constrained to moneyline market via SQL CHECK constraint.
 **Why:** Moneyline is the simplest odds format to compare against a threshold. Spread and total alerts would need additional logic (comparing point values, not just odds). The `market` column allows future expansion without migration.
 
+### Daily digest: in-app preview first, email deferred
+**Decision:** The daily digest generates content from cached data (games, signals, line moves) and displays it on a `/dashboard/digest` page. A `sendDigestEmail()` function exists but logs to console instead of sending. Resend integration is a future phase.
+**Why:** Adding Resend requires a new dependency, API key, DNS verification, and deliverability setup. The digest content generator and preview page deliver immediate value. The email sender abstraction is already in place — swapping in Resend is a one-line change when ready.
+
+### Daily digest: no new API calls
+**Decision:** `generateDigest()` calls `getAllOdds()` and `detectSmartSignals()` which both read from cache. No new external API calls are made.
+**Why:** The digest may be generated on page load for any user. Burning Odds API quota per-pageview would be catastrophic for the 500/month budget.
+
 _Add new decisions below._

@@ -22,8 +22,8 @@
 - [x] **Custom alerts** — In-app line movement alerts with threshold triggers. Email via Resend deferred. _(Cycle 13)_
 - [x] **League dashboards** — /dashboard/league/[sport] pages with filtered games and odds. _(Cycle 9)_
 - [x] **Injury impact analysis** — AI assesses how key injuries change win probability vs. current line. _(Cycle 12)_
-- [ ] **H2H history page** — Last 10 meetings, ATS record, O/U trends, venue splits.
-- [ ] **Daily email digest** — Morning email: best value plays, significant moves, Smart Signals. Via Resend.
+- [x] **H2H history page** — Last 10 meetings, ATS record, O/U trends. Tab on game detail. _(Cycle 14)_
+- [x] **Daily email digest** — Morning digest page + API route + preview component. Email sending deferred to Resend. _(Cycle 15)_
 
 ## Features — Premium
 
@@ -37,9 +37,9 @@
 - [ ] (none yet)
 
 ## Tests
-- [ ] Odds API wrapper — mocked responses, cache hit/miss, rate limit handling
+- [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_
 - [ ] Stats API wrapper — mocked responses, data normalization
-- [ ] AI analysis — structured output validation, disclaimer present
+- [x] AI analysis — structured output validation, disclaimer present, limit error _(Cycle 14)_
 - [ ] Auth flow — signup, login, protected routes, logout
 - [ ] Stripe — free tier limits, pro access, webhook signature
 - [ ] Rate limiting — cache serves stale data when limit hit
@@ -53,8 +53,8 @@
 
 ## Optimization
 - [ ] ISR for game pages (rebuild every 5 min)
-- [ ] Loading skeletons on all data components
+- [x] Loading skeletons on all data components _(Cycle 14)_
 - [ ] Lazy load charts
-- [ ] SEO metadata on all pages
+- [x] SEO metadata on all pages _(Cycle 14)_
 - [ ] OG images for social sharing
 - [ ] Edge runtime for API routes where possible

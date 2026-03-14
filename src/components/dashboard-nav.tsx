@@ -10,6 +10,7 @@ const navLinks = [
   { href: '/dashboard/signals', label: 'Signals' },
   { href: '/dashboard/alerts', label: 'Alerts' },
   { href: '/dashboard/picks', label: 'Picks' },
+  { href: '/dashboard/digest', label: 'Digest' },
   { href: '/dashboard/billing', label: 'Billing' },
   { href: '/dashboard/profile', label: 'Profile' },
 ]
