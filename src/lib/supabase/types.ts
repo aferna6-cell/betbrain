@@ -393,6 +393,62 @@ export interface Database {
           }
         ]
       }
+      alerts: {
+        Row: {
+          id: string
+          user_id: string
+          external_game_id: string
+          sport: string
+          team: string
+          side: 'home' | 'away'
+          market: string
+          condition: 'above' | 'below'
+          threshold: number
+          triggered: boolean
+          triggered_at: string | null
+          triggered_value: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          external_game_id: string
+          sport: string
+          team: string
+          side: 'home' | 'away'
+          market?: string
+          condition: 'above' | 'below'
+          threshold: number
+          triggered?: boolean
+          triggered_at?: string | null
+          triggered_value?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          external_game_id?: string
+          sport?: string
+          team?: string
+          side?: 'home' | 'away'
+          market?: string
+          condition?: 'above' | 'below'
+          threshold?: number
+          triggered?: boolean
+          triggered_at?: string | null
+          triggered_value?: number | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never

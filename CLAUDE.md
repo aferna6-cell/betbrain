@@ -57,6 +57,8 @@ npm run evening:auto # Run scripts/daily/evening-auto.sh
 | saved_analyses | User's bookmarked analyses |
 | user_picks | Personal pick tracking (record keeping, no real money) |
 | api_usage | Track API call counts for rate limiting |
+| odds_history | Append-only odds snapshots for line movement charts |
+| alerts | User-defined line movement alert rules |
 
 ## Agents
 

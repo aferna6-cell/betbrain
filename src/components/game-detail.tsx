@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { LineMovementChart } from '@/components/line-movement-chart'
 import { InjuryImpactPanel } from '@/components/injury-impact'
+import { AddAlertButton } from '@/components/add-alert-button'
 import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
 
 // ---------------------------------------------------------------------------
@@ -475,6 +476,15 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
             <p className="text-2xl font-bold">{game.homeTeam}</p>
             <p className="mt-1 text-xs text-muted-foreground">Home</p>
           </div>
+        </div>
+
+        <div className="mt-4 flex justify-end">
+          <AddAlertButton
+            gameId={game.id}
+            sport={game.sport}
+            homeTeam={game.homeTeam}
+            awayTeam={game.awayTeam}
+          />
         </div>
       </div>
 

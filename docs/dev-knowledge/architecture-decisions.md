@@ -112,4 +112,16 @@
 **Decision:** Created a new `odds_history` append-only table instead of changing the `odds_cache` upsert strategy. Both are written to on each fetch: cache gets upserted (latest), history gets inserted (append).
 **Why:** Changing odds_cache to allow multiple rows would break all existing cache-read logic (hydration, TTL checks, game lookup). A separate table isolates history concerns. If history grows too large, we can truncate it without affecting the cache.
 
+### Custom alerts: in-app first, email later
+**Decision:** Phase 1 of alerts is in-app only — users create alert rules and check the Alerts page for triggered alerts. No email notifications yet. Email (via Resend) is deferred to Phase 2.
+**Why:** Adding a transactional email service (Resend) introduces a new dependency, DNS verification, and deliverability concerns. In-app alerts deliver immediate value with zero new infrastructure. The architecture supports email easily — `checkAlerts()` already returns triggered count and could dispatch emails in the same loop.
+
+### Alerts: non-blocking check after odds fetch
+**Decision:** `checkAlerts(games)` is called fire-and-forget (no `await`, with `.catch()`) inside `getOddsForSport()` after writing to cache.
+**Why:** Alert checking is a side effect — it must never slow down or break the primary odds pipeline. If alert checking fails (DB error, edge case), odds still return normally. The `.catch()` handler logs the error without crashing the request.
+
+### Alerts: moneyline-only for now
+**Decision:** Alert rules are constrained to moneyline market via SQL CHECK constraint.
+**Why:** Moneyline is the simplest odds format to compare against a threshold. Spread and total alerts would need additional logic (comparing point values, not just odds). The `market` column allows future expansion without migration.
+
 _Add new decisions below._

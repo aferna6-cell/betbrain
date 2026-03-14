@@ -105,3 +105,43 @@ _Every database schema change. Check before writing queries._
 ### TypeScript Types
 
 - Added `odds_history` table type to `src/lib/supabase/types.ts`
+
+---
+
+## Migration 004: Alerts (2026-03-13)
+
+**File:** `supabase/migrations/004_alerts.sql`
+
+### Summary
+
+- Creates `alerts` table for user-defined line movement alert rules
+- Each alert specifies: game, team, side, market (moneyline only), condition (above/below), threshold
+- Alerts are marked triggered when any bookmaker's odds cross the threshold
+- RLS enabled: users manage their own alerts only
+
+### Columns
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | uuid PK | gen_random_uuid() |
+| user_id | uuid FK → profiles | on delete cascade |
+| external_game_id | text | The Odds API game ID |
+| sport | text | nba, nfl, mlb, nhl |
+| team | text | Team name |
+| side | text | 'home' or 'away' |
+| market | text | default 'moneyline', check ('moneyline') |
+| condition | text | 'above' or 'below' |
+| threshold | numeric | Target odds value |
+| triggered | boolean | default false |
+| triggered_at | timestamptz | null until triggered |
+| triggered_value | numeric | null until triggered |
+| created_at | timestamptz | default now() |
+
+### Indexes
+
+- `idx_alerts_active` — `(external_game_id, triggered) WHERE triggered = false` for checking alerts
+- `idx_alerts_user` — `(user_id, created_at desc)` for user dashboard
+
+### TypeScript Types
+
+- Added `alerts` table type to `src/lib/supabase/types.ts`

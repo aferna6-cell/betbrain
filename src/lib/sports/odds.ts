@@ -11,6 +11,7 @@
 
 import { getOddsApiKey } from '@/lib/env'
 import { createServiceClient } from '@/lib/supabase/server'
+import { checkAlerts } from '@/lib/alerts'
 import type { Sport } from '@/lib/supabase/types'
 import type { Database } from '@/lib/supabase/types'
 import {
@@ -436,6 +437,11 @@ export async function getOddsForSport(sport: Sport): Promise<OddsResult> {
 
     const games = rawGames.map((raw) => normalizeGame(raw, sport))
     await writeOddsCache(games, sport)
+
+    // Check user alerts against fresh odds (non-blocking)
+    checkAlerts(games).catch((err) =>
+      console.error('[odds] alert check failed:', err)
+    )
 
     return {
       games,
