@@ -36,6 +36,14 @@
 ## Bugs
 - [ ] (none yet)
 
+## Improvements
+- [x] **Mobile navigation** — Hamburger menu for dashboard nav on small screens _(Cycle 29)_
+- [x] **Error boundaries** — React error boundary components for graceful failures _(Cycle 29)_
+- [x] **Backtesting tests** — Unit tests for deterministic simulation engine _(Cycle 29)_
+- [x] **404 page** — Custom not-found page matching dark theme _(Cycle 29)_
+- [ ] **Keyboard shortcuts** — Navigation shortcuts for power users
+- [ ] **Search** — Global search across games, teams, and analysis
+
 ## Tests
 - [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_
 - [x] Stats API wrapper — type compliance, isSupportedSport, constants, StatsResult shape _(Cycle 18)_
