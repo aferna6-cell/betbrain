@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/dashboard/digest', label: 'Digest' },
   { href: '/dashboard/props', label: 'Props' },
   { href: '/dashboard/parlay', label: 'Parlay' },
+  { href: '/dashboard/backtesting', label: 'Backtest' },
   { href: '/dashboard/billing', label: 'Billing' },
   { href: '/dashboard/profile', label: 'Profile' },
 ]

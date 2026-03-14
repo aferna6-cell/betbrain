@@ -29,7 +29,7 @@
 
 - [x] **Prop bet analyzer** — AI-powered player prop analysis with projected ranges, edge estimates, and key factors. _(Cycle 16)_
 - [x] **Parlay builder** — Multi-leg parlay form, AI assesses combined probability, EV, correlation. _(Cycle 17)_
-- [ ] **Historical backtesting** — "If I followed Smart Signals last NBA season, what's my ROI?"
+- [x] **Historical backtesting** — "If I followed Smart Signals last NBA season, what's my ROI?" _(Cycle 22)_
 - [ ] **Public leaderboard** — Opt-in leaderboard of pick tracker records. Social proof.
 - [ ] **API access tier** — $49/mo: access BetBrain analysis via REST API for power users.
 
@@ -46,8 +46,8 @@
 
 ## Content
 - [x] Landing page copy — hero, features, pricing, FAQ _(Cycle 6 — built into landing page)_
-- [ ] "How BetBrain Works" explainer page
-- [ ] Legal disclaimer page
+- [x] "How BetBrain Works" explainer page _(Cycle 22)_
+- [x] Legal disclaimer page _(Cycle 22)_
 - [ ] Onboarding email sequence (welcome, tutorial, pro nudge)
 - [ ] SEO blog posts: "AI Sports Betting Analytics 2026", "How to Find Value in Betting Lines"
 
