@@ -41,7 +41,7 @@
 - [x] Stats API wrapper — type compliance, isSupportedSport, constants, StatsResult shape _(Cycle 18)_
 - [x] AI analysis — structured output validation, disclaimer present, limit error _(Cycle 14)_
 - [x] Auth flow — signup, login, protected routes, logout _(Cycle 19)_
-- [ ] Stripe — free tier limits, pro access, webhook signature
+- [x] Stripe — free tier limits, pro access, webhook signature _(Cycle 20)_
 - [ ] Rate limiting — cache serves stale data when limit hit
 
 ## Content
