@@ -56,5 +56,5 @@
 - [x] Loading skeletons on all data components _(Cycle 14)_
 - [x] Lazy load charts _(Cycle 26)_
 - [x] SEO metadata on all pages _(Cycle 14)_
-- [ ] OG images for social sharing
-- [ ] Edge runtime for API routes where possible
+- [x] OG images for social sharing _(Cycle 27)_
+- [x] Edge runtime for API routes where possible _(Cycle 27)_
