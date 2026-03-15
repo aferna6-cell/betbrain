@@ -26,6 +26,8 @@ interface UserPick {
   units: number
   outcome: PickOutcome | null
   profit: number | null
+  closing_odds: number | null
+  clv: number | null
   notes: string | null
   game_date: string
   created_at: string
@@ -39,6 +41,15 @@ interface PickStats {
   pending: number
   totalProfit: number
   roi: number
+}
+
+interface CLVStats {
+  averageCLV: number
+  totalPicks: number
+  positiveCLVCount: number
+  negativeCLVCount: number
+  positiveCLVRate: number
+  weightedCLV: number
 }
 
 // ---------------------------------------------------------------------------
@@ -257,54 +268,103 @@ function PickForm({
 // Stats Summary
 // ---------------------------------------------------------------------------
 
-function StatsSummary({ stats }: { stats: PickStats }) {
+function StatsSummary({ stats, clvStats }: { stats: PickStats; clvStats: CLVStats | null }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-      <div className="rounded-lg border border-border bg-card p-4">
-        <p className="text-sm text-muted-foreground">Record</p>
-        <p className="mt-1 text-xl font-semibold">
-          {stats.wins}-{stats.losses}
-          {stats.pushes > 0 && `-${stats.pushes}`}
-        </p>
+    <div className="space-y-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="text-sm text-muted-foreground">Record</p>
+          <p className="mt-1 text-xl font-semibold">
+            {stats.wins}-{stats.losses}
+            {stats.pushes > 0 && `-${stats.pushes}`}
+          </p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="text-sm text-muted-foreground">Total Picks</p>
+          <p className="mt-1 text-xl font-semibold">{stats.total}</p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="text-sm text-muted-foreground">Pending</p>
+          <p className="mt-1 text-xl font-semibold">{stats.pending}</p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="text-sm text-muted-foreground">Profit (units)</p>
+          <p
+            className={`mt-1 text-xl font-semibold ${
+              stats.totalProfit > 0
+                ? 'text-green-500'
+                : stats.totalProfit < 0
+                  ? 'text-red-500'
+                  : ''
+            }`}
+          >
+            {stats.totalProfit > 0 ? '+' : ''}
+            {stats.totalProfit}
+          </p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="text-sm text-muted-foreground">ROI</p>
+          <p
+            className={`mt-1 text-xl font-semibold ${
+              stats.roi > 0
+                ? 'text-green-500'
+                : stats.roi < 0
+                  ? 'text-red-500'
+                  : ''
+            }`}
+          >
+            {stats.roi > 0 ? '+' : ''}
+            {stats.roi}%
+          </p>
+        </div>
       </div>
-      <div className="rounded-lg border border-border bg-card p-4">
-        <p className="text-sm text-muted-foreground">Total Picks</p>
-        <p className="mt-1 text-xl font-semibold">{stats.total}</p>
-      </div>
-      <div className="rounded-lg border border-border bg-card p-4">
-        <p className="text-sm text-muted-foreground">Pending</p>
-        <p className="mt-1 text-xl font-semibold">{stats.pending}</p>
-      </div>
-      <div className="rounded-lg border border-border bg-card p-4">
-        <p className="text-sm text-muted-foreground">Profit (units)</p>
-        <p
-          className={`mt-1 text-xl font-semibold ${
-            stats.totalProfit > 0
-              ? 'text-green-500'
-              : stats.totalProfit < 0
-                ? 'text-red-500'
-                : ''
-          }`}
-        >
-          {stats.totalProfit > 0 ? '+' : ''}
-          {stats.totalProfit}
-        </p>
-      </div>
-      <div className="rounded-lg border border-border bg-card p-4">
-        <p className="text-sm text-muted-foreground">ROI</p>
-        <p
-          className={`mt-1 text-xl font-semibold ${
-            stats.roi > 0
-              ? 'text-green-500'
-              : stats.roi < 0
-                ? 'text-red-500'
-                : ''
-          }`}
-        >
-          {stats.roi > 0 ? '+' : ''}
-          {stats.roi}%
-        </p>
-      </div>
+
+      {clvStats && clvStats.totalPicks > 0 && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+            <p className="text-sm text-blue-400">Avg CLV</p>
+            <p
+              className={`mt-1 text-xl font-semibold ${
+                clvStats.averageCLV > 0
+                  ? 'text-green-500'
+                  : clvStats.averageCLV < 0
+                    ? 'text-red-500'
+                    : 'text-muted-foreground'
+              }`}
+            >
+              {clvStats.averageCLV > 0 ? '+' : ''}
+              {clvStats.averageCLV}%
+            </p>
+          </div>
+          <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+            <p className="text-sm text-blue-400">Weighted CLV</p>
+            <p
+              className={`mt-1 text-xl font-semibold ${
+                clvStats.weightedCLV > 0
+                  ? 'text-green-500'
+                  : clvStats.weightedCLV < 0
+                    ? 'text-red-500'
+                    : 'text-muted-foreground'
+              }`}
+            >
+              {clvStats.weightedCLV > 0 ? '+' : ''}
+              {clvStats.weightedCLV}%
+            </p>
+          </div>
+          <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+            <p className="text-sm text-blue-400">+CLV Rate</p>
+            <p className="mt-1 text-xl font-semibold">
+              {clvStats.positiveCLVRate}%
+            </p>
+          </div>
+          <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+            <p className="text-sm text-blue-400">CLV Tracked</p>
+            <p className="mt-1 text-xl font-semibold">
+              {clvStats.totalPicks}/{stats.total}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -313,7 +373,35 @@ function StatsSummary({ stats }: { stats: PickStats }) {
 // Picks Table
 // ---------------------------------------------------------------------------
 
-function PicksTable({ picks }: { picks: UserPick[] }) {
+function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => void }) {
+  const { addToast } = useToast()
+
+  async function handleSetClosingOdds(pickId: string) {
+    const input = prompt('Enter closing odds (American format, e.g. -115):')
+    if (!input) return
+    const closingOdds = Number(input)
+    if (isNaN(closingOdds)) {
+      addToast('Invalid odds format', 'error')
+      return
+    }
+
+    try {
+      const res = await fetch('/api/picks', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pickId, closingOdds }),
+      })
+      if (res.ok) {
+        addToast('Closing odds saved', 'success')
+        onUpdate()
+      } else {
+        addToast('Failed to save closing odds', 'error')
+      }
+    } catch {
+      addToast('Network error', 'error')
+    }
+  }
+
   if (picks.length === 0) {
     return (
       <div className="rounded-lg border border-border bg-card p-8 text-center">
@@ -334,6 +422,8 @@ function PicksTable({ picks }: { picks: UserPick[] }) {
             <th className="px-4 py-3 font-medium">Type</th>
             <th className="px-4 py-3 font-medium">Pick</th>
             <th className="px-4 py-3 font-medium text-right">Odds</th>
+            <th className="px-4 py-3 font-medium text-right">Close</th>
+            <th className="px-4 py-3 font-medium text-right">CLV</th>
             <th className="px-4 py-3 font-medium text-right">Units</th>
             <th className="px-4 py-3 font-medium text-center">Outcome</th>
             <th className="px-4 py-3 font-medium text-right">Profit</th>
@@ -368,6 +458,36 @@ function PicksTable({ picks }: { picks: UserPick[] }) {
               </td>
               <td className="px-4 py-3 text-right font-mono">
                 {formatOdds(pick.odds)}
+              </td>
+              <td className="px-4 py-3 text-right font-mono">
+                {pick.closing_odds != null ? (
+                  formatOdds(pick.closing_odds)
+                ) : (
+                  <button
+                    onClick={() => handleSetClosingOdds(pick.id)}
+                    className="text-xs text-blue-400 hover:text-blue-300 hover:underline"
+                  >
+                    + Add
+                  </button>
+                )}
+              </td>
+              <td className="px-4 py-3 text-right font-mono">
+                {pick.clv != null ? (
+                  <span
+                    className={
+                      pick.clv > 0
+                        ? 'text-green-500'
+                        : pick.clv < 0
+                          ? 'text-red-500'
+                          : 'text-muted-foreground'
+                    }
+                  >
+                    {pick.clv > 0 ? '+' : ''}
+                    {pick.clv}%
+                  </span>
+                ) : (
+                  <span className="text-muted-foreground">—</span>
+                )}
               </td>
               <td className="px-4 py-3 text-right">{pick.units}</td>
               <td className="px-4 py-3 text-center">
@@ -412,6 +532,7 @@ function PicksTable({ picks }: { picks: UserPick[] }) {
 export function PicksTracker() {
   const [picks, setPicks] = useState<UserPick[]>([])
   const [stats, setStats] = useState<PickStats | null>(null)
+  const [clvStats, setClvStats] = useState<CLVStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { addToast } = useToast()
@@ -424,6 +545,7 @@ export function PicksTracker() {
       if (response.ok) {
         setPicks(data.picks)
         setStats(data.stats)
+        setClvStats(data.clvStats ?? null)
       } else {
         setError('Failed to load picks')
       }
@@ -469,9 +591,9 @@ export function PicksTracker() {
 
   return (
     <div className="space-y-6">
-      {stats && <StatsSummary stats={stats} />}
+      {stats && <StatsSummary stats={stats} clvStats={clvStats} />}
       <PickForm onSubmit={handlePickSaved} onError={handlePickError} />
-      <PicksTable picks={picks} />
+      <PicksTable picks={picks} onUpdate={fetchPicks} />
     </div>
   )
 }

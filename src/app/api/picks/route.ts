@@ -4,6 +4,7 @@ import {
   badRequest,
 } from '@/lib/api/route-handler'
 import { createServiceClient } from '@/lib/supabase/server'
+import { calculateCLV, calculateCLVStats } from '@/lib/clv'
 import type { Database, Sport, PickType } from '@/lib/supabase/types'
 
 type UserPickInsert = Database['public']['Tables']['user_picks']['Insert']
@@ -123,8 +124,17 @@ export async function GET(request: Request) {
     const totalUnits = resolved.reduce((sum, p) => sum + p.units, 0)
     const roi = totalUnits > 0 ? (totalProfit / totalUnits) * 100 : 0
 
+    // Calculate CLV stats
+    const clvStats = calculateCLVStats(picks)
+
+    // Add per-pick CLV
+    const picksWithCLV = picks.map((p) => ({
+      ...p,
+      clv: p.closing_odds != null ? calculateCLV(p.odds, p.closing_odds) : null,
+    }))
+
     return NextResponse.json({
-      picks,
+      picks: picksWithCLV,
       stats: {
         total: picks.length,
         wins,
@@ -134,6 +144,72 @@ export async function GET(request: Request) {
         totalProfit: Math.round(totalProfit * 100) / 100,
         roi: Math.round(roi * 100) / 100,
       },
+      clvStats,
     })
+  })
+}
+
+export async function PATCH(request: Request) {
+  return withAuthenticatedRoute(request, 'update-pick', async ({ user }) => {
+    let body: {
+      pickId?: string
+      closingOdds?: number
+      outcome?: string
+      profit?: number
+    }
+    try {
+      body = await request.json()
+    } catch {
+      return badRequest('Invalid JSON body')
+    }
+
+    const { pickId, closingOdds, outcome, profit } = body
+
+    if (!pickId || typeof pickId !== 'string') {
+      return badRequest('pickId is required')
+    }
+
+    const updates: Record<string, unknown> = {}
+    if (closingOdds !== undefined) {
+      if (typeof closingOdds !== 'number') return badRequest('closingOdds must be a number')
+      updates.closing_odds = closingOdds
+    }
+    if (outcome !== undefined) {
+      if (!['win', 'loss', 'push', 'pending'].includes(outcome)) {
+        return badRequest('outcome must be win, loss, push, or pending')
+      }
+      updates.outcome = outcome
+      if (outcome !== 'pending') {
+        updates.resolved_at = new Date().toISOString()
+      }
+    }
+    if (profit !== undefined) {
+      if (typeof profit !== 'number') return badRequest('profit must be a number')
+      updates.profit = profit
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return badRequest('No fields to update')
+    }
+
+    const supabase = await createServiceClient()
+
+    const { data, error } = await supabase
+      .from('user_picks')
+      .update(updates)
+      .eq('id', pickId)
+      .eq('user_id', user.id)
+      .select('*')
+      .single()
+
+    if (error) {
+      console.error('[picks] Failed to update pick:', error.message)
+      return NextResponse.json(
+        { error: 'Failed to update pick. Please try again.' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json(data as UserPickRow)
   })
 }

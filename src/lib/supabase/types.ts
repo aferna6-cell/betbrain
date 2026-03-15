@@ -293,6 +293,7 @@ export interface Database {
           units: number
           outcome: PickOutcome | null
           profit: number | null
+          closing_odds: number | null
           notes: string | null
           game_date: string
           resolved_at: string | null
@@ -311,6 +312,7 @@ export interface Database {
           units?: number
           outcome?: PickOutcome | null
           profit?: number | null
+          closing_odds?: number | null
           notes?: string | null
           game_date: string
           resolved_at?: string | null
@@ -329,6 +331,7 @@ export interface Database {
           units?: number
           outcome?: PickOutcome | null
           profit?: number | null
+          closing_odds?: number | null
           notes?: string | null
           game_date?: string
           resolved_at?: string | null
