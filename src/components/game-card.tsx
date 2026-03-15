@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import { WatchlistButton } from '@/components/watchlist-button'
-import { formatOdds, getBestMoneyline } from '@/lib/odds'
+import { formatOdds, formatImpliedProb, getBestMoneyline } from '@/lib/odds'
 import { formatGameTime, timeAgo } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -37,12 +37,14 @@ export function GameCard({ game }: { game: NormalizedGame }) {
           <span className="font-medium">{game.awayTeam}</span>
           <span className="font-mono text-sm text-muted-foreground">
             {formatOdds(bestAway)}
+            <span className="ml-1 text-xs opacity-60">{formatImpliedProb(bestAway)}</span>
           </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="font-medium">{game.homeTeam}</span>
           <span className="font-mono text-sm text-muted-foreground">
             {formatOdds(bestHome)}
+            <span className="ml-1 text-xs opacity-60">{formatImpliedProb(bestHome)}</span>
           </span>
         </div>
       </div>
