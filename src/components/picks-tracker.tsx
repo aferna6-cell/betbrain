@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/components/toast'
+import { TermTooltip } from '@/components/term-tooltip'
 import { formatOdds } from '@/lib/odds'
 import type {
   Sport,
@@ -338,7 +339,7 @@ function StatsSummary({ stats, clvStats }: { stats: PickStats; clvStats: CLVStat
       {clvStats && clvStats.totalPicks > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-            <p className="text-sm text-blue-400">Avg CLV</p>
+            <p className="text-sm text-blue-400"><TermTooltip term="CLV">Avg CLV</TermTooltip></p>
             <p
               className={`mt-1 text-xl font-semibold ${
                 clvStats.averageCLV > 0
