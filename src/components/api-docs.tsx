@@ -105,6 +105,57 @@ const ENDPOINTS: Endpoint[] = [
   "totalParticipants": 1284
 }`,
   },
+  {
+    method: 'GET',
+    path: '/api/v1/picks',
+    description: 'Get your logged picks with CLV (Closing Line Value) calculations. Includes per-pick CLV and aggregate CLV stats.',
+    exampleResponse: `{
+  "picks": [
+    {
+      "id": "uuid",
+      "sport": "nba",
+      "pick_type": "moneyline",
+      "pick_team": "Lakers",
+      "odds": -110,
+      "closing_odds": -120,
+      "clv": 2.16,
+      "outcome": "win",
+      "profit": 0.91,
+      "units": 1
+    }
+  ],
+  "stats": { "wins": 5, "losses": 3, "roi": 12.5 },
+  "clvStats": {
+    "averageCLV": 1.8,
+    "weightedCLV": 2.1,
+    "positiveCLVRate": 65.0,
+    "totalPicks": 8
+  }
+}`,
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/odds/history',
+    description: 'Get historical odds snapshots for a specific game. Used for line movement analysis.',
+    params: [
+      { name: 'gameId', type: 'string', required: true, description: 'External game ID' },
+      { name: 'market', type: 'string', required: false, description: 'Market type: h2h, spreads, totals (default: h2h)' },
+    ],
+    exampleResponse: `[
+  {
+    "bookmaker": "draftkings",
+    "home_odds": -110,
+    "away_odds": -110,
+    "fetched_at": "2026-03-14T18:00:00Z"
+  },
+  {
+    "bookmaker": "draftkings",
+    "home_odds": -115,
+    "away_odds": -105,
+    "fetched_at": "2026-03-14T20:00:00Z"
+  }
+]`,
+  },
 ]
 
 const RATE_LIMIT_HEADERS = [
@@ -329,7 +380,8 @@ export function ApiDocs() {
               <ul className="space-y-1">
                 {[
                   '1,000 requests/day',
-                  'All endpoints',
+                  'All 6 endpoints (odds, signals, analysis, leaderboard, picks, history)',
+                  'CLV tracking and bankroll analytics',
                   'Webhook support (coming soon)',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
