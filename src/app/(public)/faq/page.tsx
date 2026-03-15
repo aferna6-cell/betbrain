@@ -5,6 +5,12 @@ export const metadata: Metadata = {
   title: 'FAQ — BetBrain',
   description:
     'Frequently asked questions about BetBrain sports analytics platform.',
+  openGraph: {
+    title: 'FAQ — BetBrain',
+    description: 'Frequently asked questions about BetBrain sports analytics.',
+    type: 'website',
+  },
+  robots: { index: true, follow: true },
 }
 
 const faqs: { question: string; answer: string }[] = [

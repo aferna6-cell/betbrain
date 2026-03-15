@@ -4,6 +4,12 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'How It Works — BetBrain',
   description: 'Learn how BetBrain uses AI to analyze sports betting odds and identify value plays.',
+  openGraph: {
+    title: 'How It Works — BetBrain',
+    description: 'Learn how BetBrain uses AI to analyze sports betting odds and identify value plays.',
+    type: 'website',
+  },
+  robots: { index: true, follow: true },
 }
 
 const steps = [

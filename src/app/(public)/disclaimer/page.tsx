@@ -4,6 +4,12 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Legal Disclaimer — BetBrain',
   description: 'Legal disclaimer and terms of use for BetBrain sports analytics platform.',
+  openGraph: {
+    title: 'Legal Disclaimer — BetBrain',
+    description: 'Legal disclaimer and terms of use for BetBrain sports analytics.',
+    type: 'website',
+  },
+  robots: { index: true, follow: true },
 }
 
 const sections = [

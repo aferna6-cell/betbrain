@@ -4,6 +4,12 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Blog — BetBrain',
   description: 'Sports betting analytics insights, guides, and strategies from BetBrain.',
+  openGraph: {
+    title: 'Blog — BetBrain',
+    description: 'Sports betting analytics insights, guides, and strategies.',
+    type: 'website',
+  },
+  robots: { index: true, follow: true },
 }
 
 const posts = [
