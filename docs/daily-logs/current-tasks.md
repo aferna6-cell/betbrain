@@ -1,6 +1,6 @@
 # Current Tasks — 2026-03-14
 
-## Completed This Session (Cycles 28-50)
+## Completed This Session (Cycles 28-55)
 
 ### Improvements (Cycles 28-36)
 - [x] Health check fixes — false positive secrets scanner, disclaimer detection _(Cycle 28)_
@@ -20,45 +20,48 @@
 - [x] Profile stats card — pick record on profile page _(Cycle 35)_
 - [x] Odds converter page + FAQ page _(Cycle 36)_
 
-### Code Quality (Cycle 37)
+### Code Quality (Cycles 37, 52-55)
 - [x] Fix lint errors — 0 errors, 0 warnings (was 2 errors, 10 warnings)
 - [x] Fix hardcoded secrets — false positive in env.test.ts
 - [x] Fix `any` type usage — replaced with typed SupabaseClient helper
 - [x] Remove unused imports/variables across 6 files
+- [x] Extract `isSport` type guard to shared config (was duplicated in 3 routes)
+- [x] Extract `formatOdds` to shared lib/odds.ts (was duplicated in 10 components)
+- [x] Extract `SPORT_LABELS` to shared config (was duplicated in 6 components)
 
-### Tests (Cycles 29-49)
+### Tests (Cycles 29-55)
 - [x] Backtesting tests — 52 tests _(Cycle 29)_
 - [x] Signals + digest tests — 95 tests _(Cycle 31)_
 - [x] Leaderboard + onboarding tests — 94 tests _(Cycle 31)_
 - [x] Env helper tests — 40 tests _(Cycle 31)_
 - [x] Watchlist tests — 45 tests _(Cycle 34)_
-- [x] Odds conversion tests — 75 tests _(Cycle 35)_
+- [x] Odds conversion tests — 82 tests _(Cycles 35, 55)_
 - [x] Parlay analyzer tests — 61 tests _(Cycle 38)_
 - [x] Prop analyzer tests — 74 tests _(Cycle 38)_
 - [x] Route handler tests — 14 tests _(Cycle 39)_
-- [x] Sports config tests — 43 tests _(Cycle 40)_
+- [x] Sports config tests — 56 tests _(Cycles 40, 52, 55)_
 - [x] Alert condition tests — 27 tests _(Cycle 41)_
 - [x] Game card helper tests — 20 tests _(Cycle 46)_
 - [x] Middleware routing tests — 26 tests _(Cycle 48)_
 - [x] Pick stats calculation tests — 20 tests _(Cycle 49)_
 
-### SEO & UX (Cycles 38-47)
+### SEO & UX (Cycles 38-51)
 - [x] robots.txt + sitemap.xml _(Cycle 38)_
 - [x] Picks error logging fix _(Cycle 39)_
 - [x] PWA manifest _(Cycle 40)_
 - [x] Loading skeletons — billing, league, profile pages _(Cycle 42)_
-- [x] JSON-LD structured data — landing page + FAQ _(Cycle 43)_
+- [x] JSON-LD structured data — landing page + FAQ + blog posts _(Cycles 43, 47)_
 - [x] Profile page metadata fix _(Cycle 44)_
-- [x] Blog article JSON-LD structured data _(Cycle 47)_
+- [x] Auth layout with metadata + noindex _(Cycle 51)_
 
 ### Security (Cycle 45)
 - [x] Security headers — X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 
 ## Stats
-- 809 tests passing across 23 test files
+- 829 tests passing across 23 test files
 - Build: PASS | Lint: PASS (0 errors, 0 warnings) | TypeScript: PASS
 - Health check: all PASS (except migration drift — expected)
-- 50 development cycles completed
+- 55 development cycles completed
 
 ## Backlog Status: COMPLETE + IMPROVEMENTS
 All original backlog items done. Improvement/hardening phase complete.
