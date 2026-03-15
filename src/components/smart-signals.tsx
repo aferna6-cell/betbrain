@@ -3,14 +3,8 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { formatOdds } from '@/lib/odds'
+import { SPORT_LABELS } from '@/lib/sports/config'
 import type { SmartSignal } from '@/lib/signals'
-
-const SPORT_LABELS: Record<string, string> = {
-  nba: 'NBA',
-  nfl: 'NFL',
-  mlb: 'MLB',
-  nhl: 'NHL',
-}
 
 function formatGameTime(isoString: string): string {
   const date = new Date(isoString)

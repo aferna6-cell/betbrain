@@ -24,6 +24,14 @@ export function isSport(value: string): value is Sport {
   return SUPPORTED_SPORTS.includes(value as Sport)
 }
 
+/** Human-readable sport labels for display. */
+export const SPORT_LABELS: Record<string, string> = {
+  nba: 'NBA',
+  nfl: 'NFL',
+  mlb: 'MLB',
+  nhl: 'NHL',
+}
+
 // ---------------------------------------------------------------------------
 // Cache TTLs (milliseconds)
 // ---------------------------------------------------------------------------

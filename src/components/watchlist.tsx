@@ -4,19 +4,13 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Star, X, ChevronDown, ChevronUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { SPORT_LABELS } from '@/lib/sports/config'
 import {
   getWatchlist,
   removeFromWatchlist,
   clearWatchlist,
   type WatchlistItem,
 } from '@/lib/watchlist'
-
-const SPORT_LABELS: Record<string, string> = {
-  nba: 'NBA',
-  nfl: 'NFL',
-  mlb: 'MLB',
-  nhl: 'NHL',
-}
 
 function formatGameTime(isoString: string): string {
   const date = new Date(isoString)

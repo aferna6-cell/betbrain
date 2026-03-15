@@ -22,6 +22,7 @@ import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
 import { formatOdds } from '@/lib/odds'
+import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
 
 // ---------------------------------------------------------------------------
@@ -40,13 +41,6 @@ interface GameAnalysis {
   confidence: number
   disclaimer: string
   fromCache: boolean
-}
-
-const SPORT_LABELS: Record<string, string> = {
-  nba: 'NBA',
-  nfl: 'NFL',
-  mlb: 'MLB',
-  nhl: 'NHL',
 }
 
 const RISK_COLORS = {

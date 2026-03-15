@@ -4,14 +4,8 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { formatOdds } from '@/lib/odds'
+import { SPORT_LABELS } from '@/lib/sports/config'
 import type { DigestContent } from '@/lib/digest'
-
-const SPORT_LABELS: Record<string, string> = {
-  nba: 'NBA',
-  nfl: 'NFL',
-  mlb: 'MLB',
-  nhl: 'NHL',
-}
 
 function formatTime(isoString: string): string {
   return new Date(isoString).toLocaleTimeString('en-US', {

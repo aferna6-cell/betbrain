@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/toast'
+import { SPORT_LABELS } from '@/lib/sports/config'
 import type { RiskLevel, Sport } from '@/lib/supabase/types'
 
 // ---------------------------------------------------------------------------
@@ -37,13 +38,6 @@ interface SavedAnalysisRow {
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-const SPORT_LABELS: Record<string, string> = {
-  nba: 'NBA',
-  nfl: 'NFL',
-  mlb: 'MLB',
-  nhl: 'NHL',
-}
 
 const RISK_COLORS: Record<RiskLevel, string> = {
   low: 'text-green-500',
