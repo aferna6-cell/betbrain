@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Star, X, ChevronDown, ChevronUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import {
   getWatchlist,
@@ -11,33 +12,6 @@ import {
   clearWatchlist,
   type WatchlistItem,
 } from '@/lib/watchlist'
-
-function formatGameTime(isoString: string): string {
-  const date = new Date(isoString)
-  const now = new Date()
-  const isToday = date.toDateString() === now.toDateString()
-
-  const tomorrow = new Date(now)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  const isTomorrow = date.toDateString() === tomorrow.toDateString()
-
-  const time = date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-
-  if (isToday) return `Today ${time}`
-  if (isTomorrow) return `Tomorrow ${time}`
-
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
 
 interface WatchlistPanelProps {
   /** When true, the panel starts expanded. Defaults to true. */

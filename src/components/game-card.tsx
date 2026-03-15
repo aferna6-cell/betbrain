@@ -3,35 +3,9 @@ import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import { WatchlistButton } from '@/components/watchlist-button'
 import { formatOdds } from '@/lib/odds'
+import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
-
-function formatGameTime(isoString: string): string {
-  const date = new Date(isoString)
-  const now = new Date()
-  const isToday = date.toDateString() === now.toDateString()
-
-  const tomorrow = new Date(now)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  const isTomorrow = date.toDateString() === tomorrow.toDateString()
-
-  const time = date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-
-  if (isToday) return `Today ${time}`
-  if (isTomorrow) return `Tomorrow ${time}`
-
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
 
 function getBestOdds(game: NormalizedGame, side: 'home' | 'away'): number | null {
   let best: number | null = null

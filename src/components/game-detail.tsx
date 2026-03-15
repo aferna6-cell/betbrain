@@ -22,6 +22,7 @@ import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
 import { formatOdds } from '@/lib/odds'
+import { formatGameTimeFull } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
 
@@ -52,18 +53,6 @@ const RISK_COLORS = {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function formatGameTime(isoString: string): string {
-  const date = new Date(isoString)
-  return date.toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
 
 function getBestMoneyline(
   bookmakers: NormalizedBookmakerOdds[],
@@ -522,7 +511,7 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
             {SPORT_LABELS[game.sport] ?? game.sport.toUpperCase()}
           </Badge>
           <span className="text-sm text-muted-foreground">
-            {formatGameTime(game.commenceTime)}
+            {formatGameTimeFull(game.commenceTime)}
           </span>
           {!game.isFresh && (
             <Badge variant="outline" className="text-xs">
