@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ProfileForm } from './profile-form'
+import { calculateCLVStats, type CLVStats } from '@/lib/clv'
 import type { Database, Sport } from '@/lib/supabase/types'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
@@ -80,6 +81,7 @@ export default async function ProfilePage() {
   const profile = profileData as Profile | null
   const picks = (picksData as UserPickRow[] | null) ?? []
   const stats = calcPickStats(picks)
+  const clvStats = calculateCLVStats(picks)
 
   return (
     <div className="space-y-6">
@@ -235,6 +237,46 @@ export default async function ProfilePage() {
             )}
           </CardContent>
         </Card>
+
+        {clvStats.totalPicks > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Closing Line Value</CardTitle>
+              <CardDescription>How often you beat the closing line</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-blue-400">Avg CLV</p>
+                  <p className={`text-2xl font-bold ${
+                    clvStats.averageCLV > 0 ? 'text-green-400' : clvStats.averageCLV < 0 ? 'text-red-400' : ''
+                  }`}>
+                    {clvStats.averageCLV > 0 ? '+' : ''}{clvStats.averageCLV}%
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-blue-400">Weighted CLV</p>
+                  <p className={`text-2xl font-bold ${
+                    clvStats.weightedCLV > 0 ? 'text-green-400' : clvStats.weightedCLV < 0 ? 'text-red-400' : ''
+                  }`}>
+                    {clvStats.weightedCLV > 0 ? '+' : ''}{clvStats.weightedCLV}%
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-blue-400">+CLV Rate</p>
+                  <p className="font-medium">{clvStats.positiveCLVRate}%</p>
+                </div>
+                <div>
+                  <p className="text-sm text-blue-400">CLV Tracked</p>
+                  <p className="font-medium">{clvStats.totalPicks} picks</p>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Positive CLV means you consistently get better prices than the closing line — the #1 predictor of long-term profitability.
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         <Card className="lg:col-span-2">
           <CardHeader>
