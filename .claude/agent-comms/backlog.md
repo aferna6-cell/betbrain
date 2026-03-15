@@ -60,8 +60,8 @@
 - [x] **Lint cleanup** — Fix all lint errors/warnings, remove unused imports _(Cycle 37)_
 - [x] **Type safety** — Replace `as any` with typed SupabaseClient helper _(Cycle 37)_
 - [x] **Hardcoded secrets fix** — Eliminate false positives in test files _(Cycle 37)_
-- [ ] **Parlay analyzer tests** — Unit tests for odds math, validation, interface shapes _(Cycle 38)_
-- [ ] **Prop analyzer tests** — Unit tests for implied probability, interface shapes _(Cycle 38)_
+- [x] **Parlay analyzer tests** — Unit tests for odds math, validation, interface shapes _(Cycle 38)_
+- [x] **Prop analyzer tests** — Unit tests for implied probability, interface shapes _(Cycle 38)_
 
 ## Tests
 - [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_
