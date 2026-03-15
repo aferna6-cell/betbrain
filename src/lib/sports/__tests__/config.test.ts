@@ -17,6 +17,7 @@ import {
   ODDS_API_MONTHLY_LIMIT,
   ODDS_API_WARN_AT,
   isSport,
+  SPORT_LABELS,
 } from '@/lib/sports/config'
 import type {
   NormalizedMoneyline,
@@ -425,5 +426,33 @@ describe('isSport', () => {
 
   it('returns false for partial match', () => {
     expect(isSport('nb')).toBe(false)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// SPORT_LABELS
+// ---------------------------------------------------------------------------
+
+describe('SPORT_LABELS', () => {
+  it('maps nba to NBA', () => {
+    expect(SPORT_LABELS['nba']).toBe('NBA')
+  })
+
+  it('maps nfl to NFL', () => {
+    expect(SPORT_LABELS['nfl']).toBe('NFL')
+  })
+
+  it('maps mlb to MLB', () => {
+    expect(SPORT_LABELS['mlb']).toBe('MLB')
+  })
+
+  it('maps nhl to NHL', () => {
+    expect(SPORT_LABELS['nhl']).toBe('NHL')
+  })
+
+  it('has a label for every supported sport', () => {
+    for (const sport of SUPPORTED_SPORTS) {
+      expect(SPORT_LABELS[sport]).toBeDefined()
+    }
   })
 })

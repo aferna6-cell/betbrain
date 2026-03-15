@@ -13,6 +13,7 @@ import {
   impliedToAmerican,
   americanToFractional,
   formatAmerican,
+  formatOdds,
   calculateVig,
   noVigOdds,
 } from '@/lib/odds'
@@ -406,5 +407,39 @@ describe('noVigOdds', () => {
     const p1 = americanToImplied(fair1)
     const p2 = americanToImplied(fair2)
     expect(p1 + p2).toBeCloseTo(1.0, 6)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// formatOdds (display formatter with null handling)
+// ---------------------------------------------------------------------------
+
+describe('formatOdds', () => {
+  it('returns em dash for null', () => {
+    expect(formatOdds(null)).toBe('—')
+  })
+
+  it('prepends + for positive odds', () => {
+    expect(formatOdds(150)).toBe('+150')
+  })
+
+  it('returns negative as-is', () => {
+    expect(formatOdds(-110)).toBe('-110')
+  })
+
+  it('returns "0" for zero (no + prefix)', () => {
+    expect(formatOdds(0)).toBe('0')
+  })
+
+  it('handles even money +100', () => {
+    expect(formatOdds(100)).toBe('+100')
+  })
+
+  it('handles large favorites', () => {
+    expect(formatOdds(-500)).toBe('-500')
+  })
+
+  it('handles large underdogs', () => {
+    expect(formatOdds(1000)).toBe('+1000')
   })
 })
