@@ -1,6 +1,3 @@
-'use client'
-
-import { useMemo } from 'react'
 import { Badge } from '@/components/ui/badge'
 
 // ---------------------------------------------------------------------------
@@ -242,15 +239,8 @@ function StatPill({
 // ---------------------------------------------------------------------------
 
 export function H2HHistory({ homeTeam, awayTeam }: H2HHistoryProps) {
-  const meetings = useMemo(
-    () => generateMeetings(homeTeam, awayTeam),
-    [homeTeam, awayTeam]
-  )
-
-  const stats = useMemo(
-    () => computeStats(meetings, homeTeam),
-    [meetings, homeTeam]
-  )
+  const meetings = generateMeetings(homeTeam, awayTeam)
+  const stats = computeStats(meetings, homeTeam)
 
   const homeLeads = stats.homeWins >= stats.awayWins
   const homeAtsLeads = stats.homeAtsWins >= stats.awayAtsWins

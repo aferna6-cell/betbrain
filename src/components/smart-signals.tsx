@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { formatOdds, getBestMoneyline } from '@/lib/odds'
