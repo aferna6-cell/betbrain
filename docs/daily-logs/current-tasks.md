@@ -1,34 +1,33 @@
 # Current Tasks — 2026-03-15
 
-## Completed This Session (Cycles 65-85)
+## Completed This Session (Cycles 65-90)
 
-### Deployment Readiness (Cycle 65)
-- [x] Deployment dry-run, E2E smoke tests, performance audit, rate limit hardening
+### Deployment Readiness (Cycle 65-66)
+- [x] Deployment dry-run, E2E tests, performance audit, Claude Code optimization
 
-### Claude Code Optimizations (Cycle 66)
-- [x] CLAUDE.md refresh, .gitignore, loop-prompt safety, deploy-check, test-writer, memory files
-
-### Customer Simulation + Features (Cycles 67-70)
-- [x] Sharp NBA bettor walkthrough — 10 critical gaps identified
-- [x] CLV tracker, bankroll management, empty states, API docs
+### Customer Simulation + Sharp Features (Cycles 67-70)
+- [x] Sharp NBA bettor walkthrough, CLV tracker, bankroll, empty states, API docs
 
 ### Quick Wins + Features (Cycles 71-75)
-- [x] Implied probability, cached odds timestamps, spread/total alerts, onboarding, tests
+- [x] Implied probability, timestamps, spread/total alerts, onboarding, tests
 
 ### Optimization (Cycles 76-80)
-- [x] useFetch hook, server component conversion, shared color extraction, retention policy, tests
+- [x] useFetch hook, server components, shared colors, retention policy, tests
 
 ### UX Polish (Cycles 81-85)
-- [x] Set Outcome button on pending picks (auto profit calc)
-- [x] Implied probability on game cards
-- [x] Nav notification badges (triggered alerts + pending picks)
-- [x] Bookmaker disagreement indicator on game cards
-- [x] Landing page rewrite (CLV, bankroll, ROI — sell outcomes not features)
+- [x] Set Outcome button, implied prob on cards, nav badges, book disagreement, landing page
+
+### Pick Tracker + Digest (Cycles 86-90)
+- [x] Closing odds field on pick creation form
+- [x] Pick deletion (DELETE endpoint + confirmation)
+- [x] CLV stats on profile page
+- [x] Digest enhanced with weekly pick stats (ROI, CLV rate)
+- [x] StatsResult envelope contract tests
 
 ## Stats
-- 889 unit tests passing across 26 test files + 15 E2E smoke tests
+- 892 unit tests passing across 26 test files + 15 E2E smoke tests
 - Build: PASS | Lint: PASS | TypeScript: PASS
-- 85 development cycles completed
+- 90 development cycles completed
 - 55 routes
 
 ## Remaining Deploy Blockers

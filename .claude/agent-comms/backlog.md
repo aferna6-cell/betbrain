@@ -123,6 +123,13 @@
 - [x] **Bookmaker disagreement indicator** — Yellow "odds disagree" flag when books diverge 15+ pts _(Cycle 84)_
 - [x] **Landing page rewrite** — Sell CLV, bankroll, ROI instead of generic "AI analytics" _(Cycle 85)_
 
+## Pick Tracker + Digest (Cycles 86-90)
+- [x] **Closing odds on pick form** — Optional field at creation time _(Cycle 86)_
+- [x] **Pick deletion** — DELETE endpoint + confirm button _(Cycle 87)_
+- [x] **CLV on profile page** — Avg CLV, weighted CLV, +CLV rate _(Cycle 88)_
+- [x] **Digest weekly stats** — YOUR WEEK section with W-L-P, ROI, CLV rate _(Cycle 89)_
+- [x] **Stats envelope tests** — 3 new tests for StatsResult contract _(Cycle 90)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
