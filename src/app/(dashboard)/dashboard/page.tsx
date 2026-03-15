@@ -10,6 +10,7 @@ export const revalidate = 300 // Rebuild every 5 minutes
 import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
 import { GamesDashboard } from '@/components/games-dashboard'
 import { DashboardStats } from '@/components/dashboard-stats'
+import { OnboardingChecklist } from '@/components/onboarding-checklist'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
 
@@ -51,6 +52,8 @@ export default async function DashboardPage() {
           Your AI-powered sports analytics overview
         </p>
       </div>
+
+      <OnboardingChecklist />
 
       <DashboardStats />
 
