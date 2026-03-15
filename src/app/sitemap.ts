@@ -3,60 +3,61 @@ import type { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://betbrain.app'
 
+  // Use a fixed date for static content, updated only when content actually changes.
+  const staticDate = '2026-03-15'
+
   return [
+    // Landing page
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'weekly',
       priority: 1,
     },
+    // Public informational pages
     {
       url: `${baseUrl}/how-it-works`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/faq`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/disclaimer`,
+      lastModified: staticDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    // Blog
+    {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/blog/ai-sports-betting-analytics`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
       url: `${baseUrl}/blog/how-to-find-value-in-betting-lines`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
-    {
-      url: `${baseUrl}/disclaimer`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
+    // Auth pages — indexable for acquisition
     {
       url: `${baseUrl}/signup`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'monthly',
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/login`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
     },
   ]
 }
