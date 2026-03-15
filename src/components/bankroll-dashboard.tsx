@@ -154,7 +154,7 @@ function StatsCards({ stats, config }: { stats: BankrollStats; config: BankrollC
 // Balance History Table
 // ---------------------------------------------------------------------------
 
-function BalanceHistory({ snapshots, unitSize }: { snapshots: BankrollStats['snapshots']; unitSize: number }) {
+function BalanceHistory({ snapshots }: { snapshots: BankrollStats['snapshots'] }) {
   if (snapshots.length === 0) {
     return (
       <div className="rounded-lg border border-border bg-card p-8 text-center">
@@ -279,7 +279,7 @@ export function BankrollDashboard() {
       {stats && (
         <>
           <StatsCards stats={stats} config={config} />
-          <BalanceHistory snapshots={stats.snapshots} unitSize={config.unitSize} />
+          <BalanceHistory snapshots={stats.snapshots} />
         </>
       )}
     </div>

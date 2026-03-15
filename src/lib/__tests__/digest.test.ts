@@ -68,6 +68,7 @@ function makeDigestContent(overrides: Partial<DigestContent> = {}): DigestConten
       ],
     },
     significantMoves: [makeLineMoveItem()],
+    weeklyPickStats: null,
     disclaimer: SAMPLE_DISCLAIMER,
     ...overrides,
   }

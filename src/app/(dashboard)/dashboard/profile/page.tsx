@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ProfileForm } from './profile-form'
-import { calculateCLVStats, type CLVStats } from '@/lib/clv'
+import { calculateCLVStats } from '@/lib/clv'
 import type { Database, Sport } from '@/lib/supabase/types'
 
 type Profile = Database['public']['Tables']['profiles']['Row']

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 
 const STORAGE_KEY = 'betbrain-onboarding-dismissed'
@@ -44,27 +44,24 @@ const ITEMS: ChecklistItem[] = [
   },
 ]
 
+function readDismissed(): boolean {
+  if (typeof window === 'undefined') return true
+  return localStorage.getItem(STORAGE_KEY) === 'true'
+}
+
+function readCompleted(): Set<string> {
+  if (typeof window === 'undefined') return new Set()
+  const set = new Set<string>()
+  for (const item of ITEMS) {
+    if (localStorage.getItem(`betbrain-onboarding-${item.id}`)) set.add(item.id)
+  }
+  return set
+}
+
 export function OnboardingChecklist() {
-  const [dismissed, setDismissed] = useState(true) // default hidden to avoid flash
-  const [completed, setCompleted] = useState<Set<string>>(new Set())
-
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'true') {
-      setDismissed(true)
-    } else {
-      setDismissed(false)
-    }
-
-    // Check which steps have been "completed" via localStorage markers
-    const completedSet = new Set<string>()
-    for (const item of ITEMS) {
-      if (localStorage.getItem(`betbrain-onboarding-${item.id}`)) {
-        completedSet.add(item.id)
-      }
-    }
-    setCompleted(completedSet)
-  }, [])
+  // Lazy initializers read from localStorage once on mount (client only)
+  const [dismissed, setDismissed] = useState(readDismissed)
+  const [completed, setCompleted] = useState(readCompleted)
 
   function handleDismiss() {
     localStorage.setItem(STORAGE_KEY, 'true')
