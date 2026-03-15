@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { generateDigest } from '@/lib/digest'
 import { DigestPreview } from '@/components/digest-preview'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Daily Digest — BetBrain',
   description: 'Your morning briefing: best value plays, line moves, and Smart Signals.',

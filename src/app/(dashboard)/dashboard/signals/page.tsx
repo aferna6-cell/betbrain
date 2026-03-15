@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { getAllOdds } from '@/lib/sports/odds'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Smart Signals — BetBrain',
   description: 'Games where odds, stats, and AI analysis align to indicate potential value.',
 }
-
-export const revalidate = 300 // Rebuild every 5 minutes
 import { detectSmartSignals } from '@/lib/signals'
 import { SmartSignalsView } from '@/components/smart-signals'
 
