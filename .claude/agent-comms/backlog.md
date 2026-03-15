@@ -93,13 +93,23 @@
 - [x] Rate limit hardening — 6 new cache-first tests (862 total) _(Cycle 65)_
 - [x] Architecture decisions — 3 new entries _(Cycle 65)_
 
+## Sharp Bettor Features (Cycles 67-70)
+- [x] **Customer simulation — Sharp NBA bettor** — 14-page walkthrough, 10 gaps found _(Cycle 67)_
+- [x] **CLV (Closing Line Value) tracker** — Migration 003, lib, API with per-pick + aggregate CLV, PATCH endpoint _(Cycle 68)_
+- [x] **Bankroll management dashboard** — Balance tracking, drawdown, Kelly criterion, /dashboard/bankroll _(Cycle 69)_
+- [x] **Empty states polish** — Leaderboard, backtesting, parlay, props initial guidance _(Cycle 70)_
+- [x] **API docs expansion** — 6 endpoints documented (added picks/CLV + odds history) _(Cycle 70)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **odds_history retention policy** — TTL/cleanup for append-only history table
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
 - [ ] **Supabase type generation** — Auto-generate types from `supabase gen types` instead of hand-written
+- [ ] **Guided onboarding flow** — First-time user tour with "try your first analysis" prompt
+- [ ] **Spread + total alerts** — Expand alerts beyond moneyline-only
+- [ ] **Implied probability display** — Show win probability next to American odds in tables
+- [ ] **Cached odds timestamps** — Show "fetched X min ago" instead of "may be outdated"
+- [ ] **Signal historical hit rate** — Track and display signal outcome success rate
 - [ ] **Analytics dashboard** — User engagement metrics, popular games, analysis usage
 - [ ] **Social sharing** — Share picks/analyses with custom OG images
 - [ ] **Mobile app** — React Native or PWA improvements for mobile users
-- [ ] **A/B testing** — Test pricing, landing page, onboarding flows
-- [ ] **Multi-language** — i18n support for key markets
