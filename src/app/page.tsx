@@ -56,8 +56,46 @@ const proTier = [
 ];
 
 export default function LandingPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'BetBrain',
+    applicationCategory: 'SportsApplication',
+    operatingSystem: 'Web',
+    description:
+      'AI-driven sports analytics dashboard. Find value in betting lines across NBA, NFL, MLB, NHL with data-driven insights.',
+    offers: [
+      {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+        name: 'Free',
+        description: '3 AI analyses per day, odds comparison, all sports',
+      },
+      {
+        '@type': 'Offer',
+        price: '29',
+        priceCurrency: 'USD',
+        name: 'Pro',
+        description: 'Unlimited analyses, Smart Signals, line movement alerts',
+      },
+    ],
+    featureList: [
+      'AI Game Analysis',
+      'Odds Comparison',
+      'Multi-Sport Coverage (NBA, NFL, MLB, NHL)',
+      'Value Detection',
+      'Smart Signals',
+      'Line Movement Tracking',
+    ],
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Nav */}
       <nav aria-label="Site navigation" className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
