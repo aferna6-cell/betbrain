@@ -22,7 +22,7 @@ import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
 import { formatOdds, formatImpliedProb, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
-import { formatGameTimeFull, RISK_COLORS } from '@/lib/format'
+import { formatGameTimeFull, timeAgo, RISK_COLORS } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
 
@@ -468,9 +468,10 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
           <span className="text-sm text-muted-foreground">
             {formatGameTimeFull(game.commenceTime)}
           </span>
-          {!game.isFresh && (
+          {game.fromCache && (
             <Badge variant="outline" className="text-xs">
-              Cached data
+              {timeAgo(game.cachedAt) ? `Fetched ${timeAgo(game.cachedAt)}` : 'Cached'}
+              {!game.isFresh && ' (stale)'}
             </Badge>
           )}
         </div>

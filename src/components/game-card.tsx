@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import { WatchlistButton } from '@/components/watchlist-button'
 import { formatOdds, getBestMoneyline } from '@/lib/odds'
-import { formatGameTime } from '@/lib/format'
+import { formatGameTime, timeAgo } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
 
@@ -99,9 +99,10 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         </Link>
       </div>
 
-      {!game.isFresh && (
+      {game.fromCache && (
         <p className="mt-2 text-xs italic text-muted-foreground">
-          Cached data — may be outdated
+          {timeAgo(game.cachedAt) ? `Fetched ${timeAgo(game.cachedAt)}` : 'Cached data'}
+          {!game.isFresh && ' — may be stale'}
         </p>
       )}
     </div>
