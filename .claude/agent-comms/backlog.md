@@ -49,6 +49,10 @@
 - [x] **Env helper tests** — Unit tests for env.ts getters and fallback logic _(Cycle 31)_
 - [x] **Saved analyses feature** — Bookmark AI analyses for later review _(Cycle 32)_
 - [x] **Dark/light theme toggle** — User preference for theme _(Cycle 32)_
+- [x] **Game watchlist** — Star/favorite games for quick access from dashboard _(Cycle 33)_
+- [x] **Dashboard stats summary** — Cards showing total picks, win rate, ROI at top of dashboard _(Cycle 33)_
+- [ ] **Accessibility audit** — ARIA labels, focus management, screen reader support
+- [x] **Performance monitoring** — Web Vitals tracking component _(Cycle 33)_
 
 ## Tests
 - [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_

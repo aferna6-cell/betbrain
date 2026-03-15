@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
+import { WatchlistButton } from '@/components/watchlist-button'
 import type { NormalizedGame } from '@/lib/sports/config'
 
 const SPORT_LABELS: Record<string, string> = {
@@ -66,9 +67,18 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         <Badge variant="secondary" className="text-xs font-semibold uppercase">
           {SPORT_LABELS[game.sport] ?? game.sport.toUpperCase()}
         </Badge>
-        <span className="text-xs text-muted-foreground">
-          {formatGameTime(game.commenceTime)}
-        </span>
+        <div className="flex items-center gap-1">
+          <span className="text-xs text-muted-foreground">
+            {formatGameTime(game.commenceTime)}
+          </span>
+          <WatchlistButton
+            gameId={game.id}
+            sport={game.sport}
+            homeTeam={game.homeTeam}
+            awayTeam={game.awayTeam}
+            commenceTime={game.commenceTime}
+          />
+        </div>
       </div>
 
       <div className="mb-4 space-y-2">

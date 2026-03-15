@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { GameCard } from '@/components/game-card'
+import { WatchlistPanel } from '@/components/watchlist'
 import type { NormalizedGame } from '@/lib/sports/config'
 import type { Sport } from '@/lib/supabase/types'
 
@@ -47,6 +48,9 @@ export function GamesDashboard({
 
   return (
     <div className="space-y-4">
+      {/* Watchlist panel — only renders when localStorage has items */}
+      <WatchlistPanel />
+
       {/* League filter + API usage */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-1">

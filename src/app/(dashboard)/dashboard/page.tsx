@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 export const revalidate = 300 // Rebuild every 5 minutes
 import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
 import { GamesDashboard } from '@/components/games-dashboard'
+import { DashboardStats } from '@/components/dashboard-stats'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
 
@@ -50,6 +51,8 @@ export default async function DashboardPage() {
           Your AI-powered sports analytics overview
         </p>
       </div>
+
+      <DashboardStats />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border border-border bg-card p-6">
