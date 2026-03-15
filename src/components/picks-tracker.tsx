@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/components/toast'
+import { formatOdds } from '@/lib/odds'
 import type {
   Sport,
   PickType,
@@ -43,10 +44,6 @@ interface PickStats {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function formatOdds(odds: number): string {
-  return odds > 0 ? `+${odds}` : `${odds}`
-}
 
 const OUTCOME_COLORS: Record<string, string> = {
   win: 'text-green-500',

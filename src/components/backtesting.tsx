@@ -3,11 +3,8 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { formatOdds } from '@/lib/odds'
 import type { BacktestConfig, BacktestResult, BacktestGame } from '@/lib/backtesting'
-
-function formatOdds(odds: number): string {
-  return odds > 0 ? `+${odds}` : `${odds}`
-}
 
 function formatCurrency(value: number): string {
   const abs = Math.abs(value)

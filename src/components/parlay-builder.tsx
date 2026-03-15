@@ -3,11 +3,8 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { formatOdds } from '@/lib/odds'
 import type { ParlayLeg, ParlayAnalysis } from '@/lib/ai/parlay-analyzer'
-
-function formatOdds(odds: number): string {
-  return odds > 0 ? `+${odds}` : `${odds}`
-}
 
 const SPORTS = [
   { value: 'nba', label: 'NBA' },

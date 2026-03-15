@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { formatOdds } from '@/lib/odds'
 import type { DigestContent } from '@/lib/digest'
 
 const SPORT_LABELS: Record<string, string> = {
@@ -10,11 +11,6 @@ const SPORT_LABELS: Record<string, string> = {
   nfl: 'NFL',
   mlb: 'MLB',
   nhl: 'NHL',
-}
-
-function formatOdds(price: number | null): string {
-  if (price === null) return '—'
-  return price > 0 ? `+${price}` : `${price}`
 }
 
 function formatTime(isoString: string): string {

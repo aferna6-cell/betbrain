@@ -59,6 +59,12 @@ export function formatAmerican(american: number): string {
   return `${american}`
 }
 
+/** Display-format American odds, with em dash for null. */
+export function formatOdds(price: number | null): string {
+  if (price === null) return '—'
+  return price > 0 ? `+${price}` : `${price}`
+}
+
 /**
  * Calculate the vig (overround) from a two-sided market.
  * Returns the excess implied probability above 1.0 (e.g. 0.0476 for 4.76% vig).

@@ -21,6 +21,7 @@ const LineMovementChart = dynamic(
 import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
+import { formatOdds } from '@/lib/odds'
 import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
 
 // ---------------------------------------------------------------------------
@@ -68,11 +69,6 @@ function formatGameTime(isoString: string): string {
     minute: '2-digit',
     hour12: true,
   })
-}
-
-function formatOdds(price: number | null): string {
-  if (price === null) return '—'
-  return price > 0 ? `+${price}` : `${price}`
 }
 
 function getBestMoneyline(

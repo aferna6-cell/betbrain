@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import { WatchlistButton } from '@/components/watchlist-button'
+import { formatOdds } from '@/lib/odds'
 import type { NormalizedGame } from '@/lib/sports/config'
 
 const SPORT_LABELS: Record<string, string> = {
@@ -36,11 +37,6 @@ function formatGameTime(isoString: string): string {
     minute: '2-digit',
     hour12: true,
   })
-}
-
-function formatOdds(price: number | null): string {
-  if (price === null) return '—'
-  return price > 0 ? `+${price}` : `${price}`
 }
 
 function getBestOdds(game: NormalizedGame, side: 'home' | 'away'): number | null {

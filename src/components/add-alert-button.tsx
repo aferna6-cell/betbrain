@@ -2,16 +2,13 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { formatOdds } from '@/lib/odds'
 
 interface AddAlertButtonProps {
   gameId: string
   sport: string
   homeTeam: string
   awayTeam: string
-}
-
-function formatOdds(value: number): string {
-  return value > 0 ? `+${value}` : `${value}`
 }
 
 export function AddAlertButton({

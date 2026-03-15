@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { formatOdds } from '@/lib/odds'
 
 interface AlertRule {
   id: string
@@ -15,10 +16,6 @@ interface AlertRule {
   triggered_at: string | null
   triggered_value: number | null
   created_at: string
-}
-
-function formatOdds(value: number): string {
-  return value > 0 ? `+${value}` : `${value}`
 }
 
 function formatDate(iso: string): string {

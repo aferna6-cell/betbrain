@@ -10,6 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
+import { formatOdds } from '@/lib/odds'
 
 interface OddsSnapshot {
   bookmaker: string
@@ -48,10 +49,6 @@ function formatDate(isoString: string): string {
     minute: '2-digit',
     hour12: true,
   })
-}
-
-function formatOdds(value: number): string {
-  return value > 0 ? `+${value}` : `${value}`
 }
 
 interface LineMovementChartProps {

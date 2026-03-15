@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
+import { formatOdds } from '@/lib/odds'
 import type { SmartSignal } from '@/lib/signals'
 
 const SPORT_LABELS: Record<string, string> = {
@@ -9,11 +10,6 @@ const SPORT_LABELS: Record<string, string> = {
   nfl: 'NFL',
   mlb: 'MLB',
   nhl: 'NHL',
-}
-
-function formatOdds(price: number | null): string {
-  if (price === null) return '—'
-  return price > 0 ? `+${price}` : `${price}`
 }
 
 function formatGameTime(isoString: string): string {
