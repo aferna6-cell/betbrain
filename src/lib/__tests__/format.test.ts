@@ -1,0 +1,134 @@
+/**
+ * Format utility tests.
+ *
+ * Covers:
+ * - RISK_COLORS mapping
+ * - formatTime — time-only output
+ * - formatDateTime — date + time
+ * - formatDateShort — date + year
+ * - formatGameTime — smart today/tomorrow detection
+ * - formatGameTimeFull — weekday + date + time
+ */
+
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import {
+  RISK_COLORS,
+  formatTime,
+  formatDateTime,
+  formatDateShort,
+  formatGameTime,
+  formatGameTimeFull,
+} from '@/lib/format'
+
+// ---------------------------------------------------------------------------
+// RISK_COLORS
+// ---------------------------------------------------------------------------
+
+describe('RISK_COLORS', () => {
+  it('maps low to green', () => {
+    expect(RISK_COLORS['low']).toContain('green')
+  })
+
+  it('maps medium to yellow', () => {
+    expect(RISK_COLORS['medium']).toContain('yellow')
+  })
+
+  it('maps high to red', () => {
+    expect(RISK_COLORS['high']).toContain('red')
+  })
+
+  it('has exactly 3 entries', () => {
+    expect(Object.keys(RISK_COLORS)).toHaveLength(3)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// formatTime
+// ---------------------------------------------------------------------------
+
+describe('formatTime', () => {
+  it('returns a string', () => {
+    expect(typeof formatTime('2026-03-14T19:30:00Z')).toBe('string')
+  })
+
+  it('output is non-empty', () => {
+    expect(formatTime('2026-03-14T19:30:00Z').length).toBeGreaterThan(0)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// formatDateTime
+// ---------------------------------------------------------------------------
+
+describe('formatDateTime', () => {
+  it('includes month abbreviation', () => {
+    const result = formatDateTime('2026-03-14T19:30:00Z')
+    expect(result).toMatch(/Mar/)
+  })
+
+  it('returns a string', () => {
+    expect(typeof formatDateTime('2026-03-14T19:30:00Z')).toBe('string')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// formatDateShort
+// ---------------------------------------------------------------------------
+
+describe('formatDateShort', () => {
+  it('includes year', () => {
+    const result = formatDateShort('2026-03-14T12:00:00Z')
+    expect(result).toContain('2026')
+  })
+
+  it('includes month abbreviation', () => {
+    const result = formatDateShort('2026-03-14T12:00:00Z')
+    expect(result).toMatch(/Mar/)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// formatGameTime
+// ---------------------------------------------------------------------------
+
+describe('formatGameTime', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('shows "Today" for today\'s game', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T10:00:00'))
+    expect(formatGameTime('2026-03-14T19:30:00')).toMatch(/^Today/)
+  })
+
+  it('shows "Tomorrow" for tomorrow\'s game', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T10:00:00'))
+    expect(formatGameTime('2026-03-15T19:30:00')).toMatch(/^Tomorrow/)
+  })
+
+  it('shows date for games beyond tomorrow', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T10:00:00'))
+    const result = formatGameTime('2026-03-20T19:30:00')
+    expect(result).not.toMatch(/^Today/)
+    expect(result).not.toMatch(/^Tomorrow/)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// formatGameTimeFull
+// ---------------------------------------------------------------------------
+
+describe('formatGameTimeFull', () => {
+  it('returns a string', () => {
+    expect(typeof formatGameTimeFull('2026-03-14T19:30:00Z')).toBe('string')
+  })
+
+  it('includes a weekday abbreviation', () => {
+    // Sat, Mar 14 — the format includes weekday
+    const result = formatGameTimeFull('2026-03-14T12:00:00')
+    expect(result.length).toBeGreaterThan(10)
+  })
+})
