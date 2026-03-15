@@ -205,6 +205,50 @@ describe('StatsResult type compliance', () => {
   })
 })
 
+describe('StatsResult envelope contract', () => {
+  it('live result has fromCache=false and null timestamps', () => {
+    const result: StatsResult<string[]> = {
+      data: ['test'],
+      fromCache: false,
+      cachedAt: null,
+      expiresAt: null,
+    }
+    expect(result.fromCache).toBe(false)
+    expect(result.cachedAt).toBeNull()
+    expect(result.expiresAt).toBeNull()
+    expect(result.warning).toBeUndefined()
+    expect(result.note).toBeUndefined()
+  })
+
+  it('cached result has fromCache=true with timestamps', () => {
+    const result: StatsResult<number[]> = {
+      data: [1, 2, 3],
+      fromCache: true,
+      cachedAt: '2026-03-15T00:00:00Z',
+      expiresAt: '2026-03-15T01:00:00Z',
+    }
+    expect(result.fromCache).toBe(true)
+    expect(result.cachedAt).toBeTruthy()
+    expect(result.expiresAt).toBeTruthy()
+    expect(new Date(result.expiresAt!).getTime()).toBeGreaterThan(
+      new Date(result.cachedAt!).getTime()
+    )
+  })
+
+  it('can carry both warning and note simultaneously', () => {
+    const result: StatsResult<null> = {
+      data: null,
+      fromCache: true,
+      cachedAt: '2026-03-15T00:00:00Z',
+      expiresAt: '2026-03-14T00:00:00Z',
+      warning: 'Stale data',
+      note: UNSUPPORTED_SPORT_NOTE,
+    }
+    expect(result.warning).toBeTruthy()
+    expect(result.note).toBeTruthy()
+  })
+})
+
 describe('NBASeasonAverages type compliance', () => {
   it('season averages have all stat fields', () => {
     const avg: NBASeasonAverages = {
