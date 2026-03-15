@@ -244,7 +244,7 @@ export function Leaderboard() {
             Retry
           </Button>
         </div>
-      ) : data ? (
+      ) : data && data.entries.length > 0 ? (
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
             <thead>
@@ -266,6 +266,12 @@ export function Leaderboard() {
               ))}
             </tbody>
           </table>
+        </div>
+      ) : data && data.entries.length === 0 ? (
+        <div className="rounded-lg border border-border bg-card p-8 text-center">
+          <p className="text-muted-foreground">
+            No leaderboard entries yet. Opt in from your Profile page to appear on the leaderboard.
+          </p>
         </div>
       ) : null}
 

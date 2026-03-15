@@ -313,7 +313,15 @@ export function ParlayBuilderForm() {
         </Button>
       </form>
 
-      {result && <ParlayResult result={result} />}
+      {result ? (
+        <ParlayResult result={result} />
+      ) : !loading ? (
+        <div className="rounded-lg border border-dashed border-border bg-card/50 p-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            Add 2+ legs above and submit to get AI-powered EV analysis, correlation warnings, and sizing guidance.
+          </p>
+        </div>
+      ) : null}
     </div>
   )
 }

@@ -335,7 +335,15 @@ export function BacktestForm() {
         </Button>
       </form>
 
-      {result && <BacktestResults result={result} />}
+      {result ? (
+        <BacktestResults result={result} />
+      ) : !loading ? (
+        <div className="rounded-lg border border-dashed border-border bg-card/50 p-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            Configure a strategy above and run a backtest to see simulated performance results.
+          </p>
+        </div>
+      ) : null}
     </div>
   )
 }

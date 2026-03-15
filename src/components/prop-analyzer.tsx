@@ -349,7 +349,15 @@ export function PropAnalyzerForm() {
         </Button>
       </form>
 
-      {result && <ResultCard result={result} />}
+      {result ? (
+        <ResultCard result={result} />
+      ) : !loading ? (
+        <div className="rounded-lg border border-dashed border-border bg-card/50 p-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            Enter a player prop above to get AI-powered analysis with projected range, edge assessment, and key factors.
+          </p>
+        </div>
+      ) : null}
     </div>
   )
 }
