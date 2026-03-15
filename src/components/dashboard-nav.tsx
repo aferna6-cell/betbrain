@@ -2,11 +2,16 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { SearchPalette } from '@/components/search'
 import { ThemeToggle } from '@/components/theme-toggle'
 import type { User } from '@supabase/supabase-js'
+
+interface NavBadges {
+  alerts: number
+  pending: number
+}
 
 const navLinks = [
   { href: '/dashboard', label: 'Dashboard' },
@@ -25,9 +30,37 @@ const navLinks = [
   { href: '/dashboard/profile', label: 'Profile' },
 ]
 
+function NavBadge({ count }: { count: number }) {
+  if (count <= 0) return null
+  return (
+    <span className="ml-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-500 px-1 text-[10px] font-bold text-white">
+      {count}
+    </span>
+  )
+}
+
 export function DashboardNav({ user }: { user: User }) {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [badges, setBadges] = useState<NavBadges>({ alerts: 0, pending: 0 })
+
+  useEffect(() => {
+    async function fetchBadges() {
+      try {
+        const [alertsRes, picksRes] = await Promise.all([
+          fetch('/api/alerts'),
+          fetch('/api/picks'),
+        ])
+        const alertsData = alertsRes.ok ? await alertsRes.json() : null
+        const picksData = picksRes.ok ? await picksRes.json() : null
+        setBadges({
+          alerts: alertsData?.triggered ?? 0,
+          pending: picksData?.stats?.pending ?? 0,
+        })
+      } catch { /* silent — badges are non-critical */ }
+    }
+    fetchBadges()
+  }, [pathname]) // refetch when navigating
 
   return (
     <header className="border-b border-border bg-card">
@@ -52,6 +85,8 @@ export function DashboardNav({ user }: { user: User }) {
                 }`}
               >
                 {link.label}
+                {link.href === '/dashboard/alerts' && <NavBadge count={badges.alerts} />}
+                {link.href === '/dashboard/picks' && <NavBadge count={badges.pending} />}
               </Link>
             ))}
           </nav>
@@ -132,6 +167,8 @@ export function DashboardNav({ user }: { user: User }) {
                 }`}
               >
                 {link.label}
+                {link.href === '/dashboard/alerts' && <NavBadge count={badges.alerts} />}
+                {link.href === '/dashboard/picks' && <NavBadge count={badges.pending} />}
               </Link>
             ))}
           </nav>
