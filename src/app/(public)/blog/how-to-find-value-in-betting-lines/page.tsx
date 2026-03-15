@@ -8,8 +8,24 @@ export const metadata: Metadata = {
 }
 
 export default function HowToFindValuePage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'How to Find Value in Betting Lines',
+    description:
+      'A comprehensive guide to identifying value in sports betting lines using odds comparison, line movement analysis, and statistical indicators.',
+    author: { '@type': 'Organization', name: 'BetBrain' },
+    publisher: { '@type': 'Organization', name: 'BetBrain' },
+    datePublished: '2026-02-01',
+    dateModified: '2026-03-14',
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
 
       {/* Nav */}
       <nav className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">

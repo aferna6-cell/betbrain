@@ -8,8 +8,24 @@ export const metadata: Metadata = {
 }
 
 export default function AiSportsBettingAnalyticsPage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'AI Sports Betting Analytics in 2026',
+    description:
+      'How AI and machine learning are transforming sports betting analytics with real-time odds analysis, pattern detection, and value identification.',
+    author: { '@type': 'Organization', name: 'BetBrain' },
+    publisher: { '@type': 'Organization', name: 'BetBrain' },
+    datePublished: '2026-01-15',
+    dateModified: '2026-03-14',
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
 
       {/* Nav */}
       <nav className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
