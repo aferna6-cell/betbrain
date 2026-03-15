@@ -350,6 +350,12 @@ export default function LandingPage() {
                   How It Works
                 </Link>
                 <Link
+                  href="/faq"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  FAQ
+                </Link>
+                <Link
                   href="/blog"
                   className="text-zinc-500 hover:text-zinc-300 transition-colors"
                 >
