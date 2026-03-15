@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { useToast } from '@/components/toast'
 import { formatOdds } from '@/lib/odds'
 import { formatDateTime } from '@/lib/format'
 
@@ -94,10 +95,13 @@ function AlertCard({
 export function AlertsView() {
   const [alerts, setAlerts] = useState<AlertRule[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [activeCount, setActiveCount] = useState(0)
   const [triggeredCount, setTriggeredCount] = useState(0)
+  const { addToast } = useToast()
 
   async function fetchAlerts() {
+    setError(null)
     try {
       const res = await fetch('/api/alerts')
       if (res.ok) {
@@ -105,9 +109,11 @@ export function AlertsView() {
         setAlerts(data.alerts ?? [])
         setActiveCount(data.active ?? 0)
         setTriggeredCount(data.triggered ?? 0)
+      } else {
+        setError('Failed to load alerts')
       }
     } catch {
-      // silent
+      setError('Network error — please refresh')
     } finally {
       setLoading(false)
     }
@@ -118,15 +124,36 @@ export function AlertsView() {
   }, [])
 
   async function handleDelete(alertId: string) {
-    const res = await fetch(`/api/alerts?id=${alertId}`, { method: 'DELETE' })
-    if (res.ok) {
-      setAlerts((prev) => prev.filter((a) => a.id !== alertId))
+    try {
+      const res = await fetch(`/api/alerts?id=${alertId}`, { method: 'DELETE' })
+      if (res.ok) {
+        setAlerts((prev) => prev.filter((a) => a.id !== alertId))
+        addToast('Alert deleted', 'success')
+      } else {
+        addToast('Failed to delete alert', 'error')
+      }
+    } catch {
+      addToast('Failed to delete alert', 'error')
     }
   }
 
   if (loading) {
     return (
       <p className="text-sm text-muted-foreground">Loading alerts...</p>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-6 text-center">
+        <p className="text-sm text-red-500">{error}</p>
+        <button
+          onClick={fetchAlerts}
+          className="mt-3 text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+        >
+          Retry
+        </button>
+      </div>
     )
   }
 
