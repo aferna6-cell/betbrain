@@ -130,6 +130,13 @@
 - [x] **Digest weekly stats** — YOUR WEEK section with W-L-P, ROI, CLV rate _(Cycle 89)_
 - [x] **Stats envelope tests** — 3 new tests for StatsResult contract _(Cycle 90)_
 
+## UX + Reliability (Cycles 91-95)
+- [x] **Bankroll loading skeleton** — Skeleton for config, stats, history _(Cycle 91)_
+- [x] **Odds converter link** — Link to tools page from game detail odds tab _(Cycle 92)_
+- [x] **Watchlist page** — Dedicated /dashboard/watchlist with nav link _(Cycle 93)_
+- [x] **Per-page error boundaries** — picks, alerts, bankroll, signals _(Cycle 94)_
+- [x] **Keyboard shortcuts** — vim-style g+key nav, "/" for search, search palette expanded _(Cycle 95)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
