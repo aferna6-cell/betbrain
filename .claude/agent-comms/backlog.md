@@ -137,6 +137,13 @@
 - [x] **Per-page error boundaries** — picks, alerts, bankroll, signals _(Cycle 94)_
 - [x] **Keyboard shortcuts** — vim-style g+key nav, "/" for search, search palette expanded _(Cycle 95)_
 
+## Infrastructure + SEO + Education (Cycles 96-100)
+- [x] **CSP header** — Content-Security-Policy for XSS protection _(Cycle 96)_
+- [x] **Billing daily quota** — Show AI analyses used/remaining _(Cycle 96)_
+- [x] **SEO metadata** — OpenGraph + robots on all public pages _(Cycle 97)_
+- [x] **Lint/type fixes** — Onboarding refactor, unused imports, digest test _(Cycle 98)_
+- [x] **Glossary page** — 15 betting terms defined + TermTooltip component _(Cycle 100)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
