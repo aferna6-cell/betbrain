@@ -1,42 +1,46 @@
-# Current Tasks — 2026-03-14 Morning Session
+# Current Tasks — 2026-03-14
 
-## Completed This Session (Cycles 19-27)
+## Completed This Session (Cycles 28-38)
 
-### Tests (3 suites)
-- [x] Auth flow tests — validation rules + middleware redirect logic (25 tests) _(Cycle 19)_
-- [x] Stripe tests — tier logic, webhook routing, billing features (29 tests) _(Cycle 20)_
-- [x] Rate limiting tests — cache TTL, usage thresholds, fallback behavior (30 tests) _(Cycle 21)_
-- [x] Fix TypeScript errors in test files (string literal narrowing)
+### Improvements (Cycles 28-36)
+- [x] Health check fixes — false positive secrets scanner, disclaimer detection _(Cycle 28)_
+- [x] Mobile navigation — hamburger menu with slide-down panel _(Cycle 29)_
+- [x] Error boundaries — class component + Next.js error.tsx _(Cycle 29)_
+- [x] 404 pages — custom global + dashboard-scoped not-found _(Cycle 29)_
+- [x] Global search — Cmd+K command palette with keyboard nav _(Cycle 30)_
+- [x] Landing page footer — links to How It Works, Blog, Legal, FAQ _(Cycle 31)_
+- [x] Saved analyses — bookmark AI analyses for later review _(Cycle 32)_
+- [x] Dark/light theme toggle — user preference _(Cycle 32)_
+- [x] Game watchlist — star/favorite games _(Cycle 33)_
+- [x] Dashboard stats summary — total picks, win rate, ROI cards _(Cycle 33)_
+- [x] Web Vitals monitoring — LCP/FID/CLS tracking _(Cycle 33)_
+- [x] Accessibility audit — ARIA labels, focus management, screen reader support _(Cycle 34)_
+- [x] Toast notifications — non-blocking feedback system _(Cycle 35)_
+- [x] Odds conversion utility — American/decimal/fractional converter _(Cycle 35)_
+- [x] Profile stats card — pick record on profile page _(Cycle 35)_
+- [x] Odds converter page + FAQ page _(Cycle 36)_
 
-### Premium Features (3 features)
-- [x] Historical backtesting — deterministic simulation engine with 3 strategies _(Cycle 22)_
-- [x] Public leaderboard — community rankings with sort by ROI/profit/winRate _(Cycle 23)_
-- [x] API access tier — developer docs, endpoint reference, pricing page _(Cycle 24)_
+### Code Quality (Cycle 37)
+- [x] Fix lint errors — 0 errors, 0 warnings (was 2 errors, 10 warnings)
+- [x] Fix hardcoded secrets — false positive in env.test.ts
+- [x] Fix `any` type usage — replaced with typed SupabaseClient helper
+- [x] Remove unused imports/variables across 6 files
 
-### Content (4 pages)
-- [x] "How BetBrain Works" explainer page _(Cycle 22)_
-- [x] Legal disclaimer page _(Cycle 22)_
-- [x] Onboarding email sequence — 3 templates with preview _(Cycle 25)_
-- [x] SEO blog posts — 2 articles (~3500 words total) _(Cycle 26)_
-
-### Optimization (4 items)
-- [x] ISR for game pages — revalidate=300 on 4 pages _(Cycle 25)_
-- [x] Lazy load charts — dynamic import for recharts _(Cycle 26)_
-- [x] OG images — 3 generators (site, game, blog) _(Cycle 27)_
-- [x] Edge runtime — leaderboard API route _(Cycle 27)_
-
-## Backlog Status: COMPLETE
-All MVP, Growth, Premium features, tests, content, and optimization items are done.
+### Tests (Cycles 29-35)
+- [x] Backtesting tests — 52 tests _(Cycle 29)_
+- [x] Signals + digest tests — 95 tests _(Cycle 31)_
+- [x] Leaderboard + onboarding tests — 94 tests _(Cycle 31)_
+- [x] Env helper tests — 40 tests _(Cycle 31)_
+- [x] Watchlist tests — 45 tests _(Cycle 34)_
+- [x] Odds conversion tests — 75 tests _(Cycle 35)_
+- [ ] Parlay analyzer tests _(Cycle 38 — in progress)_
+- [ ] Prop analyzer tests _(Cycle 38 — in progress)_
 
 ## Stats
-- 121 tests passing across 7 test files
-- Build: clean
-- TypeScript: clean
-- 27 development cycles completed
+- 522 tests passing across 15 test files
+- Build: PASS | Lint: PASS (0 errors, 0 warnings) | TypeScript: PASS
+- Health check: all PASS (except migration drift — expected)
+- 38 development cycles completed
 
-## Next Priorities (Improvement Phase)
-1. Mobile responsive polish
-2. Accessibility audit (a11y)
-3. Error boundary components
-4. Performance profiling
-5. Additional test coverage (component tests)
+## Backlog Status: COMPLETE + IMPROVEMENTS
+All original backlog items done. Now in improvement/hardening phase.
