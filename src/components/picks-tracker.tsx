@@ -413,18 +413,22 @@ export function PicksTracker() {
   const [picks, setPicks] = useState<UserPick[]>([])
   const [stats, setStats] = useState<PickStats | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const { addToast } = useToast()
 
   const fetchPicks = useCallback(async () => {
+    setError(null)
     try {
       const response = await fetch('/api/picks')
       const data = await response.json()
       if (response.ok) {
         setPicks(data.picks)
         setStats(data.stats)
+      } else {
+        setError('Failed to load picks')
       }
-    } catch (err) {
-      console.error('[picks] Failed to fetch picks:', err)
+    } catch {
+      setError('Network error — please refresh')
     } finally {
       setLoading(false)
     }
@@ -446,6 +450,20 @@ export function PicksTracker() {
   if (loading) {
     return (
       <div className="text-center text-muted-foreground">Loading picks...</div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-6 text-center">
+        <p className="text-sm text-red-500">{error}</p>
+        <button
+          onClick={fetchPicks}
+          className="mt-3 text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+        >
+          Retry
+        </button>
+      </div>
     )
   }
 
