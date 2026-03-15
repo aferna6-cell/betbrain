@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeLongText } from '@/lib/sanitize'
 import {
   withAuthenticatedRoute,
   badRequest,
@@ -138,7 +139,7 @@ export async function POST(request: Request) {
       const insertRow: SavedAnalysisInsert = {
         user_id: user.id,
         insight_id: insightId,
-        notes: notes ?? null,
+        notes: sanitizeLongText(notes, 500),
       }
 
       const { data: saved, error: insertError } = await supabase
@@ -197,7 +198,7 @@ export async function PATCH(request: Request) {
 
       const { data: updated, error: updateError } = await supabase
         .from('saved_analyses')
-        .update({ notes: body.notes ?? null })
+        .update({ notes: sanitizeLongText(body.notes, 500) })
         .eq('id', id)
         .select()
         .single()

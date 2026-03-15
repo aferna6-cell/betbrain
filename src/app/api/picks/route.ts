@@ -5,6 +5,7 @@ import {
 } from '@/lib/api/route-handler'
 import { createServiceClient } from '@/lib/supabase/server'
 import { calculateCLV, calculateCLVStats } from '@/lib/clv'
+import { sanitizeLongText } from '@/lib/sanitize'
 import type { Database, Sport, PickType } from '@/lib/supabase/types'
 
 type UserPickInsert = Database['public']['Tables']['user_picks']['Insert']
@@ -76,7 +77,7 @@ export async function POST(request: Request) {
       closing_odds: closingOdds ?? null,
       units: units ?? 1,
       game_date: gameDate,
-      notes: notes ?? null,
+      notes: sanitizeLongText(notes, 500),
     }
 
     const { data, error } = await supabase
