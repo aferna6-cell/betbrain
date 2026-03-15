@@ -286,8 +286,38 @@ function PickForm({
 // ---------------------------------------------------------------------------
 
 function StatsSummary({ stats, clvStats }: { stats: PickStats; clvStats: CLVStats | null }) {
+  const { addToast } = useToast()
+
+  function handleCopyStats() {
+    const lines = [
+      `BetBrain Record: ${stats.wins}W-${stats.losses}L${stats.pushes > 0 ? `-${stats.pushes}P` : ''}`,
+      `ROI: ${stats.roi >= 0 ? '+' : ''}${stats.roi}%`,
+      `Profit: ${stats.totalProfit >= 0 ? '+' : ''}${stats.totalProfit} units`,
+    ]
+    if (clvStats && clvStats.totalPicks > 0) {
+      lines.push(`Avg CLV: ${clvStats.averageCLV >= 0 ? '+' : ''}${clvStats.averageCLV}%`)
+      lines.push(`+CLV Rate: ${clvStats.positiveCLVRate}%`)
+    }
+    lines.push('Tracked on BetBrain')
+    navigator.clipboard.writeText(lines.join(' | ')).then(
+      () => addToast('Stats copied to clipboard', 'success'),
+      () => addToast('Failed to copy', 'error')
+    )
+  }
+
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div />
+        {stats.total > 0 && (
+          <button
+            onClick={handleCopyStats}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Copy stats
+          </button>
+        )}
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <div className="rounded-lg border border-border bg-card p-4">
           <p className="text-sm text-muted-foreground">Record</p>
