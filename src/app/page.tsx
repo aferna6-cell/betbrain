@@ -14,44 +14,57 @@ export const metadata: Metadata = {
 
 const features = [
   {
+    title: "Closing Line Value Tracking",
+    description:
+      "Track CLV on every pick you log. See whether you consistently beat the closing line — the single best predictor of long-term profitability.",
+    tag: "Sharp edge metric",
+  },
+  {
+    title: "Odds Comparison + Implied Probability",
+    description:
+      "Side-by-side bookmaker lines with implied probability displayed inline. Best available odds highlighted green. Spot when books disagree.",
+    tag: "20+ bookmakers",
+  },
+  {
+    title: "Bankroll Management",
+    description:
+      "Track your balance, max drawdown, and streaks. Kelly Criterion guidance for optimal unit sizing. Know exactly where your bankroll stands.",
+    tag: "Units · ROI · Drawdown",
+  },
+  {
     title: "AI Game Analysis",
     description:
-      "Claude-powered matchup breakdowns on every game. Structured output: summary, key factors, value assessment, and a risk level — not gut feelings.",
+      "Claude-powered matchup breakdowns with structured output: summary, key factors, value assessment, risk level, and confidence score.",
     tag: "Powered by Claude",
   },
   {
-    title: "Odds Comparison",
+    title: "Smart Signals + Line Alerts",
     description:
-      "Side-by-side bookmaker lines across moneyline, spread, and totals. Best available odds are highlighted so you never leave value on the table.",
-    tag: "All major books",
+      "Get flagged when multiple indicators align on a game. Set alerts on moneyline, spread, and total movements across all bookmakers.",
+    tag: "All 3 markets",
   },
   {
-    title: "Multi-Sport Coverage",
+    title: "Multi-Sport Dashboard",
     description:
-      "NBA, NFL, MLB, and NHL in a single dashboard. No tab-switching between platforms. One login, one view, all your sports.",
+      "NBA, NFL, MLB, and NHL in one view. Pick tracking, backtesting, prop analysis, and parlay EV calculator — all in one place.",
     tag: "NBA · NFL · MLB · NHL",
-  },
-  {
-    title: "Value Detection",
-    description:
-      "AI flags lines where implied probability and expected outcome diverge. These are the edges the market hasn't fully corrected yet.",
-    tag: "Edge identification",
   },
 ];
 
 const freeTier = [
   "3 AI analyses per day",
-  "All sports coverage",
-  "Odds comparison across books",
-  "Basic dashboard access",
-  "American + decimal odds toggle",
+  "Odds comparison + implied probability",
+  "Pick tracker with CLV tracking",
+  "Bankroll management dashboard",
+  "All 4 sports (NBA, NFL, MLB, NHL)",
 ];
 
 const proTier = [
   "Unlimited AI analyses",
-  "Smart Signals (consensus alerts)",
-  "Line movement alerts",
-  "Priority support",
+  "Smart Signals (multi-factor consensus)",
+  "Line alerts on moneyline, spread, totals",
+  "Parlay EV calculator + prop analyzer",
+  "Historical backtesting",
   "All Free tier features",
 ];
 
@@ -81,12 +94,15 @@ export default function LandingPage() {
       },
     ],
     featureList: [
+      'Closing Line Value (CLV) Tracking',
+      'Odds Comparison with Implied Probability',
+      'Bankroll Management with Kelly Criterion',
       'AI Game Analysis',
-      'Odds Comparison',
+      'Smart Signals and Line Alerts',
       'Multi-Sport Coverage (NBA, NFL, MLB, NHL)',
-      'Value Detection',
-      'Smart Signals',
-      'Line Movement Tracking',
+      'Pick Tracking with ROI',
+      'Parlay EV Calculator',
+      'Historical Backtesting',
     ],
   }
 
@@ -165,8 +181,8 @@ export default function LandingPage() {
         <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-px border border-zinc-800 rounded-lg overflow-hidden bg-zinc-800">
           {[
             { value: "4", label: "Sports covered" },
-            { value: "20+", label: "Bookmakers tracked" },
-            { value: "6h", label: "Odds cache refresh" },
+            { value: "20+", label: "Bookmakers compared" },
+            { value: "CLV", label: "Tracked per pick" },
             { value: "100%", label: "Analytics only" },
           ].map((stat) => (
             <div
@@ -195,7 +211,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
             {features.map((feature) => (
               <div
                 key={feature.title}
