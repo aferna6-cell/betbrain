@@ -109,9 +109,15 @@
 - [x] **Guided onboarding flow** — 4-step checklist for first-time users _(Cycle 74)_
 - [x] **Tests + docs** — 11 new tests, 4 architecture decisions _(Cycle 75)_
 
+## Optimization (Cycles 76-80)
+- [x] **useFetch hook** — Generic fetch hook for standardized data fetching _(Cycle 76)_
+- [x] **Server component conversion** — smart-signals + h2h-history (remove unnecessary client JS) _(Cycle 77)_
+- [x] **Shared color extraction** — profitColor, winRateColor, MAGNITUDE_COLORS to format.ts _(Cycle 78)_
+- [x] **odds_history retention** — 30-day cleanup function (migration 006) _(Cycle 79)_
+- [x] **Route handler + alert tests** — 25 new tests covering API helpers + market checking _(Cycle 80)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
-- [ ] **odds_history retention policy** — TTL/cleanup for append-only history table
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
 - [ ] **Supabase type generation** — Auto-generate types from `supabase gen types` instead of hand-written
 - [ ] **Signal historical hit rate** — Track and display signal outcome success rate
