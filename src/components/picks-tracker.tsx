@@ -376,6 +376,41 @@ function StatsSummary({ stats, clvStats }: { stats: PickStats; clvStats: CLVStat
 function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => void }) {
   const { addToast } = useToast()
 
+  async function handleSetOutcome(pickId: string, odds: number, units: number) {
+    const choice = prompt('Enter outcome: win, loss, or push')
+    if (!choice) return
+    const outcome = choice.trim().toLowerCase()
+    if (!['win', 'loss', 'push'].includes(outcome)) {
+      addToast('Must be win, loss, or push', 'error')
+      return
+    }
+
+    // Calculate profit based on outcome and American odds
+    let profit = 0
+    if (outcome === 'win') {
+      profit = odds > 0 ? (odds / 100) * units : (100 / Math.abs(odds)) * units
+    } else if (outcome === 'loss') {
+      profit = -units
+    }
+    // push = 0
+
+    try {
+      const res = await fetch('/api/picks', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pickId, outcome, profit: Math.round(profit * 100) / 100 }),
+      })
+      if (res.ok) {
+        addToast(`Pick marked as ${outcome}`, 'success')
+        onUpdate()
+      } else {
+        addToast('Failed to update outcome', 'error')
+      }
+    } catch {
+      addToast('Network error', 'error')
+    }
+  }
+
   async function handleSetClosingOdds(pickId: string) {
     const input = prompt('Enter closing odds (American format, e.g. -115):')
     if (!input) return
@@ -491,13 +526,22 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
               </td>
               <td className="px-4 py-3 text-right">{pick.units}</td>
               <td className="px-4 py-3 text-center">
-                <span
-                  className={`font-medium capitalize ${
-                    OUTCOME_COLORS[pick.outcome ?? 'pending']
-                  }`}
-                >
-                  {pick.outcome ?? 'Pending'}
-                </span>
+                {!pick.outcome || pick.outcome === 'pending' ? (
+                  <button
+                    onClick={() => handleSetOutcome(pick.id, pick.odds, pick.units)}
+                    className="text-xs text-blue-400 hover:text-blue-300 hover:underline font-medium"
+                  >
+                    Set result
+                  </button>
+                ) : (
+                  <span
+                    className={`font-medium capitalize ${
+                      OUTCOME_COLORS[pick.outcome]
+                    }`}
+                  >
+                    {pick.outcome}
+                  </span>
+                )}
               </td>
               <td className="px-4 py-3 text-right font-mono">
                 {pick.profit !== null ? (
