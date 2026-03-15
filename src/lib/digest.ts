@@ -8,6 +8,7 @@
 import { getAllOdds } from '@/lib/sports/odds'
 import { detectSmartSignals } from '@/lib/signals'
 import { AI_DISCLAIMER } from '@/lib/ai/analysis'
+import { americanToImpliedProbability } from '@/lib/clv'
 import type { NormalizedGame } from '@/lib/sports/config'
 import type { SmartSignal } from '@/lib/signals'
 import type { Sport } from '@/lib/supabase/types'
@@ -32,6 +33,14 @@ export interface LineMoveItem {
   variance: number
 }
 
+export interface WeeklyPickStats {
+  wins: number
+  losses: number
+  pushes: number
+  roi: number
+  clvRate: number | null
+}
+
 export interface DigestContent {
   date: string
   totalGames: number
@@ -50,6 +59,7 @@ export interface DigestContent {
     }>
   }
   significantMoves: LineMoveItem[]
+  weeklyPickStats: WeeklyPickStats | null
   disclaimer: string
 }
 
@@ -155,7 +165,56 @@ export async function generateDigest(): Promise<DigestContent> {
       items: signalItems,
     },
     significantMoves,
+    weeklyPickStats: null,
     disclaimer: AI_DISCLAIMER,
+  }
+}
+
+/**
+ * Enriches a digest with the user's weekly pick stats.
+ * Call after generateDigest() with the user's recent pick data.
+ */
+export function enrichDigestWithPickStats(
+  digest: DigestContent,
+  picks: Array<{
+    outcome: string | null
+    profit: number | null
+    units: number
+    closing_odds: number | null
+    odds: number
+    game_date: string
+  }>
+): DigestContent {
+  const oneWeekAgo = new Date()
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+
+  const recent = picks.filter(
+    (p) => p.outcome && p.outcome !== 'pending' && new Date(p.game_date) >= oneWeekAgo
+  )
+
+  if (recent.length === 0) return digest
+
+  const wins = recent.filter((p) => p.outcome === 'win').length
+  const losses = recent.filter((p) => p.outcome === 'loss').length
+  const pushes = recent.filter((p) => p.outcome === 'push').length
+  const totalProfit = recent.reduce((sum, p) => sum + (p.profit ?? 0), 0)
+  const totalUnits = recent.reduce((sum, p) => sum + p.units, 0)
+  const roi = totalUnits > 0 ? Math.round((totalProfit / totalUnits) * 10000) / 100 : 0
+
+  const withClosing = recent.filter((p) => p.closing_odds != null)
+  let clvRate: number | null = null
+  if (withClosing.length > 0) {
+    const positive = withClosing.filter((p) => {
+      const betImpl = americanToImpliedProbability(p.odds)
+      const closeImpl = americanToImpliedProbability(p.closing_odds!)
+      return closeImpl > betImpl
+    }).length
+    clvRate = Math.round((positive / withClosing.length) * 1000) / 10
+  }
+
+  return {
+    ...digest,
+    weeklyPickStats: { wins, losses, pushes, roi, clvRate },
   }
 }
 
@@ -221,6 +280,19 @@ export function formatDigestText(digest: DigestContent): string {
     }
     if (games.length > 5) {
       lines.push(`    ...and ${games.length - 5} more`)
+    }
+  }
+
+  // Weekly pick stats
+  if (digest.weeklyPickStats) {
+    const w = digest.weeklyPickStats
+    lines.push('')
+    lines.push('YOUR WEEK')
+    lines.push('-'.repeat(30))
+    lines.push(`  Record: ${w.wins}W-${w.losses}L${w.pushes > 0 ? `-${w.pushes}P` : ''}`)
+    lines.push(`  ROI: ${w.roi >= 0 ? '+' : ''}${w.roi}%`)
+    if (w.clvRate !== null) {
+      lines.push(`  +CLV Rate: ${w.clvRate}%`)
     }
   }
 
