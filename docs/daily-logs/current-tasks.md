@@ -1,6 +1,6 @@
 # Current Tasks — 2026-03-14
 
-## Completed This Session (Cycles 28-44)
+## Completed This Session (Cycles 28-50)
 
 ### Improvements (Cycles 28-36)
 - [x] Health check fixes — false positive secrets scanner, disclaimer detection _(Cycle 28)_
@@ -26,7 +26,7 @@
 - [x] Fix `any` type usage — replaced with typed SupabaseClient helper
 - [x] Remove unused imports/variables across 6 files
 
-### Tests (Cycles 29-41)
+### Tests (Cycles 29-49)
 - [x] Backtesting tests — 52 tests _(Cycle 29)_
 - [x] Signals + digest tests — 95 tests _(Cycle 31)_
 - [x] Leaderboard + onboarding tests — 94 tests _(Cycle 31)_
@@ -38,20 +38,27 @@
 - [x] Route handler tests — 14 tests _(Cycle 39)_
 - [x] Sports config tests — 43 tests _(Cycle 40)_
 - [x] Alert condition tests — 27 tests _(Cycle 41)_
+- [x] Game card helper tests — 20 tests _(Cycle 46)_
+- [x] Middleware routing tests — 26 tests _(Cycle 48)_
+- [x] Pick stats calculation tests — 20 tests _(Cycle 49)_
 
-### SEO & UX (Cycles 38-44)
+### SEO & UX (Cycles 38-47)
 - [x] robots.txt + sitemap.xml _(Cycle 38)_
 - [x] Picks error logging fix _(Cycle 39)_
 - [x] PWA manifest _(Cycle 40)_
 - [x] Loading skeletons — billing, league, profile pages _(Cycle 42)_
 - [x] JSON-LD structured data — landing page + FAQ _(Cycle 43)_
 - [x] Profile page metadata fix _(Cycle 44)_
+- [x] Blog article JSON-LD structured data _(Cycle 47)_
+
+### Security (Cycle 45)
+- [x] Security headers — X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 
 ## Stats
-- 743 tests passing across 20 test files
+- 809 tests passing across 23 test files
 - Build: PASS | Lint: PASS (0 errors, 0 warnings) | TypeScript: PASS
 - Health check: all PASS (except migration drift — expected)
-- 44 development cycles completed
+- 50 development cycles completed
 
 ## Backlog Status: COMPLETE + IMPROVEMENTS
-All original backlog items done. Now in improvement/hardening phase.
+All original backlog items done. Improvement/hardening phase complete.
