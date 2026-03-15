@@ -116,6 +116,13 @@
 - [x] **odds_history retention** — 30-day cleanup function (migration 006) _(Cycle 79)_
 - [x] **Route handler + alert tests** — 25 new tests covering API helpers + market checking _(Cycle 80)_
 
+## UX Polish (Cycles 81-85)
+- [x] **Set Outcome button** — Pending picks now have clickable "Set result" with auto profit calc _(Cycle 81)_
+- [x] **Implied probability on game cards** — Show win % next to best moneyline _(Cycle 82)_
+- [x] **Nav notification badges** — Triggered alert count + pending picks count _(Cycle 83)_
+- [x] **Bookmaker disagreement indicator** — Yellow "odds disagree" flag when books diverge 15+ pts _(Cycle 84)_
+- [x] **Landing page rewrite** — Sell CLV, bankroll, ROI instead of generic "AI analytics" _(Cycle 85)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)

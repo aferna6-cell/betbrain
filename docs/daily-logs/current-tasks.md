@@ -1,6 +1,6 @@
 # Current Tasks — 2026-03-15
 
-## Completed This Session (Cycles 65-80)
+## Completed This Session (Cycles 65-85)
 
 ### Deployment Readiness (Cycle 65)
 - [x] Deployment dry-run, E2E smoke tests, performance audit, rate limit hardening
@@ -16,16 +16,19 @@
 - [x] Implied probability, cached odds timestamps, spread/total alerts, onboarding, tests
 
 ### Optimization (Cycles 76-80)
-- [x] useFetch hook for standardized data fetching
-- [x] Server component conversion (smart-signals, h2h-history)
-- [x] Shared color constant extraction (profitColor, winRateColor, MAGNITUDE_COLORS)
-- [x] odds_history retention policy (30-day cleanup, migration 006)
-- [x] Route handler + alert market tests (25 new tests)
+- [x] useFetch hook, server component conversion, shared color extraction, retention policy, tests
+
+### UX Polish (Cycles 81-85)
+- [x] Set Outcome button on pending picks (auto profit calc)
+- [x] Implied probability on game cards
+- [x] Nav notification badges (triggered alerts + pending picks)
+- [x] Bookmaker disagreement indicator on game cards
+- [x] Landing page rewrite (CLV, bankroll, ROI — sell outcomes not features)
 
 ## Stats
 - 889 unit tests passing across 26 test files + 15 E2E smoke tests
 - Build: PASS | Lint: PASS | TypeScript: PASS
-- 80 development cycles completed
+- 85 development cycles completed
 - 55 routes
 
 ## Remaining Deploy Blockers
