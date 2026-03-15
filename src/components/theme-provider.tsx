@@ -56,6 +56,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
 
     const resolved = resolveTheme(stored)
+    // Hydration: sync state with localStorage on mount — not a cascading render
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setThemeState(stored)
     setResolvedTheme(resolved)
     applyTheme(resolved)

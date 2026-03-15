@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Star, Trash2, X, ChevronDown, ChevronUp } from 'lucide-react'
+import { Star, X, ChevronDown, ChevronUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
   getWatchlist,
@@ -60,6 +60,8 @@ export function WatchlistPanel({ defaultOpen = true }: WatchlistPanelProps) {
   }, [])
 
   useEffect(() => {
+    // Hydration gate: avoid rendering localStorage-dependent UI during SSR
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
     refresh()
 

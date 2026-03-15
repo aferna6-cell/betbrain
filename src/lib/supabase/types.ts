@@ -276,22 +276,9 @@ export interface Database {
           notes?: string | null
           created_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "saved_analyses_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "saved_analyses_insight_id_fkey"
-            columns: ["insight_id"]
-            isOneToOne: false
-            referencedRelation: "ai_insights"
-            referencedColumns: ["id"]
-          }
-        ]
+        // Relationships omitted: Supabase's type inference breaks with multiple FKs.
+        // PostgREST resolves joins from the DB schema at runtime.
+        Relationships: []
       }
       user_picks: {
         Row: {

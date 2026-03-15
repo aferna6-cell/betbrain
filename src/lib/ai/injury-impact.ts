@@ -150,7 +150,7 @@ export async function analyzeInjuryImpact(
   const validMagnitudes = ['large', 'moderate', 'small'] as const
   const validSides = ['home', 'away', 'neither'] as const
 
-  return {
+  return assertDisclaimer({
     playerName,
     injuryStatus,
     impactSummary: parsed.impactSummary ?? 'Unable to assess impact.',
@@ -181,5 +181,16 @@ export async function analyzeInjuryImpact(
       reasoning: parsed.valueShift?.reasoning ?? 'Unable to determine.',
     },
     disclaimer: AI_DISCLAIMER,
+  })
+}
+
+/**
+ * Runtime enforcement: every AI analysis object that leaves this module
+ * MUST carry the mandatory disclaimer.
+ */
+function assertDisclaimer<T extends { disclaimer: string }>(analysis: T): T {
+  if (!analysis.disclaimer || !analysis.disclaimer.includes('informational purposes')) {
+    analysis.disclaimer = AI_DISCLAIMER
   }
+  return analysis
 }

@@ -5,6 +5,7 @@ import {
   badRequest,
   routeErrorResponse,
 } from '@/lib/api/route-handler'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/lib/supabase/types'
 
 type SavedAnalysisRow = Database['public']['Tables']['saved_analyses']['Row']
@@ -12,15 +13,38 @@ type SavedAnalysisInsert =
   Database['public']['Tables']['saved_analyses']['Insert']
 type AiInsightRow = Database['public']['Tables']['ai_insights']['Row']
 
+// Join result type for GET handler (PostgREST resolves joins at runtime from DB FKs)
+type SavedWithInsight = SavedAnalysisRow & {
+  ai_insights: Pick<
+    AiInsightRow,
+    | 'id'
+    | 'external_game_id'
+    | 'sport'
+    | 'summary'
+    | 'key_factors'
+    | 'value_assessment'
+    | 'risk_level'
+    | 'confidence'
+    | 'disclaimer'
+    | 'expires_at'
+    | 'created_at'
+  > | null
+}
+
+// Supabase's createServerClient type inference resolves saved_analyses to `never`.
+// Explicit cast to SupabaseClient<Database> fixes the inference.
+function typedClient(supabase: Awaited<ReturnType<typeof createClient>>) {
+  return supabase as unknown as SupabaseClient<Database>
+}
+
 export async function GET(request: Request) {
   return withAuthenticatedRoute(
     request,
     'list-saved-analyses',
     async ({ user }) => {
-      const supabase = await createClient()
+      const supabase = typedClient(await createClient())
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('saved_analyses')
         .select(
           `
@@ -51,9 +75,12 @@ export async function GET(request: Request) {
         return routeErrorResponse('list-saved-analyses', error)
       }
 
+      // PostgREST join resolves via DB foreign keys; cast to typed result
+      const typed = data as unknown as SavedWithInsight[]
+
       return NextResponse.json({
-        savedAnalyses: (data as unknown[]) ?? [],
-        total: (data as unknown[] | null)?.length ?? 0,
+        savedAnalyses: typed ?? [],
+        total: typed?.length ?? 0,
       })
     }
   )
@@ -77,18 +104,16 @@ export async function POST(request: Request) {
         return badRequest('insightId is required')
       }
 
-      const supabase = await createClient()
+      const supabase = typedClient(await createClient())
 
       // Verify the insight exists
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: insight, error: insightError } = await (supabase as any)
+      const { data: insight, error: insightError } = await supabase
         .from('ai_insights')
         .select('id')
         .eq('id', insightId)
         .single()
 
-      const typedInsight = insight as Pick<AiInsightRow, 'id'> | null
-      if (insightError || !typedInsight) {
+      if (insightError || !insight) {
         return NextResponse.json(
           { error: 'Analysis not found' },
           { status: 404 }
@@ -96,15 +121,14 @@ export async function POST(request: Request) {
       }
 
       // Check if already saved to avoid duplicates
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: existing } = await (supabase as any)
+      const { data: existing } = await supabase
         .from('saved_analyses')
         .select('id')
         .eq('user_id', user.id)
         .eq('insight_id', insightId)
         .single()
 
-      if (existing as SavedAnalysisRow | null) {
+      if (existing) {
         return NextResponse.json(
           { error: 'Analysis already saved' },
           { status: 409 }
@@ -117,8 +141,7 @@ export async function POST(request: Request) {
         notes: notes ?? null,
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: saved, error: insertError } = await (supabase as any)
+      const { data: saved, error: insertError } = await supabase
         .from('saved_analyses')
         .insert(insertRow)
         .select()
@@ -128,7 +151,7 @@ export async function POST(request: Request) {
         return routeErrorResponse('save-analysis', insertError)
       }
 
-      return NextResponse.json(saved as SavedAnalysisRow, { status: 201 })
+      return NextResponse.json(saved, { status: 201 })
     }
   )
 }
@@ -152,36 +175,29 @@ export async function PATCH(request: Request) {
         return badRequest('Invalid JSON body')
       }
 
-      const supabase = await createClient()
+      const supabase = typedClient(await createClient())
 
       // Verify ownership
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: record, error: lookupError } = await (supabase as any)
+      const { data: record, error: lookupError } = await supabase
         .from('saved_analyses')
         .select('id, user_id')
         .eq('id', id)
         .single()
 
-      const typedRecord = record as Pick<
-        SavedAnalysisRow,
-        'id' | 'user_id'
-      > | null
-
-      if (lookupError || !typedRecord) {
+      if (lookupError || !record) {
         return NextResponse.json(
           { error: 'Saved analysis not found' },
           { status: 404 }
         )
       }
 
-      if (typedRecord.user_id !== user.id) {
+      if (record.user_id !== user.id) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: updated, error: updateError } = await (supabase as any)
+      const { data: updated, error: updateError } = await supabase
         .from('saved_analyses')
-        .update({ notes: body.notes ?? null } satisfies Partial<SavedAnalysisInsert>)
+        .update({ notes: body.notes ?? null })
         .eq('id', id)
         .select()
         .single()
@@ -190,7 +206,7 @@ export async function PATCH(request: Request) {
         return routeErrorResponse('update-saved-analysis', updateError)
       }
 
-      return NextResponse.json(updated as SavedAnalysisRow)
+      return NextResponse.json(updated)
     }
   )
 }
@@ -207,34 +223,27 @@ export async function DELETE(request: Request) {
         return badRequest('id query parameter is required')
       }
 
-      const supabase = await createClient()
+      const supabase = typedClient(await createClient())
 
       // Verify ownership before deleting
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: record, error: lookupError } = await (supabase as any)
+      const { data: record, error: lookupError } = await supabase
         .from('saved_analyses')
         .select('id, user_id')
         .eq('id', id)
         .single()
 
-      const typedRecord = record as Pick<
-        SavedAnalysisRow,
-        'id' | 'user_id'
-      > | null
-
-      if (lookupError || !typedRecord) {
+      if (lookupError || !record) {
         return NextResponse.json(
           { error: 'Saved analysis not found' },
           { status: 404 }
         )
       }
 
-      if (typedRecord.user_id !== user.id) {
+      if (record.user_id !== user.id) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: deleteError } = await (supabase as any)
+      const { error: deleteError } = await supabase
         .from('saved_analyses')
         .delete()
         .eq('id', id)

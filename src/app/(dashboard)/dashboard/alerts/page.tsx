@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
 import { AlertsView } from '@/components/alerts-view'
+
+export const metadata: Metadata = {
+  title: 'Alerts — BetBrain',
+  description: 'Custom line movement alerts for your favorite games.',
+}
 
 export default function AlertsPage() {
   return (

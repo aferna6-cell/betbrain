@@ -19,8 +19,14 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   return withAuthenticatedRoute(request, 'create-alert', async ({ user }) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let body: any
+    let body: {
+      externalGameId?: string
+      sport?: string
+      team?: string
+      side?: string
+      condition?: string
+      threshold?: number
+    }
     try {
       body = await request.json()
     } catch {

@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "health-check": "node scripts/daily/health-check.mjs",
     "evening:auto": "bash scripts/daily/evening-auto.sh",
-    "morning:health": "node scripts/daily/health-check.mjs --label morning"
+    "morning:health": "node scripts/daily/health-check.mjs --label morning",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
@@ -34,10 +36,12 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.1",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.0"
   }
 }

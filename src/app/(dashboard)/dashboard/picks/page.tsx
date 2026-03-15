@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
 import { PicksTracker } from '@/components/picks-tracker'
+
+export const metadata: Metadata = {
+  title: 'Pick Tracker — BetBrain',
+  description: 'Track your picks, record, and ROI over time.',
+}
 
 export default function PicksPage() {
   return (

@@ -29,10 +29,6 @@ const SPORTS = [
   { value: 'nhl', label: 'NHL' },
 ]
 
-function formatOdds(odds: number): string {
-  return odds > 0 ? `+${odds}` : `${odds}`
-}
-
 function ResultCard({ result }: { result: PropAnalysis }) {
   const recColor =
     result.recommendation === 'over'

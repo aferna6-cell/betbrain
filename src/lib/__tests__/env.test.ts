@@ -169,8 +169,8 @@ describe('getRequiredEnvVar', () => {
   })
 
   it('returns the value when the variable is set', () => {
-    process.env.ANTHROPIC_API_KEY = 'sk-test-anthropic'
-    expect(getRequiredEnvVar('ANTHROPIC_API_KEY')).toBe('sk-test-anthropic')
+    process.env.ANTHROPIC_API_KEY = 'test-value-for-anthropic'
+    expect(getRequiredEnvVar('ANTHROPIC_API_KEY')).toBe('test-value-for-anthropic')
   })
 
   it('throws when the variable is absent (never set)', () => {

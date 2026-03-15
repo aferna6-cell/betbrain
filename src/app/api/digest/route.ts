@@ -3,7 +3,7 @@ import { withAuthenticatedRoute } from '@/lib/api/route-handler'
 import { generateDigest, formatDigestText, sendDigestEmail } from '@/lib/digest'
 
 export async function GET(request: Request) {
-  return withAuthenticatedRoute(request, 'digest-preview', async ({ user }) => {
+  return withAuthenticatedRoute(request, 'digest-preview', async () => {
     const digest = await generateDigest()
 
     return NextResponse.json({

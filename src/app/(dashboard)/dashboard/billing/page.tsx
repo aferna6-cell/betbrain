@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+
+export const metadata: Metadata = {
+  title: 'Billing — BetBrain',
+  description: 'Manage your BetBrain subscription.',
+}
 import { BillingPanel } from '@/components/billing-panel'
 import type { Database } from '@/lib/supabase/types'
 

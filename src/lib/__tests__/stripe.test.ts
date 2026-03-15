@@ -12,8 +12,7 @@ import { describe, it, expect } from 'vitest'
 // --- Subscription tier logic ---
 
 describe('Subscription tiers', () => {
-  const VALID_TIERS = ['free', 'pro'] as const
-  type Tier = (typeof VALID_TIERS)[number]
+  type Tier = 'free' | 'pro'
 
   const FREE_ANALYSIS_LIMIT = 3
   const PRO_ANALYSIS_LIMIT = Infinity

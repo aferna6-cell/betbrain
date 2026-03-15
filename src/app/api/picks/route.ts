@@ -4,7 +4,7 @@ import {
   badRequest,
 } from '@/lib/api/route-handler'
 import { createServiceClient } from '@/lib/supabase/server'
-import type { Database } from '@/lib/supabase/types'
+import type { Database, Sport, PickType } from '@/lib/supabase/types'
 
 type UserPickInsert = Database['public']['Tables']['user_picks']['Insert']
 type UserPickRow = Database['public']['Tables']['user_picks']['Row']
@@ -14,8 +14,17 @@ const VALID_SPORTS = ['nba', 'nfl', 'mlb', 'nhl']
 
 export async function POST(request: Request) {
   return withAuthenticatedRoute(request, 'create-pick', async ({ user }) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let body: any
+    let body: {
+      externalGameId?: string
+      sport?: string
+      pickType?: string
+      pickTeam?: string
+      pickLine?: number
+      odds?: number
+      units?: number
+      gameDate?: string
+      notes?: string
+    }
     try {
       body = await request.json()
     } catch {
@@ -56,8 +65,8 @@ export async function POST(request: Request) {
     const pick: UserPickInsert = {
       user_id: user.id,
       external_game_id: externalGameId,
-      sport,
-      pick_type: pickType,
+      sport: sport as Sport,
+      pick_type: pickType as PickType,
       pick_team: pickTeam ?? null,
       pick_line: pickLine ?? null,
       odds,

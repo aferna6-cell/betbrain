@@ -15,8 +15,12 @@ export async function POST(request: Request) {
     request,
     'injury-impact-analysis',
     async ({ user }) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let body: any
+      let body: {
+        gameId?: string
+        sport?: string
+        playerName?: string
+        injuryStatus?: string
+      }
       try {
         body = await request.json()
       } catch {

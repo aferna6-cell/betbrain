@@ -90,7 +90,6 @@ describe('Strategy behavior', () => {
   })
 
   it('high-confidence is around 40% of season game count', () => {
-    const hc = runBacktest(BASE_CONFIG)
     // NBA season = 82 games, 40% = ~33. Allow ±20 for seeded variance.
     const hcResult = runBacktest({ ...BASE_CONFIG, strategy: 'high-confidence' })
     expect(hcResult.summary.totalGames).toBeGreaterThan(20)

@@ -7,7 +7,6 @@ import type {
   NBAGame,
   NBATeam,
   NBAPlayer,
-  NBAPlayerStats,
   NBASeasonAverages,
   StatsResult,
 } from '@/lib/sports/stats'
