@@ -170,4 +170,38 @@ describe('timeAgo', () => {
     vi.setSystemTime(new Date('2026-03-16T12:00:00Z'))
     expect(timeAgo('2026-03-14T12:00:00Z')).toBe('2d ago')
   })
+
+  it('returns "1m ago" at exactly 60 seconds', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T12:01:00Z'))
+    expect(timeAgo('2026-03-14T12:00:00Z')).toBe('1m ago')
+  })
+
+  it('returns "1h ago" at exactly 60 minutes', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T13:00:00Z'))
+    expect(timeAgo('2026-03-14T12:00:00Z')).toBe('1h ago')
+  })
+
+  it('returns "1d ago" at exactly 24 hours', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-15T12:00:00Z'))
+    expect(timeAgo('2026-03-14T12:00:00Z')).toBe('1d ago')
+  })
+
+  it('returns "just now" for empty string', () => {
+    expect(timeAgo('')).toBeNull()
+  })
+
+  it('returns "59m ago" at 59 minutes', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T12:59:00Z'))
+    expect(timeAgo('2026-03-14T12:00:00Z')).toBe('59m ago')
+  })
+
+  it('returns "23h ago" at 23 hours', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-15T11:00:00Z'))
+    expect(timeAgo('2026-03-14T12:00:00Z')).toBe('23h ago')
+  })
 })
