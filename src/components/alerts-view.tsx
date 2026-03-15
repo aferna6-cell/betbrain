@@ -12,12 +12,19 @@ interface AlertRule {
   sport: string
   team: string
   side: 'home' | 'away'
+  market: string
   condition: 'above' | 'below'
   threshold: number
   triggered: boolean
   triggered_at: string | null
   triggered_value: number | null
   created_at: string
+}
+
+const MARKET_LABELS: Record<string, string> = {
+  moneyline: 'Moneyline',
+  spreads: 'Spread',
+  totals: 'Total',
 }
 
 
@@ -63,8 +70,10 @@ function AlertCard({
       <div className="mt-2">
         <p className="text-sm font-medium">{alert.team}</p>
         <p className="text-xs text-muted-foreground">
-          Moneyline goes {alert.condition}{' '}
-          <span className="font-mono">{formatOdds(alert.threshold)}</span>
+          {MARKET_LABELS[alert.market] ?? alert.market} goes {alert.condition}{' '}
+          <span className="font-mono">
+            {alert.market === 'moneyline' ? formatOdds(alert.threshold) : alert.threshold}
+          </span>
         </p>
       </div>
 

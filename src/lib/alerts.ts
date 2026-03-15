@@ -1,18 +1,44 @@
 /**
  * Alert rules — create, list, delete, and check user-defined line alerts.
  *
- * An alert rule fires when a bookmaker's moneyline for the specified team
+ * An alert rule fires when a bookmaker's line for the specified team/market
  * crosses the user's threshold in the specified direction.
+ * Supports moneyline (odds), spreads (point line), and totals (point line).
  */
 
 import { createServiceClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/types'
-import type { NormalizedGame } from '@/lib/sports/config'
+import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
+
+/**
+ * Extracts the relevant numeric value from a bookmaker's odds for alert comparison.
+ * - moneyline: American odds (e.g. -110)
+ * - spreads: point line (e.g. -5.5)
+ * - totals: total line (e.g. 220.5) — ignores side, uses the line value
+ */
+function getAlertValue(
+  bk: NormalizedBookmakerOdds,
+  market: string,
+  side: 'home' | 'away'
+): number | null {
+  switch (market) {
+    case 'moneyline':
+      return side === 'home' ? bk.moneyline?.home ?? null : bk.moneyline?.away ?? null
+    case 'spreads':
+      return side === 'home' ? bk.spread?.homeLine ?? null : bk.spread?.awayLine ?? null
+    case 'totals':
+      return bk.total?.line ?? null
+    default:
+      return null
+  }
+}
 
 type AlertRow = Database['public']['Tables']['alerts']['Row']
 type AlertInsert = Database['public']['Tables']['alerts']['Insert']
 
 export type { AlertRow }
+
+export type AlertMarket = 'moneyline' | 'spreads' | 'totals'
 
 export interface CreateAlertInput {
   userId: string
@@ -20,6 +46,7 @@ export interface CreateAlertInput {
   sport: string
   team: string
   side: 'home' | 'away'
+  market?: AlertMarket
   condition: 'above' | 'below'
   threshold: number
 }
@@ -33,6 +60,7 @@ export async function createAlert(input: CreateAlertInput): Promise<AlertRow | n
     sport: input.sport,
     team: input.team,
     side: input.side,
+    market: input.market ?? 'moneyline',
     condition: input.condition,
     threshold: input.threshold,
   }
@@ -117,23 +145,21 @@ export async function checkAlerts(games: NormalizedGame[]): Promise<number> {
 
     // Check each bookmaker for the alert condition
     for (const bk of game.bookmakers) {
-      const odds =
-        alert.side === 'home' ? bk.moneyline?.home : bk.moneyline?.away
-      if (odds === null || odds === undefined) continue
+      const value = getAlertValue(bk, alert.market, alert.side)
+      if (value === null) continue
 
       const triggered =
         alert.condition === 'above'
-          ? odds > alert.threshold
-          : odds < alert.threshold
+          ? value > alert.threshold
+          : value < alert.threshold
 
       if (triggered) {
-        // Mark alert as triggered
         const { error: updateError } = await supabase
           .from('alerts')
           .update({
             triggered: true,
             triggered_at: new Date().toISOString(),
-            triggered_value: odds,
+            triggered_value: value,
           })
           .eq('id', alert.id)
 

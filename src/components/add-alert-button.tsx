@@ -18,6 +18,7 @@ export function AddAlertButton({
   awayTeam,
 }: AddAlertButtonProps) {
   const [open, setOpen] = useState(false)
+  const [market, setMarket] = useState<'moneyline' | 'spreads' | 'totals'>('moneyline')
   const [side, setSide] = useState<'home' | 'away'>('home')
   const [condition, setCondition] = useState<'above' | 'below'>('below')
   const [threshold, setThreshold] = useState('')
@@ -44,6 +45,7 @@ export function AddAlertButton({
           sport,
           team: side === 'home' ? homeTeam : awayTeam,
           side,
+          market,
           condition,
           threshold: parsed,
         }),
@@ -100,8 +102,19 @@ export function AddAlertButton({
           <option value="home">{homeTeam}</option>
           <option value="away">{awayTeam}</option>
         </select>
+        <label htmlFor="alert-market" className="sr-only">Market</label>
+        <select
+          id="alert-market"
+          value={market}
+          onChange={(e) => setMarket(e.target.value as 'moneyline' | 'spreads' | 'totals')}
+          className="h-8 rounded-md border border-border bg-background px-2 text-xs"
+        >
+          <option value="moneyline">Moneyline</option>
+          <option value="spreads">Spread</option>
+          <option value="totals">Total</option>
+        </select>
         <span className="flex items-center text-xs text-muted-foreground" aria-hidden="true">
-          ML goes
+          goes
         </span>
         <label htmlFor="alert-condition" className="sr-only">Condition</label>
         <select
@@ -115,13 +128,14 @@ export function AddAlertButton({
           <option value="above">above</option>
           <option value="below">below</option>
         </select>
-        <label htmlFor="alert-threshold" className="sr-only">Threshold odds</label>
+        <label htmlFor="alert-threshold" className="sr-only">Threshold</label>
         <input
           id="alert-threshold"
           type="number"
+          step={market === 'moneyline' ? '1' : '0.5'}
           value={threshold}
           onChange={(e) => setThreshold(e.target.value)}
-          placeholder={formatOdds(-150)}
+          placeholder={market === 'moneyline' ? formatOdds(-150) : market === 'spreads' ? '-5.5' : '220.5'}
           className="h-8 w-20 rounded-md border border-border bg-background px-2 text-xs font-mono"
         />
       </div>

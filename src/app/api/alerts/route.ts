@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       sport?: string
       team?: string
       side?: string
+      market?: string
       condition?: string
       threshold?: number
     }
@@ -33,7 +34,9 @@ export async function POST(request: Request) {
       return badRequest('Invalid JSON body')
     }
 
-    const { externalGameId, sport, team, side, condition, threshold } = body
+    const { externalGameId, sport, team, side, market, condition, threshold } = body
+
+    const validMarkets = ['moneyline', 'spreads', 'totals']
 
     if (!externalGameId || typeof externalGameId !== 'string') {
       return badRequest('externalGameId is required')
@@ -54,12 +57,17 @@ export async function POST(request: Request) {
       return badRequest('threshold must be a number')
     }
 
+    if (market && !validMarkets.includes(market)) {
+      return badRequest('market must be one of: moneyline, spreads, totals')
+    }
+
     const alert = await createAlert({
       userId: user.id,
       externalGameId,
       sport,
       team,
       side,
+      market: (market as 'moneyline' | 'spreads' | 'totals') ?? 'moneyline',
       condition,
       threshold,
     })
