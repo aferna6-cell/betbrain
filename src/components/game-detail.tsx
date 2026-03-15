@@ -21,7 +21,7 @@ const LineMovementChart = dynamic(
 import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
-import { formatOdds, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
+import { formatOdds, formatImpliedProb, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
 import { formatGameTimeFull, RISK_COLORS } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -102,6 +102,9 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                         >
                           {formatOdds(bk.moneyline.away)}
                         </span>
+                        <span className="ml-1.5 text-xs text-muted-foreground">
+                          {formatImpliedProb(bk.moneyline.away)}
+                        </span>
                       </td>
                       <td className="py-2 pl-4 text-right font-mono">
                         <span
@@ -112,6 +115,9 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                           }
                         >
                           {formatOdds(bk.moneyline.home)}
+                        </span>
+                        <span className="ml-1.5 text-xs text-muted-foreground">
+                          {formatImpliedProb(bk.moneyline.home)}
                         </span>
                       </td>
                     </tr>

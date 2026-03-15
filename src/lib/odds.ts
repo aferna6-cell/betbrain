@@ -65,6 +65,12 @@ export function formatOdds(price: number | null): string {
   return price > 0 ? `+${price}` : `${price}`
 }
 
+/** Format implied probability as a percentage string (e.g. "52.4%"). Returns "—" for null. */
+export function formatImpliedProb(price: number | null): string {
+  if (price === null) return '—'
+  return `${(americanToImplied(price) * 100).toFixed(1)}%`
+}
+
 /**
  * Calculate the vig (overround) from a two-sided market.
  * Returns the excess implied probability above 1.0 (e.g. 0.0476 for 4.76% vig).
