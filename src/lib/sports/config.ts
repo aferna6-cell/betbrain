@@ -19,6 +19,11 @@ export const ODDS_API_SPORT_KEYS: Record<Sport, string> = {
 /** All sports we actively support. Iterate over this to fetch all leagues. */
 export const SUPPORTED_SPORTS: Sport[] = ['nba', 'nfl', 'mlb', 'nhl']
 
+/** Type guard — checks if an arbitrary string is a valid Sport. */
+export function isSport(value: string): value is Sport {
+  return SUPPORTED_SPORTS.includes(value as Sport)
+}
+
 // ---------------------------------------------------------------------------
 // Cache TTLs (milliseconds)
 // ---------------------------------------------------------------------------

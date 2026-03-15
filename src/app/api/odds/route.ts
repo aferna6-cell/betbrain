@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server'
 import { badRequest, withAuthenticatedRoute } from '@/lib/api/route-handler'
-import { SUPPORTED_SPORTS } from '@/lib/sports/config'
+import { SUPPORTED_SPORTS, isSport } from '@/lib/sports/config'
 import { getOddsForSport, getAllOdds } from '@/lib/sports/odds'
-import type { Sport } from '@/lib/supabase/types'
-
-function isSport(value: string): value is Sport {
-  return SUPPORTED_SPORTS.includes(value as Sport)
-}
 
 export async function GET(request: Request) {
   return withAuthenticatedRoute(request, 'odds request', async ({ request }) => {

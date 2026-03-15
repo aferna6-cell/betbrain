@@ -3,12 +3,7 @@ import { badRequest, withAuthenticatedRoute } from '@/lib/api/route-handler'
 import { getOddsForSport } from '@/lib/sports/odds'
 import { checkAnalysisLimit, AnalysisLimitError } from '@/lib/ai/analysis'
 import { analyzeInjuryImpact } from '@/lib/ai/injury-impact'
-import { SUPPORTED_SPORTS } from '@/lib/sports/config'
-import type { Sport } from '@/lib/supabase/types'
-
-function isSport(value: string): value is Sport {
-  return SUPPORTED_SPORTS.includes(value as Sport)
-}
+import { SUPPORTED_SPORTS, isSport } from '@/lib/sports/config'
 
 export async function POST(request: Request) {
   return withAuthenticatedRoute(

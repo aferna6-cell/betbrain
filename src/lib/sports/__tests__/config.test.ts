@@ -16,6 +16,7 @@ import {
   CACHE_TTL_MS,
   ODDS_API_MONTHLY_LIMIT,
   ODDS_API_WARN_AT,
+  isSport,
 } from '@/lib/sports/config'
 import type {
   NormalizedMoneyline,
@@ -386,5 +387,43 @@ describe('OddsApiGame type', () => {
     }
     expect(game.id).toBe('raw-game-123')
     expect(game.sport_key).toBe('basketball_nba')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// isSport type guard
+// ---------------------------------------------------------------------------
+
+describe('isSport', () => {
+  it('returns true for nba', () => {
+    expect(isSport('nba')).toBe(true)
+  })
+
+  it('returns true for nfl', () => {
+    expect(isSport('nfl')).toBe(true)
+  })
+
+  it('returns true for mlb', () => {
+    expect(isSport('mlb')).toBe(true)
+  })
+
+  it('returns true for nhl', () => {
+    expect(isSport('nhl')).toBe(true)
+  })
+
+  it('returns false for invalid sport', () => {
+    expect(isSport('soccer')).toBe(false)
+  })
+
+  it('returns false for empty string', () => {
+    expect(isSport('')).toBe(false)
+  })
+
+  it('returns false for uppercase', () => {
+    expect(isSport('NBA')).toBe(false)
+  })
+
+  it('returns false for partial match', () => {
+    expect(isSport('nb')).toBe(false)
   })
 })

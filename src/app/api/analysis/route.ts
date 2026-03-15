@@ -6,12 +6,7 @@ import {
   checkAnalysisLimit,
   AnalysisLimitError,
 } from '@/lib/ai/analysis'
-import { SUPPORTED_SPORTS } from '@/lib/sports/config'
-import type { Sport } from '@/lib/supabase/types'
-
-function isSport(value: string): value is Sport {
-  return SUPPORTED_SPORTS.includes(value as Sport)
-}
+import { SUPPORTED_SPORTS, isSport } from '@/lib/sports/config'
 
 export async function POST(request: Request) {
   return withAuthenticatedRoute(request, 'game analysis', async ({ user }) => {
