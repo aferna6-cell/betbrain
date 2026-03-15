@@ -144,6 +144,13 @@
 - [x] **Lint/type fixes** — Onboarding refactor, unused imports, digest test _(Cycle 98)_
 - [x] **Glossary page** — 15 betting terms defined + TermTooltip component _(Cycle 100)_
 
+## Deep Quality (Cycles 101-106)
+- [x] **Loading skeletons** — glossary + watchlist _(Cycle 101)_
+- [x] **Input sanitization** — sanitize.ts + 11 tests _(Cycle 102)_
+- [x] **Color deduplication** — profitColor() in bankroll _(Cycle 103)_
+- [x] **Sitemap fix** — fixed dates, removed login _(Cycle 105)_
+- [x] **Edge case tests** — timeAgo boundaries — 909 total _(Cycle 106)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
