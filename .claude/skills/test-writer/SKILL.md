@@ -6,64 +6,48 @@ description: "Write test suites for BetBrain. Use when creating tests for API ro
 # Test Writer Skill — BetBrain
 
 ## Stack
-- **Test runner:** Vitest (preferred) or Jest
-- **Component testing:** @testing-library/react
-- **HTTP mocking:** msw (Mock Service Worker) for API mocks
-- **Setup:** `vitest.config.ts` at project root
+- **Unit tests:** Vitest (862 tests across 24 files)
+- **E2E tests:** Playwright (15 smoke tests)
+- **Config:** `vitest.config.ts` (unit), `playwright.config.ts` (E2E)
 
 ## Test File Conventions
-- Co-locate with source: `src/lib/sports/odds.test.ts`
-- Or in `__tests__/` directory: `src/__tests__/odds-wrapper.test.ts`
+- Place in `__tests__/` directory next to source: `src/lib/sports/__tests__/odds.test.ts`
 - Name pattern: `*.test.ts` or `*.test.tsx`
+- E2E tests in `e2e/` directory: `e2e/smoke.spec.ts`
 
 ## What to Test
 
-### API Wrappers (Priority 1)
-- **Odds wrapper** (`src/lib/sports/odds.ts`): Cache hit returns cached data, cache miss calls API and writes cache, stale fallback on API error, rate limit tracking
-- **Stats wrapper** (`src/lib/sports/stats.ts`): Same pattern — cache-first, fallback, unsupported sport handling
+### Data Layer (Priority 1)
+- **Odds wrapper** (`src/lib/sports/odds.ts`): Cache hit returns cached data, cache miss calls API, stale fallback, rate limit tracking
+- **Stats wrapper** (`src/lib/sports/stats.ts`): Cache-first, fallback, unsupported sport handling
+- **Config constants** (`src/lib/sports/config.ts`): Sport keys, TTL values, limit thresholds
 
 ### AI Analysis (Priority 2)
-- **Analysis** (`src/lib/ai/analysis.ts`): Structured output matches schema, disclaimer is always present, free tier limit enforced
-- **Injury impact** (`src/lib/ai/injury-impact.ts`): Same structure validation
+- **Analysis** (`src/lib/ai/analysis.ts`): Structured output matches schema, disclaimer present, free tier limit
+- **Injury/Prop/Parlay** analyzers: Same structure validation
 
-### Auth Flow (Priority 3)
+### Shared Utilities (Priority 3)
+- **Odds utilities** (`src/lib/odds.ts`): formatOdds, getBestMoneyline/Spread/Total
+- **Format utilities** (`src/lib/format.ts`): formatGameTime, RISK_COLORS, date formatters
+- **Odds converter** (`src/lib/odds-converter.ts`): American/decimal/fractional conversion
+
+### Auth & Stripe (Priority 4)
 - Server actions return correct redirect on success/failure
-- Middleware redirects unauthenticated users from `/dashboard/*`
-- Auth callback handles code exchange
-
-### Stripe (Priority 4)
-- Webhook signature verification
-- Subscription state updates on checkout.session.completed
-- Free tier limits enforced when `subscription_tier = 'free'`
+- Middleware redirects unauthenticated users
+- Webhook signature verification, subscription state updates
 
 ## Testing Patterns
 
-### Mock Supabase
-```typescript
-vi.mock('@/lib/supabase/server', () => ({
-  createSupabaseServerClient: () => ({
-    from: vi.fn().mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          gte: vi.fn().mockReturnValue({ data: [], error: null })
-        })
-      }),
-      upsert: vi.fn().mockResolvedValue({ error: null }),
-      insert: vi.fn().mockResolvedValue({ error: null }),
-    }),
-    auth: { getUser: vi.fn().mockResolvedValue({ data: { user: { id: 'test-user' } }, error: null }) }
-  })
-}));
-```
+### Test pure logic, not Supabase/API calls
+Most tests validate interfaces, constants, and business logic without mocking external services.
 
-### Mock External APIs
 ```typescript
-vi.mock('global', () => ({
-  fetch: vi.fn().mockResolvedValue({
-    ok: true,
-    json: () => Promise.resolve(mockOddsResponse)
-  })
-}));
+import { describe, it, expect } from 'vitest'
+import { ODDS_API_MONTHLY_LIMIT, SUPPORTED_SPORTS } from '@/lib/sports/config'
+
+it('monthly limit is 500', () => {
+  expect(ODDS_API_MONTHLY_LIMIT).toBe(500)
+})
 ```
 
 ### Test AI Output Structure
@@ -75,10 +59,13 @@ expect(result).toMatchObject({
   risk_level: expect.stringMatching(/^(low|medium|high)$/),
   confidence: expect.any(Number),
   disclaimer: expect.stringContaining('informational purposes'),
-});
+})
 ```
 
-## Setup Command
+## Run Commands
 ```bash
-npm install -D vitest @testing-library/react @testing-library/jest-dom msw
+npm run test         # All unit tests
+npm run test:watch   # Watch mode
+npm run test:e2e     # Playwright E2E
+npx vitest run src/lib/sports/__tests__/rate-limiting.test.ts  # Single file
 ```

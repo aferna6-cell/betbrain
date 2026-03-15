@@ -10,41 +10,51 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
 - **Payments:** Stripe subscriptions
+- **Testing:** Vitest (unit, 862 tests) + Playwright (E2E, 15 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
 
-- `src/app/` — Pages and layouts (App Router)
-- `src/app/api/` — API route handlers (analysis, odds, stats, picks, stripe)
-- `src/components/` — React components
+- `src/app/` — Pages and layouts (App Router, 53 routes)
+- `src/app/api/` — API route handlers (analysis, odds, stats, picks, stripe, alerts, signals, digest)
+- `src/components/` — React components (game cards, odds tables, charts, nav, etc.)
 - `src/lib/api/` — Shared API route/auth/error helpers
 - `src/lib/ai/` — Claude API analysis (structured output, caching)
 - `src/lib/sports/` — Sports API wrappers (odds, stats, config)
 - `src/lib/supabase/` — Supabase client + helpers
+- `src/lib/odds.ts` — Shared odds utilities (formatOdds, getBestMoneyline/Spread/Total)
+- `src/lib/format.ts` — Shared formatters (formatGameTime, RISK_COLORS, date formatters)
+- `src/lib/env.ts` — Canonical env var access (all env reads go through here)
 - `src/lib/stripe.ts` — Stripe client singleton
+- `e2e/` — Playwright E2E smoke tests
 - `scripts/daily/` — Health-check and daily review automation
 - `docs/dev-knowledge/` — Architecture decisions, schema log, bug patterns
 
 ## Commands
 
 ```bash
-npm run dev       # Local dev server
-npm run build     # Production build
-npm run lint      # Lint check
-npm run typecheck # TypeScript check
+npm run dev          # Local dev server
+npm run build        # Production build
+npm run lint         # Lint check
+npm run typecheck    # TypeScript check
+npm run test         # Run Vitest unit tests (862 tests)
+npm run test:watch   # Vitest in watch mode
+npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md
 npm run evening:auto # Run scripts/daily/evening-auto.sh
 ```
 
 ## Critical Rules
 
-- NEVER hardcode API keys — use environment variables via .env.local
+- NEVER hardcode API keys — use environment variables via `src/lib/env.ts`
 - NEVER handle real money or bets — analytics only
 - ALWAYS cache sports API data in Supabase to stay within rate limits
 - ALWAYS include disclaimer on AI insights: "For informational purposes only"
 - The Odds API free tier: 500 requests/month — cache aggressively
 - Every AI analysis must be structured: summary, key factors, value assessment, risk level
 - Dark theme throughout the dashboard
+- Stage specific files when committing (`git add <files>`) — never `git add .` or `git add -A`
+- Do NOT auto-push — only push when explicitly asked
 
 ## Database Tables
 
@@ -73,6 +83,8 @@ npm run evening:auto # Run scripts/daily/evening-auto.sh
 - `ai-analysis` — Analysis prompt design, structured output, disclaimers
 - `schema-guard` — Database schema verification before queries
 - `feature-build` — Feature development workflow
+- `test-writer` — Unit test creation with Vitest
+- `deploy` — Vercel deployment workflow and checklist
 - `team-orchestration` — Agent delegation patterns
 
 ## Memory

@@ -282,7 +282,7 @@ After all gates:
 - NEVER modify existing migration files — only create new ones
 - NEVER change database schema without a migration file
 - NEVER remove features that work
-- Push after every commit to keep GitHub in sync. This triggers auto-deploy on Vercel.
+- Do NOT push automatically. Only push when the user explicitly asks.
 - When unsure, skip and note for human review
 
 ### Business Logic — The Sacred Cow
@@ -398,7 +398,7 @@ Pick ONE of these cleanup actions per cycle (rotate through them):
 
 ### STEP 7: COMMIT
 ```
-git add .
+git add <specific-files>
 git commit -m "[type]: [scope] — [summary]
 
 Changes:
@@ -415,7 +415,6 @@ Backlog:
 - [what was completed/added]
 
 Cycle [N]"
-git push
 ```
 
 ### STEP 8: CHECKPOINT
