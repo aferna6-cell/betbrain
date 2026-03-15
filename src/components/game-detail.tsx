@@ -21,10 +21,10 @@ const LineMovementChart = dynamic(
 import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
-import { formatOdds } from '@/lib/odds'
+import { formatOdds, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
 import { formatGameTimeFull, RISK_COLORS } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
-import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
+import type { NormalizedGame } from '@/lib/sports/config'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -44,52 +44,6 @@ interface GameAnalysis {
   fromCache: boolean
 }
 
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function getBestMoneyline(
-  bookmakers: NormalizedBookmakerOdds[],
-  side: 'home' | 'away'
-): number | null {
-  let best: number | null = null
-  for (const bk of bookmakers) {
-    const price = side === 'home' ? bk.moneyline?.home : bk.moneyline?.away
-    if (price !== null && price !== undefined) {
-      if (best === null || price > best) best = price
-    }
-  }
-  return best
-}
-
-function getBestSpreadOdds(
-  bookmakers: NormalizedBookmakerOdds[],
-  side: 'home' | 'away'
-): number | null {
-  let best: number | null = null
-  for (const bk of bookmakers) {
-    const price = side === 'home' ? bk.spread?.homeOdds : bk.spread?.awayOdds
-    if (price !== null && price !== undefined) {
-      if (best === null || price > best) best = price
-    }
-  }
-  return best
-}
-
-function getBestTotalOdds(
-  bookmakers: NormalizedBookmakerOdds[],
-  side: 'over' | 'under'
-): number | null {
-  let best: number | null = null
-  for (const bk of bookmakers) {
-    const price = side === 'over' ? bk.total?.overOdds : bk.total?.underOdds
-    if (price !== null && price !== undefined) {
-      if (best === null || price > best) best = price
-    }
-  }
-  return best
-}
 
 // ---------------------------------------------------------------------------
 // Sub-components

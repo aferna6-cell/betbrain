@@ -16,7 +16,11 @@ import {
   formatOdds,
   calculateVig,
   noVigOdds,
+  getBestMoneyline,
+  getBestSpreadOdds,
+  getBestTotalOdds,
 } from '@/lib/odds'
+import type { NormalizedBookmakerOdds } from '@/lib/sports/config'
 
 // ---------------------------------------------------------------------------
 // americanToDecimal
@@ -441,5 +445,110 @@ describe('formatOdds', () => {
 
   it('handles large underdogs', () => {
     expect(formatOdds(1000)).toBe('+1000')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Best-odds finders
+// ---------------------------------------------------------------------------
+
+function makeBk(overrides: Partial<NormalizedBookmakerOdds> = {}): NormalizedBookmakerOdds {
+  return {
+    bookmaker: 'test',
+    moneyline: null,
+    spread: null,
+    total: null,
+    lastUpdated: '2026-03-14T12:00:00Z',
+    ...overrides,
+  }
+}
+
+describe('getBestMoneyline', () => {
+  it('returns null for empty array', () => {
+    expect(getBestMoneyline([], 'home')).toBeNull()
+  })
+
+  it('picks highest home price', () => {
+    const bks = [
+      makeBk({ moneyline: { home: -150, away: 130, draw: null } }),
+      makeBk({ moneyline: { home: -140, away: 125, draw: null } }),
+    ]
+    expect(getBestMoneyline(bks, 'home')).toBe(-140)
+  })
+
+  it('picks highest away price', () => {
+    const bks = [
+      makeBk({ moneyline: { home: -150, away: 130, draw: null } }),
+      makeBk({ moneyline: { home: -140, away: 135, draw: null } }),
+    ]
+    expect(getBestMoneyline(bks, 'away')).toBe(135)
+  })
+
+  it('skips null moneyline', () => {
+    const bks = [
+      makeBk({ moneyline: null }),
+      makeBk({ moneyline: { home: -110, away: 100, draw: null } }),
+    ]
+    expect(getBestMoneyline(bks, 'home')).toBe(-110)
+  })
+})
+
+describe('getBestSpreadOdds', () => {
+  it('returns null for empty array', () => {
+    expect(getBestSpreadOdds([], 'home')).toBeNull()
+  })
+
+  it('picks highest home spread odds', () => {
+    const bks = [
+      makeBk({ spread: { homeLine: -3.5, awayLine: 3.5, homeOdds: -110, awayOdds: -110 } }),
+      makeBk({ spread: { homeLine: -3.5, awayLine: 3.5, homeOdds: -105, awayOdds: -115 } }),
+    ]
+    expect(getBestSpreadOdds(bks, 'home')).toBe(-105)
+  })
+
+  it('picks highest away spread odds', () => {
+    const bks = [
+      makeBk({ spread: { homeLine: -3.5, awayLine: 3.5, homeOdds: -110, awayOdds: -110 } }),
+      makeBk({ spread: { homeLine: -3.5, awayLine: 3.5, homeOdds: -105, awayOdds: -105 } }),
+    ]
+    expect(getBestSpreadOdds(bks, 'away')).toBe(-105)
+  })
+
+  it('skips null spread', () => {
+    const bks = [
+      makeBk({ spread: null }),
+      makeBk({ spread: { homeLine: -3.5, awayLine: 3.5, homeOdds: -110, awayOdds: -110 } }),
+    ]
+    expect(getBestSpreadOdds(bks, 'home')).toBe(-110)
+  })
+})
+
+describe('getBestTotalOdds', () => {
+  it('returns null for empty array', () => {
+    expect(getBestTotalOdds([], 'over')).toBeNull()
+  })
+
+  it('picks highest over odds', () => {
+    const bks = [
+      makeBk({ total: { line: 220.5, overOdds: -115, underOdds: -105 } }),
+      makeBk({ total: { line: 220.5, overOdds: -110, underOdds: -110 } }),
+    ]
+    expect(getBestTotalOdds(bks, 'over')).toBe(-110)
+  })
+
+  it('picks highest under odds', () => {
+    const bks = [
+      makeBk({ total: { line: 220.5, overOdds: -110, underOdds: -110 } }),
+      makeBk({ total: { line: 220.5, overOdds: -115, underOdds: -105 } }),
+    ]
+    expect(getBestTotalOdds(bks, 'under')).toBe(-105)
+  })
+
+  it('skips null total', () => {
+    const bks = [
+      makeBk({ total: null }),
+      makeBk({ total: { line: 220.5, overOdds: -110, underOdds: -110 } }),
+    ]
+    expect(getBestTotalOdds(bks, 'over')).toBe(-110)
   })
 })

@@ -2,28 +2,15 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import { WatchlistButton } from '@/components/watchlist-button'
-import { formatOdds } from '@/lib/odds'
+import { formatOdds, getBestMoneyline } from '@/lib/odds'
 import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
 
-function getBestOdds(game: NormalizedGame, side: 'home' | 'away'): number | null {
-  let best: number | null = null
-  for (const bk of game.bookmakers) {
-    const price = side === 'home' ? bk.moneyline?.home : bk.moneyline?.away
-    if (price !== null && price !== undefined) {
-      if (best === null || price > best) {
-        best = price
-      }
-    }
-  }
-  return best
-}
-
 export function GameCard({ game }: { game: NormalizedGame }) {
   const topBookmakers = game.bookmakers.slice(0, 3)
-  const bestHome = getBestOdds(game, 'home')
-  const bestAway = getBestOdds(game, 'away')
+  const bestHome = getBestMoneyline(game.bookmakers, 'home')
+  const bestAway = getBestMoneyline(game.bookmakers, 'away')
 
   return (
     <div className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/30">

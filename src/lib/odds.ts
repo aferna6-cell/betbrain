@@ -92,6 +92,57 @@ export function noVigOdds(odds1: number, odds2: number): { fair1: number; fair2:
 }
 
 // ---------------------------------------------------------------------------
+// Best-odds finders (scan bookmakers for the most favorable line)
+// ---------------------------------------------------------------------------
+
+import type { NormalizedBookmakerOdds } from '@/lib/sports/config'
+
+/** Return the best (highest) moneyline price across bookmakers for a given side. */
+export function getBestMoneyline(
+  bookmakers: NormalizedBookmakerOdds[],
+  side: 'home' | 'away'
+): number | null {
+  let best: number | null = null
+  for (const bk of bookmakers) {
+    const price = side === 'home' ? bk.moneyline?.home : bk.moneyline?.away
+    if (price !== null && price !== undefined) {
+      if (best === null || price > best) best = price
+    }
+  }
+  return best
+}
+
+/** Return the best (highest) spread odds across bookmakers for a given side. */
+export function getBestSpreadOdds(
+  bookmakers: NormalizedBookmakerOdds[],
+  side: 'home' | 'away'
+): number | null {
+  let best: number | null = null
+  for (const bk of bookmakers) {
+    const price = side === 'home' ? bk.spread?.homeOdds : bk.spread?.awayOdds
+    if (price !== null && price !== undefined) {
+      if (best === null || price > best) best = price
+    }
+  }
+  return best
+}
+
+/** Return the best (highest) total odds across bookmakers for over or under. */
+export function getBestTotalOdds(
+  bookmakers: NormalizedBookmakerOdds[],
+  side: 'over' | 'under'
+): number | null {
+  let best: number | null = null
+  for (const bk of bookmakers) {
+    const price = side === 'over' ? bk.total?.overOdds : bk.total?.underOdds
+    if (price !== null && price !== undefined) {
+      if (best === null || price > best) best = price
+    }
+  }
+  return best
+}
+
+// ---------------------------------------------------------------------------
 // Internal helpers
 // ---------------------------------------------------------------------------
 

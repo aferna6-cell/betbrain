@@ -2,29 +2,15 @@
 
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
-import { formatOdds } from '@/lib/odds'
+import { formatOdds, getBestMoneyline } from '@/lib/odds'
 import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { SmartSignal } from '@/lib/signals'
 
-function getBestOdds(
-  bookmakers: SmartSignal['game']['bookmakers'],
-  side: 'home' | 'away'
-): number | null {
-  let best: number | null = null
-  for (const bk of bookmakers) {
-    const price = side === 'home' ? bk.moneyline?.home : bk.moneyline?.away
-    if (price !== null && price !== undefined) {
-      if (best === null || price > best) best = price
-    }
-  }
-  return best
-}
-
 function SignalCard({ signal }: { signal: SmartSignal }) {
   const { game, signals, strength, aiConfidence, bestValue } = signal
-  const bestHome = getBestOdds(game.bookmakers, 'home')
-  const bestAway = getBestOdds(game.bookmakers, 'away')
+  const bestHome = getBestMoneyline(game.bookmakers, 'home')
+  const bestAway = getBestMoneyline(game.bookmakers, 'away')
 
   return (
     <div className="rounded-lg border border-border bg-card p-4">
