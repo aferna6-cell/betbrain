@@ -512,6 +512,14 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
 
         <TabsContent value={0} className="mt-4 rounded-lg border border-border bg-card p-6">
           <OddsTable game={game} />
+          <div className="mt-4 flex justify-end">
+            <Link
+              href="/dashboard/tools"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Odds converter &rarr;
+            </Link>
+          </div>
         </TabsContent>
 
         <TabsContent value={1} className="mt-4 rounded-lg border border-border bg-card p-6">
