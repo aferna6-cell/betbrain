@@ -426,8 +426,8 @@ export function PicksTracker() {
         setPicks(data.picks)
         setStats(data.stats)
       }
-    } catch {
-      console.error('Failed to fetch picks')
+    } catch (err) {
+      console.error('[picks] Failed to fetch picks:', err)
     } finally {
       setLoading(false)
     }
