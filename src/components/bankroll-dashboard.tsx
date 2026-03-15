@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/toast'
 import { calculateBankrollStats, kellyCriterion, type BankrollStats, type BankrollConfig } from '@/lib/bankroll'
+import { profitColor } from '@/lib/format'
 
 const STORAGE_KEY = 'betbrain-bankroll-config'
 
@@ -87,8 +88,8 @@ function ConfigForm({
 // ---------------------------------------------------------------------------
 
 function StatsCards({ stats, config }: { stats: BankrollStats; config: BankrollConfig }) {
-  const profitColor = stats.totalProfit >= 0 ? 'text-green-500' : 'text-red-500'
-  const balanceColor = stats.currentBalance >= stats.startingBalance ? 'text-green-500' : 'text-red-500'
+  const profitCls = profitColor(stats.totalProfit)
+  const balanceCls = profitColor(stats.currentBalance - stats.startingBalance)
   const kellyExample = kellyCriterion(0.55, -110) // 55% edge at -110
   const kellyUnits = Math.max(1, Math.round(kellyExample * stats.currentBalance / config.unitSize * 10) / 10)
 
@@ -96,7 +97,7 @@ function StatsCards({ stats, config }: { stats: BankrollStats; config: BankrollC
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-lg border border-border bg-card p-4">
         <p className="text-sm text-muted-foreground">Current Balance</p>
-        <p className={`mt-1 text-2xl font-bold ${balanceColor}`}>
+        <p className={`mt-1 text-2xl font-bold ${balanceCls}`}>
           ${stats.currentBalance.toLocaleString()}
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
@@ -106,7 +107,7 @@ function StatsCards({ stats, config }: { stats: BankrollStats; config: BankrollC
 
       <div className="rounded-lg border border-border bg-card p-4">
         <p className="text-sm text-muted-foreground">Total Profit</p>
-        <p className={`mt-1 text-2xl font-bold ${profitColor}`}>
+        <p className={`mt-1 text-2xl font-bold ${profitCls}`}>
           {stats.totalProfit >= 0 ? '+' : ''}${stats.totalProfit.toLocaleString()}
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
@@ -194,17 +195,13 @@ function BalanceHistory({ snapshots }: { snapshots: BankrollStats['snapshots'] }
                 <td className="px-4 py-3 text-right font-mono">
                   ${snap.balanceBefore.toLocaleString()}
                 </td>
-                <td className={`px-4 py-3 text-right font-mono ${
-                  snap.profit > 0 ? 'text-green-500' : snap.profit < 0 ? 'text-red-500' : ''
-                }`}>
+                <td className={`px-4 py-3 text-right font-mono ${profitColor(snap.profit)}`}>
                   {snap.profit >= 0 ? '+' : ''}${snap.profit.toFixed(2)}
                 </td>
                 <td className="px-4 py-3 text-right font-mono font-semibold">
                   ${snap.balanceAfter.toLocaleString()}
                 </td>
-                <td className={`px-4 py-3 text-right font-mono ${
-                  snap.runningProfit >= 0 ? 'text-green-500' : 'text-red-500'
-                }`}>
+                <td className={`px-4 py-3 text-right font-mono ${profitColor(snap.runningProfit)}`}>
                   {snap.runningProfit >= 0 ? '+' : ''}${snap.runningProfit.toFixed(2)}
                 </td>
               </tr>
