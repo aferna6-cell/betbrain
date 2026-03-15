@@ -16,6 +16,7 @@ interface NavBadges {
 const navLinks = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/dashboard/saved', label: 'Saved' },
+  { href: '/dashboard/watchlist', label: 'Watchlist' },
   { href: '/dashboard/signals', label: 'Signals' },
   { href: '/dashboard/alerts', label: 'Alerts' },
   { href: '/dashboard/picks', label: 'Picks' },
