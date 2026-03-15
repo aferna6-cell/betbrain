@@ -148,4 +148,20 @@
 **Decision:** With 500 monthly calls and 4 sports, each 5-minute refresh cycle uses at most 4 API calls. This allows ~10+ hours of continuous fresh data per month.
 **Why:** Sequential sport fetching in `getAllOdds()` and aggressive caching ensure the budget is predictable. The cache-first pattern means repeated requests within the 5-minute TTL cost zero API calls.
 
+### CLV tracking: closing_odds column on user_picks
+**Decision:** Added a nullable `closing_odds` column (migration 003) to track the closing line when a pick is resolved. CLV is calculated per-pick as the difference in implied probability between bet odds and closing odds.
+**Why:** Closing Line Value is the #1 predictor of long-term sports betting profitability. Without CLV, a bettor can't measure whether they're getting genuine edge or just lucky.
+
+### Bankroll management: client-side config, server-side calculation
+**Decision:** Bankroll config (starting balance, unit size) is stored in localStorage. Bankroll stats (running balance, drawdown, streaks) are calculated from pick data on each page load.
+**Why:** Bankroll config is personal preference, not shared state — localStorage avoids a database migration and keeps the feature simple. Calculation from picks ensures the balance history is always consistent with the pick record.
+
+### Onboarding: localStorage-based checklist, not server-persisted
+**Decision:** First-time onboarding uses a 4-step checklist tracked in localStorage. Dismissible, with per-step completion markers.
+**Why:** No database change needed. The checklist is a UX hint, not a feature gate — if a user clears storage or uses another device, seeing the checklist again is harmless.
+
+### Alerts: spread and total markets via flexible getAlertValue()
+**Decision:** Expanded alert markets from moneyline-only to moneyline/spreads/totals (migration 005). The `getAlertValue()` function extracts the relevant numeric value per market type.
+**Why:** Sharp bettors need spread movement alerts ("alert when Lakers go from -5.5 to -7") and total alerts ("alert when O/U crosses 220"). Moneyline-only was the top alert complaint in the customer simulation.
+
 _Add new decisions below._

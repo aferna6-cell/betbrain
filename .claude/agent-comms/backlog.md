@@ -100,15 +100,20 @@
 - [x] **Empty states polish** — Leaderboard, backtesting, parlay, props initial guidance _(Cycle 70)_
 - [x] **API docs expansion** — 6 endpoints documented (added picks/CLV + odds history) _(Cycle 70)_
 
+## Quick Wins (Cycles 71-72)
+- [x] **Implied probability display** — Show win probability next to moneyline odds _(Cycle 71)_
+- [x] **Cached odds timestamps** — Show "fetched X min ago" instead of "may be outdated" _(Cycle 72)_
+
+## Features (Cycles 73-75)
+- [x] **Spread + total alerts** — Expand alerts beyond moneyline-only (migration 005) _(Cycle 73)_
+- [x] **Guided onboarding flow** — 4-step checklist for first-time users _(Cycle 74)_
+- [x] **Tests + docs** — 11 new tests, 4 architecture decisions _(Cycle 75)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **odds_history retention policy** — TTL/cleanup for append-only history table
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
 - [ ] **Supabase type generation** — Auto-generate types from `supabase gen types` instead of hand-written
-- [ ] **Guided onboarding flow** — First-time user tour with "try your first analysis" prompt
-- [ ] **Spread + total alerts** — Expand alerts beyond moneyline-only
-- [ ] **Implied probability display** — Show win probability next to American odds in tables
-- [ ] **Cached odds timestamps** — Show "fetched X min ago" instead of "may be outdated"
 - [ ] **Signal historical hit rate** — Track and display signal outcome success rate
 - [ ] **Analytics dashboard** — User engagement metrics, popular games, analysis usage
 - [ ] **Social sharing** — Share picks/analyses with custom OG images

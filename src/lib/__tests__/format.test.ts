@@ -18,6 +18,7 @@ import {
   formatDateShort,
   formatGameTime,
   formatGameTimeFull,
+  timeAgo,
 } from '@/lib/format'
 
 // ---------------------------------------------------------------------------
@@ -130,5 +131,43 @@ describe('formatGameTimeFull', () => {
     // Sat, Mar 14 — the format includes weekday
     const result = formatGameTimeFull('2026-03-14T12:00:00')
     expect(result.length).toBeGreaterThan(10)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// timeAgo
+// ---------------------------------------------------------------------------
+
+describe('timeAgo', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('returns null for null/undefined input', () => {
+    expect(timeAgo(null)).toBeNull()
+    expect(timeAgo(undefined)).toBeNull()
+  })
+
+  it('returns "just now" for very recent timestamps', () => {
+    const now = new Date().toISOString()
+    expect(timeAgo(now)).toBe('just now')
+  })
+
+  it('returns minutes for timestamps within the hour', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T12:10:00Z'))
+    expect(timeAgo('2026-03-14T12:05:00Z')).toBe('5m ago')
+  })
+
+  it('returns hours for timestamps within the day', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-14T15:00:00Z'))
+    expect(timeAgo('2026-03-14T12:00:00Z')).toBe('3h ago')
+  })
+
+  it('returns days for timestamps beyond 24 hours', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-16T12:00:00Z'))
+    expect(timeAgo('2026-03-14T12:00:00Z')).toBe('2d ago')
   })
 })

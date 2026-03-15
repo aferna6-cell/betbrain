@@ -14,6 +14,7 @@ import {
   americanToFractional,
   formatAmerican,
   formatOdds,
+  formatImpliedProb,
   calculateVig,
   noVigOdds,
   getBestMoneyline,
@@ -445,6 +446,36 @@ describe('formatOdds', () => {
 
   it('handles large underdogs', () => {
     expect(formatOdds(1000)).toBe('+1000')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// formatImpliedProb
+// ---------------------------------------------------------------------------
+
+describe('formatImpliedProb', () => {
+  it('returns em dash for null', () => {
+    expect(formatImpliedProb(null)).toBe('—')
+  })
+
+  it('converts -110 to ~52.4%', () => {
+    expect(formatImpliedProb(-110)).toBe('52.4%')
+  })
+
+  it('converts +150 to 40.0%', () => {
+    expect(formatImpliedProb(150)).toBe('40.0%')
+  })
+
+  it('converts +100 to 50.0%', () => {
+    expect(formatImpliedProb(100)).toBe('50.0%')
+  })
+
+  it('converts -200 to ~66.7%', () => {
+    expect(formatImpliedProb(-200)).toBe('66.7%')
+  })
+
+  it('converts +500 to ~16.7%', () => {
+    expect(formatImpliedProb(500)).toBe('16.7%')
   })
 })
 
