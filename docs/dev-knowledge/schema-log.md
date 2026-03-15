@@ -145,3 +145,47 @@ _Every database schema change. Check before writing queries._
 ### TypeScript Types
 
 - Added `alerts` table type to `src/lib/supabase/types.ts`
+
+---
+
+## Migration 003b: Add closing_odds to user_picks (2026-03-15)
+
+**File:** `supabase/migrations/003_add_closing_odds_to_picks.sql`
+
+### Summary
+
+- Adds nullable `closing_odds` numeric column to `user_picks`
+- Used for CLV (Closing Line Value) calculation — the #1 predictor of long-term profitability
+
+### TypeScript Types
+
+- Updated `user_picks` Row/Insert/Update types with `closing_odds: number | null`
+
+---
+
+## Migration 005: Expand Alert Markets (2026-03-15)
+
+**File:** `supabase/migrations/005_expand_alert_markets.sql`
+
+### Summary
+
+- Drops and recreates `alerts_market_check` constraint to allow `('moneyline', 'spreads', 'totals')`
+- No new columns — `threshold` field is reused (odds value for moneyline, point line for spreads/totals)
+
+---
+
+## Migration 006: Odds History Retention (2026-03-15)
+
+**File:** `supabase/migrations/006_odds_history_retention.sql`
+
+### Summary
+
+- Creates `cleanup_old_odds_history()` function that deletes rows older than 30 days
+- Should be called via pg_cron or external scheduler (daily at 4 AM UTC recommended)
+- Returns count of deleted rows
+
+### Why It Matters
+
+- `odds_history` is append-only and grows with every odds fetch
+- Without cleanup, the table will grow unbounded (~4 sports * N bookmakers * ~288 fetches/day)
+- 30-day retention balances line movement history needs vs storage
