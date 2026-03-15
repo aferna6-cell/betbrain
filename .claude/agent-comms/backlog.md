@@ -43,6 +43,12 @@
 - [x] **404 page** — Custom not-found page matching dark theme _(Cycle 29)_
 - [x] **Keyboard shortcuts** — Cmd+K search palette with keyboard nav _(Cycle 30)_
 - [x] **Search** — Global search across games, teams, and analysis _(Cycle 30)_
+- [x] **Landing page footer links** — Add links to How It Works, Blog, Disclaimer in footer _(Cycle 31)_
+- [x] **Signals + digest tests** — Unit tests for Smart Signals detection + digest generation _(Cycle 31)_
+- [x] **Leaderboard + onboarding tests** — Unit tests for leaderboard + email content generators _(Cycle 31)_
+- [x] **Env helper tests** — Unit tests for env.ts getters and fallback logic _(Cycle 31)_
+- [ ] **Saved analyses feature** — Bookmark AI analyses for later review
+- [ ] **Dark/light theme toggle** — User preference for theme
 
 ## Tests
 - [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_

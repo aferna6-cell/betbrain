@@ -1,4 +1,16 @@
+import type { Metadata } from 'next'
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: 'BetBrain — AI-Powered Sports Analytics',
+  description: 'AI-driven sports analytics dashboard. Find value in betting lines across NBA, NFL, MLB, NHL with data-driven insights, Smart Signals, and line movement tracking.',
+  keywords: ['sports analytics', 'AI betting analysis', 'NBA odds', 'NFL odds', 'MLB odds', 'NHL odds', 'line movement', 'smart signals'],
+  openGraph: {
+    title: 'BetBrain — AI-Powered Sports Analytics',
+    description: 'Find value in betting lines with AI-driven insights across NBA, NFL, MLB, NHL.',
+    type: 'website',
+  },
+}
 
 const features = [
   {
@@ -318,26 +330,50 @@ export default function LandingPage() {
             </div>
 
             {/* Links */}
-            <nav className="flex flex-row sm:flex-col gap-3 sm:gap-2 text-sm shrink-0">
-              <Link
-                href="/dashboard"
-                className="text-zinc-500 hover:text-zinc-300 transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/login"
-                className="text-zinc-500 hover:text-zinc-300 transition-colors"
-              >
-                Log In
-              </Link>
-              <Link
-                href="/signup"
-                className="text-zinc-500 hover:text-zinc-300 transition-colors"
-              >
-                Sign Up
-              </Link>
-            </nav>
+            <div className="flex flex-row sm:flex-row gap-8 sm:gap-12 text-sm shrink-0">
+              <nav className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-1">Product</span>
+                <Link
+                  href="/dashboard"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/how-it-works"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  How It Works
+                </Link>
+                <Link
+                  href="/blog"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Blog
+                </Link>
+              </nav>
+              <nav className="flex flex-col gap-2">
+                <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-1">Account</span>
+                <Link
+                  href="/login"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  href="/disclaimer"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Legal
+                </Link>
+              </nav>
+            </div>
           </div>
 
           <div className="mt-8 pt-6 border-t border-zinc-900 text-xs text-zinc-700">
