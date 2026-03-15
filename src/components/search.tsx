@@ -23,6 +23,9 @@ const ALL_ITEMS: SearchItem[] = [
   { label: 'Backtesting', path: '/dashboard/backtesting', category: 'Navigation' },
   { label: 'Leaderboard', path: '/dashboard/leaderboard', category: 'Navigation' },
   { label: 'API Access', path: '/dashboard/api', category: 'Navigation' },
+  { label: 'Bankroll', path: '/dashboard/bankroll', category: 'Navigation' },
+  { label: 'Watchlist', path: '/dashboard/watchlist', category: 'Navigation' },
+  { label: 'Odds Tools', path: '/dashboard/tools', category: 'Navigation' },
   { label: 'Billing', path: '/dashboard/billing', category: 'Navigation' },
   { label: 'Profile', path: '/dashboard/profile', category: 'Navigation' },
   // Sports
