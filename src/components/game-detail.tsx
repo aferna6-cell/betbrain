@@ -28,6 +28,7 @@ import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/confi
 // ---------------------------------------------------------------------------
 
 interface GameAnalysis {
+  insightId?: string
   summary: string
   keyFactors: string[]
   valueAssessment: {
@@ -335,10 +336,32 @@ function OddsTable({ game }: { game: NormalizedGame }) {
   )
 }
 
+// Bookmark icon SVG
+function BookmarkIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill={filled ? 'currentColor' : 'none'}
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+    </svg>
+  )
+}
+
 function AnalysisPanel({ game }: { game: NormalizedGame }) {
   const [analysis, setAnalysis] = useState<GameAnalysis | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   async function handleAnalyze() {
     setLoading(true)
@@ -366,6 +389,26 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
     }
   }
 
+  async function handleSave() {
+    if (!analysis?.insightId || saved || saving) return
+    setSaving(true)
+    try {
+      const res = await fetch('/api/saved-analyses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ insightId: analysis.insightId }),
+      })
+      if (res.ok || res.status === 409) {
+        // 409 means already saved — treat as success
+        setSaved(true)
+      }
+    } catch {
+      // silently ignore save errors — non-critical action
+    } finally {
+      setSaving(false)
+    }
+  }
+
   if (!analysis) {
     return (
       <div className="space-y-4">
@@ -383,21 +426,40 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
 
   return (
     <div className="space-y-5">
-      {/* Badges */}
-      <div className="flex flex-wrap gap-3">
-        <Badge variant="secondary" className="font-mono">
-          Confidence: {analysis.confidence}%
-        </Badge>
-        <Badge variant="outline">
-          Risk:{' '}
-          <span className={RISK_COLORS[analysis.riskLevel]}>
-            {analysis.riskLevel.toUpperCase()}
-          </span>
-        </Badge>
-        {analysis.fromCache && (
-          <Badge variant="outline" className="text-xs">
-            Cached
+      {/* Badges + save button row */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-3">
+          <Badge variant="secondary" className="font-mono">
+            Confidence: {analysis.confidence}%
           </Badge>
+          <Badge variant="outline">
+            Risk:{' '}
+            <span className={RISK_COLORS[analysis.riskLevel]}>
+              {analysis.riskLevel.toUpperCase()}
+            </span>
+          </Badge>
+          {analysis.fromCache && (
+            <Badge variant="outline" className="text-xs">
+              Cached
+            </Badge>
+          )}
+        </div>
+
+        {analysis.insightId && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleSave}
+            disabled={saving || saved}
+            className={`h-8 gap-1.5 text-xs transition-colors ${
+              saved
+                ? 'border-green-500/40 text-green-500 hover:text-green-500'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <BookmarkIcon filled={saved} />
+            {saved ? 'Saved' : saving ? 'Saving...' : 'Save'}
+          </Button>
         )}
       </div>
 

@@ -5,10 +5,12 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { SearchPalette } from '@/components/search'
+import { ThemeToggle } from '@/components/theme-toggle'
 import type { User } from '@supabase/supabase-js'
 
 const navLinks = [
   { href: '/dashboard', label: 'Dashboard' },
+  { href: '/dashboard/saved', label: 'Saved' },
   { href: '/dashboard/signals', label: 'Signals' },
   { href: '/dashboard/alerts', label: 'Alerts' },
   { href: '/dashboard/picks', label: 'Picks' },
@@ -55,6 +57,7 @@ export function DashboardNav({ user }: { user: User }) {
         </div>
         <div className="flex items-center gap-4">
           <SearchPalette />
+          <ThemeToggle />
           <span className="hidden text-sm text-muted-foreground sm:block">
             {user.email}
           </span>
@@ -134,11 +137,14 @@ export function DashboardNav({ user }: { user: User }) {
             <span className="text-sm text-muted-foreground truncate">
               {user.email}
             </span>
-            <form action="/auth/logout" method="POST">
-              <Button variant="outline" size="sm" type="submit">
-                Sign out
-              </Button>
-            </form>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <form action="/auth/logout" method="POST">
+                <Button variant="outline" size="sm" type="submit">
+                  Sign out
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
       )}

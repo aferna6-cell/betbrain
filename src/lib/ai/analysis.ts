@@ -26,6 +26,7 @@ const MODEL = 'claude-sonnet-4-5-20250514'
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000 // 6 hours
 
 export interface GameAnalysis {
+  insightId?: string
   summary: string
   keyFactors: string[]
   valueAssessment: {
@@ -63,7 +64,7 @@ async function cacheAnalysis(
   externalGameId: string,
   sport: Sport,
   analysis: GameAnalysis
-): Promise<void> {
+): Promise<string | undefined> {
   const supabase = await createServiceClient()
 
   const row: AiInsightInsert = {
@@ -83,13 +84,18 @@ async function cacheAnalysis(
     expires_at: new Date(Date.now() + CACHE_TTL_MS).toISOString(),
   }
 
-  const { error } = await supabase.from('ai_insights').upsert(row, {
-    onConflict: 'external_game_id',
-  })
+  const { data, error } = await supabase
+    .from('ai_insights')
+    .upsert(row, { onConflict: 'external_game_id' })
+    .select('id')
+    .single()
 
   if (error) {
     console.error('[ai] Failed to cache analysis:', error.message)
+    return undefined
   }
+
+  return (data as AiInsightRow | null)?.id
 }
 
 // ---------------------------------------------------------------------------
@@ -268,6 +274,7 @@ export async function analyzeGame(
   const cached = await getCachedAnalysis(game.id)
   if (cached) {
     return {
+      insightId: cached.id,
       summary: cached.summary,
       keyFactors: cached.key_factors as string[],
       valueAssessment: cached.value_assessment as GameAnalysis['valueAssessment'],
@@ -356,9 +363,24 @@ export async function analyzeGame(
     model: MODEL,
   }
 
-  // Cache the result
-  await cacheAnalysis(game.id, game.sport, analysis)
+  // Cache the result and capture the DB row ID
+  const insightId = await cacheAnalysis(game.id, game.sport, analysis)
+  if (insightId) {
+    analysis.insightId = insightId
+  }
 
+  return assertDisclaimer(analysis)
+}
+
+/**
+ * Runtime enforcement: every AI analysis object that leaves this module
+ * MUST carry the mandatory disclaimer. This is a safety net on top of
+ * setting it at construction time.
+ */
+function assertDisclaimer<T extends { disclaimer: string }>(analysis: T): T {
+  if (!analysis.disclaimer || !analysis.disclaimer.includes('informational purposes')) {
+    analysis.disclaimer = AI_DISCLAIMER
+  }
   return analysis
 }
 

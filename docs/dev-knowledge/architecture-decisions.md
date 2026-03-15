@@ -50,9 +50,9 @@
 **Decision:** Explicit `as Profile | null` casts on `.from('profiles').select('*').single()` results instead of relying on inferred types.
 **Why:** supabase-js v2.99+ with `@supabase/ssr` v0.5 has a type resolution issue where the `Database` generic doesn't flow through to `from()` query results (resolves to `never`). The `Relationships` field on `GenericTable` changed in newer versions. Explicit casts maintain type safety until upstream is fixed or types are auto-generated.
 
-### Dark mode: static `className="dark"` on `<html>`
-**Decision:** Hard-code `className="dark"` on the root `<html>` element.
-**Why:** CLAUDE.md mandates "dark theme throughout the dashboard." No light mode toggle is planned for MVP. This avoids flash-of-light-theme and keeps it simple.
+### Dark/light theme: `ThemeProvider` context, `localStorage` persistence
+**Decision:** A `ThemeProvider` client component manages a `betbrain-theme` key in `localStorage` and toggles the `dark` class on `<html>` via `useEffect`. The root layout keeps `className="dark"` as the SSR default to avoid a flash-of-light-theme before hydration. The `ThemeToggle` button (dark → light → system cycle) lives in `DashboardNav` only — public pages (landing, blog) remain dark-only.
+**Why:** Users increasingly expect theme control. The implementation avoids any external package (next-themes) and is self-contained. The SSR default of `dark` preserves existing behavior for first-load and for users who haven't set a preference.
 
 ### Sports API wrappers: cache-first with fallback to stale data
 **Decision:** Both The Odds API and balldontlie wrappers follow: check fresh cache -> call API on miss -> write cache -> fallback to stale cache on API error. Each returns an envelope (`OddsResult` / `StatsResult<T>`) with `fromCache`, `warning`, and usage metadata.
