@@ -148,9 +148,9 @@ _Every database schema change. Check before writing queries._
 
 ---
 
-## Migration 003b: Add closing_odds to user_picks (2026-03-15)
+## Migration 005: Add closing_odds to user_picks (2026-03-15)
 
-**File:** `supabase/migrations/003_add_closing_odds_to_picks.sql`
+**File:** `supabase/migrations/005_add_closing_odds_to_picks.sql`
 
 ### Summary
 
@@ -163,9 +163,9 @@ _Every database schema change. Check before writing queries._
 
 ---
 
-## Migration 005: Expand Alert Markets (2026-03-15)
+## Migration 006: Expand Alert Markets (2026-03-15)
 
-**File:** `supabase/migrations/005_expand_alert_markets.sql`
+**File:** `supabase/migrations/006_expand_alert_markets.sql`
 
 ### Summary
 
@@ -174,9 +174,9 @@ _Every database schema change. Check before writing queries._
 
 ---
 
-## Migration 006: Odds History Retention (2026-03-15)
+## Migration 007: Odds History Retention (2026-03-15)
 
-**File:** `supabase/migrations/006_odds_history_retention.sql`
+**File:** `supabase/migrations/007_odds_history_retention.sql`
 
 ### Summary
 
