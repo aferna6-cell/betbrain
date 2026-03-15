@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/toast'
 import type { RiskLevel, Sport } from '@/lib/supabase/types'
 
 // ---------------------------------------------------------------------------
@@ -211,10 +212,12 @@ function NoteEditor({
 function SavedAnalysisCard({
   item,
   onRemove,
+  onRemoveError,
   onNoteUpdated,
 }: {
   item: SavedAnalysisRow
   onRemove: (id: string) => void
+  onRemoveError: () => void
   onNoteUpdated: (id: string, note: string | null) => void
 }) {
   const [removing, setRemoving] = useState(false)
@@ -229,9 +232,11 @@ function SavedAnalysisCard({
       )
       if (res.ok) {
         onRemove(item.id)
+      } else {
+        onRemoveError()
       }
     } catch {
-      // silently ignore — state is unchanged if it fails
+      onRemoveError()
     } finally {
       setRemoving(false)
     }
@@ -343,6 +348,7 @@ export function SavedAnalyses() {
   const [items, setItems] = useState<SavedAnalysisRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { addToast } = useToast()
 
   const fetchSaved = useCallback(async () => {
     setLoading(true)
@@ -368,6 +374,11 @@ export function SavedAnalyses() {
 
   function handleRemove(id: string) {
     setItems((prev) => prev.filter((item) => item.id !== id))
+    addToast('Analysis removed', 'success')
+  }
+
+  function handleRemoveError() {
+    addToast('Failed to remove analysis', 'error')
   }
 
   function handleNoteUpdated(id: string, note: string | null) {
@@ -436,6 +447,7 @@ export function SavedAnalyses() {
           key={item.id}
           item={item}
           onRemove={handleRemove}
+          onRemoveError={handleRemoveError}
           onNoteUpdated={handleNoteUpdated}
         />
       ))}

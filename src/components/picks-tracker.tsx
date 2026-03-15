@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { useToast } from '@/components/toast'
 import type {
   Sport,
   PickType,
@@ -58,7 +59,13 @@ const OUTCOME_COLORS: Record<string, string> = {
 // Pick Form
 // ---------------------------------------------------------------------------
 
-function PickForm({ onSubmit }: { onSubmit: () => void }) {
+function PickForm({
+  onSubmit,
+  onError,
+}: {
+  onSubmit: () => void
+  onError: (message: string) => void
+}) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -94,14 +101,18 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error ?? 'Failed to save pick')
+        const msg = data.error ?? 'Failed to save pick'
+        setError(msg)
+        onError(msg)
         return
       }
 
       form.reset()
       onSubmit()
     } catch {
-      setError('Network error — please try again')
+      const msg = 'Network error — please try again'
+      setError(msg)
+      onError(msg)
     } finally {
       setSubmitting(false)
     }
@@ -405,6 +416,7 @@ export function PicksTracker() {
   const [picks, setPicks] = useState<UserPick[]>([])
   const [stats, setStats] = useState<PickStats | null>(null)
   const [loading, setLoading] = useState(true)
+  const { addToast } = useToast()
 
   const fetchPicks = useCallback(async () => {
     try {
@@ -425,6 +437,15 @@ export function PicksTracker() {
     fetchPicks()
   }, [fetchPicks])
 
+  function handlePickSaved() {
+    addToast('Pick saved', 'success')
+    fetchPicks()
+  }
+
+  function handlePickError(message: string) {
+    addToast(message, 'error')
+  }
+
   if (loading) {
     return (
       <div className="text-center text-muted-foreground">Loading picks...</div>
@@ -434,7 +455,7 @@ export function PicksTracker() {
   return (
     <div className="space-y-6">
       {stats && <StatsSummary stats={stats} />}
-      <PickForm onSubmit={fetchPicks} />
+      <PickForm onSubmit={handlePickSaved} onError={handlePickError} />
       <PicksTable picks={picks} />
     </div>
   )

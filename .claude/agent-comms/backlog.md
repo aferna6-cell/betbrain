@@ -53,6 +53,9 @@
 - [x] **Dashboard stats summary** — Cards showing total picks, win rate, ROI at top of dashboard _(Cycle 33)_
 - [x] **Accessibility audit** — ARIA labels, focus management, screen reader support _(Cycle 34)_
 - [x] **Watchlist tests** — Unit tests for localStorage watchlist helpers _(Cycle 34)_
+- [x] **Toast notifications** — Non-blocking feedback for saves, deletes, errors _(Cycle 35)_
+- [x] **Odds conversion utility** — American/decimal/fractional converter + 75 tests _(Cycle 35)_
+- [x] **Profile stats card** — Show user's pick record and achievements on profile page _(Cycle 35)_
 - [x] **Performance monitoring** — Web Vitals tracking component _(Cycle 33)_
 
 ## Tests
