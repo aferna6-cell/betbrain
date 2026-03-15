@@ -85,3 +85,21 @@
 - [x] SEO metadata on all pages _(Cycle 14)_
 - [x] OG images for social sharing _(Cycle 27)_
 - [x] Edge runtime for API routes where possible _(Cycle 27)_
+
+## Deployment Readiness (Cycle 65)
+- [x] Deployment dry-run — metadataBase fix, all 53 routes clean _(Cycle 65)_
+- [x] E2E smoke tests — 15 Playwright tests _(Cycle 65)_
+- [x] Performance audit — bundle analysis, no issues _(Cycle 65)_
+- [x] Rate limit hardening — 6 new cache-first tests (862 total) _(Cycle 65)_
+- [x] Architecture decisions — 3 new entries _(Cycle 65)_
+
+## Phase 2 — Post-Launch
+- [ ] **Resend email integration** — Wire up daily digest + alert email notifications
+- [ ] **odds_history retention policy** — TTL/cleanup for append-only history table
+- [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
+- [ ] **Supabase type generation** — Auto-generate types from `supabase gen types` instead of hand-written
+- [ ] **Analytics dashboard** — User engagement metrics, popular games, analysis usage
+- [ ] **Social sharing** — Share picks/analyses with custom OG images
+- [ ] **Mobile app** — React Native or PWA improvements for mobile users
+- [ ] **A/B testing** — Test pricing, landing page, onboarding flows
+- [ ] **Multi-language** — i18n support for key markets

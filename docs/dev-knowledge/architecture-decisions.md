@@ -136,4 +136,16 @@
 **Decision:** Prop analyses are not cached (each is unique — different player/line combos). They share the free-tier daily analysis limit with game analysis and injury impact.
 **Why:** Props are player+matchup+line specific — the cache key space is too large to be useful. Sharing the analysis limit keeps Claude API costs predictable and incentivizes Pro upgrades.
 
+### Deployment: metadataBase for OG images
+**Decision:** Set `metadataBase` in root layout using `NEXT_PUBLIC_SITE_URL` → `VERCEL_URL` → `localhost:3000` fallback chain.
+**Why:** Without `metadataBase`, Next.js resolves OG image URLs against `localhost:3000` in production builds, breaking social sharing previews. The fallback chain ensures correct resolution in Vercel (auto-sets `VERCEL_URL`), custom domains (`NEXT_PUBLIC_SITE_URL`), and local dev.
+
+### E2E testing: Playwright smoke tests
+**Decision:** Added Playwright for E2E smoke tests covering landing page, auth pages, dashboard access control, static pages, SEO meta, and 404 handling. Separate from Vitest unit tests.
+**Why:** Unit tests validate logic; E2E tests validate the assembled app works end-to-end. Smoke tests catch regressions that unit tests miss (broken routes, middleware issues, missing pages). Lightweight — 15 tests that run in under 30 seconds.
+
+### Rate limit budget: 4 calls per refresh cycle
+**Decision:** With 500 monthly calls and 4 sports, each 5-minute refresh cycle uses at most 4 API calls. This allows ~10+ hours of continuous fresh data per month.
+**Why:** Sequential sport fetching in `getAllOdds()` and aggressive caching ensure the budget is predictable. The cache-first pattern means repeated requests within the 5-minute TTL cost zero API calls.
+
 _Add new decisions below._

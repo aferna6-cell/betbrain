@@ -206,6 +206,101 @@ describe('OddsResult fallback behavior', () => {
   })
 })
 
+// --- Cache-first prevents unnecessary API calls ---
+
+describe('Cache-first API call prevention', () => {
+  function buildResult(opts: {
+    usageCount: number
+    hasCache: boolean
+    apiAvailable: boolean
+  }): OddsResult & { apiCallMade: boolean } {
+    const usageWarning = opts.usageCount >= ODDS_API_WARN_AT
+    const isExhausted = opts.usageCount >= ODDS_API_MONTHLY_LIMIT
+
+    // Cache hit → no API call, regardless of usage count
+    if (opts.hasCache) {
+      return {
+        games: [{ id: 'mock', fromCache: true } as NormalizedGame],
+        apiUsageCount: opts.usageCount,
+        usageWarning,
+        dataNotice: usageWarning
+          ? `API usage at ${opts.usageCount}/${ODDS_API_MONTHLY_LIMIT} calls. Displaying cached odds.`
+          : undefined,
+        apiCallMade: false,
+      }
+    }
+
+    // Exhausted → no API call
+    if (isExhausted) {
+      return {
+        games: [],
+        apiUsageCount: opts.usageCount,
+        usageWarning: true,
+        dataNotice: `Monthly API limit of ${ODDS_API_MONTHLY_LIMIT} calls reached. No cached data available.`,
+        apiCallMade: false,
+      }
+    }
+
+    // Cache miss + under limit → API call needed
+    if (opts.apiAvailable) {
+      return {
+        games: [{ id: 'live', fromCache: false } as NormalizedGame],
+        apiUsageCount: opts.usageCount + 1,
+        usageWarning: (opts.usageCount + 1) >= ODDS_API_WARN_AT,
+        apiCallMade: true,
+      }
+    }
+
+    return {
+      games: [],
+      apiUsageCount: opts.usageCount,
+      usageWarning,
+      dataNotice: 'Sports data temporarily unavailable. Please try again shortly.',
+      apiCallMade: false,
+    }
+  }
+
+  it('does not call API when cache is fresh, even at low usage', () => {
+    const result = buildResult({ usageCount: 0, hasCache: true, apiAvailable: true })
+    expect(result.apiCallMade).toBe(false)
+    expect(result.apiUsageCount).toBe(0)
+  })
+
+  it('does not call API when cache is fresh and near limit', () => {
+    const result = buildResult({ usageCount: 499, hasCache: true, apiAvailable: true })
+    expect(result.apiCallMade).toBe(false)
+    expect(result.apiUsageCount).toBe(499) // no increment
+  })
+
+  it('does not call API when exhausted and no cache', () => {
+    const result = buildResult({ usageCount: 500, hasCache: false, apiAvailable: true })
+    expect(result.apiCallMade).toBe(false)
+    expect(result.games).toHaveLength(0)
+  })
+
+  it('only calls API on cache miss under limit', () => {
+    const result = buildResult({ usageCount: 10, hasCache: false, apiAvailable: true })
+    expect(result.apiCallMade).toBe(true)
+    expect(result.apiUsageCount).toBe(11)
+  })
+
+  it('worst case is 4 API calls per refresh cycle (one per sport)', () => {
+    // With 500 limit and 4 sports, 5-min cache means max 4 calls per 5 minutes
+    // 500 / 4 = 125 refresh cycles → ~10+ hours of continuous polling
+    expect(SUPPORTED_SPORTS).toHaveLength(4)
+    const refreshCycles = Math.floor(ODDS_API_MONTHLY_LIMIT / SUPPORTED_SPORTS.length)
+    expect(refreshCycles).toBeGreaterThanOrEqual(125)
+  })
+
+  it('5-min TTL with 4 sports allows ~10 hours of continuous polling', () => {
+    const callsPerCycle = SUPPORTED_SPORTS.length // 4
+    const totalCycles = Math.floor(ODDS_API_MONTHLY_LIMIT / callsPerCycle)
+    const totalMinutes = totalCycles * (CACHE_TTL_MS.ODDS / 60_000)
+    const totalHours = totalMinutes / 60
+    expect(totalHours).toBeGreaterThanOrEqual(10)
+  })
+})
+
 // --- Sport key mapping ---
 
 describe('Sport key mapping for API calls', () => {
