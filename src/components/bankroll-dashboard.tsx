@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/toast'
 import { calculateBankrollStats, kellyCriterion, type BankrollStats, type BankrollConfig } from '@/lib/bankroll'
 import { profitColor } from '@/lib/format'
+import { TermTooltip } from '@/components/term-tooltip'
 
 const STORAGE_KEY = 'betbrain-bankroll-config'
 
@@ -138,7 +139,7 @@ function StatsCards({ stats, config }: { stats: BankrollStats; config: BankrollC
       </div>
 
       <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-4 sm:col-span-2 lg:col-span-4">
-        <p className="text-sm text-purple-400">Kelly Criterion Guidance</p>
+        <p className="text-sm text-purple-400"><TermTooltip term="Kelly">Kelly Criterion</TermTooltip> Guidance</p>
         <p className="mt-1 text-sm text-muted-foreground">
           At 55% win rate with -110 odds, Kelly suggests betting{' '}
           <span className="font-semibold text-purple-400">{(kellyExample * 100).toFixed(1)}%</span> of bankroll

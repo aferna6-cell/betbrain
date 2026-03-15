@@ -320,7 +320,7 @@ function StatsSummary({ stats, clvStats }: { stats: PickStats; clvStats: CLVStat
           </p>
         </div>
         <div className="rounded-lg border border-border bg-card p-4">
-          <p className="text-sm text-muted-foreground">ROI</p>
+          <p className="text-sm text-muted-foreground"><TermTooltip term="ROI">ROI</TermTooltip></p>
           <p
             className={`mt-1 text-xl font-semibold ${
               stats.roi > 0
