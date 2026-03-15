@@ -18,14 +18,18 @@ export default async function BillingPage() {
 
   const { data } = await supabase
     .from('profiles')
-    .select('subscription_tier, stripe_customer_id, stripe_subscription_id')
+    .select('subscription_tier, stripe_customer_id, stripe_subscription_id, analyses_today')
     .eq('id', user!.id)
     .single()
 
   const profile = data as Pick<
     Profile,
-    'subscription_tier' | 'stripe_customer_id' | 'stripe_subscription_id'
+    'subscription_tier' | 'stripe_customer_id' | 'stripe_subscription_id' | 'analyses_today'
   > | null
+
+  const tier = profile?.subscription_tier ?? 'free'
+  const analysesToday = profile?.analyses_today ?? 0
+  const limit = tier === 'pro' ? null : 3
 
   return (
     <div className="space-y-6">
@@ -36,8 +40,27 @@ export default async function BillingPage() {
         </p>
       </div>
 
+      {/* Daily quota display */}
+      <div className="rounded-lg border border-border bg-card p-4 flex items-center justify-between">
+        <div>
+          <p className="text-sm text-muted-foreground">AI Analyses Today</p>
+          <p className="text-xl font-bold">
+            {analysesToday}
+            {limit !== null && (
+              <span className="text-sm font-normal text-muted-foreground"> / {limit}</span>
+            )}
+            {limit === null && (
+              <span className="ml-2 text-sm font-normal text-green-500">Unlimited</span>
+            )}
+          </p>
+        </div>
+        {limit !== null && analysesToday >= limit && (
+          <span className="text-xs text-yellow-500">Daily limit reached — upgrade to Pro for unlimited</span>
+        )}
+      </div>
+
       <BillingPanel
-        tier={profile?.subscription_tier ?? 'free'}
+        tier={tier}
         hasSubscription={!!profile?.stripe_subscription_id}
       />
     </div>
