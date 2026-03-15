@@ -4,16 +4,9 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { formatOdds } from '@/lib/odds'
+import { formatTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { DigestContent } from '@/lib/digest'
-
-function formatTime(isoString: string): string {
-  return new Date(isoString).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
 
 export function DigestPreview({ digest }: { digest: DigestContent }) {
   const [sending, setSending] = useState(false)

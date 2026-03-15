@@ -41,6 +41,35 @@ export function formatGameTime(isoString: string): string {
   })
 }
 
+/** Format just the time portion — "7:30 PM". */
+export function formatTime(isoString: string): string {
+  return new Date(isoString).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+}
+
+/** Format as short date with time — "Mar 14, 7:30 PM". */
+export function formatDateTime(isoString: string): string {
+  return new Date(isoString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+}
+
+/** Format as short date with year — "Mar 14, 2026". */
+export function formatDateShort(isoString: string): string {
+  return new Date(isoString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
 /**
  * Format a game time with weekday — "Sat, Mar 14, 7:30 PM".
  * No today/tomorrow detection, always shows full date.

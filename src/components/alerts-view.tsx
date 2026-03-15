@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { formatOdds } from '@/lib/odds'
+import { formatDateTime } from '@/lib/format'
 
 interface AlertRule {
   id: string
@@ -18,15 +19,6 @@ interface AlertRule {
   created_at: string
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
 
 function AlertCard({
   alert,
@@ -85,7 +77,7 @@ function AlertCard({
             {alert.triggered_at && (
               <span className="text-muted-foreground">
                 {' '}
-                — {formatDate(alert.triggered_at)}
+                — {formatDateTime(alert.triggered_at)}
               </span>
             )}
           </p>
@@ -93,7 +85,7 @@ function AlertCard({
       )}
 
       <p className="mt-2 text-xs text-muted-foreground">
-        Created {formatDate(alert.created_at)}
+        Created {formatDateTime(alert.created_at)}
       </p>
     </div>
   )

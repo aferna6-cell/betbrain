@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { formatOdds } from '@/lib/odds'
+import { formatTime, formatDateTime } from '@/lib/format'
 
 interface OddsSnapshot {
   bookmaker: string
@@ -30,26 +31,6 @@ const BOOKMAKER_COLORS = [
   '#ec4899', // pink
   '#f97316', // orange
 ]
-
-function formatTime(isoString: string): string {
-  const date = new Date(isoString)
-  return date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
-
-function formatDate(isoString: string): string {
-  const date = new Date(isoString)
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
-}
 
 interface LineMovementChartProps {
   gameId: string
@@ -120,7 +101,7 @@ export function LineMovementChart({
   const chartData = timestamps.map((ts) => {
     const point: Record<string, string | number | null> = {
       time: ts,
-      label: timestamps.length > 24 ? formatDate(ts) : formatTime(ts),
+      label: timestamps.length > 24 ? formatDateTime(ts) : formatTime(ts),
     }
     for (const bk of bookmakers) {
       const snap = snapshots.find(

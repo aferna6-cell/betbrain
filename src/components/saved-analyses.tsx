@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/toast'
-import { RISK_COLORS } from '@/lib/format'
+import { RISK_COLORS, formatDateShort } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { RiskLevel, Sport } from '@/lib/supabase/types'
 
@@ -49,14 +49,6 @@ const RISK_BADGE_CLASSES: Record<RiskLevel, string> = {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function formatDate(isoString: string): string {
-  return new Date(isoString).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
-}
 
 function getValueSide(valueAssessment: Record<string, unknown>): string {
   const side = valueAssessment?.side
@@ -241,7 +233,7 @@ function SavedAnalysisCard({
               Analysis data no longer available
             </p>
             <p className="text-xs text-muted-foreground">
-              Saved {formatDate(item.created_at)}
+              Saved {formatDateShort(item.created_at)}
             </p>
           </div>
           <Button
@@ -290,7 +282,7 @@ function SavedAnalysisCard({
               {getValueSide(insight.value_assessment)}
             </span>
             <span className="text-xs text-muted-foreground">
-              Saved {formatDate(item.created_at)}
+              Saved {formatDateShort(item.created_at)}
             </span>
           </div>
 
