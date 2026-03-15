@@ -427,6 +427,22 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
     }
   }
 
+  async function handleDeletePick(pickId: string) {
+    if (!confirm('Delete this pick? This cannot be undone.')) return
+
+    try {
+      const res = await fetch(`/api/picks?id=${pickId}`, { method: 'DELETE' })
+      if (res.ok) {
+        addToast('Pick deleted', 'success')
+        onUpdate()
+      } else {
+        addToast('Failed to delete pick', 'error')
+      }
+    } catch {
+      addToast('Network error', 'error')
+    }
+  }
+
   async function handleSetClosingOdds(pickId: string) {
     const input = prompt('Enter closing odds (American format, e.g. -115):')
     if (!input) return
@@ -478,6 +494,7 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
             <th className="px-4 py-3 font-medium text-right">Units</th>
             <th className="px-4 py-3 font-medium text-center">Outcome</th>
             <th className="px-4 py-3 font-medium text-right">Profit</th>
+            <th className="px-4 py-3 font-medium w-8"></th>
           </tr>
         </thead>
         <tbody>
@@ -576,6 +593,15 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
                 ) : (
                   '—'
                 )}
+              </td>
+              <td className="px-2 py-3 text-center">
+                <button
+                  onClick={() => handleDeletePick(pick.id)}
+                  className="text-xs text-zinc-600 hover:text-red-500 transition-colors"
+                  title="Delete pick"
+                >
+                  x
+                </button>
               </td>
             </tr>
           ))}

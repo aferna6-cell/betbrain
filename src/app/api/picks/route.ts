@@ -216,3 +216,32 @@ export async function PATCH(request: Request) {
     return NextResponse.json(data as UserPickRow)
   })
 }
+
+export async function DELETE(request: Request) {
+  return withAuthenticatedRoute(request, 'delete-pick', async ({ user }) => {
+    const { searchParams } = new URL(request.url)
+    const pickId = searchParams.get('id')
+
+    if (!pickId) {
+      return badRequest('id query parameter is required')
+    }
+
+    const supabase = await createServiceClient()
+
+    const { error } = await supabase
+      .from('user_picks')
+      .delete()
+      .eq('id', pickId)
+      .eq('user_id', user.id)
+
+    if (error) {
+      console.error('[picks] Failed to delete pick:', error.message)
+      return NextResponse.json(
+        { error: 'Failed to delete pick. Please try again.' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({ deleted: true })
+  })
+}
