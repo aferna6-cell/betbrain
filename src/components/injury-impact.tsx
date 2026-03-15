@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { MAGNITUDE_COLORS } from '@/lib/format'
 
 interface InjuryImpactResult {
   playerName: string
@@ -33,11 +34,6 @@ const INJURY_STATUSES = [
   'Limited',
 ]
 
-const MAGNITUDE_COLORS = {
-  large: 'text-red-500',
-  moderate: 'text-yellow-500',
-  small: 'text-green-500',
-} as const
 
 interface InjuryImpactPanelProps {
   gameId: string

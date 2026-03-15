@@ -86,6 +86,27 @@ export function formatGameTimeFull(isoString: string): string {
   })
 }
 
+/** Text color for profit/loss values — green for positive, red for negative. */
+export function profitColor(value: number): string {
+  if (value > 0) return 'text-green-500'
+  if (value < 0) return 'text-red-500'
+  return ''
+}
+
+/** Text color for win rate — green above 55%, red below 50%. */
+export function winRateColor(value: number): string {
+  if (value > 55) return 'text-green-500'
+  if (value < 50) return 'text-red-500'
+  return ''
+}
+
+/** Tailwind text colors for impact magnitude levels. */
+export const MAGNITUDE_COLORS: Record<string, string> = {
+  large: 'text-red-500',
+  moderate: 'text-yellow-500',
+  small: 'text-green-500',
+} as const
+
 /**
  * Relative time string — "2m ago", "1h ago", "3d ago".
  * Returns null if the input is falsy.

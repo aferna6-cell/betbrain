@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { profitColor, winRateColor } from '@/lib/format'
 import type { LeaderboardEntry, LeaderboardResult } from '@/lib/leaderboard'
 
 // ---------------------------------------------------------------------------
@@ -25,17 +26,6 @@ function formatWinRate(value: number): string {
   return `${value.toFixed(1)}%`
 }
 
-function profitColor(value: number): string {
-  if (value > 0) return 'text-green-500'
-  if (value < 0) return 'text-red-500'
-  return ''
-}
-
-function winRateColor(value: number): string {
-  if (value > 55) return 'text-green-500'
-  if (value < 50) return 'text-red-500'
-  return ''
-}
 
 function streakColor(streak: string): string {
   return streak.startsWith('W') ? 'text-green-500' : 'text-red-500'
