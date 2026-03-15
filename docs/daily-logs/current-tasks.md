@@ -1,6 +1,6 @@
 # Current Tasks — 2026-03-14
 
-## Completed This Session (Cycles 28-38)
+## Completed This Session (Cycles 28-44)
 
 ### Improvements (Cycles 28-36)
 - [x] Health check fixes — false positive secrets scanner, disclaimer detection _(Cycle 28)_
@@ -26,21 +26,32 @@
 - [x] Fix `any` type usage — replaced with typed SupabaseClient helper
 - [x] Remove unused imports/variables across 6 files
 
-### Tests (Cycles 29-35)
+### Tests (Cycles 29-41)
 - [x] Backtesting tests — 52 tests _(Cycle 29)_
 - [x] Signals + digest tests — 95 tests _(Cycle 31)_
 - [x] Leaderboard + onboarding tests — 94 tests _(Cycle 31)_
 - [x] Env helper tests — 40 tests _(Cycle 31)_
 - [x] Watchlist tests — 45 tests _(Cycle 34)_
 - [x] Odds conversion tests — 75 tests _(Cycle 35)_
-- [ ] Parlay analyzer tests _(Cycle 38 — in progress)_
-- [ ] Prop analyzer tests _(Cycle 38 — in progress)_
+- [x] Parlay analyzer tests — 61 tests _(Cycle 38)_
+- [x] Prop analyzer tests — 74 tests _(Cycle 38)_
+- [x] Route handler tests — 14 tests _(Cycle 39)_
+- [x] Sports config tests — 43 tests _(Cycle 40)_
+- [x] Alert condition tests — 27 tests _(Cycle 41)_
+
+### SEO & UX (Cycles 38-44)
+- [x] robots.txt + sitemap.xml _(Cycle 38)_
+- [x] Picks error logging fix _(Cycle 39)_
+- [x] PWA manifest _(Cycle 40)_
+- [x] Loading skeletons — billing, league, profile pages _(Cycle 42)_
+- [x] JSON-LD structured data — landing page + FAQ _(Cycle 43)_
+- [x] Profile page metadata fix _(Cycle 44)_
 
 ## Stats
-- 522 tests passing across 15 test files
+- 743 tests passing across 20 test files
 - Build: PASS | Lint: PASS (0 errors, 0 warnings) | TypeScript: PASS
 - Health check: all PASS (except migration drift — expected)
-- 38 development cycles completed
+- 44 development cycles completed
 
 ## Backlog Status: COMPLETE + IMPROVEMENTS
 All original backlog items done. Now in improvement/hardening phase.
