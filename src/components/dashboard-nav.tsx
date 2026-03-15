@@ -39,7 +39,7 @@ export function DashboardNav({ user }: { user: User }) {
           >
             BetBrain
           </Link>
-          <nav className="hidden items-center gap-1 sm:flex">
+          <nav aria-label="Main navigation" className="hidden items-center gap-1 sm:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -72,6 +72,7 @@ export function DashboardNav({ user }: { user: User }) {
             className="sm:hidden rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
+            aria-controls="mobile-nav-menu"
             onClick={() => setMobileOpen((prev) => !prev)}
           >
             {mobileOpen ? (
@@ -116,8 +117,8 @@ export function DashboardNav({ user }: { user: User }) {
 
       {/* Mobile menu panel */}
       {mobileOpen && (
-        <div className="sm:hidden border-t border-border bg-card">
-          <nav className="flex flex-col px-4 py-2">
+        <div id="mobile-nav-menu" className="sm:hidden border-t border-border bg-card">
+          <nav aria-label="Mobile navigation" className="flex flex-col px-4 py-2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

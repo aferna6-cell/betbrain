@@ -51,7 +51,8 @@
 - [x] **Dark/light theme toggle** — User preference for theme _(Cycle 32)_
 - [x] **Game watchlist** — Star/favorite games for quick access from dashboard _(Cycle 33)_
 - [x] **Dashboard stats summary** — Cards showing total picks, win rate, ROI at top of dashboard _(Cycle 33)_
-- [ ] **Accessibility audit** — ARIA labels, focus management, screen reader support
+- [x] **Accessibility audit** — ARIA labels, focus management, screen reader support _(Cycle 34)_
+- [x] **Watchlist tests** — Unit tests for localStorage watchlist helpers _(Cycle 34)_
 - [x] **Performance monitoring** — Web Vitals tracking component _(Cycle 33)_
 
 ## Tests

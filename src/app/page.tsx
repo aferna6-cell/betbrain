@@ -60,7 +60,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
 
       {/* Nav */}
-      <nav className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
+      <nav aria-label="Site navigation" className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <span className="text-base font-semibold tracking-tight text-white">
             BetBrain
@@ -81,6 +81,8 @@ export default function LandingPage() {
           </div>
         </div>
       </nav>
+
+      <main id="main-content">
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
@@ -310,6 +312,8 @@ export default function LandingPage() {
         </div>
       </section>
 
+      </main>
+
       {/* Footer */}
       <footer className="border-t border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
@@ -331,7 +335,7 @@ export default function LandingPage() {
 
             {/* Links */}
             <div className="flex flex-row sm:flex-row gap-8 sm:gap-12 text-sm shrink-0">
-              <nav className="flex flex-col gap-2">
+              <nav aria-label="Product links" className="flex flex-col gap-2">
                 <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-1">Product</span>
                 <Link
                   href="/dashboard"
@@ -352,7 +356,7 @@ export default function LandingPage() {
                   Blog
                 </Link>
               </nav>
-              <nav className="flex flex-col gap-2">
+              <nav aria-label="Account links" className="flex flex-col gap-2">
                 <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-1">Account</span>
                 <Link
                   href="/login"

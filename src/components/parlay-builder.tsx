@@ -29,13 +29,18 @@ function LegInput({
   onRemove: () => void
   canRemove: boolean
 }) {
+  const descId = `parlay-leg-desc-${index}`
+  const oddsId = `parlay-leg-odds-${index}`
+  const sportId = `parlay-leg-sport-${index}`
+
   return (
     <div className="flex items-end gap-2 rounded-md border border-border bg-muted/30 p-3">
       <div className="flex-1">
-        <label className="mb-1 block text-xs font-medium text-muted-foreground">
+        <label htmlFor={descId} className="mb-1 block text-xs font-medium text-muted-foreground">
           Leg {index + 1}
         </label>
         <input
+          id={descId}
           type="text"
           value={leg.description}
           onChange={(e) => onChange({ ...leg, description: e.target.value })}
@@ -44,10 +49,11 @@ function LegInput({
         />
       </div>
       <div className="w-24">
-        <label className="mb-1 block text-xs font-medium text-muted-foreground">
+        <label htmlFor={oddsId} className="mb-1 block text-xs font-medium text-muted-foreground">
           Odds
         </label>
         <input
+          id={oddsId}
           type="number"
           value={leg.odds || ''}
           onChange={(e) =>
@@ -58,10 +64,11 @@ function LegInput({
         />
       </div>
       <div className="w-24">
-        <label className="mb-1 block text-xs font-medium text-muted-foreground">
+        <label htmlFor={sportId} className="mb-1 block text-xs font-medium text-muted-foreground">
           Sport
         </label>
         <select
+          id={sportId}
           value={leg.sport}
           onChange={(e) => onChange({ ...leg, sport: e.target.value })}
           className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
@@ -78,6 +85,7 @@ function LegInput({
           variant="outline"
           size="sm"
           onClick={onRemove}
+          aria-label={`Remove leg ${index + 1}`}
           className="text-red-500 hover:text-red-400"
         >
           Remove

@@ -116,10 +116,11 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-gameId" className="mb-1 block text-sm text-muted-foreground">
             Game ID
           </label>
           <input
+            id="pick-gameId"
             name="gameId"
             required
             placeholder="External game ID"
@@ -128,10 +129,10 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-sport" className="mb-1 block text-sm text-muted-foreground">
             Sport
           </label>
-          <select name="sport" required className={inputClass}>
+          <select id="pick-sport" name="sport" required className={inputClass}>
             <option value="nba">NBA</option>
             <option value="nfl">NFL</option>
             <option value="mlb">MLB</option>
@@ -140,10 +141,10 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-pickType" className="mb-1 block text-sm text-muted-foreground">
             Pick Type
           </label>
-          <select name="pickType" required className={inputClass}>
+          <select id="pick-pickType" name="pickType" required className={inputClass}>
             <option value="moneyline">Moneyline</option>
             <option value="spread">Spread</option>
             <option value="over">Over</option>
@@ -153,10 +154,11 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-pickTeam" className="mb-1 block text-sm text-muted-foreground">
             Team / Side
           </label>
           <input
+            id="pick-pickTeam"
             name="pickTeam"
             placeholder="e.g. Lakers"
             className={inputClass}
@@ -164,10 +166,11 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-pickLine" className="mb-1 block text-sm text-muted-foreground">
             Line
           </label>
           <input
+            id="pick-pickLine"
             name="pickLine"
             type="number"
             step="0.5"
@@ -177,10 +180,11 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-odds" className="mb-1 block text-sm text-muted-foreground">
             Odds (American)
           </label>
           <input
+            id="pick-odds"
             name="odds"
             type="number"
             required
@@ -190,10 +194,11 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-units" className="mb-1 block text-sm text-muted-foreground">
             Units
           </label>
           <input
+            id="pick-units"
             name="units"
             type="number"
             step="0.5"
@@ -204,10 +209,11 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-gameDate" className="mb-1 block text-sm text-muted-foreground">
             Game Date
           </label>
           <input
+            id="pick-gameDate"
             name="gameDate"
             type="date"
             required
@@ -217,10 +223,11 @@ function PickForm({ onSubmit }: { onSubmit: () => void }) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-muted-foreground">
+          <label htmlFor="pick-notes" className="mb-1 block text-sm text-muted-foreground">
             Notes
           </label>
           <input
+            id="pick-notes"
             name="notes"
             placeholder="Optional notes"
             className={inputClass}

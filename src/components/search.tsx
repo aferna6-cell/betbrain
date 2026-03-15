@@ -145,10 +145,16 @@ export function SearchPalette() {
     active?.scrollIntoView({ block: 'nearest' })
   }, [activeIndex])
 
-  // Keyboard navigation inside the palette
+  // Keyboard navigation inside the palette (includes focus trap on Tab)
   function handlePaletteKeyDown(e: React.KeyboardEvent) {
     if (e.key === 'Escape') {
       closePalette()
+      return
+    }
+    if (e.key === 'Tab') {
+      // Trap focus within the dialog — only the input is focusable, so just prevent leaving
+      e.preventDefault()
+      inputRef.current?.focus()
       return
     }
     if (e.key === 'ArrowDown') {
@@ -218,6 +224,12 @@ export function SearchPalette() {
             <input
               ref={inputRef}
               type="text"
+              role="combobox"
+              aria-label="Search pages, features, sports"
+              aria-expanded={flatItems.length > 0}
+              aria-controls="search-listbox"
+              aria-activedescendant={flatItems[activeIndex] ? `search-option-${activeIndex}` : undefined}
+              aria-autocomplete="list"
               placeholder="Search pages, features, sports..."
               value={query}
               onChange={(e) => {
@@ -241,7 +253,7 @@ export function SearchPalette() {
                 No results for &ldquo;{query}&rdquo;
               </div>
             ) : (
-              <ul ref={listRef} role="listbox" className="py-2">
+              <ul ref={listRef} id="search-listbox" role="listbox" className="py-2">
                 {grouped.map((group) => {
                   // Track the global index offset for this group
                   const groupOffset = flatItems.indexOf(group.items[0])
@@ -258,6 +270,7 @@ export function SearchPalette() {
                           return (
                             <li
                               key={item.path}
+                              id={`search-option-${globalIdx}`}
                               role="option"
                               aria-selected={isActive}
                               data-active={isActive}

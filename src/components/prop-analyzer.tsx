@@ -218,10 +218,11 @@ export function PropAnalyzerForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Player Name */}
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label htmlFor="prop-playerName" className="mb-1 block text-sm font-medium">
               Player Name
             </label>
             <input
+              id="prop-playerName"
               type="text"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
@@ -233,8 +234,9 @@ export function PropAnalyzerForm() {
 
           {/* Sport */}
           <div>
-            <label className="mb-1 block text-sm font-medium">Sport</label>
+            <label htmlFor="prop-sport" className="mb-1 block text-sm font-medium">Sport</label>
             <select
+              id="prop-sport"
               value={sport}
               onChange={(e) => setSport(e.target.value)}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
@@ -249,10 +251,11 @@ export function PropAnalyzerForm() {
 
           {/* Team */}
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label htmlFor="prop-team" className="mb-1 block text-sm font-medium">
               Player&apos;s Team
             </label>
             <input
+              id="prop-team"
               type="text"
               value={team}
               onChange={(e) => setTeam(e.target.value)}
@@ -264,8 +267,9 @@ export function PropAnalyzerForm() {
 
           {/* Opponent */}
           <div>
-            <label className="mb-1 block text-sm font-medium">Opponent</label>
+            <label htmlFor="prop-opponent" className="mb-1 block text-sm font-medium">Opponent</label>
             <input
+              id="prop-opponent"
               type="text"
               value={opponent}
               onChange={(e) => setOpponent(e.target.value)}
@@ -277,10 +281,11 @@ export function PropAnalyzerForm() {
 
           {/* Prop Market */}
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label htmlFor="prop-market" className="mb-1 block text-sm font-medium">
               Prop Market
             </label>
             <select
+              id="prop-market"
               value={propMarket}
               onChange={(e) => setPropMarket(e.target.value)}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
@@ -295,8 +300,9 @@ export function PropAnalyzerForm() {
 
           {/* Line */}
           <div>
-            <label className="mb-1 block text-sm font-medium">Line</label>
+            <label htmlFor="prop-line" className="mb-1 block text-sm font-medium">Line</label>
             <input
+              id="prop-line"
               type="number"
               step="0.5"
               value={line}
@@ -309,8 +315,9 @@ export function PropAnalyzerForm() {
 
           {/* Over Odds */}
           <div>
-            <label className="mb-1 block text-sm font-medium">Over Odds</label>
+            <label htmlFor="prop-overOdds" className="mb-1 block text-sm font-medium">Over Odds</label>
             <input
+              id="prop-overOdds"
               type="number"
               value={overOdds}
               onChange={(e) => setOverOdds(e.target.value)}
@@ -322,10 +329,11 @@ export function PropAnalyzerForm() {
 
           {/* Under Odds */}
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label htmlFor="prop-underOdds" className="mb-1 block text-sm font-medium">
               Under Odds
             </label>
             <input
+              id="prop-underOdds"
               type="number"
               value={underOdds}
               onChange={(e) => setUnderOdds(e.target.value)}

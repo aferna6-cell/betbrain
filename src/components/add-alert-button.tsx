@@ -92,8 +92,10 @@ export function AddAlertButton({
       <p className="text-xs font-medium text-muted-foreground">
         Alert me when:
       </p>
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap items-center">
+        <label htmlFor="alert-side" className="sr-only">Team</label>
         <select
+          id="alert-side"
           value={side}
           onChange={(e) => setSide(e.target.value as 'home' | 'away')}
           className="h-8 rounded-md border border-border bg-background px-2 text-xs"
@@ -101,10 +103,12 @@ export function AddAlertButton({
           <option value="home">{homeTeam}</option>
           <option value="away">{awayTeam}</option>
         </select>
-        <span className="flex items-center text-xs text-muted-foreground">
+        <span className="flex items-center text-xs text-muted-foreground" aria-hidden="true">
           ML goes
         </span>
+        <label htmlFor="alert-condition" className="sr-only">Condition</label>
         <select
+          id="alert-condition"
           value={condition}
           onChange={(e) =>
             setCondition(e.target.value as 'above' | 'below')
@@ -114,7 +118,9 @@ export function AddAlertButton({
           <option value="above">above</option>
           <option value="below">below</option>
         </select>
+        <label htmlFor="alert-threshold" className="sr-only">Threshold odds</label>
         <input
+          id="alert-threshold"
           type="number"
           value={threshold}
           onChange={(e) => setThreshold(e.target.value)}

@@ -63,6 +63,7 @@ function AlertCard({
         </div>
         <button
           onClick={() => onDelete(alert.id)}
+          aria-label={`Delete alert for ${alert.team}`}
           className="text-xs text-muted-foreground hover:text-red-500"
         >
           Delete
