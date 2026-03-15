@@ -3,6 +3,13 @@
  * Pure functions — no side effects, no external dependencies.
  */
 
+/** Tailwind text colors for risk levels. */
+export const RISK_COLORS: Record<string, string> = {
+  low: 'text-green-500',
+  medium: 'text-yellow-500',
+  high: 'text-red-500',
+} as const
+
 /**
  * Format a game time with smart "Today"/"Tomorrow" labels.
  * Falls back to "Mon, Mar 14, 7:30 PM" format for other dates.

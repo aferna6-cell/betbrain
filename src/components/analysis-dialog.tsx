@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { RISK_COLORS } from '@/lib/format'
 import type { NormalizedGame } from '@/lib/sports/config'
 
 interface GameAnalysis {
@@ -17,12 +18,6 @@ interface GameAnalysis {
   disclaimer: string
   fromCache: boolean
 }
-
-const RISK_COLORS = {
-  low: 'text-green-500',
-  medium: 'text-yellow-500',
-  high: 'text-red-500',
-} as const
 
 export function AnalyzeButton({ game }: { game: NormalizedGame }) {
   const [analysis, setAnalysis] = useState<GameAnalysis | null>(null)

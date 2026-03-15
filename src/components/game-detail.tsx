@@ -22,7 +22,7 @@ import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
 import { formatOdds } from '@/lib/odds'
-import { formatGameTimeFull } from '@/lib/format'
+import { formatGameTimeFull, RISK_COLORS } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame, NormalizedBookmakerOdds } from '@/lib/sports/config'
 
@@ -44,11 +44,6 @@ interface GameAnalysis {
   fromCache: boolean
 }
 
-const RISK_COLORS = {
-  low: 'text-green-500',
-  medium: 'text-yellow-500',
-  high: 'text-red-500',
-} as const
 
 // ---------------------------------------------------------------------------
 // Helpers

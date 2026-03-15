@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/toast'
+import { RISK_COLORS } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { RiskLevel, Sport } from '@/lib/supabase/types'
 
@@ -38,12 +39,6 @@ interface SavedAnalysisRow {
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-const RISK_COLORS: Record<RiskLevel, string> = {
-  low: 'text-green-500',
-  medium: 'text-yellow-500',
-  high: 'text-red-500',
-}
 
 const RISK_BADGE_CLASSES: Record<RiskLevel, string> = {
   low: 'border-green-500/40 text-green-500',
