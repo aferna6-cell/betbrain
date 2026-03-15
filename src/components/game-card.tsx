@@ -7,10 +7,21 @@ import { formatGameTime, timeAgo } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
 
+function getOddsRange(bookmakers: NormalizedGame['bookmakers'], side: 'home' | 'away'): number | null {
+  const odds = bookmakers
+    .map((bk) => side === 'home' ? bk.moneyline?.home : bk.moneyline?.away)
+    .filter((v): v is number => v != null)
+  if (odds.length < 2) return null
+  return Math.max(...odds) - Math.min(...odds)
+}
+
 export function GameCard({ game }: { game: NormalizedGame }) {
   const topBookmakers = game.bookmakers.slice(0, 3)
   const bestHome = getBestMoneyline(game.bookmakers, 'home')
   const bestAway = getBestMoneyline(game.bookmakers, 'away')
+  const homeRange = getOddsRange(game.bookmakers, 'home')
+  const awayRange = getOddsRange(game.bookmakers, 'away')
+  const maxRange = Math.max(homeRange ?? 0, awayRange ?? 0)
 
   return (
     <div className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/30">
@@ -48,6 +59,15 @@ export function GameCard({ game }: { game: NormalizedGame }) {
           </span>
         </div>
       </div>
+
+      {maxRange >= 15 && (
+        <div className="mb-3 flex items-center gap-1.5">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-yellow-500" />
+          <span className="text-xs text-yellow-500">
+            {maxRange}+ pt book spread — odds disagree
+          </span>
+        </div>
+      )}
 
       {topBookmakers.length > 0 && (
         <div className="border-t border-border pt-3">
