@@ -94,6 +94,9 @@ function PickForm({
         ? Number(formData.get('pickLine'))
         : null,
       odds: Number(formData.get('odds')),
+      closingOdds: formData.get('closingOdds')
+        ? Number(formData.get('closingOdds'))
+        : null,
       units: Number(formData.get('units')) || 1,
       gameDate: formData.get('gameDate') as string,
       notes: (formData.get('notes') as string) || null,
@@ -208,6 +211,19 @@ function PickForm({
             type="number"
             required
             placeholder="e.g. -110"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="pick-closingOdds" className="mb-1 block text-sm text-muted-foreground">
+            Closing Odds
+          </label>
+          <input
+            id="pick-closingOdds"
+            name="closingOdds"
+            type="number"
+            placeholder="Optional"
             className={inputClass}
           />
         </div>

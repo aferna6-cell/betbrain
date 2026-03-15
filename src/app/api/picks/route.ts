@@ -22,6 +22,7 @@ export async function POST(request: Request) {
       pickTeam?: string
       pickLine?: number
       odds?: number
+      closingOdds?: number
       units?: number
       gameDate?: string
       notes?: string
@@ -39,6 +40,7 @@ export async function POST(request: Request) {
       pickTeam,
       pickLine,
       odds,
+      closingOdds,
       units,
       gameDate,
       notes,
@@ -71,6 +73,7 @@ export async function POST(request: Request) {
       pick_team: pickTeam ?? null,
       pick_line: pickLine ?? null,
       odds,
+      closing_odds: closingOdds ?? null,
       units: units ?? 1,
       game_date: gameDate,
       notes: notes ?? null,
