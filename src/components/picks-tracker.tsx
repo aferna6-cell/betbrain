@@ -420,8 +420,23 @@ function StatsSummary({ stats, clvStats }: { stats: PickStats; clvStats: CLVStat
 // Picks Table
 // ---------------------------------------------------------------------------
 
+type SortKey = 'date' | 'profit' | 'clv'
+type FilterOutcome = 'all' | 'win' | 'loss' | 'pending'
+
 function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => void }) {
   const { addToast } = useToast()
+  const [filterOutcome, setFilterOutcome] = useState<FilterOutcome>('all')
+  const [filterSport, setFilterSport] = useState<string>('all')
+  const [sortKey, setSortKey] = useState<SortKey>('date')
+
+  const filteredPicks = picks
+    .filter((p) => filterOutcome === 'all' || (p.outcome ?? 'pending') === filterOutcome)
+    .filter((p) => filterSport === 'all' || p.sport === filterSport)
+    .sort((a, b) => {
+      if (sortKey === 'profit') return (b.profit ?? 0) - (a.profit ?? 0)
+      if (sortKey === 'clv') return (b.clv ?? 0) - (a.clv ?? 0)
+      return new Date(b.game_date).getTime() - new Date(a.game_date).getTime()
+    })
 
   async function handleSetOutcome(pickId: string, odds: number, units: number) {
     const choice = prompt('Enter outcome: win, loss, or push')
@@ -510,8 +525,34 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
     )
   }
 
+  const selectClass = 'h-7 rounded border border-border bg-background px-2 text-xs'
+  const sports = [...new Set(picks.map((p) => p.sport))]
+
   return (
-    <div className="overflow-x-auto rounded-lg border border-border">
+    <div className="space-y-2">
+      {/* Filters + Sort */}
+      <div className="flex flex-wrap items-center gap-2">
+        <select value={filterOutcome} onChange={(e) => setFilterOutcome(e.target.value as FilterOutcome)} className={selectClass}>
+          <option value="all">All outcomes</option>
+          <option value="win">Wins</option>
+          <option value="loss">Losses</option>
+          <option value="pending">Pending</option>
+        </select>
+        <select value={filterSport} onChange={(e) => setFilterSport(e.target.value)} className={selectClass}>
+          <option value="all">All sports</option>
+          {sports.map((s) => <option key={s} value={s}>{s.toUpperCase()}</option>)}
+        </select>
+        <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className={selectClass}>
+          <option value="date">Sort: Date</option>
+          <option value="profit">Sort: Profit</option>
+          <option value="clv">Sort: CLV</option>
+        </select>
+        <span className="text-xs text-muted-foreground ml-auto">
+          {filteredPicks.length} of {picks.length} picks
+        </span>
+      </div>
+
+      <div className="overflow-x-auto rounded-lg border border-border">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border bg-card text-left text-xs text-muted-foreground">
@@ -529,7 +570,7 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
           </tr>
         </thead>
         <tbody>
-          {picks.map((pick) => (
+          {filteredPicks.map((pick) => (
             <tr
               key={pick.id}
               className="border-b border-border/50 bg-card/50"
@@ -638,6 +679,7 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   )
 }
