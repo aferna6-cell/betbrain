@@ -278,6 +278,47 @@ export default async function ProfilePage() {
           </Card>
         )}
 
+        {stats.total >= 3 && (() => {
+          const sports = ['nba', 'nfl', 'mlb', 'nhl'] as const
+          const sportStats = sports.map((s) => {
+            const sp = picks.filter((p) => p.sport === s)
+            const res = sp.filter((p) => p.outcome && p.outcome !== 'pending')
+            const w = res.filter((p) => p.outcome === 'win').length
+            const l = res.filter((p) => p.outcome === 'loss').length
+            const profit = res.reduce((sum, p) => sum + (p.profit ?? 0), 0)
+            const units = res.reduce((sum, p) => sum + p.units, 0)
+            const roi = units > 0 ? Math.round((profit / units) * 10000) / 100 : 0
+            return { sport: s, total: sp.length, wins: w, losses: l, roi }
+          }).filter((s) => s.total > 0)
+
+          if (sportStats.length < 2) return null
+
+          return (
+            <Card>
+              <CardHeader>
+                <CardTitle>Performance by Sport</CardTitle>
+                <CardDescription>Your record across each sport</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {sportStats.map((s) => (
+                    <div key={s.sport} className="flex items-center justify-between rounded border border-border/50 px-3 py-2">
+                      <span className="text-sm font-medium uppercase">{s.sport}</span>
+                      <div className="flex items-center gap-4 text-sm">
+                        <span>{s.wins}W-{s.losses}L</span>
+                        <span className={`font-mono ${s.roi > 0 ? 'text-green-400' : s.roi < 0 ? 'text-red-400' : ''}`}>
+                          {s.roi > 0 ? '+' : ''}{s.roi}%
+                        </span>
+                        <span className="text-muted-foreground">{s.total} picks</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })()}
+
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Display Name</CardTitle>
