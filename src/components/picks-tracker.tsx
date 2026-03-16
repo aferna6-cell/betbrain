@@ -417,6 +417,55 @@ function StatsSummary({ stats, clvStats }: { stats: PickStats; clvStats: CLVStat
 }
 
 // ---------------------------------------------------------------------------
+// Pick Type Breakdown
+// ---------------------------------------------------------------------------
+
+function PickTypeBreakdown({ picks }: { picks: UserPick[] }) {
+  const resolved = picks.filter((p) => p.outcome && p.outcome !== 'pending')
+  if (resolved.length < 3) return null
+
+  const types = ['moneyline', 'spread', 'over', 'under', 'prop'] as const
+  const breakdown = types.map((type) => {
+    const typePicks = resolved.filter((p) => p.pick_type === type)
+    if (typePicks.length === 0) return null
+    const wins = typePicks.filter((p) => p.outcome === 'win').length
+    const losses = typePicks.filter((p) => p.outcome === 'loss').length
+    const totalProfit = typePicks.reduce((s, p) => s + (p.profit ?? 0), 0)
+    const totalUnits = typePicks.reduce((s, p) => s + p.units, 0)
+    const roi = totalUnits > 0 ? Math.round((totalProfit / totalUnits) * 10000) / 100 : 0
+    const decided = wins + losses
+    const winRate = decided > 0 ? Math.round((wins / decided) * 1000) / 10 : null
+    return { type, wins, losses, total: typePicks.length, winRate, roi }
+  }).filter(Boolean) as Array<{ type: string; wins: number; losses: number; total: number; winRate: number | null; roi: number }>
+
+  if (breakdown.length < 2) return null
+
+  return (
+    <div className="rounded-lg border border-border bg-card p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-3">Performance by Type</p>
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {breakdown.map((b) => (
+          <div key={b.type} className="flex items-center justify-between rounded border border-border/50 px-3 py-2">
+            <span className="text-xs font-medium capitalize">{b.type}</span>
+            <div className="flex items-center gap-3 text-xs">
+              <span>{b.wins}W-{b.losses}L</span>
+              {b.winRate !== null && (
+                <span className={b.winRate >= 52.4 ? 'text-green-500' : b.winRate < 50 ? 'text-red-500' : ''}>
+                  {b.winRate}%
+                </span>
+              )}
+              <span className={`font-mono ${b.roi > 0 ? 'text-green-500' : b.roi < 0 ? 'text-red-500' : ''}`}>
+                {b.roi > 0 ? '+' : ''}{b.roi}%
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Picks Table
 // ---------------------------------------------------------------------------
 
@@ -751,6 +800,7 @@ export function PicksTracker() {
   return (
     <div className="space-y-6">
       {stats && <StatsSummary stats={stats} clvStats={clvStats} />}
+      <PickTypeBreakdown picks={picks} />
       <PickForm onSubmit={handlePickSaved} onError={handlePickError} />
       <PicksTable picks={picks} onUpdate={fetchPicks} />
     </div>
