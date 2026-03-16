@@ -1,52 +1,32 @@
 # Current Tasks — 2026-03-15
 
-## Session Summary — 110 Cycles (65-110)
+## Session Summary — 120 Cycles
 
-### Features Built
-- CLV tracker (closing line value per pick + aggregate stats)
-- Bankroll management dashboard (balance, drawdown, Kelly criterion)
-- Guided onboarding checklist for first-time users
-- Spread + total alerts (was moneyline-only)
-- Betting glossary page (15 terms)
-- Dedicated watchlist page
-- Pick deletion + outcome setting
-- Digest enhanced with weekly pick stats
+### Total Output
+- 129 commits, 920 unit tests, 15 E2E tests, 56 routes
+- Build: PASS | Lint: 0 errors | TypeScript: 0 errors
+- All Phase 1 features + optimizations complete
 
-### UX Improvements
-- Implied probability on game cards + game detail odds tables
-- "Fetched Xm ago" timestamps instead of "may be outdated"
-- Bookmaker odds disagreement indicator on game cards
-- Nav notification badges (triggered alerts, pending picks)
-- Keyboard shortcuts (vim-style g+key navigation)
-- Odds converter link on game detail
-- Loading skeletons for all pages
-- Per-page error boundaries
-- Empty states for all data-empty pages
+### Features (Cycles 67-120)
+- CLV tracker, bankroll dashboard, guided onboarding, spread/total alerts
+- Betting glossary (15 terms), dedicated watchlist page, keyboard shortcuts
+- Pick filtering/sorting, pick type breakdown, sport breakdown on profile
+- Pick deletion, outcome setting, closing odds on creation form
+- Copy stats to clipboard, implied probability everywhere
+- Bookmaker odds disagreement indicator, nav notification badges
+- Digest with weekly pick stats, API docs with 6 endpoints
 
-### Code Quality
-- Input sanitization (displayName, notes — trim, length, control chars)
-- Shared color utilities (profitColor, winRateColor, MAGNITUDE_COLORS)
-- Server component conversions (smart-signals, h2h-history)
-- useFetch hook for standardized data fetching
-- odds_history 30-day retention function
-- Sitemap fixed (proper dates, removed login)
-- CSP security header added
-- SEO metadata on all public pages
-- 909 unit tests + 15 E2E smoke tests
+### Quality
+- Input sanitization (displayName, notes), CSP security header
+- Server component conversions, shared color utilities
+- Loading skeletons + error boundaries on all pages
+- SEO metadata (openGraph, robots) on all public pages
+- README rewritten, SETUP.md, DEPLOY-CHECKLIST.md
+- GitHub Actions CI, sitemap fixed, default SVGs removed
+- TermTooltip component used across dashboard
+- pick-stats.ts extracted with 9 tests
 
-### Infrastructure
-- GitHub Actions CI (lint, typecheck, test, build)
-- DEPLOY-CHECKLIST.md (comprehensive external task list)
-- SETUP.md (local development guide)
-- Migration files renamed to sequential 001-007
-- Landing page rewritten for sharp-bettor audience
-
-## Stats
-- 909 unit tests, 15 E2E tests, 56 routes
-- 119 total commits, 0 lint errors, 0 type errors
-- Build: PASS | Lint: PASS | TypeScript: PASS
-
-## External Tasks for User (see docs/DEPLOY-CHECKLIST.md)
+## External Tasks for User (docs/DEPLOY-CHECKLIST.md)
 1. Apply Supabase migrations 001-007
 2. Configure Supabase Auth redirect URLs
 3. Set 10 Vercel environment variables
