@@ -151,6 +151,21 @@
 - [x] **Sitemap fix** — fixed dates, removed login _(Cycle 105)_
 - [x] **Edge case tests** — timeAgo boundaries — 909 total _(Cycle 106)_
 
+## Final Polish (Cycles 107-120)
+- [x] **Migration naming fix** — sequential 001-007 + DEPLOY-CHECKLIST.md _(Cycle 107)_
+- [x] **GitHub Actions CI** — lint, typecheck, test, build on push/PR _(Cycle 108)_
+- [x] **SETUP.md + .env.example fix** — local dev guide, added STRIPE_PRO_PRICE_ID _(Cycle 109)_
+- [x] **README rewrite** — BetBrain-specific content _(Cycle 111)_
+- [x] **TermTooltip wired** — CLV, ROI, Kelly labels + useFetch test _(Cycle 112)_
+- [x] **Default SVGs removed** — file/globe/next/vercel/window.svg _(Cycle 113)_
+- [x] **CSP header + billing quota** — security + daily analysis display _(Cycle 114)_
+- [x] **SEO metadata** — openGraph + robots on all public pages _(Cycle 115)_
+- [x] **Copy stats button** — share pick record + CLV to clipboard _(Cycle 116)_
+- [x] **Pick filtering/sorting** — by outcome, sport, date/profit/CLV _(Cycle 117)_
+- [x] **Pick type breakdown** — W-L, win rate, ROI per moneyline/spread/etc _(Cycle 118)_
+- [x] **Sport breakdown on profile** — per-sport W-L and ROI _(Cycle 119)_
+- [x] **pick-stats.ts + 9 tests** — extracted breakdown logic to lib _(Cycle 120)_
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
