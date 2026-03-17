@@ -26,6 +26,7 @@ const navLinks = [
   { href: '/dashboard/parlay', label: 'Parlay' },
   { href: '/dashboard/backtesting', label: 'Backtest' },
   { href: '/dashboard/leaderboard', label: 'Leaders' },
+  { href: '/dashboard/analytics', label: 'Analytics' },
   { href: '/dashboard/api', label: 'API' },
   { href: '/dashboard/glossary', label: 'Glossary' },
   { href: '/dashboard/billing', label: 'Billing' },
