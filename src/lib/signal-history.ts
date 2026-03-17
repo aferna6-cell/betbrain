@@ -150,47 +150,62 @@ export async function getSignalStats(): Promise<SignalStats> {
 
   const records = data as { strength: string; sport: Sport; outcome: string | null }[]
 
-  const total = records.length
-  const resolved = records.filter((r) => r.outcome && r.outcome !== 'pending')
-  const wins = resolved.filter((r) => r.outcome === 'win')
-  const losses = resolved.filter((r) => r.outcome === 'loss')
-  const pushes = resolved.filter((r) => r.outcome === 'push')
+  // Single-pass accumulation instead of repeated .filter() chains
+  let resolvedCount = 0
+  let wins = 0
+  let losses = 0
+  let pushes = 0
+  const strength = { strong: { total: 0, wins: 0 }, moderate: { total: 0, wins: 0 } }
+  const sportAcc: Record<Sport, { total: number; wins: number }> = {
+    nba: { total: 0, wins: 0 },
+    nfl: { total: 0, wins: 0 },
+    mlb: { total: 0, wins: 0 },
+    nhl: { total: 0, wins: 0 },
+  }
 
-  const strongRecords = resolved.filter((r) => r.strength === 'strong')
-  const strongWins = strongRecords.filter((r) => r.outcome === 'win')
-  const moderateRecords = resolved.filter((r) => r.strength === 'moderate')
-  const moderateWins = moderateRecords.filter((r) => r.outcome === 'win')
+  for (const r of records) {
+    if (!r.outcome || r.outcome === 'pending') continue
+    resolvedCount++
 
-  const sports: Sport[] = ['nba', 'nfl', 'mlb', 'nhl']
-  const bySport = {} as Record<Sport, { total: number; wins: number; hitRate: number | null }>
-  for (const sport of sports) {
-    const sportResolved = resolved.filter((r) => r.sport === sport)
-    const sportWins = sportResolved.filter((r) => r.outcome === 'win')
-    bySport[sport] = {
-      total: sportResolved.length,
-      wins: sportWins.length,
-      hitRate: calcHitRate(sportWins.length, sportResolved.length),
+    if (r.outcome === 'win') wins++
+    else if (r.outcome === 'loss') losses++
+    else if (r.outcome === 'push') pushes++
+
+    const s = r.strength === 'strong' ? strength.strong : strength.moderate
+    s.total++
+    if (r.outcome === 'win') s.wins++
+
+    const sp = sportAcc[r.sport]
+    if (sp) {
+      sp.total++
+      if (r.outcome === 'win') sp.wins++
     }
   }
 
+  const bySport = {} as Record<Sport, { total: number; wins: number; hitRate: number | null }>
+  for (const sport of ['nba', 'nfl', 'mlb', 'nhl'] as Sport[]) {
+    const sp = sportAcc[sport]
+    bySport[sport] = { total: sp.total, wins: sp.wins, hitRate: calcHitRate(sp.wins, sp.total) }
+  }
+
   return {
-    total,
-    resolved: resolved.length,
-    pending: total - resolved.length,
-    wins: wins.length,
-    losses: losses.length,
-    pushes: pushes.length,
-    hitRate: calcHitRate(wins.length, resolved.length),
+    total: records.length,
+    resolved: resolvedCount,
+    pending: records.length - resolvedCount,
+    wins,
+    losses,
+    pushes,
+    hitRate: calcHitRate(wins, resolvedCount),
     byStrength: {
       strong: {
-        total: strongRecords.length,
-        wins: strongWins.length,
-        hitRate: calcHitRate(strongWins.length, strongRecords.length),
+        total: strength.strong.total,
+        wins: strength.strong.wins,
+        hitRate: calcHitRate(strength.strong.wins, strength.strong.total),
       },
       moderate: {
-        total: moderateRecords.length,
-        wins: moderateWins.length,
-        hitRate: calcHitRate(moderateWins.length, moderateRecords.length),
+        total: strength.moderate.total,
+        wins: strength.moderate.wins,
+        hitRate: calcHitRate(strength.moderate.wins, strength.moderate.total),
       },
     },
     bySport,

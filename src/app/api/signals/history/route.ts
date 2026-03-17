@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       getSignalHistory({
         sport: sport as Sport | undefined,
         outcome: outcome as 'win' | 'loss' | 'push' | 'pending' | undefined,
-        limit: limit ? parseInt(limit, 10) : 50,
+        limit: limit ? Math.max(1, Math.min(parseInt(limit, 10) || 50, 500)) : 50,
       }),
       getSignalStats(),
     ])

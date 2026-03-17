@@ -291,3 +291,80 @@ describe('Outcome resolution semantics', () => {
     expect(record.outcome).toBe('push')
   })
 })
+
+// ---------------------------------------------------------------------------
+// 6. Limit parameter validation
+// ---------------------------------------------------------------------------
+
+describe('Limit parameter bounds', () => {
+  it('valid limit within bounds', () => {
+    const limit = '50'
+    const parsed = Math.max(1, Math.min(parseInt(limit, 10) || 50, 500))
+    expect(parsed).toBe(50)
+  })
+
+  it('very large limit gets clamped to 500', () => {
+    const limit = '999999'
+    const parsed = Math.max(1, Math.min(parseInt(limit, 10) || 50, 500))
+    expect(parsed).toBe(500)
+  })
+
+  it('zero limit defaults to 50 (falsy zero hits fallback)', () => {
+    const limit = '0'
+    const parsed = Math.max(1, Math.min(parseInt(limit, 10) || 50, 500))
+    expect(parsed).toBe(50)
+  })
+
+  it('negative limit gets clamped to 1', () => {
+    const limit = '-10'
+    const parsed = Math.max(1, Math.min(parseInt(limit, 10) || 50, 500))
+    expect(parsed).toBe(1)
+  })
+
+  it('NaN limit defaults to 50', () => {
+    const limit = 'abc'
+    const parsed = Math.max(1, Math.min(parseInt(limit, 10) || 50, 500))
+    expect(parsed).toBe(50)
+  })
+
+  it('Infinity string defaults to 50', () => {
+    const limit = 'Infinity'
+    const parsed = Math.max(1, Math.min(parseInt(limit, 10) || 50, 500))
+    expect(parsed).toBe(50)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 7. Single-pass stats accumulation correctness
+// ---------------------------------------------------------------------------
+
+describe('Stats accumulation correctness', () => {
+  it('wins + losses + pushes = resolved', () => {
+    const stats = makeStats()
+    expect(stats.wins + stats.losses + stats.pushes).toBe(stats.resolved)
+  })
+
+  it('strength subtotals sum to overall resolved', () => {
+    const stats = makeStats()
+    const strengthTotal = stats.byStrength.strong.total + stats.byStrength.moderate.total
+    expect(strengthTotal).toBe(stats.resolved)
+  })
+
+  it('strength wins sum to overall wins', () => {
+    const stats = makeStats()
+    const strengthWins = stats.byStrength.strong.wins + stats.byStrength.moderate.wins
+    expect(strengthWins).toBe(stats.wins)
+  })
+
+  it('sport subtotals sum to overall resolved', () => {
+    const stats = makeStats()
+    const sportTotal = Object.values(stats.bySport).reduce((s, sp) => s + sp.total, 0)
+    expect(sportTotal).toBe(stats.resolved)
+  })
+
+  it('sport wins sum to overall wins', () => {
+    const stats = makeStats()
+    const sportWins = Object.values(stats.bySport).reduce((s, sp) => s + sp.wins, 0)
+    expect(sportWins).toBe(stats.wins)
+  })
+})
