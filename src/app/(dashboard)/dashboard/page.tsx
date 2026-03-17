@@ -11,6 +11,7 @@ import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
 import { GamesDashboard } from '@/components/games-dashboard'
 import { DashboardStats } from '@/components/dashboard-stats'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
+import { TermTooltip } from '@/components/term-tooltip'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
 
@@ -65,7 +66,7 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="rounded-lg border border-border bg-card p-6">
-          <p className="text-sm text-muted-foreground">Analyses Today</p>
+          <p className="text-sm text-muted-foreground"><TermTooltip term="Analysis">Analyses</TermTooltip> Today</p>
           <p className="mt-1 text-2xl font-semibold">
             {profile?.analyses_today ?? 0}
             <span className="text-sm font-normal text-muted-foreground">

@@ -19,6 +19,7 @@ const TERMS: Record<string, string> = {
   Bookmaker: 'A company that sets odds and accepts bets (e.g., DraftKings, FanDuel).',
   'Best Price': 'The most favorable odds available across all bookmakers. Highlighted in green.',
   'Win Probability': 'The chance of winning implied by the odds. Higher % = more favored.',
+  Analysis: 'An AI-generated breakdown of a game matchup — key factors, value assessment, and risk level.',
 }
 
 export function TermTooltip({

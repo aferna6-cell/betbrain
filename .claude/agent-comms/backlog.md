@@ -169,10 +169,10 @@
 ## Beginner UX Gaps (Simulation: New Bettor — Cycle 125)
 - [ ] **Game card tooltips** — Wire TermTooltip to odds format, implied probability, book spread on game cards
 - [ ] **Onboarding checklist rewrite** — Beginner-friendly descriptions explaining the "why" not just the "what"
-- [ ] **"New to betting?" landing section** — Add beginner-friendly explainer links below hero
+- [x] **"New to betting?" landing section** — Add beginner-friendly explainer links below hero _(Cycle 126)_
 - [ ] **Game card legend** — Subtle "Green = best price across books" legend on odds display
-- [ ] **Dashboard analysis tooltip** — Add "?" explaining what an AI analysis is and the daily limit
-- [ ] **Betting 101 page** — Foundational guide: what's a bet, bookmaker, odds format, spread, total
+- [x] **Dashboard analysis tooltip** — Add "?" explaining what an AI analysis is and the daily limit _(Cycle 127)_
+- [x] **Betting 101 page** — Foundational guide: what's a bet, bookmaker, odds format, spread, total _(Cycle 126)_
 
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
