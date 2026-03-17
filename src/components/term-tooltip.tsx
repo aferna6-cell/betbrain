@@ -15,6 +15,10 @@ const TERMS: Record<string, string> = {
   Drawdown: 'Peak-to-trough decline in your bankroll.',
   Moneyline: 'A bet on which team wins outright.',
   Spread: 'A bet on the margin of victory.',
+  'Book Spread': 'How much bookmakers disagree on odds. Bigger spread = more shopping opportunity.',
+  Bookmaker: 'A company that sets odds and accepts bets (e.g., DraftKings, FanDuel).',
+  'Best Price': 'The most favorable odds available across all bookmakers. Highlighted in green.',
+  'Win Probability': 'The chance of winning implied by the odds. Higher % = more favored.',
 }
 
 export function TermTooltip({

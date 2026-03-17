@@ -166,11 +166,19 @@
 - [x] **Sport breakdown on profile** — per-sport W-L and ROI _(Cycle 119)_
 - [x] **pick-stats.ts + 9 tests** — extracted breakdown logic to lib _(Cycle 120)_
 
+## Beginner UX Gaps (Simulation: New Bettor — Cycle 125)
+- [ ] **Game card tooltips** — Wire TermTooltip to odds format, implied probability, book spread on game cards
+- [ ] **Onboarding checklist rewrite** — Beginner-friendly descriptions explaining the "why" not just the "what"
+- [ ] **"New to betting?" landing section** — Add beginner-friendly explainer links below hero
+- [ ] **Game card legend** — Subtle "Green = best price across books" legend on odds display
+- [ ] **Dashboard analysis tooltip** — Add "?" explaining what an AI analysis is and the daily limit
+- [ ] **Betting 101 page** — Foundational guide: what's a bet, bookmaker, odds format, spread, total
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
 - [ ] **Supabase type generation** — Auto-generate types from `supabase gen types` instead of hand-written
 - [x] **Signal historical hit rate** — Track and display signal outcome success rate _(Cycle 121)_
-- [ ] **Analytics dashboard** — User engagement metrics, popular games, analysis usage
-- [ ] **Social sharing** — Share picks/analyses with custom OG images
+- [x] **Analytics dashboard** — User engagement metrics, popular games, analysis usage _(Cycle 122)_
+- [x] **Social sharing** — Share picks/analyses with custom OG images _(Cycle 123)_
 - [ ] **Mobile app** — React Native or PWA improvements for mobile users

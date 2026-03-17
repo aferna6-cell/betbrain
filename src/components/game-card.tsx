@@ -6,6 +6,7 @@ import { formatOdds, formatImpliedProb, getBestMoneyline } from '@/lib/odds'
 import { formatGameTime, timeAgo } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
+import { TermTooltip } from '@/components/term-tooltip'
 
 function getOddsRange(bookmakers: NormalizedGame['bookmakers'], side: 'home' | 'away'): number | null {
   const odds = bookmakers
@@ -64,7 +65,7 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         <div className="mb-3 flex items-center gap-1.5">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-yellow-500" />
           <span className="text-xs text-yellow-500">
-            {maxRange}+ pt book spread — odds disagree
+            {maxRange}+ pt <TermTooltip term="Book Spread">book spread</TermTooltip> — odds disagree
           </span>
         </div>
       )}
@@ -72,7 +73,8 @@ export function GameCard({ game }: { game: NormalizedGame }) {
       {topBookmakers.length > 0 && (
         <div className="border-t border-border pt-3">
           <p className="mb-2 text-xs font-medium text-muted-foreground">
-            Top Bookmakers
+            Top <TermTooltip term="Bookmaker">Bookmakers</TermTooltip>
+            <span className="ml-2 text-green-500/60">&#x25CF; = best price</span>
           </p>
           <div className="space-y-1">
             {topBookmakers.map((bk) => (
