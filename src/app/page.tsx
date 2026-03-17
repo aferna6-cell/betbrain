@@ -175,6 +175,13 @@ export default function LandingPage() {
           <p className="mt-4 text-xs text-zinc-600">
             No credit card required. Free tier includes 3 AI analyses per day.
           </p>
+
+          <p className="mt-3 text-xs text-zinc-500">
+            New to betting?{' '}
+            <Link href="/betting-101" className="text-indigo-400 hover:text-indigo-300 underline">
+              Learn the basics in 5 minutes
+            </Link>
+          </p>
         </div>
 
         {/* Stats row */}

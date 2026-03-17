@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Betting Glossary — BetBrain',
@@ -75,6 +76,10 @@ export default function GlossaryPage() {
         <h1 className="text-2xl font-bold text-white tracking-tight">Betting Glossary</h1>
         <p className="mt-1 text-sm text-zinc-400">
           Definitions of common sports betting terms used throughout BetBrain.
+          {' '}Brand new to betting?{' '}
+          <Link href="/betting-101" className="text-indigo-400 hover:underline">
+            Start with Betting 101
+          </Link>.
         </p>
       </div>
 
