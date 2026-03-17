@@ -109,7 +109,18 @@ export async function detectSmartSignals(
   }
 
   // Sort by number of signals (strongest first)
-  return signals.sort((a, b) => b.signals.length - a.signals.length)
+  const sorted = signals.sort((a, b) => b.signals.length - a.signals.length)
+
+  // Persist signals to history (non-blocking, fire-and-forget)
+  if (sorted.length > 0) {
+    import('@/lib/signal-history').then(({ persistSignals }) => {
+      persistSignals(sorted).catch((err: unknown) => {
+        console.error('[signals] Failed to persist signal history:', err)
+      })
+    })
+  }
+
+  return sorted
 }
 
 function getMoneylineVariance(bookmakers: NormalizedBookmakerOdds[]): {

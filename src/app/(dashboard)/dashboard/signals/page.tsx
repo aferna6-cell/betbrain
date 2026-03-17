@@ -1,5 +1,10 @@
 import type { Metadata } from 'next'
 import { getAllOdds } from '@/lib/sports/odds'
+import { detectSmartSignals } from '@/lib/signals'
+import { getSignalHistory, getSignalStats } from '@/lib/signal-history'
+import { SmartSignalsView } from '@/components/smart-signals'
+import { SignalHistoryView } from '@/components/signal-history'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
 
@@ -7,11 +12,14 @@ export const metadata: Metadata = {
   title: 'Smart Signals — BetBrain',
   description: 'Games where odds, stats, and AI analysis align to indicate potential value.',
 }
-import { detectSmartSignals } from '@/lib/signals'
-import { SmartSignalsView } from '@/components/smart-signals'
 
 export default async function SignalsPage() {
-  const oddsMap = await getAllOdds()
+  const [oddsMap, history, stats] = await Promise.all([
+    getAllOdds(),
+    getSignalHistory({ limit: 50 }),
+    getSignalStats(),
+  ])
+
   const allGames = Array.from(oddsMap.values()).flatMap((r) => r.games)
   const signals = await detectSmartSignals(allGames)
 
@@ -24,7 +32,24 @@ export default async function SignalsPage() {
         </p>
       </div>
 
-      <SmartSignalsView signals={signals} />
+      <Tabs defaultValue="current">
+        <TabsList>
+          <TabsTrigger value="current">
+            Current Signals{signals.length > 0 ? ` (${signals.length})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="history">
+            Hit Rate{stats.hitRate !== null ? ` — ${stats.hitRate}%` : ''}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="current">
+          <SmartSignalsView signals={signals} />
+        </TabsContent>
+
+        <TabsContent value="history">
+          <SignalHistoryView initialHistory={history} initialStats={stats} />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

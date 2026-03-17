@@ -54,9 +54,12 @@ export async function POST(request: Request) {
 
       if (error) {
         console.error('[stripe] Failed to upgrade user:', error.message)
-      } else {
-        console.log(`[stripe] User ${userId} upgraded to Pro`)
+        return NextResponse.json(
+          { error: 'Database update failed — Stripe should retry' },
+          { status: 500 }
+        )
       }
+      console.log(`[stripe] User ${userId} upgraded to Pro`)
       break
     }
 
@@ -86,9 +89,12 @@ export async function POST(request: Request) {
 
       if (delError) {
         console.error('[stripe] Failed to downgrade user:', delError.message)
-      } else {
-        console.log(`[stripe] User ${delUserId} downgraded to Free`)
+        return NextResponse.json(
+          { error: 'Database update failed — Stripe should retry' },
+          { status: 500 }
+        )
       }
+      console.log(`[stripe] User ${delUserId} downgraded to Free`)
       break
     }
 
@@ -116,6 +122,10 @@ export async function POST(request: Request) {
 
       if (updError) {
         console.error('[stripe] Failed to update subscription status:', updError.message)
+        return NextResponse.json(
+          { error: 'Database update failed — Stripe should retry' },
+          { status: 500 }
+        )
       }
       break
     }

@@ -19,3 +19,11 @@ _Bugs found and fixed. Read before debugging to avoid rediscovering known issues
 **Fix:** Added `src/lib/env.ts` for canonical env access, supported `THE_ODDS_API_KEY` as a deprecated fallback, switched auth and Supabase callers to the helper, and documented `NEXT_PUBLIC_SITE_URL` in `.env.example`.
 **Files:** `.env.example`, `src/lib/env.ts`, `src/app/(auth)/actions.ts`, `src/lib/sports/odds.ts`, `src/lib/sports/stats.ts`, `src/lib/supabase/client.ts`, `src/lib/supabase/middleware.ts`, `src/lib/supabase/server.ts`
 **Prevention:** Centralize env access behind helper functions, treat `.env.example` as the source of truth, and include env drift checks in the daily health routine.
+
+### Stripe webhook always returned 200, even on DB failure
+**Date:** 2026-03-17
+**Symptom:** Users could pay for Pro via Stripe but not actually get upgraded. The webhook logged errors but told Stripe everything was fine (200 response), so Stripe never retried.
+**Root Cause:** All three webhook event handlers (checkout.session.completed, subscription.deleted, subscription.updated) logged DB errors but always fell through to the final `return NextResponse.json({ received: true })` at the end.
+**Fix:** Each handler now returns `NextResponse.json({ error: '...' }, { status: 500 })` on Supabase update failure, which triggers Stripe's automatic retry mechanism.
+**Files:** `src/app/api/stripe/webhook/route.ts`
+**Prevention:** Webhook handlers for critical state changes (payment → access) should return error status codes on failure so the upstream service retries. Never return 200 for "acknowledged but not processed."

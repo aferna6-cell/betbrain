@@ -170,7 +170,7 @@
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
 - [ ] **Supabase type generation** — Auto-generate types from `supabase gen types` instead of hand-written
-- [ ] **Signal historical hit rate** — Track and display signal outcome success rate
+- [x] **Signal historical hit rate** — Track and display signal outcome success rate _(Cycle 121)_
 - [ ] **Analytics dashboard** — User engagement metrics, popular games, analysis usage
 - [ ] **Social sharing** — Share picks/analyses with custom OG images
 - [ ] **Mobile app** — React Native or PWA improvements for mobile users

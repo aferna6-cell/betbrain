@@ -69,6 +69,7 @@ npm run evening:auto # Run scripts/daily/evening-auto.sh
 | api_usage | Track API call counts for rate limiting |
 | odds_history | Append-only odds snapshots for line movement charts |
 | alerts | User-defined line movement alert rules |
+| signal_history | Persisted Smart Signals for hit rate tracking |
 
 ## Agents
 

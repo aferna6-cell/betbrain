@@ -189,3 +189,51 @@ _Every database schema change. Check before writing queries._
 - `odds_history` is append-only and grows with every odds fetch
 - Without cleanup, the table will grow unbounded (~4 sports * N bookmakers * ~288 fetches/day)
 - 30-day retention balances line movement history needs vs storage
+
+---
+
+## Migration 008: Signal History (2026-03-17)
+
+**File:** `supabase/migrations/008_signal_history.sql`
+
+### Summary
+
+- Creates `signal_history` table to persist Smart Signals for outcome tracking and hit rate analysis
+- One record per game (upsert on `external_game_id`)
+- Signals are automatically persisted when detected by `detectSmartSignals()`
+- Outcomes are resolved manually (win/loss/push) to track signal accuracy
+
+### Columns
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | uuid PK | gen_random_uuid() |
+| external_game_id | text | Unique — one signal record per game |
+| sport | text | nba, nfl, mlb, nhl |
+| home_team | text | Team name |
+| away_team | text | Team name |
+| game_date | timestamptz | Game start time |
+| strength | text | 'strong' or 'moderate' |
+| signal_count | integer | Number of signals that fired |
+| signals | jsonb | Array of human-readable signal descriptions |
+| value_side | text | 'home', 'away', or null |
+| ai_confidence | numeric | 0-100 or null |
+| outcome | text | 'win', 'loss', 'push', 'pending', or null |
+| resolved_at | timestamptz | null until resolved |
+| detected_at | timestamptz | default now() |
+
+### Indexes
+
+- `idx_signal_history_sport` — filter by sport
+- `idx_signal_history_outcome` — filter by outcome
+- `idx_signal_history_detected_at` — sort by detection time (desc)
+- `idx_signal_history_strength` — filter by signal strength
+
+### RLS
+
+- Service role: full access (insert/update from detection pipeline)
+- Authenticated users: read-only
+
+### TypeScript Types
+
+- Added `signal_history` table type to `src/lib/supabase/types.ts`

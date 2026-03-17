@@ -43,10 +43,14 @@ export async function POST(request: Request) {
       })
       customerId = customer.id
 
-      await supabase
+      const { error: updateError } = await supabase
         .from('profiles')
         .update({ stripe_customer_id: customerId })
         .eq('id', user.id)
+
+      if (updateError) {
+        console.error('[stripe] Failed to save customer ID to profile:', updateError.message)
+      }
     }
 
     const session = await stripe.checkout.sessions.create({

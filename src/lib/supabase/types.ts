@@ -383,6 +383,57 @@ export interface Database {
           }
         ]
       }
+      signal_history: {
+        Row: {
+          id: string
+          external_game_id: string
+          sport: Sport
+          home_team: string
+          away_team: string
+          game_date: string
+          strength: 'strong' | 'moderate'
+          signal_count: number
+          signals: string[]
+          value_side: 'home' | 'away' | null
+          ai_confidence: number | null
+          outcome: PickOutcome | null
+          resolved_at: string | null
+          detected_at: string
+        }
+        Insert: {
+          id?: string
+          external_game_id: string
+          sport: Sport
+          home_team: string
+          away_team: string
+          game_date: string
+          strength: 'strong' | 'moderate'
+          signal_count: number
+          signals?: string[]
+          value_side?: 'home' | 'away' | null
+          ai_confidence?: number | null
+          outcome?: PickOutcome | null
+          resolved_at?: string | null
+          detected_at?: string
+        }
+        Update: {
+          id?: string
+          external_game_id?: string
+          sport?: Sport
+          home_team?: string
+          away_team?: string
+          game_date?: string
+          strength?: 'strong' | 'moderate'
+          signal_count?: number
+          signals?: string[]
+          value_side?: 'home' | 'away' | null
+          ai_confidence?: number | null
+          outcome?: PickOutcome | null
+          resolved_at?: string | null
+          detected_at?: string
+        }
+        Relationships: []
+      }
       alerts: {
         Row: {
           id: string

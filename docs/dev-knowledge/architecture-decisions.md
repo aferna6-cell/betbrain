@@ -164,4 +164,12 @@
 **Decision:** Expanded alert markets from moneyline-only to moneyline/spreads/totals (migration 005). The `getAlertValue()` function extracts the relevant numeric value per market type.
 **Why:** Sharp bettors need spread movement alerts ("alert when Lakers go from -5.5 to -7") and total alerts ("alert when O/U crosses 220"). Moneyline-only was the top alert complaint in the customer simulation.
 
+### Signal history: fire-and-forget persistence, manual outcome resolution
+**Decision:** Smart Signals are persisted to `signal_history` via non-blocking fire-and-forget during detection. Outcomes are resolved manually through a PATCH endpoint.
+**Why:** Automatic outcome resolution would require a reliable game result data source (we only have balldontlie for NBA). Manual resolution is simpler and accurate. Fire-and-forget persistence avoids slowing the signals detection pipeline — if persistence fails, current-session signals still display normally.
+
+### Stripe webhook: return 500 on DB failure for retry
+**Decision:** Stripe webhook returns HTTP 500 when a Supabase update fails (e.g., upgrading user to Pro), instead of always returning 200.
+**Why:** Stripe retries failed webhooks automatically. Returning 200 on DB failure tells Stripe "all good" when the user's subscription status wasn't actually updated. This caused silent failures where users paid but didn't get Pro access. Returning 500 triggers Stripe's retry mechanism.
+
 _Add new decisions below._
