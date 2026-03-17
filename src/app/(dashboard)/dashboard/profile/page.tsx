@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ProfileForm } from './profile-form'
+import { ShareButton } from '@/components/share-button'
 import { calculateCLVStats } from '@/lib/clv'
 import type { Database, Sport } from '@/lib/supabase/types'
 
@@ -85,11 +86,14 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Profile</h1>
-        <p className="mt-1 text-muted-foreground">
-          Manage your account settings
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Profile</h1>
+          <p className="mt-1 text-muted-foreground">
+            Manage your account settings
+          </p>
+        </div>
+        {user && <ShareButton userId={user.id} />}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

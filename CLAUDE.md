@@ -37,7 +37,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (862 tests)
+npm run test         # Run Vitest unit tests (969 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md
