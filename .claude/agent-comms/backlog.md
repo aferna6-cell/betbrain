@@ -174,6 +174,11 @@
 - [x] **Dashboard analysis tooltip** — Add "?" explaining what an AI analysis is and the daily limit _(Cycle 127)_
 - [x] **Betting 101 page** — Foundational guide: what's a bet, bookmaker, odds format, spread, total _(Cycle 126)_
 
+## Researched Features (Cycle 128 — Competitor Analysis)
+- [ ] [RESEARCHED] **+EV Scanner** — Calculate fair odds from multi-book consensus (remove vig), flag when any book offers positive expected value. This is THE #1 feature every serious bettor wants — OddsJam, Unabated, AVO, and Outlier all have it. Buildable with existing Odds API data.
+- [ ] [RESEARCHED] **Arbitrage detector** — Flag guaranteed-profit opportunities when bookmaker odds create an arb (sum of implied probabilities < 100%). Every major competitor has this. Pure math on our existing odds data.
+- [ ] [RESEARCHED] **Auto-resolve picks (NBA)** — Use balldontlie game results to automatically mark NBA picks as win/loss/push. Eliminates manual resolution. Competitors auto-track outcomes.
+
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
