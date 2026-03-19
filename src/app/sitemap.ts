@@ -33,6 +33,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+    // Education
+    {
+      url: `${baseUrl}/betting-101`,
+      lastModified: staticDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     // Blog
     {
       url: `${baseUrl}/blog`,
