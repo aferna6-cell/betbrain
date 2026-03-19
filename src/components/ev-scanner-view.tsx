@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
+import { TermTooltip } from '@/components/term-tooltip'
 import { formatOdds } from '@/lib/odds'
 import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
@@ -122,7 +123,7 @@ export function EVScannerView({
       {/* Arbitrage (rare and high-value, show first) */}
       {arbitrage.length > 0 && (
         <div>
-          <h2 className="mb-3 text-lg font-semibold">Arbitrage Opportunities</h2>
+          <h2 className="mb-3 text-lg font-semibold"><TermTooltip term="Arbitrage">Arbitrage</TermTooltip> Opportunities</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {arbitrage.map((arb) => (
               <ArbCard key={arb.game.id} arb={arb} />
@@ -134,7 +135,7 @@ export function EVScannerView({
       {/* +EV Opportunities */}
       {opportunities.length > 0 ? (
         <div>
-          <h2 className="mb-3 text-lg font-semibold">Positive EV Bets</h2>
+          <h2 className="mb-3 text-lg font-semibold">Positive <TermTooltip term="+EV">EV</TermTooltip> Bets</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {opportunities.map((opp, i) => (
               <EVCard key={`${opp.game.id}-${opp.side}-${opp.bookmaker}-${i}`} opp={opp} />

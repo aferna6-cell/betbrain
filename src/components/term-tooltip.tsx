@@ -20,6 +20,12 @@ const TERMS: Record<string, string> = {
   'Best Price': 'The most favorable odds available across all bookmakers. Highlighted in green.',
   'Win Probability': 'The chance of winning implied by the odds. Higher % = more favored.',
   Analysis: 'An AI-generated breakdown of a game matchup — key factors, value assessment, and risk level.',
+  Arbitrage: 'When you can bet both sides of a game across bookmakers and guarantee profit regardless of outcome. Extremely rare.',
+  '+EV': 'Positive Expected Value — a bet where the odds offered are better than the true probability. Profitable long-term.',
+  'Fair Odds': 'The true probability of an outcome, estimated by averaging odds across bookmakers and removing the vig.',
+  'Over/Under': 'A bet on whether the total combined score of both teams will be over or under a set number.',
+  Total: 'The combined score of both teams. Over/under bets are placed on whether the total will exceed a line.',
+  'Auto-Resolve': 'Automatically determining win/loss/push from final game scores instead of manual entry.',
 }
 
 export function TermTooltip({
