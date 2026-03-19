@@ -135,9 +135,27 @@ describe('matchPickToGame', () => {
     expect(matchPickToGame(pick, games)).toBeNull()
   })
 
-  it('matches over/under picks without pick_team', () => {
+  it('matches over/under picks without pick_team when single game on date', () => {
     const pick = makePick({ pick_type: 'over', pick_team: null, pick_line: 215.5 })
     const games = [makeGame()]
+    expect(matchPickToGame(pick, games)).toEqual(games[0])
+  })
+
+  it('returns null for over/under without pick_team when multiple games on same date', () => {
+    const pick = makePick({ pick_type: 'over', pick_team: null, pick_line: 215.5 })
+    const games = [
+      makeGame(),
+      makeGame({ homeTeam: 'Golden State Warriors', awayTeam: 'Miami Heat' }),
+    ]
+    expect(matchPickToGame(pick, games)).toBeNull()
+  })
+
+  it('matches over/under with pick_team even on multi-game days', () => {
+    const pick = makePick({ pick_type: 'over', pick_team: 'Los Angeles Lakers', pick_line: 215.5 })
+    const games = [
+      makeGame(),
+      makeGame({ homeTeam: 'Golden State Warriors', awayTeam: 'Miami Heat' }),
+    ]
     expect(matchPickToGame(pick, games)).toEqual(games[0])
   })
 

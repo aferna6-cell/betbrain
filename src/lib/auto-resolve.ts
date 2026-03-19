@@ -107,12 +107,18 @@ export function matchPickToGame(
       }
     }
 
-    // For over/under, pick_team may be null — match by game date only
-    // if there's only one game that day (or if we can match via game_id)
+    // For over/under, pick_team may be null — only match if there's
+    // exactly one final game on this date to avoid resolving against
+    // the wrong game on multi-game days
     if (pick.pick_type === 'over' || pick.pick_type === 'under') {
-      // Try to match via external_game_id containing team info, or accept
-      // single-game-day matches
-      return game
+      const finalGamesOnDate = games.filter(
+        (g) => g.status === 'Final' && g.date.split('T')[0] === pickDate
+      )
+      if (finalGamesOnDate.length === 1) {
+        return finalGamesOnDate[0]
+      }
+      // Multiple games on this date — can't determine which game without pick_team
+      return null
     }
   }
 
