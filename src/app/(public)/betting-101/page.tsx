@@ -45,8 +45,22 @@ function Example({
 }
 
 export default function Betting101Page() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Betting 101 — How Sports Betting Works',
+    description: 'New to sports betting? Learn how odds work, what moneyline and spread mean, and how to make smarter bets with data.',
+    author: { '@type': 'Organization', name: 'BetBrain' },
+    publisher: { '@type': 'Organization', name: 'BetBrain' },
+    datePublished: '2026-03-17',
+  }
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mb-12">
         <Link
           href="/"
