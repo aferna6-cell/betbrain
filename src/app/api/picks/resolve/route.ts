@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
-import {
-  withAuthenticatedRoute,
-  badRequest,
-} from '@/lib/api/route-handler'
+import { withAuthenticatedRoute } from '@/lib/api/route-handler'
 import { createServiceClient } from '@/lib/supabase/server'
 import {
   resolvePicksBatch,
