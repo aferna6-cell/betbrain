@@ -6,10 +6,13 @@ import {
 import { createServiceClient } from '@/lib/supabase/server'
 import {
   resolvePicksBatch,
+  normalizeTeamName,
+  resolveSignalOutcome,
   type PendingPick,
   type GameResult,
 } from '@/lib/auto-resolve'
 import { getNBAGames, type NBAGame } from '@/lib/sports/stats'
+import type { SignalHistoryRecord } from '@/lib/signal-history'
 
 /**
  * POST /api/picks/resolve
@@ -115,10 +118,47 @@ export async function POST(request: Request) {
       }
     }
 
+    // Also auto-resolve pending NBA signals using the same game results
+    let signalsResolved = 0
+    const { data: pendingSignals } = await supabase
+      .from('signal_history')
+      .select('*')
+      .eq('sport', 'nba')
+      .is('outcome', null)
+      .lt('game_date', new Date().toISOString())
+
+    if (pendingSignals && pendingSignals.length > 0) {
+      for (const signal of pendingSignals as SignalHistoryRecord[]) {
+        const signalDate = signal.game_date.split('T')[0]
+        const game = allGames.find((g) => {
+          if (g.status !== 'Final') return false
+          if (g.date.split('T')[0] !== signalDate) return false
+          const homeNorm = normalizeTeamName(g.homeTeam)
+          const awayNorm = normalizeTeamName(g.awayTeam)
+          return (
+            normalizeTeamName(signal.home_team) === homeNorm &&
+            normalizeTeamName(signal.away_team) === awayNorm
+          )
+        })
+
+        if (!game || !signal.value_side) continue
+
+        const outcome = resolveSignalOutcome(signal.value_side, game)
+
+        const { error: sigError } = await supabase
+          .from('signal_history')
+          .update({ outcome, resolved_at: new Date().toISOString() })
+          .eq('id', signal.id)
+
+        if (!sigError) signalsResolved++
+      }
+    }
+
     return NextResponse.json({
-      message: `Resolved ${appliedCount} of ${pendingPicks.length} pending NBA picks`,
+      message: `Resolved ${appliedCount} pick(s) and ${signalsResolved} signal(s)`,
       resolved,
       skipped,
+      signalsResolved,
     })
   })
 }

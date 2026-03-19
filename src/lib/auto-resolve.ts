@@ -280,3 +280,23 @@ export function resolvePicksBatch(
 
   return { resolved, skipped }
 }
+
+// ---------------------------------------------------------------------------
+// Signal resolution
+// ---------------------------------------------------------------------------
+
+/**
+ * Determine the outcome of a Smart Signal based on game result.
+ * A signal "wins" if its value_side team won the game.
+ */
+export function resolveSignalOutcome(
+  valueSide: 'home' | 'away',
+  game: GameResult
+): PickOutcome {
+  const valueSideScore = valueSide === 'home' ? game.homeScore : game.awayScore
+  const otherScore = valueSide === 'home' ? game.awayScore : game.homeScore
+
+  if (valueSideScore > otherScore) return 'win'
+  if (valueSideScore < otherScore) return 'loss'
+  return 'push'
+}

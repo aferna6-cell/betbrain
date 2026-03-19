@@ -5,6 +5,7 @@ import {
   matchPickToGame,
   determineOutcome,
   resolvePicksBatch,
+  resolveSignalOutcome,
   type GameResult,
   type PendingPick,
 } from '@/lib/auto-resolve'
@@ -369,5 +370,37 @@ describe('resolvePicksBatch', () => {
     const result = resolvePicksBatch(picks, [])
     expect(result.resolved).toHaveLength(0)
     expect(result.skipped).toHaveLength(1)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// resolveSignalOutcome
+// ---------------------------------------------------------------------------
+
+describe('resolveSignalOutcome', () => {
+  it('returns win when value_side (home) team wins', () => {
+    const game = makeGame({ homeScore: 112, awayScore: 105 })
+    expect(resolveSignalOutcome('home', game)).toBe('win')
+  })
+
+  it('returns loss when value_side (home) team loses', () => {
+    const game = makeGame({ homeScore: 100, awayScore: 110 })
+    expect(resolveSignalOutcome('home', game)).toBe('loss')
+  })
+
+  it('returns win when value_side (away) team wins', () => {
+    const game = makeGame({ homeScore: 100, awayScore: 110 })
+    expect(resolveSignalOutcome('away', game)).toBe('win')
+  })
+
+  it('returns loss when value_side (away) team loses', () => {
+    const game = makeGame({ homeScore: 112, awayScore: 105 })
+    expect(resolveSignalOutcome('away', game)).toBe('loss')
+  })
+
+  it('returns push on tie', () => {
+    const game = makeGame({ homeScore: 105, awayScore: 105 })
+    expect(resolveSignalOutcome('home', game)).toBe('push')
+    expect(resolveSignalOutcome('away', game)).toBe('push')
   })
 })
