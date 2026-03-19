@@ -29,6 +29,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  try {
   const supabase = await createServiceClient()
 
   // Fetch ALL pending NBA picks across all users
@@ -127,6 +128,13 @@ export async function GET(request: Request) {
     picks: picksResolved,
     signals: signalsResolved,
   })
+  } catch (err) {
+    console.error('[cron/resolve] Unexpected error:', err)
+    return NextResponse.json(
+      { error: 'Internal error during resolution' },
+      { status: 500 }
+    )
+  }
 }
 
 function nbaGameToResult(game: NBAGame): GameResult {
