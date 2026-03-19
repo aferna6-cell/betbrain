@@ -25,6 +25,7 @@ npx supabase db push
 | 5 | `005_add_closing_odds_to_picks.sql` | CLV tracking column on user_picks |
 | 6 | `006_expand_alert_markets.sql` | Expand alerts to spreads + totals (was moneyline-only) |
 | 7 | `007_odds_history_retention.sql` | Cleanup function for old odds history (30-day retention) |
+| 8 | `008_signal_history.sql` | Smart Signal outcome tracking for hit rate stats |
 
 ### Configure Auth
 - [ ] Go to **Supabase Dashboard > Authentication > URL Configuration**
@@ -63,7 +64,9 @@ Set these in **Vercel Dashboard > Project > Settings > Environment Variables**:
 | `STRIPE_SECRET_KEY` | Stripe Dashboard > Developers > API Keys |
 | `STRIPE_WEBHOOK_SECRET` | Stripe Dashboard > Developers > Webhooks (after creating endpoint) |
 | `STRIPE_PRO_PRICE_ID` | Stripe Dashboard > Products > Pro Plan > Price ID |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe Dashboard > Developers > API Keys (publishable) |
 | `NEXT_PUBLIC_APP_URL` | Your production URL (e.g. `https://betbrain.app`) |
+| `CRON_SECRET` | Generate a random secret (e.g. `openssl rand -hex 32`) |
 
 ### Deploy
 ```bash
@@ -136,7 +139,17 @@ npm run test:e2e
 
 ---
 
-## 8. Optional: Resend Email (Phase 2)
+## 8. Auto-Resolution Cron (Configured)
+
+A Vercel Cron job is configured in `vercel.json` to run daily at 10am ET (14:00 UTC):
+- Resolves all pending NBA picks by fetching game scores from balldontlie
+- Also resolves pending Smart Signal outcomes
+- Secured by `CRON_SECRET` env var (set in step 2)
+- No manual setup needed — Vercel enables crons automatically on deploy
+
+---
+
+## 9. Optional: Resend Email (Phase 2)
 
 Daily digest and alert email notifications are ready in code but need Resend:
 - [ ] Sign up at resend.com
