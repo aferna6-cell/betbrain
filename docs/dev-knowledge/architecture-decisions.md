@@ -172,4 +172,16 @@
 **Decision:** Stripe webhook returns HTTP 500 when a Supabase update fails (e.g., upgrading user to Pro), instead of always returning 200.
 **Why:** Stripe retries failed webhooks automatically. Returning 200 on DB failure tells Stripe "all good" when the user's subscription status wasn't actually updated. This caused silent failures where users paid but didn't get Pro access. Returning 500 triggers Stripe's retry mechanism.
 
+### +EV Scanner: multi-book consensus fair odds, moneyline only
+**Decision:** Calculate fair (no-vig) odds by averaging implied probabilities across all bookmakers and normalizing. Flag individual book odds that exceed fair value by >= 1% EV. Moneyline market only.
+**Why:** Spread and total EV requires matching point values across books (different lines complicate the math). Moneyline is cleanest: compare implied probabilities directly. The 1% threshold filters out noise (tiny edges that don't survive vig). MIN_BOOKMAKERS=3 ensures the consensus is meaningful.
+
+### Arbitrage detection: best-implied-probability sum < 1
+**Decision:** For each game, find the lowest implied probability per side across all books. If the sum < 1 (100%), an arbitrage exists. Report guaranteed profit percentage.
+**Why:** This is the textbook arbitrage detection method. It's O(n) per game (one pass through bookmakers) and requires no external data. False positives are rare when using live odds. Real arbs are extremely rare and fleeting — but flagging them adds significant value for sharp bettors.
+
+### Auto-resolve picks: team name matching, NBA only
+**Decision:** Resolve pending NBA picks by fetching game results from balldontlie, matching via normalized team name + date. Supports moneyline, spread, and over/under. Props are skipped (require player-level data). Non-NBA sports are skipped (no data source).
+**Why:** Manual pick resolution was the #1 UX complaint from the customer simulation. balldontlie provides final scores for NBA games. Team name matching (not game ID mapping) avoids needing a cross-API ID lookup table — both APIs use the same full team names (e.g., "Los Angeles Lakers"). The resolver is a pure function with no side effects, making it testable without mocks.
+
 _Add new decisions below._

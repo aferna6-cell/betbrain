@@ -1,37 +1,45 @@
-# Current Tasks — 2026-03-15
+# Current Tasks — 2026-03-19
 
-## Session Summary — 120 Cycles
+## Session Summary — 131 Cycles
 
 ### Total Output
-- 129 commits, 920 unit tests, 15 E2E tests, 56 routes
+- 139 commits (uncommitted: auto-resolve, tooltips, tests, refactor), 1048 unit tests, 15 E2E tests
 - Build: PASS | Lint: 0 errors | TypeScript: 0 errors
-- All Phase 1 features + optimizations complete
+- Health check: all PASS (migration drift = pre-deploy expected)
+- All Phase 1 features complete (MVP + Growth + Premium + Polish + Auto-resolve)
 
-### Features (Cycles 67-120)
-- CLV tracker, bankroll dashboard, guided onboarding, spread/total alerts
-- Betting glossary (15 terms), dedicated watchlist page, keyboard shortcuts
-- Pick filtering/sorting, pick type breakdown, sport breakdown on profile
-- Pick deletion, outcome setting, closing odds on creation form
-- Copy stats to clipboard, implied probability everywhere
-- Bookmaker odds disagreement indicator, nav notification badges
-- Digest with weekly pick stats, API docs with 6 endpoints
+### This Session (Cycles 129-131)
+- **Auto-resolve picks (NBA)** — pure-function resolver + API route + UI button + 44 tests
+- **Game card tooltips** — moneyline/win probability tooltips wired
+- **EV scanner API tests** — 6 response shape tests
+- **Architecture docs** — 3 new decisions (+EV, arb, auto-resolve)
+- **computeProfit deduplication** — single source in auto-resolve.ts
 
-### Quality
-- Input sanitization (displayName, notes), CSP security header
-- Server component conversions, shared color utilities
-- Loading skeletons + error boundaries on all pages
-- SEO metadata (openGraph, robots) on all public pages
-- README rewritten, SETUP.md, DEPLOY-CHECKLIST.md
-- GitHub Actions CI, sitemap fixed, default SVGs removed
-- TermTooltip component used across dashboard
-- pick-stats.ts extracted with 9 tests
+### Test Growth
+| Checkpoint | Tests |
+|-----------|-------|
+| Cycle 65 (deploy readiness) | 862 |
+| Cycle 120 (final polish) | 920 |
+| Cycle 128 (last session) | 998 |
+| Current (2026-03-19) | 1048 |
+
+## Open Work
+- [ ] Onboarding checklist rewrite — beginner-friendly descriptions
+- [ ] Resend email integration (post-launch)
+- [ ] Additional sports data sources (post-launch)
+- [ ] Supabase type generation (post-launch)
 
 ## External Tasks for User (docs/DEPLOY-CHECKLIST.md)
 1. Apply Supabase migrations 001-007
 2. Configure Supabase Auth redirect URLs
-3. Set 10 Vercel environment variables
+3. Set 10+ Vercel environment variables
 4. Create Stripe product + webhook
 5. Configure domain DNS
 6. Run post-deploy verification
 7. (Optional) Enable pg_cron for odds cleanup
 8. (Optional) Set up Resend for email notifications
+
+## Next Priorities
+1. **Deploy** — execute DEPLOY-CHECKLIST.md
+2. **Onboarding checklist rewrite** — last beginner UX gap
+3. **Resend email integration** — wire digest + alert emails

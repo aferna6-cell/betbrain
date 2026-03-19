@@ -48,15 +48,19 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         <div className="flex items-center justify-between">
           <span className="font-medium">{game.awayTeam}</span>
           <span className="font-mono text-sm text-muted-foreground">
-            {formatOdds(bestAway)}
-            <span className="ml-1 text-xs opacity-60">{formatImpliedProb(bestAway)}</span>
+            <TermTooltip term="Moneyline">{formatOdds(bestAway)}</TermTooltip>
+            <span className="ml-1 text-xs opacity-60">
+              <TermTooltip term="Win Probability">{formatImpliedProb(bestAway)}</TermTooltip>
+            </span>
           </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="font-medium">{game.homeTeam}</span>
           <span className="font-mono text-sm text-muted-foreground">
-            {formatOdds(bestHome)}
-            <span className="ml-1 text-xs opacity-60">{formatImpliedProb(bestHome)}</span>
+            <TermTooltip term="Moneyline">{formatOdds(bestHome)}</TermTooltip>
+            <span className="ml-1 text-xs opacity-60">
+              <TermTooltip term="Win Probability">{formatImpliedProb(bestHome)}</TermTooltip>
+            </span>
           </span>
         </div>
       </div>

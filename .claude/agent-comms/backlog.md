@@ -167,17 +167,17 @@
 - [x] **pick-stats.ts + 9 tests** — extracted breakdown logic to lib _(Cycle 120)_
 
 ## Beginner UX Gaps (Simulation: New Bettor — Cycle 125)
-- [ ] **Game card tooltips** — Wire TermTooltip to odds format, implied probability, book spread on game cards
+- [x] **Game card tooltips** — Wire TermTooltip to odds format, implied probability, book spread on game cards _(Cycle 130)_
 - [ ] **Onboarding checklist rewrite** — Beginner-friendly descriptions explaining the "why" not just the "what"
 - [x] **"New to betting?" landing section** — Add beginner-friendly explainer links below hero _(Cycle 126)_
-- [ ] **Game card legend** — Subtle "Green = best price across books" legend on odds display
+- [x] **Game card legend** — Subtle "Green = best price across books" legend on odds display _(done in Cycle 125, confirmed)_
 - [x] **Dashboard analysis tooltip** — Add "?" explaining what an AI analysis is and the daily limit _(Cycle 127)_
 - [x] **Betting 101 page** — Foundational guide: what's a bet, bookmaker, odds format, spread, total _(Cycle 126)_
 
 ## Researched Features (Cycle 128 — Competitor Analysis)
-- [ ] [RESEARCHED] **+EV Scanner** — Calculate fair odds from multi-book consensus (remove vig), flag when any book offers positive expected value. This is THE #1 feature every serious bettor wants — OddsJam, Unabated, AVO, and Outlier all have it. Buildable with existing Odds API data.
-- [ ] [RESEARCHED] **Arbitrage detector** — Flag guaranteed-profit opportunities when bookmaker odds create an arb (sum of implied probabilities < 100%). Every major competitor has this. Pure math on our existing odds data.
-- [ ] [RESEARCHED] **Auto-resolve picks (NBA)** — Use balldontlie game results to automatically mark NBA picks as win/loss/push. Eliminates manual resolution. Competitors auto-track outcomes.
+- [x] [RESEARCHED] **+EV Scanner** — Calculate fair odds from multi-book consensus, flag +EV bets _(Cycle 128)_
+- [x] [RESEARCHED] **Arbitrage detector** — Flag arb opportunities when best odds sum to < 100% implied _(Cycle 128)_
+- [x] [RESEARCHED] **Auto-resolve picks (NBA)** — Use balldontlie game results to automatically mark NBA picks as win/loss/push. Eliminates manual resolution. Competitors auto-track outcomes. _(Cycle 129)_
 
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications

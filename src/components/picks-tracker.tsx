@@ -743,6 +743,7 @@ export function PicksTracker() {
   const [clvStats, setClvStats] = useState<CLVStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [resolving, setResolving] = useState(false)
   const { addToast } = useToast()
 
   const fetchPicks = useCallback(async () => {
@@ -777,6 +778,33 @@ export function PicksTracker() {
     addToast(message, 'error')
   }
 
+  async function handleAutoResolve() {
+    setResolving(true)
+    try {
+      const res = await fetch('/api/picks/resolve', { method: 'POST' })
+      const data = await res.json()
+      if (res.ok) {
+        const count = data.resolved?.length ?? 0
+        if (count > 0) {
+          addToast(`Auto-resolved ${count} NBA pick${count !== 1 ? 's' : ''}`, 'success')
+          fetchPicks()
+        } else {
+          addToast(data.message || 'No picks to resolve', 'info')
+        }
+      } else {
+        addToast(data.error || 'Failed to resolve picks', 'error')
+      }
+    } catch {
+      addToast('Network error — could not resolve picks', 'error')
+    } finally {
+      setResolving(false)
+    }
+  }
+
+  const pendingNBAPicks = picks.filter(
+    (p) => p.sport === 'nba' && (!p.outcome || p.outcome === 'pending') && new Date(p.game_date) < new Date()
+  ).length
+
   if (loading) {
     return (
       <div className="text-center text-muted-foreground">Loading picks...</div>
@@ -801,6 +829,22 @@ export function PicksTracker() {
     <div className="space-y-6">
       {stats && <StatsSummary stats={stats} clvStats={clvStats} />}
       <PickTypeBreakdown picks={picks} />
+      {pendingNBAPicks > 0 && (
+        <div className="flex items-center gap-3 rounded-lg border border-blue-500/20 bg-blue-500/5 px-4 py-3">
+          <p className="text-sm text-blue-400">
+            {pendingNBAPicks} NBA pick{pendingNBAPicks !== 1 ? 's' : ''} ready for auto-resolution
+          </p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleAutoResolve}
+            disabled={resolving}
+            className="ml-auto"
+          >
+            {resolving ? 'Resolving...' : 'Auto-resolve NBA'}
+          </Button>
+        </div>
+      )}
       <PickForm onSubmit={handlePickSaved} onError={handlePickError} />
       <PicksTable picks={picks} onUpdate={fetchPicks} />
     </div>

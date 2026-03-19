@@ -1,3 +1,5 @@
+import { computeProfit } from '@/lib/auto-resolve'
+
 export interface BacktestConfig {
   sport: string
   season: string          // e.g. "2024-25"
@@ -128,17 +130,6 @@ function getStrategyConfig(strategy: BacktestConfig['strategy']): StrategyConfig
   }
 }
 
-// Compute profit for a unit bet at American odds
-function computeProfit(result: 'win' | 'loss' | 'push', odds: number, unitSize: number): number {
-  if (result === 'push') return 0
-  if (result === 'loss') return -unitSize
-  // win
-  if (odds > 0) {
-    return (odds / 100) * unitSize
-  } else {
-    return (100 / Math.abs(odds)) * unitSize
-  }
-}
 
 // Generate a game date offset from Oct 1 (NBA/NHL) or April 1 (MLB) or Sep 1 (NFL)
 function getGameDate(sport: string, season: string, gameIndex: number, totalGames: number): string {
