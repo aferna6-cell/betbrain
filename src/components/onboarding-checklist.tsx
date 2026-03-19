@@ -17,28 +17,28 @@ const ITEMS: ChecklistItem[] = [
   {
     id: 'browse',
     label: 'Browse today\'s games',
-    description: 'Compare odds across sportsbooks to find the best price for each game',
+    description: 'Different sportsbooks offer different prices on the same game. We show them side by side so you always get the best deal — green means best price.',
     href: '/dashboard',
     linkText: 'View dashboard',
   },
   {
     id: 'analyze',
     label: 'Run your first AI analysis',
-    description: 'Get an AI breakdown of any matchup — who has the edge and why (3 free per day)',
+    description: 'Not sure who to pick? Our AI breaks down each matchup — who has the edge, why, and whether the odds are worth it. 3 free per day.',
     href: '/dashboard',
     linkText: 'Find a game',
   },
   {
     id: 'alert',
     label: 'Set a price alert',
-    description: 'Get notified when odds on a game reach a price you want — like a price alert for shopping',
+    description: 'Odds change constantly. Set an alert and we\'ll tell you when a line moves to a price you like — no need to keep checking.',
     href: '/dashboard/alerts',
     linkText: 'Go to alerts',
   },
   {
     id: 'pick',
     label: 'Log your first pick',
-    description: 'Record your bets to track your win rate and see how you improve over time',
+    description: 'Serious bettors track every bet. Log yours here and we\'ll calculate your win rate, ROI, and whether you\'re beating the closing line.',
     href: '/dashboard/picks',
     linkText: 'Log a pick',
   },
@@ -84,7 +84,10 @@ export function OnboardingChecklist() {
         <div>
           <h2 className="text-lg font-semibold">Welcome to BetBrain</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Get started in 4 steps — {progress}/{total} complete
+            Get started in 4 steps — {progress}/{total} complete.{' '}
+            <Link href="/betting-101" className="text-blue-400 hover:underline">
+              New to betting?
+            </Link>
           </p>
         </div>
         <button
