@@ -7,9 +7,23 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  // If Supabase env vars are not configured, skip auth entirely.
+  // This allows public pages (landing, betting-101, blog) to load
+  // even before the deployment is fully configured.
+  let supabaseUrl: string
+  let supabaseAnonKey: string
+  try {
+    supabaseUrl = getSupabaseUrl()
+    supabaseAnonKey = getSupabaseAnonKey()
+  } catch {
+    // Env vars missing — let the request through without auth checks.
+    // Dashboard pages will show an error boundary; public pages work fine.
+    return supabaseResponse
+  }
+
   const supabase = createServerClient(
-    getSupabaseUrl(),
-    getSupabaseAnonKey(),
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
