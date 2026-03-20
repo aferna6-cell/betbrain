@@ -80,6 +80,21 @@ describe('computeProfit', () => {
     const profit = computeProfit('win', -100, 1)
     expect(profit).toBe(1)
   })
+
+  it('handles even odds (+100)', () => {
+    const profit = computeProfit('win', 100, 1)
+    expect(profit).toBe(1)
+  })
+
+  it('handles heavy favorite (-1000)', () => {
+    const profit = computeProfit('win', -1000, 1)
+    expect(profit).toBeCloseTo(0.1, 2) // risk $1 to win $0.10
+  })
+
+  it('handles big underdog (+1000)', () => {
+    const profit = computeProfit('win', 1000, 1)
+    expect(profit).toBe(10) // risk $1 to win $10
+  })
 })
 
 // ---------------------------------------------------------------------------
