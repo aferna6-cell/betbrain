@@ -28,11 +28,21 @@ echo "Database:   $DATABASE"
 echo ""
 
 # Check for missing env vars
-MISSING=$(echo "$RESPONSE" | grep -o '"[a-z_]*":"missing"' | cut -d'"' -f2)
-if [ -n "$MISSING" ]; then
+MISSING_ENV=$(echo "$RESPONSE" | grep -o '"checks":{[^}]*}' | grep -o '"[a-z_]*":"missing"' | cut -d'"' -f2)
+if [ -n "$MISSING_ENV" ]; then
   echo "Missing env vars:"
-  echo "$MISSING" | while read -r var; do
+  echo "$MISSING_ENV" | while read -r var; do
     echo "  - $var"
+  done
+  echo ""
+fi
+
+# Check for missing tables
+MISSING_TABLES=$(echo "$RESPONSE" | grep -o '"tables":{[^}]*}' | grep -o '"[a-z_]*":"missing"' | cut -d'"' -f2)
+if [ -n "$MISSING_TABLES" ]; then
+  echo "Missing tables (apply migrations):"
+  echo "$MISSING_TABLES" | while read -r table; do
+    echo "  - $table"
   done
   echo ""
 fi
