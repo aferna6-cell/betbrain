@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { createServiceClient } from '@/lib/supabase/server'
 
 /**
  * GET /api/health
@@ -21,14 +22,27 @@ export async function GET() {
   checks.stripe_price = process.env.STRIPE_PRO_PRICE_ID ? 'ok' : 'missing'
   checks.cron_secret = process.env.CRON_SECRET ? 'ok' : 'missing'
 
+  // Check Supabase connectivity + schema (if env vars are present)
+  let dbStatus: 'ok' | 'no_tables' | 'error' | 'not_configured' = 'not_configured'
+  if (checks.supabase_service_key === 'ok') {
+    try {
+      const supabase = await createServiceClient()
+      const { error } = await supabase.from('profiles').select('id').limit(1)
+      dbStatus = error ? 'no_tables' : 'ok'
+    } catch {
+      dbStatus = 'error'
+    }
+  }
+
   const configured = Object.values(checks).filter((v) => v === 'ok').length
   const total = Object.keys(checks).length
-  const allOk = configured === total
+  const allOk = configured === total && dbStatus === 'ok'
 
   return NextResponse.json({
     status: allOk ? 'healthy' : 'degraded',
     configured: `${configured}/${total}`,
     checks,
+    database: dbStatus,
     timestamp: new Date().toISOString(),
   })
 }
