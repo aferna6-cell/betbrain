@@ -35,3 +35,11 @@ _Bugs found and fixed. Read before debugging to avoid rediscovering known issues
 **Fix:** Over/under picks without `pick_team` now only auto-resolve when there's exactly one final game on that date. Multiple games = skip with "no matching final game found" (safer than guessing wrong). Picks with `pick_team` set still match correctly regardless.
 **Files:** `src/lib/auto-resolve.ts`
 **Prevention:** When matching records across APIs without a shared ID, always consider the ambiguity of date-only matching. If multiple candidates exist and there's no distinguishing field, skip rather than guess. Add the constraint as a test case.
+
+### Odds of 0 produces Infinity profit
+**Date:** 2026-03-20
+**Symptom:** If a user entered odds of 0 in the pick form, `computeProfit('win', 0, 1)` calculated `100 / Math.abs(0) = Infinity`. This `Infinity` value would be stored in the database and displayed in the UI.
+**Root Cause:** No validation on the odds input — neither the client form nor the API route rejected 0 or invalid American odds ranges (between -99 and +99 which don't exist in American format).
+**Fix:** Added client-side validation in `picks-tracker.tsx` and server-side validation in `POST /api/picks` route. Both reject odds of 0 and values between -100 and +100 exclusive.
+**Files:** `src/components/picks-tracker.tsx`, `src/app/api/picks/route.ts`
+**Prevention:** Always validate numeric inputs at both client and server boundaries. For domain-specific formats like American odds, encode the format constraints (no values between -100 and +100) as explicit validation rules.
