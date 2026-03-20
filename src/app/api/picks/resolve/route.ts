@@ -5,10 +5,11 @@ import {
   resolvePicksBatch,
   normalizeTeamName,
   resolveSignalOutcome,
+  nbaGameToResult,
   type PendingPick,
   type GameResult,
 } from '@/lib/auto-resolve'
-import { getNBAGames, type NBAGame } from '@/lib/sports/stats'
+import { getNBAGames } from '@/lib/sports/stats'
 import type { SignalHistoryRecord } from '@/lib/signal-history'
 
 /**
@@ -189,13 +190,3 @@ export async function GET(request: Request) {
   })
 }
 
-function nbaGameToResult(game: NBAGame): GameResult {
-  return {
-    homeTeam: game.homeTeam.fullName,
-    awayTeam: game.awayTeam.fullName,
-    homeScore: game.homeTeamScore,
-    awayScore: game.awayTeamScore,
-    date: game.date,
-    status: game.status,
-  }
-}

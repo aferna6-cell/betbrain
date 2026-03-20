@@ -9,6 +9,7 @@
  */
 
 import type { PickOutcome, PickType } from '@/lib/supabase/types'
+import type { NBAGame } from '@/lib/sports/stats'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -305,4 +306,20 @@ export function resolveSignalOutcome(
   if (valueSideScore > otherScore) return 'win'
   if (valueSideScore < otherScore) return 'loss'
   return 'push'
+}
+
+// ---------------------------------------------------------------------------
+// NBAGame -> GameResult converter
+// ---------------------------------------------------------------------------
+
+/** Convert a balldontlie NBAGame to a GameResult for the resolver. */
+export function nbaGameToResult(game: NBAGame): GameResult {
+  return {
+    homeTeam: game.homeTeam.fullName,
+    awayTeam: game.awayTeam.fullName,
+    homeScore: game.homeTeamScore,
+    awayScore: game.awayTeamScore,
+    date: game.date,
+    status: game.status,
+  }
 }

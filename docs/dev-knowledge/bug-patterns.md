@@ -27,3 +27,11 @@ _Bugs found and fixed. Read before debugging to avoid rediscovering known issues
 **Fix:** Each handler now returns `NextResponse.json({ error: '...' }, { status: 500 })` on Supabase update failure, which triggers Stripe's automatic retry mechanism.
 **Files:** `src/app/api/stripe/webhook/route.ts`
 **Prevention:** Webhook handlers for critical state changes (payment → access) should return error status codes on failure so the upstream service retries. Never return 200 for "acknowledged but not processed."
+
+### Over/under picks resolved against wrong game on multi-game days
+**Date:** 2026-03-19
+**Symptom:** If a user had two over/under picks on the same date for different NBA games, both could resolve against whichever game appeared first in the results array.
+**Root Cause:** `matchPickToGame()` for over/under picks without `pick_team` set returned the first Final game matching the date, regardless of which game the pick actually belonged to. The comment acknowledged this gap but the code didn't implement the safeguard.
+**Fix:** Over/under picks without `pick_team` now only auto-resolve when there's exactly one final game on that date. Multiple games = skip with "no matching final game found" (safer than guessing wrong). Picks with `pick_team` set still match correctly regardless.
+**Files:** `src/lib/auto-resolve.ts`
+**Prevention:** When matching records across APIs without a shared ID, always consider the ambiguity of date-only matching. If multiple candidates exist and there's no distinguishing field, skip rather than guess. Add the constraint as a test case.

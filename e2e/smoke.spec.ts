@@ -4,9 +4,8 @@ test.describe('Landing Page', () => {
   test('loads and shows hero content', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/BetBrain/);
-    await expect(page.locator('text=AI Game Analysis')).toBeVisible();
+    await expect(page.locator('text=Closing Line Value')).toBeVisible();
     await expect(page.locator('text=Odds Comparison')).toBeVisible();
-    await expect(page.locator('text=Multi-Sport Coverage')).toBeVisible();
   });
 
   test('shows pricing section', async ({ page }) => {
@@ -75,6 +74,35 @@ test.describe('Static Public Pages', () => {
   test('blog index loads', async ({ page }) => {
     await page.goto('/blog');
     await expect(page.locator('h1')).toBeVisible();
+  });
+});
+
+test.describe('New Public Pages', () => {
+  test('betting-101 page loads with content', async ({ page }) => {
+    await page.goto('/betting-101');
+    await expect(page).toHaveTitle(/Betting 101/);
+    await expect(page.locator('h1')).toContainText('Betting 101');
+    await expect(page.locator('text=American odds')).toBeVisible();
+    await expect(page.locator('text=Moneyline')).toBeVisible();
+  });
+
+  test('faq page loads with questions', async ({ page }) => {
+    await page.goto('/faq');
+    await expect(page.locator('h1')).toBeVisible();
+    await expect(page.locator('text=What is BetBrain')).toBeVisible();
+    await expect(page.locator('text=EV Scanner')).toBeVisible();
+  });
+
+  test('landing page shows pro tier with new features', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('text=+EV scanner')).toBeVisible();
+    await expect(page.locator('text=Auto-resolve NBA')).toBeVisible();
+  });
+
+  test('sitemap includes betting-101', async ({ page }) => {
+    const response = await page.goto('/sitemap.xml');
+    const text = await response?.text();
+    expect(text).toContain('betting-101');
   });
 });
 
