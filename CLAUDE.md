@@ -10,13 +10,13 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
 - **Payments:** Stripe subscriptions
-- **Testing:** Vitest (unit, 862 tests) + Playwright (E2E, 15 smoke tests)
+- **Testing:** Vitest (unit, 1067 tests) + Playwright (E2E, 19 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
 
-- `src/app/` — Pages and layouts (App Router, 53 routes)
-- `src/app/api/` — API route handlers (analysis, odds, stats, picks, stripe, alerts, signals, digest)
+- `src/app/` — Pages and layouts (App Router, 59 routes)
+- `src/app/api/` — API route handlers (analysis, odds, stats, picks, stripe, alerts, signals, digest, ev, cron, health)
 - `src/components/` — React components (game cards, odds tables, charts, nav, etc.)
 - `src/lib/api/` — Shared API route/auth/error helpers
 - `src/lib/ai/` — Claude API analysis (structured output, caching)
@@ -25,9 +25,12 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - `src/lib/odds.ts` — Shared odds utilities (formatOdds, getBestMoneyline/Spread/Total)
 - `src/lib/format.ts` — Shared formatters (formatGameTime, RISK_COLORS, date formatters)
 - `src/lib/env.ts` — Canonical env var access (all env reads go through here)
+- `src/lib/auto-resolve.ts` — NBA pick auto-resolution (team matching, outcome determination)
+- `src/lib/ev-scanner.ts` — +EV scanner + arbitrage detection
 - `src/lib/stripe.ts` — Stripe client singleton
 - `e2e/` — Playwright E2E smoke tests
-- `scripts/daily/` — Health-check and daily review automation
+- `scripts/` — Health-check, daily review, post-deploy verification
+- `vercel.json` — Cron job config (daily auto-resolve at 10am ET)
 - `docs/dev-knowledge/` — Architecture decisions, schema log, bug patterns
 
 ## Commands
@@ -37,7 +40,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (969 tests)
+npm run test         # Run Vitest unit tests (1067 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md
