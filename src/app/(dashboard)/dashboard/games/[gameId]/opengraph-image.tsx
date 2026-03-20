@@ -1,12 +1,22 @@
 import { ImageResponse } from 'next/og'
+import { getGameById } from '@/lib/sports/odds'
 
 export const runtime = 'edge'
 export const alt = 'Game Analysis — BetBrain'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function Image({ params }: { params: { gameId: string } }) {
-  const gameId = params.gameId
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ gameId: string }>
+}) {
+  const { gameId } = await params
+  const game = await getGameById(gameId)
+
+  const awayTeam = game?.awayTeam ?? 'Away Team'
+  const homeTeam = game?.homeTeam ?? 'Home Team'
+  const sport = game?.sport?.toUpperCase() ?? 'GAME'
 
   return new ImageResponse(
     (
@@ -32,49 +42,6 @@ export default function Image({ params }: { params: { gameId: string } }) {
           }}
         />
 
-        {/* Header row */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '14px',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              width: '44px',
-              height: '44px',
-              backgroundColor: '#6366f1',
-              borderRadius: '10px',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                fontSize: '26px',
-                fontWeight: 900,
-                color: '#ffffff',
-              }}
-            >
-              B
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              fontSize: '28px',
-              fontWeight: 700,
-              color: '#a5b4fc',
-              letterSpacing: '-0.5px',
-            }}
-          >
-            BetBrain
-          </div>
-        </div>
-
         {/* Main content */}
         <div
           style={{
@@ -82,57 +49,67 @@ export default function Image({ params }: { params: { gameId: string } }) {
             flexDirection: 'column',
             flex: 1,
             justifyContent: 'center',
-            gap: '20px',
+            gap: '24px',
           }}
         >
-          {/* Badge */}
+          {/* Sport badge */}
           <div
             style={{
               display: 'flex',
+              padding: '8px 20px',
+              backgroundColor: '#1e1e3a',
+              borderRadius: '8px',
+              fontSize: '18px',
+              fontWeight: 700,
+              color: '#a5b4fc',
+              border: '1px solid #2d2d5e',
+              width: 'fit-content',
+            }}
+          >
+            {sport}
+          </div>
+
+          {/* Matchup */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
             }}
           >
             <div
               style={{
                 display: 'flex',
-                padding: '6px 18px',
-                backgroundColor: '#1e1e3a',
-                borderRadius: '999px',
-                border: '1px solid #6366f1',
-                fontSize: '14px',
-                fontWeight: 600,
-                color: '#818cf8',
-                letterSpacing: '0.05em',
+                fontSize: '52px',
+                fontWeight: 800,
+                color: '#ffffff',
+                letterSpacing: '-2px',
               }}
             >
-              GAME ANALYSIS
+              {awayTeam}
             </div>
-          </div>
-
-          {/* Heading */}
-          <div
-            style={{
-              display: 'flex',
-              fontSize: '60px',
-              fontWeight: 800,
-              color: '#ffffff',
-              letterSpacing: '-2px',
-              lineHeight: 1.1,
-            }}
-          >
-            AI-Powered Game Breakdown
-          </div>
-
-          {/* Description */}
-          <div
-            style={{
-              display: 'flex',
-              fontSize: '26px',
-              fontWeight: 400,
-              color: '#94a3b8',
-              lineHeight: 1.4,
-            }}
-          >
-            Odds comparison, AI analysis, and line movement tracking
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '24px',
+                fontWeight: 500,
+                color: '#64748b',
+                paddingLeft: '4px',
+              }}
+            >
+              @
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '52px',
+                fontWeight: 800,
+                color: '#ffffff',
+                letterSpacing: '-2px',
+              }}
+            >
+              {homeTeam}
+            </div>
           </div>
         </div>
 
@@ -144,7 +121,6 @@ export default function Image({ params }: { params: { gameId: string } }) {
             alignItems: 'center',
           }}
         >
-          {/* Feature pills */}
           <div
             style={{
               display: 'flex',
@@ -169,18 +145,15 @@ export default function Image({ params }: { params: { gameId: string } }) {
               </div>
             ))}
           </div>
-
-          {/* Game ID */}
           <div
             style={{
               display: 'flex',
-              fontSize: '13px',
-              fontWeight: 400,
-              color: '#334155',
-              fontFamily: 'monospace',
+              fontSize: '20px',
+              fontWeight: 600,
+              color: '#475569',
             }}
           >
-            {gameId}
+            BetBrain
           </div>
         </div>
       </div>
