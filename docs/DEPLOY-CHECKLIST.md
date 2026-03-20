@@ -101,7 +101,7 @@ vercel --prod
 
 ## 5. Post-Deploy Verification
 
-- [ ] Check `/api/health` — should show `"status": "healthy"` with all 10 checks `"ok"`
+- [ ] Run `./scripts/post-deploy.sh https://your-domain.vercel.app` — or check `/api/health` manually
 - [ ] Visit landing page — loads correctly
 - [ ] Visit `/login` — auth form renders
 - [ ] Sign up a test account — verify email flow
