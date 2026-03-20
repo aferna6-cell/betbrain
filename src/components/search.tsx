@@ -15,6 +15,7 @@ const ALL_ITEMS: SearchItem[] = [
   // Navigation
   { label: 'Dashboard', path: '/dashboard', category: 'Navigation' },
   { label: 'Smart Signals', path: '/dashboard/signals', category: 'Navigation' },
+  { label: '+EV Scanner', path: '/dashboard/ev', category: 'Navigation' },
   { label: 'Alerts', path: '/dashboard/alerts', category: 'Navigation' },
   { label: 'Pick Tracker', path: '/dashboard/picks', category: 'Navigation' },
   { label: 'Daily Digest', path: '/dashboard/digest', category: 'Navigation' },
@@ -22,11 +23,14 @@ const ALL_ITEMS: SearchItem[] = [
   { label: 'Parlay Builder', path: '/dashboard/parlay', category: 'Navigation' },
   { label: 'Backtesting', path: '/dashboard/backtesting', category: 'Navigation' },
   { label: 'Leaderboard', path: '/dashboard/leaderboard', category: 'Navigation' },
+  { label: 'Analytics', path: '/dashboard/analytics', category: 'Navigation' },
   { label: 'API Access', path: '/dashboard/api', category: 'Navigation' },
   { label: 'Bankroll', path: '/dashboard/bankroll', category: 'Navigation' },
   { label: 'Watchlist', path: '/dashboard/watchlist', category: 'Navigation' },
+  { label: 'Saved Analyses', path: '/dashboard/saved', category: 'Navigation' },
   { label: 'Odds Tools', path: '/dashboard/tools', category: 'Navigation' },
   { label: 'Glossary', path: '/dashboard/glossary', category: 'Navigation' },
+  { label: 'Betting 101', path: '/betting-101', category: 'Navigation' },
   { label: 'Billing', path: '/dashboard/billing', category: 'Navigation' },
   { label: 'Profile', path: '/dashboard/profile', category: 'Navigation' },
   // Sports

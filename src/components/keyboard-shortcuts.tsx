@@ -9,12 +9,14 @@ import { useRouter } from 'next/navigation'
  *
  * Shortcuts:
  *   / or Cmd+K — open search palette (handled by SearchPalette)
- *   g then p — go to picks
- *   g then a — go to alerts
- *   g then s — go to signals
- *   g then b — go to bankroll
- *   g then w — go to watchlist
- *   g then d — go to dashboard
+ *   g then d — dashboard       g then e — +EV scanner
+ *   g then p — picks           g then l — leaderboard
+ *   g then a — alerts          g then n — analytics
+ *   g then s — signals         g then i — digest
+ *   g then b — bankroll        g then r — props
+ *   g then w — watchlist       g then y — parlay
+ *   g then v — saved analyses  g then t — backtesting
+ *   g then g — glossary        g then o — profile
  */
 export function KeyboardShortcuts() {
   const router = useRouter()
@@ -49,8 +51,18 @@ export function KeyboardShortcuts() {
           p: '/dashboard/picks',
           a: '/dashboard/alerts',
           s: '/dashboard/signals',
+          e: '/dashboard/ev',
           b: '/dashboard/bankroll',
           w: '/dashboard/watchlist',
+          v: '/dashboard/saved',
+          i: '/dashboard/digest',
+          r: '/dashboard/props',
+          y: '/dashboard/parlay',
+          t: '/dashboard/backtesting',
+          l: '/dashboard/leaderboard',
+          n: '/dashboard/analytics',
+          g: '/dashboard/glossary',
+          o: '/dashboard/profile',
         }
 
         if (routes[key]) {
