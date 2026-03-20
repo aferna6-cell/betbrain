@@ -86,6 +86,18 @@ function PickForm({
     const form = e.currentTarget
     const formData = new FormData(form)
 
+    const oddsVal = Number(formData.get('odds'))
+    if (!oddsVal || oddsVal === 0) {
+      setError('Odds cannot be zero')
+      setSubmitting(false)
+      return
+    }
+    if (oddsVal > -100 && oddsVal < 100 && oddsVal !== 0) {
+      setError('American odds must be -100 or lower, or +100 or higher')
+      setSubmitting(false)
+      return
+    }
+
     const body = {
       externalGameId: formData.get('gameId') as string,
       sport: formData.get('sport') as string,
@@ -94,7 +106,7 @@ function PickForm({
       pickLine: formData.get('pickLine')
         ? Number(formData.get('pickLine'))
         : null,
-      odds: Number(formData.get('odds')),
+      odds: oddsVal,
       closingOdds: formData.get('closingOdds')
         ? Number(formData.get('closingOdds'))
         : null,
