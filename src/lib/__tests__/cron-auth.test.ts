@@ -6,7 +6,7 @@
  * auth validation logic works correctly.
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 
 // Test the auth check pattern directly (the route handler itself
 // requires Next.js runtime, so we test the logic in isolation)
