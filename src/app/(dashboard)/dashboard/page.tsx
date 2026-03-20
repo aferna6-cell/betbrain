@@ -81,8 +81,15 @@ export default async function DashboardPage() {
           <p className="mt-1 text-2xl font-semibold">{totalGames}</p>
         </div>
         <div className="rounded-lg border border-border bg-card p-6">
-          <p className="text-sm text-muted-foreground">Status</p>
-          <p className="mt-1 text-lg font-medium text-green-500">Active</p>
+          <p className="text-sm text-muted-foreground">Odds API</p>
+          <p className={`mt-1 text-2xl font-semibold ${
+            apiUsage.isExhausted ? 'text-red-500' : apiUsage.isWarning ? 'text-yellow-500' : ''
+          }`}>
+            {apiUsage.count}
+            <span className="text-sm font-normal text-muted-foreground">
+              {' '}/ {apiUsage.limit}
+            </span>
+          </p>
         </div>
       </div>
 
