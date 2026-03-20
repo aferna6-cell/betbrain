@@ -3,7 +3,7 @@
  * Verifies that the endpoint correctly identifies configured vs missing vars.
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 type CheckStatus = 'ok' | 'missing'
 

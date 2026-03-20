@@ -22,13 +22,39 @@ export async function GET() {
   checks.stripe_price = process.env.STRIPE_PRO_PRICE_ID ? 'ok' : 'missing'
   checks.cron_secret = process.env.CRON_SECRET ? 'ok' : 'missing'
 
-  // Check Supabase connectivity + schema (if env vars are present)
-  let dbStatus: 'ok' | 'no_tables' | 'error' | 'not_configured' = 'not_configured'
+  // Check Supabase connectivity + per-table schema status
+  const tables: Record<string, 'ok' | 'missing' | 'error'> = {}
+  let dbStatus: 'ok' | 'partial' | 'no_tables' | 'error' | 'not_configured' = 'not_configured'
+
   if (checks.supabase_service_key === 'ok') {
     try {
       const supabase = await createServiceClient()
-      const { error } = await supabase.from('profiles').select('id').limit(1)
-      dbStatus = error ? 'no_tables' : 'ok'
+
+      // Check each table created by migrations 001-008
+      const requiredTables = [
+        'profiles',        // migration 001
+        'game_cache',      // migration 001
+        'odds_cache',      // migration 001
+        'ai_insights',     // migration 001
+        'saved_analyses',  // migration 001
+        'user_picks',      // migration 001
+        'api_usage',       // migration 001
+        'odds_history',    // migration 003
+        'alerts',          // migration 004
+        'signal_history',  // migration 008
+      ]
+
+      let okCount = 0
+      for (const table of requiredTables) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error } = await (supabase.from as any)(table).select('id').limit(1)
+        tables[table] = error ? 'missing' : 'ok'
+        if (!error) okCount++
+      }
+
+      if (okCount === requiredTables.length) dbStatus = 'ok'
+      else if (okCount === 0) dbStatus = 'no_tables'
+      else dbStatus = 'partial'
     } catch {
       dbStatus = 'error'
     }
@@ -43,6 +69,7 @@ export async function GET() {
     configured: `${configured}/${total}`,
     checks,
     database: dbStatus,
+    ...(Object.keys(tables).length > 0 && { tables }),
     timestamp: new Date().toISOString(),
   })
 }
