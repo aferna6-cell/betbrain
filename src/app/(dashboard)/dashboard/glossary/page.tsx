@@ -67,6 +67,26 @@ const terms = [
     term: 'Book Spread',
     definition: 'The range of odds offered by different bookmakers for the same game. A wide book spread (e.g. 15+ points) means bookmakers disagree — potential value opportunity.',
   },
+  {
+    term: 'Arbitrage',
+    definition: 'When you can bet both sides of a game at different bookmakers and guarantee a profit regardless of the outcome. Extremely rare and fleeting — BetBrain scans for these automatically.',
+  },
+  {
+    term: 'Fair Odds',
+    definition: 'The true probability of an outcome, estimated by averaging odds across all bookmakers and removing the vig. If a book offers odds better than fair, that bet has positive expected value.',
+  },
+  {
+    term: 'Parlay',
+    definition: 'A bet that combines multiple individual picks into one wager. All picks must win for the parlay to pay out. Higher risk, higher potential reward. Correlated legs reduce true odds.',
+  },
+  {
+    term: 'Bankroll',
+    definition: 'The total amount of money you set aside for betting. Good bankroll management (e.g., never risking more than 1-3% per bet) protects against variance and losing streaks.',
+  },
+  {
+    term: 'Prop Bet',
+    definition: 'A bet on a specific event within a game, such as a player scoring over 25 points. Not tied to the game outcome directly. Also called "player props."',
+  },
 ]
 
 export default function GlossaryPage() {
