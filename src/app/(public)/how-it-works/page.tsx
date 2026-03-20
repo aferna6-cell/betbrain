@@ -52,8 +52,16 @@ const features = [
     description: 'AI evaluates how key injuries affect win probability compared to the current betting line.',
   },
   {
-    title: 'Pick Tracker',
-    description: 'Log your picks and track your record over time. Win rate, profit/loss, and ROI at a glance.',
+    title: 'Pick Tracker + Auto-Resolve',
+    description: 'Log picks and track your record. NBA picks auto-resolve from final scores — no manual entry needed.',
+  },
+  {
+    title: '+EV Scanner',
+    description: 'Finds bets where bookmaker odds exceed fair market value. Multi-book consensus removes vig to estimate true probability.',
+  },
+  {
+    title: 'CLV & Bankroll',
+    description: 'Closing Line Value tracking on every pick — the #1 predictor of long-term edge. Plus bankroll tools with Kelly Criterion sizing.',
   },
 ]
 
