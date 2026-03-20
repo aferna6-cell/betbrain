@@ -186,8 +186,15 @@ export default function LandingPage() {
           </p>
         </div>
 
+        {/* Scroll indicator */}
+        <div className="mt-12 flex justify-center animate-bounce">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" className="opacity-40">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+        </div>
+
         {/* Stats row */}
-        <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-px border border-zinc-800 rounded-lg overflow-hidden bg-zinc-800">
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-px border border-zinc-800 rounded-lg overflow-hidden bg-zinc-800">
           {[
             { value: "4", label: "Sports covered" },
             { value: "20+", label: "Bookmakers compared" },
