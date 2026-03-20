@@ -74,6 +74,21 @@ const faqs: { question: string; answer: string }[] = [
     answer:
       'Odds are fetched from The Odds API and cached in our database. The cache refreshes approximately every 5 minutes for active markets. If you see a "stale data" notice, it means the most recent API fetch has not completed yet — the displayed odds are the last known values.',
   },
+  {
+    question: 'What is the +EV Scanner?',
+    answer:
+      'The +EV (positive expected value) Scanner calculates fair odds by averaging implied probabilities across all bookmakers and removing the vig. When an individual book offers odds better than the fair market price, we flag it as a +EV opportunity. The scanner also detects rare arbitrage situations where you can bet both sides across different books for a guaranteed profit.',
+  },
+  {
+    question: 'How does auto-resolve work for picks?',
+    answer:
+      'For NBA picks, BetBrain automatically determines win/loss/push by fetching final game scores. Moneyline, spread, and over/under picks are resolved automatically. Prop bets require manual resolution since they depend on individual player stats. A daily cron job resolves picks each morning, or you can trigger resolution manually from the Pick Tracker page.',
+  },
+  {
+    question: 'What is CLV (Closing Line Value)?',
+    answer:
+      'CLV measures the difference between the odds you got when you placed your bet and the closing line (final odds before game start). Consistently beating the closing line is the single best predictor of long-term sports betting profitability. BetBrain calculates CLV on every pick where closing odds are recorded.',
+  },
 ]
 
 export default function FaqPage() {
