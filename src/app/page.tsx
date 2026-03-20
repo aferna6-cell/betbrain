@@ -424,6 +424,12 @@ export default function LandingPage() {
                 >
                   Blog
                 </Link>
+                <Link
+                  href="/betting-101"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Betting 101
+                </Link>
               </nav>
               <nav aria-label="Account links" className="flex flex-col gap-2">
                 <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-1">Account</span>
