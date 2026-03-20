@@ -6,6 +6,10 @@ function isEnvError(message?: string): boolean {
   return !!message?.includes('Missing required environment variable')
 }
 
+function isSchemaError(message?: string): boolean {
+  return !!message?.includes('relation') && !!message?.includes('does not exist')
+}
+
 export default function DashboardError({
   error,
   reset,
@@ -14,24 +18,28 @@ export default function DashboardError({
   reset: () => void
 }) {
   const envMissing = isEnvError(error.message)
+  const schemaMissing = isSchemaError(error.message)
+  const isSetupIssue = envMissing || schemaMissing
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card">
         <span className="text-2xl font-bold text-muted-foreground">
-          {envMissing ? '?' : '!'}
+          {isSetupIssue ? '?' : '!'}
         </span>
       </div>
 
       <h1 className="mb-2 text-2xl font-bold">
-        {envMissing ? 'Setup Required' : 'Something went wrong'}
+        {isSetupIssue ? 'Setup Required' : 'Something went wrong'}
       </h1>
 
-      {envMissing ? (
+      {isSetupIssue ? (
         <div className="mb-6 max-w-md space-y-2">
           <p className="text-sm text-muted-foreground">
-            BetBrain needs environment variables to connect to its services.
-            Check the deployment checklist for the required configuration.
+            {envMissing
+              ? 'BetBrain needs environment variables to connect to its services.'
+              : 'Database tables are missing. Apply Supabase migrations 001-008 to set up the schema.'}
+            {' '}Check the deployment checklist for setup instructions.
           </p>
           <p className="font-mono text-xs text-yellow-500">
             {error.message}
