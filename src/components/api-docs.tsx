@@ -156,6 +156,56 @@ const ENDPOINTS: Endpoint[] = [
   }
 ]`,
   },
+  {
+    method: 'GET',
+    path: '/api/v1/ev',
+    description: 'Get +EV (positive expected value) opportunities and arbitrage across all games. Fair odds are calculated from multi-book consensus.',
+    exampleResponse: `{
+  "opportunities": [
+    {
+      "gameId": "abc123",
+      "sport": "nba",
+      "homeTeam": "Los Angeles Lakers",
+      "awayTeam": "Boston Celtics",
+      "market": "moneyline",
+      "side": "away",
+      "team": "Boston Celtics",
+      "bookmaker": "draftkings",
+      "bookOdds": 180,
+      "fairOdds": 155,
+      "ev": 3.2
+    }
+  ],
+  "arbitrage": [],
+  "meta": {
+    "gamesScanned": 12,
+    "evCount": 2,
+    "arbCount": 0
+  }
+}`,
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/picks/resolve',
+    description: 'Auto-resolve pending NBA picks using balldontlie game results. Determines win/loss/push for moneyline, spread, and over/under picks.',
+    exampleResponse: `{
+  "message": "Resolved 3 pick(s) and 1 signal(s)",
+  "resolved": [
+    {
+      "pickId": "uuid",
+      "outcome": "win",
+      "profit": 0.91
+    }
+  ],
+  "skipped": [
+    {
+      "pickId": "uuid",
+      "reason": "prop picks require manual resolution"
+    }
+  ],
+  "signalsResolved": 1
+}`,
+  },
 ]
 
 const RATE_LIMIT_HEADERS = [
