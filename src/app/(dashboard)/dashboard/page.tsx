@@ -11,6 +11,7 @@ import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
 import { GamesDashboard } from '@/components/games-dashboard'
 import { DashboardStats } from '@/components/dashboard-stats'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
+import { WhatsNew } from '@/components/whats-new'
 import { TermTooltip } from '@/components/term-tooltip'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -55,6 +56,7 @@ export default async function DashboardPage() {
       </div>
 
       <OnboardingChecklist />
+      <WhatsNew />
 
       <DashboardStats />
 
