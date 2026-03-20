@@ -62,7 +62,9 @@ const freeTier = [
 const proTier = [
   "Unlimited AI analyses",
   "Smart Signals (multi-factor consensus)",
+  "+EV scanner + arbitrage detection",
   "Line alerts on moneyline, spread, totals",
+  "Auto-resolve NBA picks from scores",
   "Parlay EV calculator + prop analyzer",
   "Historical backtesting",
   "All Free tier features",
