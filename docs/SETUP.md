@@ -25,7 +25,7 @@ npx supabase link --project-ref <your-project-ref>
 npx supabase db push
 
 # Option B: SQL Editor
-# Open supabase/migrations/*.sql files and run them in order (001-007)
+# Open supabase/migrations/*.sql files and run them in order (001-008)
 # in your Supabase Dashboard > SQL Editor
 
 # 4. Start dev server
@@ -48,7 +48,9 @@ Create `.env.local` from `.env.example`:
 | `ANTHROPIC_API_KEY` | Yes | console.anthropic.com |
 | `STRIPE_SECRET_KEY` | Yes | Stripe Dashboard (use test key for dev) |
 | `STRIPE_WEBHOOK_SECRET` | Yes | Stripe Dashboard > Webhooks |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Yes | Stripe Dashboard > API Keys (publishable) |
 | `STRIPE_PRO_PRICE_ID` | Yes | Stripe Dashboard > Products > Pro > Price ID |
+| `CRON_SECRET` | No | Random secret for cron job auth (`openssl rand -hex 32`) |
 
 ## Commands
 
@@ -57,7 +59,7 @@ npm run dev          # Start dev server
 npm run build        # Production build
 npm run lint         # ESLint check
 npm run typecheck    # TypeScript check
-npm run test         # Run unit tests (909 tests)
+npm run test         # Run unit tests (1067 tests)
 npm run test:watch   # Vitest watch mode
 npm run test:e2e     # Playwright E2E (needs browser deps)
 npm run health-check # Run health check suite
@@ -65,7 +67,7 @@ npm run health-check # Run health check suite
 
 ## Database Migrations
 
-7 migration files in `supabase/migrations/`, applied in order:
+8 migration files in `supabase/migrations/`, applied in order:
 
 1. **001** — Core schema (profiles, game_cache, odds_cache, etc.)
 2. **002** — API usage tracking fix
@@ -74,6 +76,7 @@ npm run health-check # Run health check suite
 5. **005** — CLV tracking (closing_odds column)
 6. **006** — Expand alert markets to spreads + totals
 7. **007** — Odds history retention function
+8. **008** — Signal history for hit rate tracking
 
 ## Project Structure
 
@@ -87,7 +90,9 @@ src/
 │   ├── hooks/     # Custom React hooks
 │   ├── sports/    # Odds API + stats wrappers
 │   ├── supabase/  # Supabase clients + types
+│   ├── auto-resolve.ts # NBA pick auto-resolution
 │   ├── clv.ts     # CLV calculations
+│   ├── ev-scanner.ts # +EV and arbitrage detection
 │   ├── bankroll.ts # Bankroll management
 │   ├── format.ts  # Display formatters
 │   ├── odds.ts    # Odds conversion utilities
