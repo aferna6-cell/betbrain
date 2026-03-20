@@ -12,7 +12,7 @@ export default function NotFound() {
       <p className="mb-8 max-w-sm text-sm text-muted-foreground">
         The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
-      <div className="flex gap-3">
+      <div className="flex flex-wrap justify-center gap-3">
         <Link
           href="/"
           className="inline-flex h-9 items-center justify-center rounded-md border border-border bg-transparent px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
@@ -24,6 +24,12 @@ export default function NotFound() {
           className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
           Go to dashboard
+        </Link>
+        <Link
+          href="/betting-101"
+          className="inline-flex h-9 items-center justify-center rounded-md border border-border bg-transparent px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          Betting 101
         </Link>
       </div>
     </div>
