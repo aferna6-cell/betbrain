@@ -1,5 +1,8 @@
 import type { MetadataRoute } from 'next'
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://betbrain.app')
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
@@ -9,6 +12,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/dashboard/', '/api/', '/auth/'],
       },
     ],
-    sitemap: 'https://betbrain.app/sitemap.xml',
+    sitemap: `${siteUrl}/sitemap.xml`,
   }
 }

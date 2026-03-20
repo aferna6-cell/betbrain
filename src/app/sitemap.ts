@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://betbrain.app'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+    || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://betbrain.app')
 
   // Use a fixed date for static content, updated only when content actually changes.
   const staticDate = '2026-03-15'
