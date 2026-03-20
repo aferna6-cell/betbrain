@@ -184,4 +184,16 @@
 **Decision:** Resolve pending NBA picks by fetching game results from balldontlie, matching via normalized team name + date. Supports moneyline, spread, and over/under. Props are skipped (require player-level data). Non-NBA sports are skipped (no data source).
 **Why:** Manual pick resolution was the #1 UX complaint from the customer simulation. balldontlie provides final scores for NBA games. Team name matching (not game ID mapping) avoids needing a cross-API ID lookup table — both APIs use the same full team names (e.g., "Los Angeles Lakers"). The resolver is a pure function with no side effects, making it testable without mocks.
 
+### Health endpoint: env check + DB connectivity, no secrets exposed
+**Decision:** `/api/health` checks existence (not values) of all 10 required env vars, then attempts a simple query to verify Supabase connectivity and schema. Returns `healthy` or `degraded` with a breakdown.
+**Why:** The most common post-deploy failure is misconfigured env vars or unapplied migrations. The health endpoint makes this instantly diagnosable without SSH or log access. Never exposing actual values prevents accidental secret leaks even if the endpoint is publicly accessible.
+
+### Middleware: graceful fallback on missing env vars
+**Decision:** The auth middleware wraps the Supabase client init in try-catch. If env vars are missing, it falls through without auth checks instead of crashing.
+**Why:** Without this, every page load crashes with an unhandled error when Supabase isn't configured yet. With it, public pages (landing, blog, Betting 101) work fine, and dashboard pages hit their error boundaries naturally with helpful "Setup Required" messages.
+
+### "What's New" banner: versioned localStorage dismissal
+**Decision:** The dashboard shows a dismissible "What's New" banner when the CURRENT_VERSION constant changes. Dismissed state is stored in localStorage keyed to the version string.
+**Why:** Feature discovery is a growth problem — users who signed up before +EV Scanner was built won't know it exists unless told. Versioned dismissal means updating the constant re-shows the banner for all users, while users who've seen the current version aren't bothered.
+
 _Add new decisions below._
