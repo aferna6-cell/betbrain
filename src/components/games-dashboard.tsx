@@ -96,6 +96,22 @@ export function GamesDashboard({
         </div>
       </div>
 
+      {/* Rate limit warning */}
+      {apiUsage.isExhausted && (
+        <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3">
+          <p className="text-sm text-red-500">
+            Odds API limit reached ({apiUsage.count}/{apiUsage.limit}). Data shown is cached and may be stale. Limit resets at the start of next month.
+          </p>
+        </div>
+      )}
+      {apiUsage.isWarning && !apiUsage.isExhausted && (
+        <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/5 px-4 py-3">
+          <p className="text-sm text-yellow-500">
+            Approaching Odds API limit ({apiUsage.count}/{apiUsage.limit}). Data will be served from cache once the limit is reached.
+          </p>
+        </div>
+      )}
+
       {/* Data notices */}
       {dataNotices.length > 0 && (
         <div className="space-y-1">
