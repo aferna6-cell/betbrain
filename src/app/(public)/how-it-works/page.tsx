@@ -245,6 +245,18 @@ export default function HowItWorksPage() {
                 Dashboard
               </Link>
               <Link
+                href="/betting-101"
+                className="text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                Betting 101
+              </Link>
+              <Link
+                href="/changelog"
+                className="text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                Changelog
+              </Link>
+              <Link
                 href="/login"
                 className="text-zinc-500 hover:text-zinc-300 transition-colors"
               >
