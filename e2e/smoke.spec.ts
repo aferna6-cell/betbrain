@@ -66,6 +66,18 @@ test.describe('Static Public Pages', () => {
     await expect(page.locator('h1')).toBeVisible();
   });
 
+  test('privacy policy loads', async ({ page }) => {
+    await page.goto('/privacy');
+    await expect(page.locator('h1')).toContainText('Privacy Policy');
+    await expect(page.locator('text=What we collect')).toBeVisible();
+  });
+
+  test('terms of service loads', async ({ page }) => {
+    await page.goto('/terms');
+    await expect(page.locator('h1')).toContainText('Terms of Service');
+    await expect(page.locator('text=No financial advice')).toBeVisible();
+  });
+
   test('how-it-works page loads', async ({ page }) => {
     await page.goto('/how-it-works');
     await expect(page.locator('h1')).toBeVisible();
