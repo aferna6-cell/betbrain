@@ -113,6 +113,27 @@ describe('normalizeTeamName', () => {
   it('handles already-normalized names', () => {
     expect(normalizeTeamName('boston celtics')).toBe('boston celtics')
   })
+
+  it('normalizes all 30 NBA team names consistently', () => {
+    const teams = [
+      'Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets',
+      'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers',
+      'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons',
+      'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers',
+      'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies',
+      'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves',
+      'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder',
+      'Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns',
+      'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs',
+      'Toronto Raptors', 'Utah Jazz', 'Washington Wizards',
+    ]
+    for (const team of teams) {
+      const norm = normalizeTeamName(team)
+      expect(norm).toBe(team.toLowerCase())
+      // Same name normalizes identically (idempotent)
+      expect(normalizeTeamName(norm)).toBe(norm)
+    }
+  })
 })
 
 // ---------------------------------------------------------------------------
