@@ -265,8 +265,60 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
+      {/* Comparison */}
       <section className="border-t border-zinc-800 bg-zinc-900/40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Stop checking 5 apps</h2>
+            <p className="text-zinc-400">Everything you need, in one dashboard</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {/* Without */}
+            <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-5">
+              <p className="text-xs font-semibold text-red-400 uppercase mb-4">Without BetBrain</p>
+              <ul className="space-y-2.5 text-sm text-zinc-400">
+                {[
+                  'Open 5 sportsbook apps to compare odds',
+                  'Manually calculate implied probability',
+                  'No idea if you beat the closing line',
+                  'Track picks in a spreadsheet',
+                  'Guess at bankroll sizing',
+                  'Miss line movements overnight',
+                ].map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="mt-0.5 text-red-500/60">&#x2717;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* With */}
+            <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/5 p-5">
+              <p className="text-xs font-semibold text-indigo-400 uppercase mb-4">With BetBrain</p>
+              <ul className="space-y-2.5 text-sm text-zinc-300">
+                {[
+                  '20+ bookmakers side by side, best price highlighted',
+                  'Implied probability on every odds display',
+                  'CLV tracked automatically on every pick',
+                  'Pick tracker with ROI, win rate, profit',
+                  'Kelly Criterion bankroll guidance',
+                  'Line movement alerts + daily cron auto-resolve',
+                ].map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="mt-0.5 text-green-500">&#x2713;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="border-t border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-24">
           <div className="mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
