@@ -142,10 +142,15 @@ export function AnalyzeButton({ game }: { game: NormalizedGame }) {
               </p>
             </div>
 
-            {/* Disclaimer */}
-            <p className="mt-4 border-t border-border pt-3 text-xs italic text-muted-foreground">
-              {analysis.disclaimer}
-            </p>
+            {/* Disclaimer + attribution */}
+            <div className="mt-4 border-t border-border pt-3 flex items-center justify-between">
+              <p className="text-xs italic text-muted-foreground">
+                {analysis.disclaimer}
+              </p>
+              <span className="shrink-0 text-[10px] text-muted-foreground/50">
+                Powered by Claude
+              </span>
+            </div>
           </div>
         </div>
       )}
