@@ -69,10 +69,16 @@ export function AnalyzeButton({ game }: { game: NormalizedGame }) {
       )}
 
       {open && analysis && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-card p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" aria-hidden="true" onClick={() => setOpen(false)}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="analysis-title"
+            className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-card p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold">
+              <h3 id="analysis-title" className="text-lg font-bold">
                 {game.awayTeam} @ {game.homeTeam}
               </h3>
               <button
