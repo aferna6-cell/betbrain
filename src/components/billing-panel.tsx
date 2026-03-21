@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -20,8 +21,10 @@ const PRO_FEATURES = [
   'Unlimited AI analyses',
   'All sports coverage',
   'Odds comparison',
-  'Smart Signals (coming soon)',
-  'Line movement alerts (coming soon)',
+  'Smart Signals',
+  '+EV scanner + arbitrage detection',
+  'Line movement alerts',
+  'Auto-resolve NBA picks',
   'Priority support',
 ]
 
@@ -115,6 +118,12 @@ export function BillingPanel({ tier, hasSubscription }: BillingPanelProps) {
               {loading ? 'Loading...' : 'Upgrade to Pro'}
             </Button>
             {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              By upgrading you agree to our{' '}
+              <Link href="/terms" className="underline hover:text-foreground">Terms</Link>
+              {' '}and{' '}
+              <Link href="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>
+            </p>
           </div>
         )}
 
