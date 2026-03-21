@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
+import type { Database } from '@/lib/supabase/types'
+
+type TableName = keyof Database['public']['Tables']
 
 /**
  * GET /api/health
@@ -31,7 +34,7 @@ export async function GET() {
       const supabase = await createServiceClient()
 
       // Check each table created by migrations 001-008
-      const requiredTables = [
+      const requiredTables: TableName[] = [
         'profiles',        // migration 001
         'game_cache',      // migration 001
         'odds_cache',      // migration 001
@@ -46,8 +49,7 @@ export async function GET() {
 
       let okCount = 0
       for (const table of requiredTables) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error } = await (supabase.from as any)(table).select('id').limit(1)
+        const { error } = await supabase.from(table).select('id').limit(1)
         tables[table] = error ? 'missing' : 'ok'
         if (!error) okCount++
       }
