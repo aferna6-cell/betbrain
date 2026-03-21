@@ -567,6 +567,12 @@ export default function LandingPage() {
                 >
                   Legal
                 </Link>
+                <Link
+                  href="/privacy"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Privacy
+                </Link>
               </nav>
             </div>
           </div>

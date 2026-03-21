@@ -60,6 +60,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    // Legal
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: staticDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
     // Changelog
     {
       url: `${baseUrl}/changelog`,
