@@ -35,11 +35,13 @@ test.describe('Auth Pages', () => {
     await expect(page.locator('a[href="/signup"]')).toBeVisible();
   });
 
-  test('signup page renders form', async ({ page }) => {
+  test('signup page renders form with legal links', async ({ page }) => {
     await page.goto('/signup');
     await expect(page.locator('input[type="email"], input#email')).toBeVisible();
     await expect(page.locator('input[type="password"], input#password')).toBeVisible();
     await expect(page.locator('a[href="/login"]')).toBeVisible();
+    await expect(page.locator('a[href="/terms"]')).toBeVisible();
+    await expect(page.locator('a[href="/privacy"]')).toBeVisible();
   });
 
   test('forgot password page renders', async ({ page }) => {
