@@ -573,6 +573,12 @@ export default function LandingPage() {
                 >
                   Privacy
                 </Link>
+                <Link
+                  href="/terms"
+                  className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  Terms
+                </Link>
               </nav>
             </div>
           </div>

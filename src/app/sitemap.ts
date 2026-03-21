@@ -67,6 +67,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: staticDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
     // Changelog
     {
       url: `${baseUrl}/changelog`,
