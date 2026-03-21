@@ -214,6 +214,57 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Demo preview */}
+      <section className="border-t border-zinc-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">See it in action</h2>
+            <p className="text-zinc-400">Live odds comparison with best price highlighting</p>
+          </div>
+
+          <div className="mx-auto max-w-md rounded-lg border border-zinc-800 bg-zinc-900 p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="rounded bg-zinc-800 px-2 py-0.5 text-xs font-semibold text-zinc-400 uppercase">NBA</span>
+              <span className="text-xs text-zinc-500">Tonight 7:30 PM</span>
+            </div>
+            <div className="space-y-2 mb-4">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-white">Boston Celtics</span>
+                <span className="font-mono text-sm text-zinc-400">+145 <span className="text-xs opacity-60">40.8%</span></span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-white">Los Angeles Lakers</span>
+                <span className="font-mono text-sm text-zinc-400">-165 <span className="text-xs opacity-60">62.3%</span></span>
+              </div>
+            </div>
+            <div className="border-t border-zinc-800 pt-3">
+              <p className="text-xs text-zinc-500 mb-2">
+                Top Bookmakers <span className="ml-2 text-green-500/60">&#x25CF; = best price</span>
+              </p>
+              <div className="space-y-1 text-xs">
+                {[
+                  { name: 'DraftKings', away: '+145', home: '-170', awayBest: true, homeBest: false },
+                  { name: 'FanDuel', away: '+140', home: '-165', awayBest: false, homeBest: true },
+                  { name: 'BetMGM', away: '+135', home: '-170', awayBest: false, homeBest: false },
+                ].map((bk) => (
+                  <div key={bk.name} className="flex items-center justify-between">
+                    <span className="text-zinc-500">{bk.name}</span>
+                    <div className="flex gap-6">
+                      <span className={`font-mono ${bk.awayBest ? 'text-green-500' : 'text-zinc-400'}`}>{bk.away}</span>
+                      <span className={`font-mono ${bk.homeBest ? 'text-green-500' : 'text-zinc-400'}`}>{bk.home}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <p className="text-center mt-6 text-xs text-zinc-600">
+            Sample data for illustration. Real odds update every 5 minutes.
+          </p>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="border-t border-zinc-800 bg-zinc-900/40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-24">
