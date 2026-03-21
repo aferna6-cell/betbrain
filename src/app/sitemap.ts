@@ -60,6 +60,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    // Changelog
+    {
+      url: `${baseUrl}/changelog`,
+      lastModified: staticDate,
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
     // Auth pages — indexable for acquisition
     {
       url: `${baseUrl}/signup`,
