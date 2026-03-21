@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { MiniOddsConverter } from '@/components/mini-odds-converter'
 
 export const metadata: Metadata = {
   title: 'Betting 101 — How Sports Betting Works | BetBrain',
@@ -189,6 +190,7 @@ export default function Betting101Page() {
             <strong className="text-foreground">value bet</strong> — the price is
             better than it should be.
           </p>
+          <MiniOddsConverter />
         </Section>
 
         {/* Bankroll */}
