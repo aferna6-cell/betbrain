@@ -51,12 +51,18 @@ export function ShortcutsHelp() {
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => setOpen(false)}
+        aria-hidden="true"
       />
 
       {/* Dialog */}
-      <div className="relative w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-xl">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shortcuts-title"
+        className="relative w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-xl"
+      >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Keyboard Shortcuts</h2>
+          <h2 id="shortcuts-title" className="text-lg font-semibold">Keyboard Shortcuts</h2>
           <button
             onClick={() => setOpen(false)}
             className="text-xs text-muted-foreground hover:text-foreground"
