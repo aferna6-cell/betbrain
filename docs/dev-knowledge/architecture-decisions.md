@@ -196,4 +196,12 @@
 **Decision:** The dashboard shows a dismissible "What's New" banner when the CURRENT_VERSION constant changes. Dismissed state is stored in localStorage keyed to the version string.
 **Why:** Feature discovery is a growth problem — users who signed up before +EV Scanner was built won't know it exists unless told. Versioned dismissal means updating the constant re-shows the banner for all users, while users who've seen the current version aren't bothered.
 
+### Shared validation utilities: single source of truth
+**Decision:** Domain-specific validation (like `isValidAmericanOdds`) lives in the relevant lib module (`odds.ts`) and is imported by both client components and API routes.
+**Why:** Duplicating validation logic between client and server is a maintenance risk — they can drift. A shared function ensures the same rules apply everywhere. The test file also imports the shared function directly, testing the real implementation rather than a copy.
+
+### Dynamic OG images: data-driven social previews
+**Decision:** Game detail pages generate OG images dynamically using `next/og ImageResponse` with actual team names. The image route fetches game data from cache.
+**Why:** Generic "BetBrain" OG images don't encourage clicks when shared. Showing "Lakers @ Celtics" in the preview image significantly increases click-through from social shares. Since game data is already cached in Supabase, the additional data fetch is free.
+
 _Add new decisions below._
