@@ -31,6 +31,7 @@ const ALL_ITEMS: SearchItem[] = [
   { label: 'Odds Tools', path: '/dashboard/tools', category: 'Navigation' },
   { label: 'Glossary', path: '/dashboard/glossary', category: 'Navigation' },
   { label: 'Betting 101', path: '/betting-101', category: 'Navigation' },
+  { label: 'Changelog', path: '/changelog', category: 'Navigation' },
   { label: 'Billing', path: '/dashboard/billing', category: 'Navigation' },
   { label: 'Profile', path: '/dashboard/profile', category: 'Navigation' },
   // Sports
