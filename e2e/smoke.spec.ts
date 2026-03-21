@@ -104,6 +104,27 @@ test.describe('New Public Pages', () => {
     const text = await response?.text();
     expect(text).toContain('betting-101');
   });
+
+  test('changelog page loads with timeline', async ({ page }) => {
+    await page.goto('/changelog');
+    await expect(page).toHaveTitle(/Changelog/);
+    await expect(page.locator('h1')).toContainText('Changelog');
+    await expect(page.locator('text=Core Platform')).toBeVisible();
+    await expect(page.locator('text=+EV Scanner')).toBeVisible();
+  });
+
+  test('landing page has demo game card', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('text=Boston Celtics')).toBeVisible();
+    await expect(page.locator('text=Los Angeles Lakers')).toBeVisible();
+    await expect(page.locator('text=best price')).toBeVisible();
+  });
+
+  test('landing page has comparison section', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('text=Without BetBrain')).toBeVisible();
+    await expect(page.locator('text=With BetBrain')).toBeVisible();
+  });
 });
 
 test.describe('SEO & Meta', () => {
