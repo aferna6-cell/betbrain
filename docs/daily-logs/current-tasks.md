@@ -1,9 +1,9 @@
 # Current Tasks — 2026-03-21
 
-## Session Summary — 187 Cycles
+## Session Summary — 200 Cycles
 
 ### Total Output
-- 195 commits, 1077 unit tests, 19 E2E tests, 25 API routes, 35 pages
+- 207 commits, 1102 unit tests, 19 E2E tests, 25 API routes, 36 pages, 27 test files
 - Build: PASS | Lint: 0 errors | TypeScript: 0 errors | `any`: 0
 - Health check: all PASS (migration drift = pre-deploy expected)
 - Production: https://betbrain-lemon.vercel.app — zero runtime errors
@@ -13,8 +13,9 @@
 - Growth: line movement, Smart Signals, picks, alerts, league pages, injury, H2H, digest
 - Premium: props, parlay, backtesting, leaderboard, API access
 - Sharp: CLV, bankroll, +EV scanner, arbitrage, auto-resolve, signal hit rate
-- UX: onboarding, tooltips, glossary (20 terms), Betting 101, search palette, keyboard shortcuts (17 + help dialog), scroll-to-top, What's New banner
-- Infra: PWA icons, CSP, SEO, JSON-LD, sitemap, cron jobs, error boundaries, loading skeletons, health endpoint, post-deploy script, graceful middleware
+- UX: onboarding, tooltips, glossary (20 terms), Betting 101 (with interactive converter), search palette, keyboard shortcuts (17 + help dialog), scroll-to-top, What's New banner
+- Content: changelog, demo game card on landing, comparison section, cross-linked footers
+- Infra: PWA icons, CSP, SEO, JSON-LD, sitemap, cron jobs, error boundaries, loading skeletons, health endpoint (per-table), post-deploy script, graceful middleware
 
 ### Test Coverage
 | Checkpoint | Tests |
@@ -23,7 +24,7 @@
 | Cycle 120 | 920 |
 | Cycle 128 | 998 |
 | Cycle 154 | 1055 |
-| Cycle 187 | 1077 |
+| Cycle 200 | 1102 |
 
 ## Open Work — Post-Launch Only
 - [ ] Resend email integration
