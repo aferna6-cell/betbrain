@@ -6,6 +6,7 @@ import {
 import { createServiceClient } from '@/lib/supabase/server'
 import { calculateCLV, calculateCLVStats } from '@/lib/clv'
 import { sanitizeLongText } from '@/lib/sanitize'
+import { isValidAmericanOdds } from '@/lib/odds'
 import type { Database, Sport, PickType } from '@/lib/supabase/types'
 
 type UserPickInsert = Database['public']['Tables']['user_picks']['Insert']
@@ -57,14 +58,8 @@ export async function POST(request: Request) {
     if (!pickType || !VALID_PICK_TYPES.includes(pickType)) {
       return badRequest('pickType must be one of: moneyline, spread, over, under, prop')
     }
-    if (typeof odds !== 'number' || isNaN(odds)) {
-      return badRequest('odds must be a number')
-    }
-    if (odds === 0) {
-      return badRequest('odds cannot be zero')
-    }
-    if (odds > -100 && odds < 100) {
-      return badRequest('American odds must be -100 or lower, or +100 or higher')
+    if (typeof odds !== 'number' || !isValidAmericanOdds(odds)) {
+      return badRequest('Invalid odds — must be -100 or lower, or +100 or higher')
     }
     if (!gameDate || typeof gameDate !== 'string') {
       return badRequest('gameDate is required (YYYY-MM-DD)')

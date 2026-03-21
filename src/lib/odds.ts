@@ -53,6 +53,16 @@ export function americanToFractional(american: number): string {
   return `${numerator / divisor}/${denominator / divisor}`
 }
 
+/**
+ * Validate American odds — rejects 0, NaN, and values between -100 and +100
+ * which don't exist in American format. Valid: -100, +100, -110, +150, etc.
+ */
+export function isValidAmericanOdds(odds: number): boolean {
+  if (isNaN(odds) || odds === 0) return false
+  if (odds > -100 && odds < 100) return false
+  return true
+}
+
 /** Format American odds with + prefix for positive values */
 export function formatAmerican(american: number): string {
   if (american >= 0) return `+${american}`

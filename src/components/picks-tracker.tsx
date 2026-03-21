@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/components/toast'
 import { TermTooltip } from '@/components/term-tooltip'
-import { formatOdds } from '@/lib/odds'
+import { formatOdds, isValidAmericanOdds } from '@/lib/odds'
 import type {
   Sport,
   PickType,
@@ -87,13 +87,8 @@ function PickForm({
     const formData = new FormData(form)
 
     const oddsVal = Number(formData.get('odds'))
-    if (!oddsVal || oddsVal === 0) {
-      setError('Odds cannot be zero')
-      setSubmitting(false)
-      return
-    }
-    if (oddsVal > -100 && oddsVal < 100 && oddsVal !== 0) {
-      setError('American odds must be -100 or lower, or +100 or higher')
+    if (!isValidAmericanOdds(oddsVal)) {
+      setError('Invalid odds — must be -100 or lower, or +100 or higher')
       setSubmitting(false)
       return
     }

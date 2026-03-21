@@ -1,18 +1,12 @@
 /**
- * Tests for American odds validation logic used in pick creation.
- * Mirrors the validation in both the client form and API route.
+ * Tests for American odds validation — shared utility in src/lib/odds.ts.
+ * Used by both the client pick form and the server API route.
  */
 
 import { describe, it, expect } from 'vitest'
+import { isValidAmericanOdds } from '@/lib/odds'
 
-function isValidAmericanOdds(odds: number): boolean {
-  if (odds === 0) return false
-  if (isNaN(odds)) return false
-  if (odds > -100 && odds < 100) return false
-  return true
-}
-
-describe('American odds validation', () => {
+describe('isValidAmericanOdds', () => {
   it('rejects zero', () => {
     expect(isValidAmericanOdds(0)).toBe(false)
   })
