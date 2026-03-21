@@ -242,6 +242,8 @@ export default function FaqPage() {
             <nav className="flex flex-row sm:flex-col gap-3 sm:gap-2 text-sm shrink-0">
               <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors">Home</Link>
               <Link href="/how-it-works" className="text-zinc-500 hover:text-zinc-300 transition-colors">How It Works</Link>
+              <Link href="/betting-101" className="text-zinc-500 hover:text-zinc-300 transition-colors">Betting 101</Link>
+              <Link href="/changelog" className="text-zinc-500 hover:text-zinc-300 transition-colors">Changelog</Link>
               <Link href="/dashboard" className="text-zinc-500 hover:text-zinc-300 transition-colors">Dashboard</Link>
               <Link href="/login" className="text-zinc-500 hover:text-zinc-300 transition-colors">Log In</Link>
               <Link href="/signup" className="text-zinc-500 hover:text-zinc-300 transition-colors">Sign Up</Link>
