@@ -196,8 +196,8 @@
 - [x] **NFL Sunday Slate view** — Group NFL games by time slot (1pm ET, 4:25pm ET, SNF) on game days
 
 ## Props Bettor Gaps (Simulation: Cycle 240)
-- [ ] **Dynamic prop market filtering by sport** — Show only relevant markets when sport is selected
-- [ ] **Log Pick button on prop analysis result** — One-click pick logging from prop analysis card
+- [x] **Dynamic prop market filtering by sport** — Show only relevant markets when sport is selected
+- [x] **Log Pick button on prop analysis result** — One-click pick logging from prop analysis card
 - [ ] **Cache prop analyses** — Store results so re-viewing doesn't cost daily limit
 - [ ] **Prop market breakdown in pick stats** — Win rate per market (points/rebounds/assists/etc)
 - [ ] **Add prop analysis to landing page features** — Call out prop betting as a feature for discovery

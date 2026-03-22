@@ -1,26 +1,35 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { PropAnalysis } from '@/lib/ai/prop-analyzer'
 
-const PROP_MARKETS = [
-  { value: 'points', label: 'Points' },
-  { value: 'rebounds', label: 'Rebounds' },
-  { value: 'assists', label: 'Assists' },
-  { value: 'threes', label: '3-Pointers Made' },
-  { value: 'steals', label: 'Steals' },
-  { value: 'blocks', label: 'Blocks' },
-  { value: 'passing_yards', label: 'Passing Yards' },
-  { value: 'rushing_yards', label: 'Rushing Yards' },
-  { value: 'receiving_yards', label: 'Receiving Yards' },
-  { value: 'touchdowns', label: 'Touchdowns' },
-  { value: 'strikeouts', label: 'Strikeouts' },
-  { value: 'hits', label: 'Hits' },
-  { value: 'goals', label: 'Goals' },
-  { value: 'shots_on_goal', label: 'Shots on Goal' },
-]
+const SPORT_MARKETS: Record<string, { value: string; label: string }[]> = {
+  nba: [
+    { value: 'points', label: 'Points' },
+    { value: 'rebounds', label: 'Rebounds' },
+    { value: 'assists', label: 'Assists' },
+    { value: 'threes', label: '3-Pointers Made' },
+    { value: 'steals', label: 'Steals' },
+    { value: 'blocks', label: 'Blocks' },
+  ],
+  nfl: [
+    { value: 'passing_yards', label: 'Passing Yards' },
+    { value: 'rushing_yards', label: 'Rushing Yards' },
+    { value: 'receiving_yards', label: 'Receiving Yards' },
+    { value: 'touchdowns', label: 'Touchdowns' },
+  ],
+  mlb: [
+    { value: 'strikeouts', label: 'Strikeouts' },
+    { value: 'hits', label: 'Hits' },
+  ],
+  nhl: [
+    { value: 'goals', label: 'Goals' },
+    { value: 'shots_on_goal', label: 'Shots on Goal' },
+  ],
+}
 
 const SPORTS = [
   { value: 'nba', label: 'NBA' },
@@ -29,7 +38,7 @@ const SPORTS = [
   { value: 'nhl', label: 'NHL' },
 ]
 
-function ResultCard({ result }: { result: PropAnalysis }) {
+function ResultCard({ result, sport }: { result: PropAnalysis; sport: string }) {
   const recColor =
     result.recommendation === 'over'
       ? 'text-green-500'
@@ -152,10 +161,18 @@ function ResultCard({ result }: { result: PropAnalysis }) {
         </Badge>
       </div>
 
-      {/* Disclaimer */}
-      <p className="border-t border-border pt-2 text-xs italic text-muted-foreground">
-        {result.disclaimer}
-      </p>
+      {/* Log Pick + Disclaimer */}
+      <div className="flex items-center justify-between border-t border-border pt-2">
+        <p className="text-xs italic text-muted-foreground">
+          {result.disclaimer}
+        </p>
+        <Link
+          href={`/dashboard/picks?sport=${encodeURIComponent(sport)}&date=${new Date().toISOString().slice(0, 10)}`}
+          className="shrink-0 ml-3 inline-flex h-8 items-center rounded-md border border-border bg-transparent px-3 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          Log Pick
+        </Link>
+      </div>
     </div>
   )
 }
@@ -234,7 +251,14 @@ export function PropAnalyzerForm() {
             <select
               id="prop-sport"
               value={sport}
-              onChange={(e) => setSport(e.target.value)}
+              onChange={(e) => {
+                const newSport = e.target.value
+                setSport(newSport)
+                const markets = SPORT_MARKETS[newSport] ?? []
+                if (markets.length > 0 && !markets.some((m) => m.value === propMarket)) {
+                  setPropMarket(markets[0].value)
+                }
+              }}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             >
               {SPORTS.map((s) => (
@@ -286,7 +310,7 @@ export function PropAnalyzerForm() {
               onChange={(e) => setPropMarket(e.target.value)}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             >
-              {PROP_MARKETS.map((m) => (
+              {(SPORT_MARKETS[sport] ?? []).map((m) => (
                 <option key={m.value} value={m.value}>
                   {m.label}
                 </option>
@@ -350,7 +374,7 @@ export function PropAnalyzerForm() {
       </form>
 
       {result ? (
-        <ResultCard result={result} />
+        <ResultCard result={result} sport={sport} />
       ) : !loading ? (
         <div className="rounded-lg border border-dashed border-border bg-card/50 p-8 text-center">
           <p className="text-sm text-muted-foreground">
