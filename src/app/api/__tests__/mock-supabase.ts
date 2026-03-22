@@ -59,21 +59,6 @@ export function createMockSupabaseClient(
 }
 
 /**
- * Creates a mock Supabase client that returns 401 (no user).
- */
-export function createUnauthenticatedClient() {
-  return {
-    auth: {
-      getUser: vi.fn().mockResolvedValue({
-        data: { user: null },
-        error: null,
-      }),
-    },
-    from: vi.fn(),
-  }
-}
-
-/**
  * Helper to create a Request object with JSON body.
  */
 export function makeRequest(

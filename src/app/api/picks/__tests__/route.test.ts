@@ -9,7 +9,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import {
   FAKE_USER,
   createMockSupabaseClient,
-  createUnauthenticatedClient,
   makeRequest,
   makeGetRequest,
   makeDeleteRequest,
