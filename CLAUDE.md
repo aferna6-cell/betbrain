@@ -15,7 +15,7 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 
 ## Key Directories
 
-- `src/app/` — Pages and layouts (App Router, 59 routes)
+- `src/app/` — Pages and layouts (App Router, 62 routes)
 - `src/app/api/` — API route handlers (analysis, odds, stats, picks, stripe, alerts, signals, digest, ev, cron, health)
 - `src/components/` — React components (game cards, odds tables, charts, nav, etc.)
 - `src/lib/api/` — Shared API route/auth/error helpers

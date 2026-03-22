@@ -490,7 +490,13 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
           </div>
         </div>
 
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 flex items-center justify-end gap-2">
+          <Link
+            href={`/dashboard/picks?gameId=${encodeURIComponent(game.id)}&sport=${game.sport}&date=${game.commenceTime.slice(0, 10)}`}
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+          >
+            Log Pick
+          </Link>
           <AddAlertButton
             gameId={game.id}
             sport={game.sport}

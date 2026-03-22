@@ -80,6 +80,14 @@ function PickForm({
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Pre-fill from URL params (e.g. from game detail "Log Pick" button)
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
+  const prefill = {
+    gameId: params?.get('gameId') ?? '',
+    sport: params?.get('sport') ?? '',
+    date: params?.get('date') ?? '',
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSubmitting(true)
@@ -156,6 +164,7 @@ function PickForm({
             name="gameId"
             required
             placeholder="External game ID"
+            defaultValue={prefill.gameId}
             className={inputClass}
           />
         </div>
@@ -164,7 +173,7 @@ function PickForm({
           <label htmlFor="pick-sport" className="mb-1 block text-sm text-muted-foreground">
             Sport
           </label>
-          <select id="pick-sport" name="sport" required className={inputClass}>
+          <select id="pick-sport" name="sport" required defaultValue={prefill.sport || 'nba'} className={inputClass}>
             <option value="nba">NBA</option>
             <option value="nfl">NFL</option>
             <option value="mlb">MLB</option>
@@ -262,7 +271,7 @@ function PickForm({
             name="gameDate"
             type="date"
             required
-            defaultValue={new Date().toISOString().slice(0, 10)}
+            defaultValue={prefill.date || new Date().toISOString().slice(0, 10)}
             className={inputClass}
           />
         </div>
