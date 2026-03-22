@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/components/toast'
 import { TermTooltip } from '@/components/term-tooltip'
-import { formatOdds, isValidAmericanOdds } from '@/lib/odds'
+import { isValidAmericanOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
 import type {
   Sport,

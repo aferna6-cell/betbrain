@@ -10,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-import { formatOdds } from '@/lib/odds'
+import { useOddsFormat } from '@/components/odds-format-provider'
 import { formatTime, formatDateTime } from '@/lib/format'
 
 interface OddsSnapshot {
@@ -47,6 +47,7 @@ export function LineMovementChart({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [side, setSide] = useState<'home' | 'away'>('home')
+  const { formatPrice } = useOddsFormat()
 
   useEffect(() => {
     async function fetchHistory() {
@@ -153,7 +154,7 @@ export function LineMovementChart({
             />
             <YAxis
               tick={{ fontSize: 11, fill: '#888' }}
-              tickFormatter={formatOdds}
+              tickFormatter={(v) => formatPrice(v)}
               tickLine={false}
               axisLine={{ stroke: '#333' }}
               domain={['auto', 'auto']}
@@ -167,7 +168,7 @@ export function LineMovementChart({
               }}
               labelStyle={{ color: '#888' }}
               formatter={(value) =>
-                typeof value === 'number' ? formatOdds(value) : String(value ?? '')
+                typeof value === 'number' ? formatPrice(value) : String(value ?? '')
               }
               labelFormatter={(label) => String(label)}
             />

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { formatOdds } from '@/lib/odds'
+import { useOddsFormat } from '@/components/odds-format-provider'
 import type { BacktestConfig, BacktestResult, BacktestGame } from '@/lib/backtesting'
 
 function formatCurrency(value: number): string {
@@ -45,6 +45,7 @@ function SummaryCard({
 }
 
 function ResultRow({ game, index }: { game: BacktestGame; index: number }) {
+  const { formatPrice } = useOddsFormat()
   const resultColor =
     game.result === 'win'
       ? 'text-green-400'
@@ -63,7 +64,7 @@ function ResultRow({ game, index }: { game: BacktestGame; index: number }) {
         <span>{game.homeTeam}</span>
       </td>
       <td className="px-3 py-2 text-xs text-center capitalize">{game.side}</td>
-      <td className="px-3 py-2 text-xs text-center font-mono">{formatOdds(game.odds)}</td>
+      <td className="px-3 py-2 text-xs text-center font-mono">{formatPrice(game.odds)}</td>
       <td className="px-3 py-2 text-xs text-center">
         <span className={`font-semibold uppercase ${resultColor}`}>{game.result}</span>
       </td>

@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { formatOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
 import type { ParlayLeg, ParlayAnalysis } from '@/lib/ai/parlay-analyzer'
 

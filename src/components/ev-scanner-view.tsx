@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { TermTooltip } from '@/components/term-tooltip'
-import { formatOdds } from '@/lib/odds'
 import { OddsDisplay } from '@/components/odds-display'
 import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/components/toast'
-import { formatOdds } from '@/lib/odds'
+import { useOddsFormat } from '@/components/odds-format-provider'
 import { formatDateTime } from '@/lib/format'
 
 interface AlertRule {
@@ -35,6 +35,7 @@ function AlertCard({
   alert: AlertRule
   onDelete: (id: string) => void
 }) {
+  const { formatPrice } = useOddsFormat()
   return (
     <div
       className={`rounded-lg border p-4 ${
@@ -72,7 +73,7 @@ function AlertCard({
         <p className="text-xs text-muted-foreground">
           {MARKET_LABELS[alert.market] ?? alert.market} goes {alert.condition}{' '}
           <span className="font-mono">
-            {alert.market === 'moneyline' ? formatOdds(alert.threshold) : alert.threshold}
+            {alert.market === 'moneyline' ? formatPrice(alert.threshold) : alert.threshold}
           </span>
         </p>
       </div>
@@ -82,7 +83,7 @@ function AlertCard({
           <p className="text-xs text-green-500">
             Triggered at{' '}
             <span className="font-mono">
-              {formatOdds(alert.triggered_value)}
+              {formatPrice(alert.triggered_value)}
             </span>
             {alert.triggered_at && (
               <span className="text-muted-foreground">
