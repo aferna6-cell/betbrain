@@ -91,8 +91,24 @@ const updates = [
 ]
 
 export default function ChangelogPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'BetBrain Changelog',
+    itemListElement: updates.map((u, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: u.title,
+      description: u.items.join('. '),
+    })),
+  }
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mb-12">
         <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
           &larr; Back to BetBrain
