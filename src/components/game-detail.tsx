@@ -22,6 +22,7 @@ import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
 import { formatOdds, formatImpliedProb, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
+import { useOddsFormat } from '@/components/odds-format-provider'
 import { formatGameTimeFull, timeAgo, RISK_COLORS } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -50,6 +51,7 @@ interface GameAnalysis {
 // ---------------------------------------------------------------------------
 
 function OddsTable({ game }: { game: NormalizedGame }) {
+  const { formatPrice } = useOddsFormat()
   const bestHomeML = getBestMoneyline(game.bookmakers, 'home')
   const bestAwayML = getBestMoneyline(game.bookmakers, 'away')
   const bestHomeSpread = getBestSpreadOdds(game.bookmakers, 'home')
@@ -100,7 +102,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                               : ''
                           }
                         >
-                          {formatOdds(bk.moneyline.away)}
+                          {formatPrice(bk.moneyline.away)}
                         </span>
                         <span className="ml-1.5 text-xs text-muted-foreground">
                           {formatImpliedProb(bk.moneyline.away)}
@@ -114,7 +116,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                               : ''
                           }
                         >
-                          {formatOdds(bk.moneyline.home)}
+                          {formatPrice(bk.moneyline.home)}
                         </span>
                         <span className="ml-1.5 text-xs text-muted-foreground">
                           {formatImpliedProb(bk.moneyline.home)}
@@ -172,7 +174,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                               : ''
                           }
                         >
-                          ({formatOdds(bk.spread.awayOdds)})
+                          ({formatPrice(bk.spread.awayOdds)})
                         </span>
                       </td>
                       <td className="py-2 pl-4 text-right font-mono">
@@ -189,7 +191,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                               : ''
                           }
                         >
-                          ({formatOdds(bk.spread.homeOdds)})
+                          ({formatPrice(bk.spread.homeOdds)})
                         </span>
                       </td>
                     </tr>
@@ -238,7 +240,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                               : ''
                           }
                         >
-                          {formatOdds(bk.total.overOdds)}
+                          {formatPrice(bk.total.overOdds)}
                         </span>
                       </td>
                       <td className="py-2 pl-4 text-right font-mono">
@@ -249,7 +251,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                               : ''
                           }
                         >
-                          {formatOdds(bk.total.underOdds)}
+                          {formatPrice(bk.total.underOdds)}
                         </span>
                       </td>
                     </tr>
