@@ -17,7 +17,7 @@ AI-powered sports analytics dashboard. Find value in betting lines across NBA, N
 
 ## Features
 
-- Odds comparison across 20+ bookmakers with implied probability
+- Odds comparison across 20+ bookmakers with implied probability (American/Decimal toggle)
 - AI-powered game analysis (structured output, not gut feelings)
 - Closing Line Value (CLV) tracking per pick
 - Bankroll management with Kelly Criterion guidance
