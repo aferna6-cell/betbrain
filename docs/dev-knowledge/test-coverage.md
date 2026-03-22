@@ -3,8 +3,8 @@
 Last updated: 2026-03-22
 
 ## Overview
-- **Total tests:** 1234
-- **Test files:** 56
+- **Total tests:** 1288
+- **Test files:** 62
 - **Framework:** Vitest (node environment)
 
 ## Coverage by Layer
@@ -48,16 +48,17 @@ All major lib files have corresponding test suites in `src/lib/__tests__/`:
 **Strategy:** Mock `@/lib/supabase/server` at module level, test validation logic
 and response shapes. Shared mock helpers in `src/app/api/__tests__/mock-supabase.ts`.
 
-### Remaining API Route Gaps (9 routes)
-- /api/analysis/injury (POST)
-- /api/analysis/parlay (POST)
-- /api/analysis/prop (POST)
-- /api/health (GET)
-- /api/odds/history (GET)
-- /api/picks/resolve (POST/GET)
-- /api/signals/history (GET/PATCH)
-- /api/stripe/checkout (POST)
-- /api/stripe/webhook (POST)
+- analysis/injury/route.test.ts — POST validation (4 fields), 429, auth
+- analysis/parlay/route.test.ts — legs validation (min 2, max 10, per-leg), 429, auth
+- analysis/prop/route.test.ts — POST validation (8 required fields), 429, auth
+- odds/history/route.test.ts — gameId validation, market param, auth
+- health/route.test.ts — env var detection, response shape, secret safety
+- signals/history/route.test.ts — GET param validation, PATCH, limit clamping, auth
+
+### Remaining API Route Gaps (3 routes)
+- /api/picks/resolve (POST/GET) — complex: Supabase + balldontlie + batch resolve
+- /api/stripe/checkout (POST) — requires Stripe SDK mock
+- /api/stripe/webhook (POST) — requires Stripe webhook signature mock
 
 ### src/components/ — UI (minimal)
 - game-card.test.tsx — game card rendering
