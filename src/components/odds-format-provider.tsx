@@ -14,7 +14,10 @@ interface OddsFormatContextValue {
 const OddsFormatContext = createContext<OddsFormatContextValue>({
   format: 'american',
   toggle: () => {},
-  formatPrice: () => '—',
+  formatPrice: (american) => {
+    if (american === null) return '—'
+    return american > 0 ? `+${american}` : `${american}`
+  },
 })
 
 const STORAGE_KEY = 'betbrain-odds-format'
