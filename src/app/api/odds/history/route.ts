@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { withAuthenticatedRoute } from '@/lib/api/route-handler'
-import { badRequest } from '@/lib/api/route-handler'
+import { withAuthenticatedRoute, badRequest } from '@/lib/api/route-handler'
 import { getOddsHistory } from '@/lib/sports/odds'
 
 export async function GET(request: Request) {
