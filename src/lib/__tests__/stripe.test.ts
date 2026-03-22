@@ -170,8 +170,10 @@ describe('Billing features', () => {
     'Unlimited AI analyses',
     'All sports coverage',
     'Odds comparison',
-    'Smart Signals (coming soon)',
-    'Line movement alerts (coming soon)',
+    'Smart Signals',
+    '+EV scanner + arbitrage detection',
+    'Line movement alerts',
+    'Auto-resolve NBA picks',
     'Priority support',
   ]
 

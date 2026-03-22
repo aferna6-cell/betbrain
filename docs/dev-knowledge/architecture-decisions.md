@@ -204,4 +204,8 @@
 **Decision:** Game detail pages generate OG images dynamically using `next/og ImageResponse` with actual team names. The image route fetches game data from cache.
 **Why:** Generic "BetBrain" OG images don't encourage clicks when shared. Showing "Lakers @ Celtics" in the preview image significantly increases click-through from social shares. Since game data is already cached in Supabase, the additional data fetch is free.
 
+### Odds format toggle: context + localStorage, OddsDisplay wrapper
+**Decision:** A React context (`OddsFormatProvider`) stores the user's preferred odds format (American/Decimal). An `OddsDisplay` client component reads the context and formats any American odds value into the chosen display format. Server components pass raw American odds; the client component handles formatting.
+**Why:** 13 files use `formatOdds` — wrapping every usage in the context would require making them all client components. Instead, only the main odds values on game cards use `OddsDisplay` (client boundary). The bookmaker comparison grid stays server-rendered with American odds. This minimizes the client JS footprint while still giving users a toggle.
+
 _Add new decisions below._
