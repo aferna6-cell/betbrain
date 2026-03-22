@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 const STORAGE_KEY = 'betbrain-whats-new-dismissed'
-const CURRENT_VERSION = '2026-03-20'
+const CURRENT_VERSION = '2026-03-22'
 
 interface Update {
   title: string
@@ -14,6 +14,10 @@ interface Update {
 
 const UPDATES: Update[] = [
   {
+    title: 'Odds Format Toggle',
+    description: 'Switch between American (-110) and Decimal (1.91) odds. Click US/DEC in the nav bar.',
+  },
+  {
     title: '+EV Scanner',
     description: 'Find bets where bookmaker odds beat fair market value. Includes arbitrage detection.',
     href: '/dashboard/ev',
@@ -22,11 +26,6 @@ const UPDATES: Update[] = [
     title: 'Auto-Resolve Picks',
     description: 'NBA picks now auto-resolve from final scores. No more manual win/loss entry.',
     href: '/dashboard/picks',
-  },
-  {
-    title: 'Betting 101 Guide',
-    description: 'New to betting? Learn odds, spreads, and implied probability in 5 minutes.',
-    href: '/betting-101',
   },
 ]
 
