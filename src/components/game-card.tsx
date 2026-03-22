@@ -91,26 +91,24 @@ export function GameCard({ game }: { game: NormalizedGame }) {
                   {bk.bookmaker.replace(/_/g, ' ')}
                 </span>
                 <div className="flex gap-4">
-                  <span
+                  <OddsDisplay
+                    odds={bk.moneyline?.away ?? null}
                     className={`font-mono ${
                       bk.moneyline?.away !== null &&
                       bk.moneyline?.away === bestAway
                         ? 'text-green-500'
                         : ''
                     }`}
-                  >
-                    {formatOdds(bk.moneyline?.away ?? null)}
-                  </span>
-                  <span
+                  />
+                  <OddsDisplay
+                    odds={bk.moneyline?.home ?? null}
                     className={`font-mono ${
                       bk.moneyline?.home !== null &&
                       bk.moneyline?.home === bestHome
                         ? 'text-green-500'
                         : ''
                     }`}
-                  >
-                    {formatOdds(bk.moneyline?.home ?? null)}
-                  </span>
+                  />
                 </div>
               </div>
             ))}

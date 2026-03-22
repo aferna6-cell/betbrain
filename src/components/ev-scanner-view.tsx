@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { TermTooltip } from '@/components/term-tooltip'
 import { formatOdds } from '@/lib/odds'
+import { OddsDisplay } from '@/components/odds-display'
 import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { EVOpportunity, ArbitrageOpportunity } from '@/lib/ev-scanner'
@@ -33,10 +34,10 @@ function EVCard({ opp }: { opp: EVOpportunity }) {
         </p>
         <div className="mt-1 flex items-center gap-4 text-sm">
           <span>
-            Book: <strong className="text-green-500">{formatOdds(opp.bookOdds)}</strong>
+            Book: <strong className="text-green-500"><OddsDisplay odds={opp.bookOdds} /></strong>
           </span>
           <span className="text-muted-foreground">
-            Fair: {formatOdds(opp.fairOdds)}
+            Fair: <OddsDisplay odds={opp.fairOdds} />
           </span>
         </div>
       </div>
@@ -81,13 +82,13 @@ function ArbCard({ arb }: { arb: ArbitrageOpportunity }) {
           <span className="text-muted-foreground">
             {arb.game.homeTeam} on {arb.homeBest.bookmaker.replace(/_/g, ' ')}
           </span>
-          <span className="font-mono font-medium">{formatOdds(arb.homeBest.odds)}</span>
+          <OddsDisplay odds={arb.homeBest.odds} className="font-mono font-medium" />
         </div>
         <div className="flex justify-between">
           <span className="text-muted-foreground">
             {arb.game.awayTeam} on {arb.awayBest.bookmaker.replace(/_/g, ' ')}
           </span>
-          <span className="font-mono font-medium">{formatOdds(arb.awayBest.odds)}</span>
+          <OddsDisplay odds={arb.awayBest.odds} className="font-mono font-medium" />
         </div>
       </div>
     </div>
