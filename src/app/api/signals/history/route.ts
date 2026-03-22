@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { withAuthenticatedRoute } from '@/lib/api/route-handler'
-import { badRequest } from '@/lib/api/route-handler'
+import { withAuthenticatedRoute, badRequest } from '@/lib/api/route-handler'
 import { getSignalHistory, getSignalStats, resolveSignal } from '@/lib/signal-history'
 import type { Sport } from '@/lib/supabase/types'
 
@@ -36,11 +35,14 @@ export async function GET(request: Request) {
 
 export async function PATCH(request: Request) {
   return withAuthenticatedRoute(request, 'signal-history-resolve', async () => {
-    const body = await request.json()
-    const { externalGameId, outcome } = body as {
-      externalGameId?: string
-      outcome?: string
+    let body: { externalGameId?: string; outcome?: string }
+    try {
+      body = await request.json()
+    } catch {
+      return badRequest('Invalid JSON body')
     }
+
+    const { externalGameId, outcome } = body
 
     if (!externalGameId || typeof externalGameId !== 'string') {
       return badRequest('externalGameId is required')
