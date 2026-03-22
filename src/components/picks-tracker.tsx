@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/components/toast'
 import { TermTooltip } from '@/components/term-tooltip'
 import { formatOdds, isValidAmericanOdds } from '@/lib/odds'
+import { useOddsFormat } from '@/components/odds-format-provider'
 import type {
   Sport,
   PickType,
@@ -481,6 +482,7 @@ type FilterOutcome = 'all' | 'win' | 'loss' | 'pending'
 
 function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => void }) {
   const { addToast } = useToast()
+  const { formatPrice } = useOddsFormat()
   const [filterOutcome, setFilterOutcome] = useState<FilterOutcome>('all')
   const [filterSport, setFilterSport] = useState<string>('all')
   const [sortKey, setSortKey] = useState<SortKey>('date')
@@ -653,11 +655,11 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
                 )}
               </td>
               <td className="px-4 py-3 text-right font-mono">
-                {formatOdds(pick.odds)}
+                {formatPrice(pick.odds)}
               </td>
               <td className="px-4 py-3 text-right font-mono">
                 {pick.closing_odds != null ? (
-                  formatOdds(pick.closing_odds)
+                  formatPrice(pick.closing_odds)
                 ) : (
                   <button
                     onClick={() => handleSetClosingOdds(pick.id)}
