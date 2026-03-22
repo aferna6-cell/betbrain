@@ -50,6 +50,42 @@ export function calcTypeBreakdown(picks: PickForBreakdown[]): TypeBreakdown[] {
 }
 
 /**
+ * Grade a resolved pick based on CLV and outcome.
+ * Returns A/B/C/D/F grade with a short explanation.
+ *
+ * - A: Won with positive CLV (great timing + correct pick)
+ * - B: Won with no CLV data, or lost with strong positive CLV (good process)
+ * - C: Won with negative CLV, or push (mixed signal)
+ * - D: Lost with no CLV data (unknown edge)
+ * - F: Lost with negative CLV (bad timing + wrong pick)
+ */
+export function gradePick(
+  outcome: string | null,
+  clv: number | null
+): { grade: string; label: string } {
+  if (!outcome || outcome === 'pending') {
+    return { grade: '--', label: 'Pending' }
+  }
+
+  if (outcome === 'push') {
+    return { grade: 'C', label: 'Push — no edge tested' }
+  }
+
+  const won = outcome === 'win'
+  const hasClv = clv !== null
+  const posClv = hasClv && clv > 0
+
+  if (won && posClv) return { grade: 'A', label: 'Won + beat the close' }
+  if (won && hasClv && !posClv) return { grade: 'C', label: 'Won but line moved against you' }
+  if (won) return { grade: 'B', label: 'Won — CLV not tracked' }
+
+  // Lost
+  if (posClv) return { grade: 'B', label: 'Lost but had +CLV — good process' }
+  if (hasClv && !posClv) return { grade: 'F', label: 'Lost + negative CLV' }
+  return { grade: 'D', label: 'Lost — CLV not tracked' }
+}
+
+/**
  * Calculate performance breakdown by sport.
  */
 export function calcSportBreakdown(picks: PickForBreakdown[]): SportBreakdown[] {

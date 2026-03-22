@@ -7,6 +7,7 @@ import { useToast } from '@/components/toast'
 import { TermTooltip } from '@/components/term-tooltip'
 import { isValidAmericanOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
+import { gradePick } from '@/lib/pick-stats'
 import type {
   Sport,
   PickType,
@@ -624,6 +625,7 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
             <th className="px-4 py-3 font-medium text-right">Units</th>
             <th className="px-4 py-3 font-medium text-center">Outcome</th>
             <th className="px-4 py-3 font-medium text-right">Profit</th>
+            <th className="px-4 py-3 font-medium text-center">Grade</th>
             <th className="px-4 py-3 font-medium w-8"></th>
           </tr>
         </thead>
@@ -734,6 +736,23 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
                 ) : (
                   '—'
                 )}
+              </td>
+              <td className="px-4 py-3 text-center">
+                {(() => {
+                  const { grade, label } = gradePick(pick.outcome, pick.clv)
+                  const gradeColor =
+                    grade === 'A' ? 'text-green-500'
+                    : grade === 'B' ? 'text-blue-400'
+                    : grade === 'C' ? 'text-yellow-500'
+                    : grade === 'D' ? 'text-orange-500'
+                    : grade === 'F' ? 'text-red-500'
+                    : 'text-muted-foreground'
+                  return (
+                    <span className={`text-sm font-bold ${gradeColor}`} title={label}>
+                      {grade}
+                    </span>
+                  )
+                })()}
               </td>
               <td className="px-2 py-3 text-center">
                 <button

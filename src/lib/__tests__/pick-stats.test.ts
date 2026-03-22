@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calcTypeBreakdown, calcSportBreakdown } from '@/lib/pick-stats'
+import { calcTypeBreakdown, calcSportBreakdown, gradePick } from '@/lib/pick-stats'
 
 const makePick = (overrides: Partial<{
   pick_type: string; sport: string; outcome: string | null; profit: number | null; units: number
@@ -110,5 +110,52 @@ describe('calcSportBreakdown', () => {
     ]
     const result = calcSportBreakdown(picks)
     expect(result[0].sport).toBe('nba')
+  })
+})
+
+describe('gradePick', () => {
+  it('returns -- for pending picks', () => {
+    expect(gradePick('pending', null).grade).toBe('--')
+    expect(gradePick(null, null).grade).toBe('--')
+  })
+
+  it('returns C for push', () => {
+    expect(gradePick('push', 2.5).grade).toBe('C')
+  })
+
+  it('returns A for win with positive CLV', () => {
+    const { grade, label } = gradePick('win', 3.5)
+    expect(grade).toBe('A')
+    expect(label).toContain('beat the close')
+  })
+
+  it('returns B for win without CLV data', () => {
+    expect(gradePick('win', null).grade).toBe('B')
+  })
+
+  it('returns C for win with negative CLV', () => {
+    expect(gradePick('win', -2.0).grade).toBe('C')
+  })
+
+  it('returns B for loss with positive CLV (good process)', () => {
+    const { grade, label } = gradePick('loss', 4.0)
+    expect(grade).toBe('B')
+    expect(label).toContain('+CLV')
+  })
+
+  it('returns D for loss without CLV data', () => {
+    expect(gradePick('loss', null).grade).toBe('D')
+  })
+
+  it('returns F for loss with negative CLV', () => {
+    expect(gradePick('loss', -1.5).grade).toBe('F')
+  })
+
+  it('win with zero CLV counts as negative (no edge)', () => {
+    expect(gradePick('win', 0).grade).toBe('C')
+  })
+
+  it('loss with zero CLV counts as negative', () => {
+    expect(gradePick('loss', 0).grade).toBe('F')
   })
 })
