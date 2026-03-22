@@ -197,7 +197,7 @@ export function AnalyticsDashboard({ data }: { data: AnalyticsData }) {
         </h2>
         <div className="space-y-3 rounded-lg border border-border bg-card p-4">
           <ProgressBar label="The Odds API" value={apiUsage.odds} max={500} />
-          <ProgressBar label="balldontlie" value={apiUsage.balldontlie} max={10000} />
+          <ProgressBar label="balldontlie (NBA stats)" value={apiUsage.balldontlie} max={10000} />
           <ProgressBar label="Claude AI" value={apiUsage.claude} max={1000} />
         </div>
       </section>

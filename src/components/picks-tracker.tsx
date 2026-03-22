@@ -690,12 +690,23 @@ function PicksTable({ picks, onUpdate }: { picks: UserPick[]; onUpdate: () => vo
               <td className="px-4 py-3 text-right">{pick.units}</td>
               <td className="px-4 py-3 text-center">
                 {!pick.outcome || pick.outcome === 'pending' ? (
-                  <button
-                    onClick={() => handleSetOutcome(pick.id, pick.odds, pick.units)}
-                    className="text-xs text-blue-400 hover:text-blue-300 hover:underline font-medium"
-                  >
-                    Set result
-                  </button>
+                  <div className="flex flex-col items-center gap-1">
+                    <button
+                      onClick={() => handleSetOutcome(pick.id, pick.odds, pick.units)}
+                      className="text-xs text-blue-400 hover:text-blue-300 hover:underline font-medium"
+                    >
+                      Set result
+                    </button>
+                    {pick.sport === 'nba' && pick.pick_type !== 'prop' ? (
+                      <span className="text-[10px] text-emerald-500/70" title="This pick can be auto-resolved from NBA game scores">
+                        auto
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-muted-foreground/50" title={pick.pick_type === 'prop' ? 'Prop bets require manual resolution' : 'Auto-resolve only available for NBA picks'}>
+                        manual
+                      </span>
+                    )}
+                  </div>
                 ) : (
                   <span
                     className={`font-medium capitalize ${
