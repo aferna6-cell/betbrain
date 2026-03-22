@@ -193,4 +193,4 @@
 - [x] **Sport filter on EV Scanner page** — Filter +EV bets by sport
 - [x] **Log Pick button on game detail page** — Pre-populate pick form with team, sport, odds from game context
 - [ ] **Preferred bookmaker setting** — User profile setting to highlight their primary bookmaker in odds tables
-- [ ] **NFL Sunday Slate view** — Group NFL games by time slot (1pm ET, 4:25pm ET, SNF) on game days
+- [x] **NFL Sunday Slate view** — Group NFL games by time slot (1pm ET, 4:25pm ET, SNF) on game days

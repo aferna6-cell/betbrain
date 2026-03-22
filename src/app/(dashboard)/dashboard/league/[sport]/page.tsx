@@ -5,6 +5,7 @@ import { GameCard } from '@/components/game-card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import type { Sport } from '@/lib/supabase/types'
+import type { NormalizedGame } from '@/lib/sports/config'
 
 const VALID_SPORTS: Sport[] = ['nba', 'nfl', 'mlb', 'nhl']
 
@@ -17,6 +18,46 @@ export async function generateMetadata({ params }: { params: Promise<{ sport: st
     title: `${label} Games — BetBrain`,
     description: `${label} upcoming games with odds comparison and AI analysis.`,
   }
+}
+
+/** Group NFL games by time slot for Sunday Slate view */
+function groupNFLBySlot(games: NormalizedGame[]): { label: string; games: NormalizedGame[] }[] {
+  const groups = new Map<string, NormalizedGame[]>()
+
+  for (const game of games) {
+    const d = new Date(game.commenceTime)
+    const day = d.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'America/New_York' })
+    const hour = d.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZone: 'America/New_York',
+    })
+
+    let label: string
+    const etHour = Number(d.toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: 'America/New_York' }))
+
+    if (day === 'Thursday') {
+      label = `Thursday Night — ${hour} ET`
+    } else if (day === 'Monday') {
+      label = `Monday Night — ${hour} ET`
+    } else if (day === 'Sunday' && etHour >= 20) {
+      label = `Sunday Night — ${hour} ET`
+    } else if (day === 'Sunday' && etHour >= 16) {
+      label = `Sunday Late — ${hour} ET`
+    } else if (day === 'Sunday') {
+      label = `Sunday Early — ${hour} ET`
+    } else if (day === 'Saturday') {
+      label = `Saturday — ${hour} ET`
+    } else {
+      label = `${day} — ${hour} ET`
+    }
+
+    const existing = groups.get(label) ?? []
+    existing.push(game)
+    groups.set(label, existing)
+  }
+
+  return Array.from(groups.entries()).map(([label, games]) => ({ label, games }))
 }
 
 const LEAGUE_INFO: Record<Sport, { name: string; fullName: string }> = {
@@ -69,11 +110,31 @@ export default async function LeaguePage({
       )}
 
       {sortedGames.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sortedGames.map((game) => (
-            <GameCard key={game.id} game={game} />
-          ))}
-        </div>
+        sportKey === 'nfl' ? (
+          <div className="space-y-8">
+            {groupNFLBySlot(sortedGames).map((slot) => (
+              <div key={slot.label}>
+                <div className="mb-3 flex items-center gap-2">
+                  <h2 className="text-lg font-semibold">{slot.label}</h2>
+                  <Badge variant="outline" className="text-xs">
+                    {slot.games.length} game{slot.games.length !== 1 ? 's' : ''}
+                  </Badge>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {slot.games.map((game) => (
+                    <GameCard key={game.id} game={game} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {sortedGames.map((game) => (
+              <GameCard key={game.id} game={game} />
+            ))}
+          </div>
+        )
       ) : (
         <div className="rounded-lg border border-border bg-card p-8 text-center">
           <p className="text-muted-foreground">
