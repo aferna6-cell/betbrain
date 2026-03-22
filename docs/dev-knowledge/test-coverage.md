@@ -3,8 +3,8 @@
 Last updated: 2026-03-22
 
 ## Overview
-- **Total tests:** 1174
-- **Test files:** 46
+- **Total tests:** 1234
+- **Test files:** 56
 - **Framework:** Vitest (node environment)
 
 ## Coverage by Layer
@@ -30,33 +30,32 @@ All major lib files have corresponding test suites in `src/lib/__tests__/`:
 - analysis.test.ts — structured output shape, disclaimer, limits
 - injury-impact.test.ts — type compliance
 
-### src/app/api/ — API Routes (started Cycle 230)
-- picks/route.test.ts — POST validation, PATCH updates, DELETE, auth
-- alerts/route.test.ts — GET response shape, POST validation, DELETE
+### src/app/api/ — API Routes (Cycles 230-233)
+- picks/route.test.ts — POST validation (7 fields), PATCH, DELETE, auth
+- alerts/route.test.ts — GET response shape, POST validation (7 fields), DELETE
 - saved-analyses/route.test.ts — POST/PATCH/DELETE validation, auth
+- analysis/route.test.ts — POST validation, 429 limit handling, game-not-found, auth
+- ev/route.test.ts — response shape (opportunities, arbs, meta), serialization, auth
+- signals/route.test.ts — response shape, strength counting, auth
+- odds/route.test.ts — sport filtering/validation, all-sports response, auth
+- cron/resolve.test.ts — CRON_SECRET bearer token auth, empty state
+- digest/route.test.ts — GET preview, POST send flow, auth
+- leaderboard/route.test.ts — sort param validation, error handling (public route)
+- backtesting/route.test.ts — POST validation (5 fields: sport, season, strategy, unit, bankroll)
+- stats/route.test.ts — type validation, unsupported sport, date param, auth
+- analytics/route.test.ts — user analytics passthrough, auth
 
 **Strategy:** Mock `@/lib/supabase/server` at module level, test validation logic
 and response shapes. Shared mock helpers in `src/app/api/__tests__/mock-supabase.ts`.
 
-### Remaining API Route Gaps
-Routes without tests (validation + auth testing recommended):
-- /api/analysis (POST)
+### Remaining API Route Gaps (9 routes)
 - /api/analysis/injury (POST)
 - /api/analysis/parlay (POST)
 - /api/analysis/prop (POST)
-- /api/analytics (GET)
-- /api/backtesting (POST)
-- /api/cron/resolve (POST)
-- /api/digest (GET)
-- /api/ev (GET)
 - /api/health (GET)
-- /api/leaderboard (GET)
-- /api/odds (GET)
 - /api/odds/history (GET)
-- /api/picks/resolve (POST)
-- /api/signals (GET)
+- /api/picks/resolve (POST/GET)
 - /api/signals/history (GET/PATCH)
-- /api/stats (GET)
 - /api/stripe/checkout (POST)
 - /api/stripe/webhook (POST)
 
