@@ -11,6 +11,7 @@ import {
 } from '@/lib/auto-resolve'
 import { getNBAGames } from '@/lib/sports/stats'
 import type { SignalHistoryRecord } from '@/lib/signal-history'
+import type { PickOutcome } from '@/lib/supabase/types'
 
 /**
  * POST /api/picks/resolve
@@ -96,28 +97,31 @@ export async function POST(request: Request) {
       allGames
     )
 
-    // Apply resolved outcomes to the database
-    let appliedCount = 0
-    for (const r of resolved) {
-      const { error: updateError } = await supabase
-        .from('user_picks')
-        .update({
-          outcome: r.outcome,
-          profit: r.profit,
-          resolved_at: new Date().toISOString(),
-        })
-        .eq('id', r.pickId)
-        .eq('user_id', user.id)
-
-      if (updateError) {
-        console.error(`[resolve] Failed to update pick ${r.pickId}:`, updateError.message)
-      } else {
-        appliedCount++
+    // Apply resolved outcomes to the database (parallel for performance)
+    const resolvedAt = new Date().toISOString()
+    const pickResults = await Promise.allSettled(
+      resolved.map((r) =>
+        supabase
+          .from('user_picks')
+          .update({
+            outcome: r.outcome,
+            profit: r.profit,
+            resolved_at: resolvedAt,
+          })
+          .eq('id', r.pickId)
+          .eq('user_id', user.id)
+      )
+    )
+    const appliedCount = pickResults.filter(
+      (r) => r.status === 'fulfilled' && !r.value.error
+    ).length
+    for (const r of pickResults) {
+      if (r.status === 'fulfilled' && r.value.error) {
+        console.error('[resolve] Failed to update pick:', r.value.error.message)
       }
     }
 
     // Also auto-resolve pending NBA signals using the same game results
-    let signalsResolved = 0
     const { data: pendingSignals } = await supabase
       .from('signal_history')
       .select('*')
@@ -125,7 +129,10 @@ export async function POST(request: Request) {
       .is('outcome', null)
       .lt('game_date', new Date().toISOString())
 
+    let signalsResolved = 0
     if (pendingSignals && pendingSignals.length > 0) {
+      // Match signals to game results and build updates
+      const signalUpdates: { id: string; outcome: PickOutcome }[] = []
       for (const signal of pendingSignals as SignalHistoryRecord[]) {
         const signalDate = signal.game_date.split('T')[0]
         const game = allGames.find((g) => {
@@ -142,14 +149,21 @@ export async function POST(request: Request) {
         if (!game || !signal.value_side) continue
 
         const outcome = resolveSignalOutcome(signal.value_side, game)
-
-        const { error: sigError } = await supabase
-          .from('signal_history')
-          .update({ outcome, resolved_at: new Date().toISOString() })
-          .eq('id', signal.id)
-
-        if (!sigError) signalsResolved++
+        signalUpdates.push({ id: signal.id, outcome })
       }
+
+      // Execute signal updates in parallel
+      const signalResults = await Promise.allSettled(
+        signalUpdates.map((s) =>
+          supabase
+            .from('signal_history')
+            .update({ outcome: s.outcome, resolved_at: resolvedAt })
+            .eq('id', s.id)
+        )
+      )
+      signalsResolved = signalResults.filter(
+        (r) => r.status === 'fulfilled' && !r.value.error
+      ).length
     }
 
     return NextResponse.json({

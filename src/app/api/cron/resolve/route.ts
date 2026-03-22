@@ -10,6 +10,7 @@ import {
 } from '@/lib/auto-resolve'
 import { getNBAGames } from '@/lib/sports/stats'
 import type { SignalHistoryRecord } from '@/lib/signal-history'
+import type { PickOutcome } from '@/lib/supabase/types'
 
 /**
  * GET /api/cron/resolve
@@ -77,28 +78,33 @@ export async function GET(request: Request) {
       }
     }
 
-    // Resolve picks
+    // Resolve picks (parallel updates for performance)
+    const resolvedAt = new Date().toISOString()
     let picksResolved = 0
     if (pendingPicks && pendingPicks.length > 0 && allGames.length > 0) {
       const { resolved } = resolvePicksBatch(pendingPicks as PendingPick[], allGames)
 
-      for (const r of resolved) {
-        const { error } = await supabase
-          .from('user_picks')
-          .update({
-            outcome: r.outcome,
-            profit: r.profit,
-            resolved_at: new Date().toISOString(),
-          })
-          .eq('id', r.pickId)
-
-        if (!error) picksResolved++
-      }
+      const pickResults = await Promise.allSettled(
+        resolved.map((r) =>
+          supabase
+            .from('user_picks')
+            .update({
+              outcome: r.outcome,
+              profit: r.profit,
+              resolved_at: resolvedAt,
+            })
+            .eq('id', r.pickId)
+        )
+      )
+      picksResolved = pickResults.filter(
+        (r) => r.status === 'fulfilled' && !r.value.error
+      ).length
     }
 
-    // Resolve signals
+    // Resolve signals (parallel updates for performance)
     let signalsResolved = 0
     if (pendingSignals && pendingSignals.length > 0) {
+      const signalUpdates: { id: string; outcome: PickOutcome }[] = []
       for (const signal of pendingSignals as SignalHistoryRecord[]) {
         const signalDate = signal.game_date.split('T')[0]
         const game = allGames.find((g) => {
@@ -113,13 +119,20 @@ export async function GET(request: Request) {
         if (!game || !signal.value_side) continue
 
         const outcome = resolveSignalOutcome(signal.value_side, game)
-        const { error } = await supabase
-          .from('signal_history')
-          .update({ outcome, resolved_at: new Date().toISOString() })
-          .eq('id', signal.id)
-
-        if (!error) signalsResolved++
+        signalUpdates.push({ id: signal.id, outcome })
       }
+
+      const signalResults = await Promise.allSettled(
+        signalUpdates.map((s) =>
+          supabase
+            .from('signal_history')
+            .update({ outcome: s.outcome, resolved_at: resolvedAt })
+            .eq('id', s.id)
+        )
+      )
+      signalsResolved = signalResults.filter(
+        (r) => r.status === 'fulfilled' && !r.value.error
+      ).length
     }
 
     console.log(`[cron/resolve] Resolved ${picksResolved} picks + ${signalsResolved} signals`)
