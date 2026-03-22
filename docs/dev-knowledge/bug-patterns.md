@@ -43,3 +43,13 @@ _Bugs found and fixed. Read before debugging to avoid rediscovering known issues
 **Fix:** Added client-side validation in `picks-tracker.tsx` and server-side validation in `POST /api/picks` route. Both reject odds of 0 and values between -100 and +100 exclusive.
 **Files:** `src/components/picks-tracker.tsx`, `src/app/api/picks/route.ts`
 **Prevention:** Always validate numeric inputs at both client and server boundaries. For domain-specific formats like American odds, encode the format constraints (no values between -100 and +100) as explicit validation rules.
+
+---
+
+### Stripe checkout had unguarded external API calls
+**Date:** 2026-03-22
+**Symptom:** If Stripe API was down or API key was invalid, `stripe.customers.create()` and `stripe.checkout.sessions.create()` would throw, fall through to the generic `withAuthenticatedRoute` catch, and return a vague "stripe-checkout failed" 500 error with no Stripe-specific context in logs.
+**Root Cause:** External Stripe API calls were not wrapped in try-catch blocks, relying on the outer generic error handler which strips error context.
+**Fix:** Wrapped both Stripe API calls in try-catch with specific `[stripe]` log prefixes and 502 status codes to distinguish Stripe failures from application errors.
+**Files:** `src/app/api/stripe/checkout/route.ts`
+**Prevention:** Always wrap external API calls (Stripe, sports APIs, AI) in try-catch with service-specific error logging. Use 502 for upstream service failures vs 500 for internal errors.

@@ -37,11 +37,19 @@ export async function POST(request: Request) {
     let customerId = profile?.stripe_customer_id
 
     if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: user.email,
-        metadata: { supabase_user_id: user.id },
-      })
-      customerId = customer.id
+      try {
+        const customer = await stripe.customers.create({
+          email: user.email,
+          metadata: { supabase_user_id: user.id },
+        })
+        customerId = customer.id
+      } catch (err) {
+        console.error('[stripe] Failed to create Stripe customer:', err)
+        return NextResponse.json(
+          { error: 'Failed to initialize payment. Please try again.' },
+          { status: 502 }
+        )
+      }
 
       const { error: updateError } = await supabase
         .from('profiles')
@@ -53,20 +61,28 @@ export async function POST(request: Request) {
       }
     }
 
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      mode: 'subscription',
-      line_items: [
-        {
-          price: getStripePriceId(),
-          quantity: 1,
-        },
-      ],
-      success_url: `${siteUrl}/dashboard/billing?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/dashboard/billing`,
-      metadata: { supabase_user_id: user.id },
-    })
+    try {
+      const session = await stripe.checkout.sessions.create({
+        customer: customerId,
+        mode: 'subscription',
+        line_items: [
+          {
+            price: getStripePriceId(),
+            quantity: 1,
+          },
+        ],
+        success_url: `${siteUrl}/dashboard/billing?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${siteUrl}/dashboard/billing`,
+        metadata: { supabase_user_id: user.id },
+      })
 
-    return NextResponse.json({ url: session.url })
+      return NextResponse.json({ url: session.url })
+    } catch (err) {
+      console.error('[stripe] Failed to create checkout session:', err)
+      return NextResponse.json(
+        { error: 'Failed to create checkout session. Please try again.' },
+        { status: 502 }
+      )
+    }
   })
 }

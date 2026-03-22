@@ -3,8 +3,8 @@
 Last updated: 2026-03-22
 
 ## Overview
-- **Total tests:** 1288
-- **Test files:** 62
+- **Total tests:** 1321
+- **Test files:** 65
 - **Framework:** Vitest (node environment)
 
 ## Coverage by Layer
@@ -55,10 +55,11 @@ and response shapes. Shared mock helpers in `src/app/api/__tests__/mock-supabase
 - health/route.test.ts — env var detection, response shape, secret safety
 - signals/history/route.test.ts — GET param validation, PATCH, limit clamping, auth
 
-### Remaining API Route Gaps (3 routes)
-- /api/picks/resolve (POST/GET) — complex: Supabase + balldontlie + batch resolve
-- /api/stripe/checkout (POST) — requires Stripe SDK mock
-- /api/stripe/webhook (POST) — requires Stripe webhook signature mock
+- picks/resolve/route.test.ts — POST: auth, no-picks, batch resolve, date filter, DB error, game results. GET: pending count, DB error, auth
+- stripe/checkout/route.test.ts — auth, already-Pro, new customer, existing customer, response shape, session config
+- stripe/webhook/route.test.ts — signature validation, checkout.session.completed (upgrade, DB fail, missing metadata), subscription.deleted (downgrade, DB fail, missing profile), subscription.updated (active→pro, past_due→free, DB fail), unhandled events, response shape
+
+### API Route Coverage: 22/22 (complete)
 
 ### src/components/ — UI (minimal)
 - game-card.test.tsx — game card rendering
