@@ -12,7 +12,7 @@ AI-powered sports analytics dashboard. Find value in betting lines across NBA, N
 - **AI:** Anthropic Claude API
 - **Sports Data:** The Odds API + balldontlie
 - **Payments:** Stripe
-- **Testing:** Vitest (1111 unit tests) + Playwright (24 E2E)
+- **Testing:** Vitest (1127 unit tests) + Playwright (24 E2E)
 - **Hosting:** Vercel
 
 ## Features
@@ -51,7 +51,7 @@ See [docs/SETUP.md](docs/SETUP.md) for full setup instructions.
 ```bash
 npm run dev          # Dev server
 npm run build        # Production build
-npm run test         # Unit tests (1111)
+npm run test         # Unit tests (1127)
 npm run test:e2e     # E2E tests (24)
 npm run lint         # ESLint
 npm run typecheck    # TypeScript
