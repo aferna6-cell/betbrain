@@ -32,7 +32,7 @@
 - [ ] Resend email integration
 - [ ] Additional sports data sources (NFL/MLB/NHL stats)
 - [ ] Supabase type generation from CLI
-- [ ] Odds format toggle (American/decimal)
+- [x] Odds format toggle (American/decimal) _(Cycle 223)_
 - [ ] Mobile app / PWA improvements
 
 ## Production Health (`/api/health`)
