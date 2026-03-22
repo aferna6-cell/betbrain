@@ -29,12 +29,12 @@ function SignalStatsBar({ stats }: { stats: SignalStats }) {
         <StatCard
           label="Strong Signals"
           value={stats.byStrength.strong.hitRate !== null ? `${stats.byStrength.strong.hitRate}%` : '--'}
-          sub={`${stats.byStrength.strong.wins}W of ${stats.byStrength.strong.total} resolved`}
+          sub={`${stats.byStrength.strong.wins}W of ${stats.byStrength.strong.total} (N=${stats.byStrength.strong.total})${stats.byStrength.strong.total > 0 && stats.byStrength.strong.total < 10 ? ' — small sample' : ''}`}
         />
         <StatCard
           label="Moderate Signals"
           value={stats.byStrength.moderate.hitRate !== null ? `${stats.byStrength.moderate.hitRate}%` : '--'}
-          sub={`${stats.byStrength.moderate.wins}W of ${stats.byStrength.moderate.total} resolved`}
+          sub={`${stats.byStrength.moderate.wins}W of ${stats.byStrength.moderate.total} (N=${stats.byStrength.moderate.total})${stats.byStrength.moderate.total > 0 && stats.byStrength.moderate.total < 10 ? ' — small sample' : ''}`}
         />
         <StatCard
           label="Total Signals"
@@ -63,6 +63,9 @@ function SignalStatsBar({ stats }: { stats: SignalStats }) {
                 </span>
                 <span className="text-xs text-muted-foreground">
                   ({s.wins}/{s.total})
+                  {s.total > 0 && s.total < 10 && (
+                    <span className="ml-1 text-yellow-500" title="Small sample size — results may not be statistically significant">*</span>
+                  )}
                 </span>
               </div>
             )

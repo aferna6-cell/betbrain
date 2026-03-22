@@ -201,3 +201,8 @@
 - [ ] **Cache prop analyses** — Store results so re-viewing doesn't cost daily limit
 - [ ] **Prop market breakdown in pick stats** — Win rate per market (points/rebounds/assists/etc)
 - [x] **Add prop analysis to landing page features** — Call out prop betting as a feature for discovery
+
+## Researched Features (Cycle 243 — Competitor Analysis)
+- [x] [RESEARCHED] **Signal sample size display (N= count)** — Show N alongside hit rate on all signal views. "52% (N=48)" instead of just "52%". Sharps won't trust signals without statistical context. Quick win — data already in signal_history.
+- [ ] [RESEARCHED] **Rolling performance trends** — 30-day rolling ROI chart + macro insights on Analytics page ("Your spreads are +EV, your MLs are -EV"). All data in user_picks. Recharts already in stack.
+- [ ] [RESEARCHED] **Player prop odds aggregation** — Fetch player prop markets from The Odds API (they support player_points, player_rebounds etc). Show prop odds comparison table across books. Unlocks props bettors as a daily-use segment.
