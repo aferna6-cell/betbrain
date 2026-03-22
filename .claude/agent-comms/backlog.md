@@ -200,4 +200,4 @@
 - [x] **Log Pick button on prop analysis result** — One-click pick logging from prop analysis card
 - [ ] **Cache prop analyses** — Store results so re-viewing doesn't cost daily limit
 - [ ] **Prop market breakdown in pick stats** — Win rate per market (points/rebounds/assists/etc)
-- [ ] **Add prop analysis to landing page features** — Call out prop betting as a feature for discovery
+- [x] **Add prop analysis to landing page features** — Call out prop betting as a feature for discovery

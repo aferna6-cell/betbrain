@@ -32,9 +32,9 @@ const features = [
     tag: "Units · ROI · Drawdown",
   },
   {
-    title: "AI Game Analysis",
+    title: "AI Game + Prop Analysis",
     description:
-      "Claude-powered matchup breakdowns with structured output: summary, key factors, value assessment, risk level, and confidence score.",
+      "Claude-powered matchup breakdowns and player prop analysis. Get projected ranges, edge estimates, and key factors for any prop bet. Structured output with confidence scores.",
     tag: "Powered by Claude",
   },
   {
