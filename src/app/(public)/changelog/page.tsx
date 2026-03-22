@@ -12,6 +12,16 @@ export const metadata: Metadata = {
 
 const updates = [
   {
+    date: '2026-03-22',
+    title: 'Odds Format Toggle & Legal Pages',
+    items: [
+      'Switch between American (-110) and Decimal (1.91) odds from the nav bar',
+      'Toggle applies across all dashboard pages — game cards, EV scanner, picks, parlays, charts',
+      'Privacy Policy and Terms of Service pages added',
+      'Keyboard shortcuts help dialog (press ? to see all shortcuts)',
+    ],
+  },
+  {
     date: '2026-03-20',
     title: '+EV Scanner & Arbitrage Detection',
     items: [
