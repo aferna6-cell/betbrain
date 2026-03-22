@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { americanToDecimal, americanToFractional } from '@/lib/odds'
 
 /**
  * Compact interactive odds converter for embedding in educational content.
- * Shows American odds → implied probability → payout in real-time.
+ * Shows American odds → decimal, fractional, implied probability, and payout.
  */
 export function MiniOddsConverter() {
   const [odds, setOdds] = useState('-110')
@@ -14,6 +15,8 @@ export function MiniOddsConverter() {
 
   let impliedProb = 0
   let payout = 0
+  let decimal = ''
+  let fractional = ''
   if (isValid) {
     if (numOdds < 0) {
       impliedProb = Math.abs(numOdds) / (Math.abs(numOdds) + 100)
@@ -22,6 +25,8 @@ export function MiniOddsConverter() {
       impliedProb = 100 / (numOdds + 100)
       payout = 100 + numOdds
     }
+    decimal = americanToDecimal(numOdds).toFixed(2)
+    fractional = americanToFractional(numOdds)
   }
 
   return (
@@ -41,18 +46,26 @@ export function MiniOddsConverter() {
         />
       </div>
       {isValid ? (
-        <div className="mt-3 flex flex-wrap gap-4 text-sm">
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
           <div>
-            <span className="text-muted-foreground">Implied probability: </span>
-            <strong className="text-foreground">{(impliedProb * 100).toFixed(1)}%</strong>
+            <span className="text-xs text-muted-foreground">Decimal</span>
+            <p className="font-mono font-medium">{decimal}</p>
           </div>
           <div>
-            <span className="text-muted-foreground">$100 bet pays: </span>
-            <strong className="text-foreground">${payout.toFixed(0)}</strong>
+            <span className="text-xs text-muted-foreground">Fractional</span>
+            <p className="font-mono font-medium">{fractional}</p>
           </div>
           <div>
-            <span className="text-muted-foreground">Profit: </span>
-            <strong className="text-green-500">${(payout - 100).toFixed(0)}</strong>
+            <span className="text-xs text-muted-foreground">Implied probability</span>
+            <p className="font-mono font-medium">{(impliedProb * 100).toFixed(1)}%</p>
+          </div>
+          <div>
+            <span className="text-xs text-muted-foreground">$100 bet pays</span>
+            <p className="font-mono font-medium">${payout.toFixed(0)}</p>
+          </div>
+          <div>
+            <span className="text-xs text-muted-foreground">Profit</span>
+            <p className="font-mono font-medium text-green-500">${(payout - 100).toFixed(0)}</p>
           </div>
         </div>
       ) : (
