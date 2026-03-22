@@ -24,7 +24,7 @@ function SignalStatsBar({ stats }: { stats: SignalStats }) {
         <StatCard
           label="Overall Hit Rate"
           value={stats.hitRate !== null ? `${stats.hitRate}%` : '--'}
-          sub={`${stats.wins}W - ${stats.losses}L - ${stats.pushes}P`}
+          sub={`${stats.wins}W - ${stats.losses}L - ${stats.pushes}P (N=${stats.resolved})`}
         />
         <StatCard
           label="Strong Signals"
