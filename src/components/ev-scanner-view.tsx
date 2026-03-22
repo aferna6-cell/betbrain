@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { TermTooltip } from '@/components/term-tooltip'
@@ -5,6 +8,15 @@ import { OddsDisplay } from '@/components/odds-display'
 import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { EVOpportunity, ArbitrageOpportunity } from '@/lib/ev-scanner'
+import type { Sport } from '@/lib/supabase/types'
+
+const SPORT_FILTERS: { key: 'all' | Sport; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'nba', label: 'NBA' },
+  { key: 'nfl', label: 'NFL' },
+  { key: 'mlb', label: 'MLB' },
+  { key: 'nhl', label: 'NHL' },
+]
 
 function EVCard({ opp }: { opp: EVOpportunity }) {
   return (
@@ -103,16 +115,50 @@ export function EVScannerView({
   arbitrage: ArbitrageOpportunity[]
   gamesScanned: number
 }) {
+  const [activeSport, setActiveSport] = useState<'all' | Sport>('all')
+
+  const filteredOpps = activeSport === 'all'
+    ? opportunities
+    : opportunities.filter((o) => o.game.sport === activeSport)
+
+  const filteredArbs = activeSport === 'all'
+    ? arbitrage
+    : arbitrage.filter((a) => a.game.sport === activeSport)
+
   return (
     <div className="space-y-6">
-      {/* Summary */}
+      {/* Sport filter + summary */}
       <div className="flex flex-wrap items-center gap-3">
+        <div className="flex gap-1">
+          {SPORT_FILTERS.map((sf) => {
+            const count = sf.key === 'all'
+              ? opportunities.length
+              : opportunities.filter((o) => o.game.sport === sf.key).length
+
+            return (
+              <button
+                key={sf.key}
+                onClick={() => setActiveSport(sf.key)}
+                className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                  activeSport === sf.key
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                }`}
+              >
+                {sf.label}
+                {count > 0 && (
+                  <span className="ml-1.5 text-xs opacity-70">{count}</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
         <Badge variant="default">
-          {opportunities.length} +EV Bet{opportunities.length !== 1 ? 's' : ''}
+          {filteredOpps.length} +EV Bet{filteredOpps.length !== 1 ? 's' : ''}
         </Badge>
-        {arbitrage.length > 0 && (
+        {filteredArbs.length > 0 && (
           <Badge className="bg-yellow-500/20 text-yellow-500">
-            {arbitrage.length} Arbitrage
+            {filteredArbs.length} Arbitrage
           </Badge>
         )}
         <span className="text-xs text-muted-foreground">
@@ -121,11 +167,11 @@ export function EVScannerView({
       </div>
 
       {/* Arbitrage (rare and high-value, show first) */}
-      {arbitrage.length > 0 && (
+      {filteredArbs.length > 0 && (
         <div>
           <h2 className="mb-3 text-lg font-semibold"><TermTooltip term="Arbitrage">Arbitrage</TermTooltip> Opportunities</h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            {arbitrage.map((arb) => (
+            {filteredArbs.map((arb) => (
               <ArbCard key={arb.game.id} arb={arb} />
             ))}
           </div>
@@ -133,18 +179,22 @@ export function EVScannerView({
       )}
 
       {/* +EV Opportunities */}
-      {opportunities.length > 0 ? (
+      {filteredOpps.length > 0 ? (
         <div>
           <h2 className="mb-3 text-lg font-semibold">Positive <TermTooltip term="+EV">EV</TermTooltip> Bets</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {opportunities.map((opp, i) => (
+            {filteredOpps.map((opp, i) => (
               <EVCard key={`${opp.game.id}-${opp.side}-${opp.bookmaker}-${i}`} opp={opp} />
             ))}
           </div>
         </div>
       ) : (
         <div className="rounded-lg border border-border bg-card p-8 text-center">
-          <p className="text-lg font-medium">No +EV opportunities right now</p>
+          <p className="text-lg font-medium">
+            {opportunities.length === 0
+              ? 'No +EV opportunities right now'
+              : `No ${SPORT_LABELS[activeSport as Sport] ?? ''} +EV opportunities right now`}
+          </p>
           <p className="mt-1 text-sm text-muted-foreground">
             +EV bets appear when a bookmaker&apos;s odds are better than the fair market
             price. Check back closer to game time when odds are moving.

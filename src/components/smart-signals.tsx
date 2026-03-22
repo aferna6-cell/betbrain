@@ -1,9 +1,21 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { formatOdds, getBestMoneyline } from '@/lib/odds'
 import { formatGameTime } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { SmartSignal } from '@/lib/signals'
+import type { Sport } from '@/lib/supabase/types'
+
+const SPORT_FILTERS: { key: 'all' | Sport; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'nba', label: 'NBA' },
+  { key: 'nfl', label: 'NFL' },
+  { key: 'mlb', label: 'MLB' },
+  { key: 'nhl', label: 'NHL' },
+]
 
 function SignalCard({ signal }: { signal: SmartSignal }) {
   const { game, signals, strength, aiConfidence, bestValue } = signal
@@ -89,37 +101,68 @@ function SignalCard({ signal }: { signal: SmartSignal }) {
 }
 
 export function SmartSignalsView({ signals }: { signals: SmartSignal[] }) {
-  if (signals.length === 0) {
-    return (
-      <div className="rounded-lg border border-border bg-card p-8 text-center">
-        <p className="text-lg font-medium">No Smart Signals right now</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Signals appear when odds variance, AI analysis, and market data align
-          on a game. Check back closer to game time.
-        </p>
-      </div>
-    )
-  }
+  const [activeSport, setActiveSport] = useState<'all' | Sport>('all')
 
-  const strong = signals.filter((s) => s.strength === 'strong')
-  const moderate = signals.filter((s) => s.strength === 'moderate')
+  const filtered = activeSport === 'all'
+    ? signals
+    : signals.filter((s) => s.game.sport === activeSport)
+
+  const strong = filtered.filter((s) => s.strength === 'strong')
+  const moderate = filtered.filter((s) => s.strength === 'moderate')
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Badge variant="default">{signals.length} Signal{signals.length !== 1 ? 's' : ''}</Badge>
-        {strong.length > 0 && (
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex gap-1">
+          {SPORT_FILTERS.map((sf) => {
+            const count = sf.key === 'all'
+              ? signals.length
+              : signals.filter((s) => s.game.sport === sf.key).length
+
+            return (
+              <button
+                key={sf.key}
+                onClick={() => setActiveSport(sf.key)}
+                className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                  activeSport === sf.key
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                }`}
+              >
+                {sf.label}
+                {count > 0 && (
+                  <span className="ml-1.5 text-xs opacity-70">{count}</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+        {filtered.length > 0 && (
           <span className="text-sm text-muted-foreground">
             {strong.length} strong, {moderate.length} moderate
           </span>
         )}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {signals.map((signal) => (
-          <SignalCard key={signal.game.id} signal={signal} />
-        ))}
-      </div>
+      {filtered.length === 0 ? (
+        <div className="rounded-lg border border-border bg-card p-8 text-center">
+          <p className="text-lg font-medium">
+            {signals.length === 0
+              ? 'No Smart Signals right now'
+              : `No ${SPORT_LABELS[activeSport as Sport] ?? ''} signals right now`}
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Signals appear when odds variance, AI analysis, and market data align
+            on a game. Check back closer to game time.
+          </p>
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((signal) => (
+            <SignalCard key={signal.game.id} signal={signal} />
+          ))}
+        </div>
+      )}
 
       <p className="text-xs text-muted-foreground">
         For informational purposes only. Smart Signals are not guaranteed
