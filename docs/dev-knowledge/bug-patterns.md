@@ -53,3 +53,11 @@ _Bugs found and fixed. Read before debugging to avoid rediscovering known issues
 **Fix:** Wrapped both Stripe API calls in try-catch with specific `[stripe]` log prefixes and 502 status codes to distinguish Stripe failures from application errors.
 **Files:** `src/app/api/stripe/checkout/route.ts`
 **Prevention:** Always wrap external API calls (Stripe, sports APIs, AI) in try-catch with service-specific error logging. Use 502 for upstream service failures vs 500 for internal errors.
+
+### Claude API calls in AI analyzers had no try-catch
+**Date:** 2026-03-22
+**Symptom:** If the Claude API was down, rate-limited, or returned an auth error during parlay/injury/prop analysis, the error propagated uncaught to the route handler, which returned a generic "Internal error" with no indication that the AI service was the failure point.
+**Root Cause:** `client.messages.create()` calls in parlay-analyzer.ts, injury-impact.ts, and prop-analyzer.ts were not wrapped in try-catch. The surrounding JSON parse logic had its own try-catch, but the API call itself was unshielded.
+**Fix:** Wrapped all three `client.messages.create()` calls in try-catch with `[ai]` log prefix and a user-facing error message: "AI analysis service is temporarily unavailable. Please try again."
+**Files:** `src/lib/ai/parlay-analyzer.ts`, `src/lib/ai/injury-impact.ts`, `src/lib/ai/prop-analyzer.ts`
+**Prevention:** Every external API call must have its own try-catch, even when a parent handler exists. The parent handler cannot provide service-specific error context.

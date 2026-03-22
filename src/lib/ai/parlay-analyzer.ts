@@ -118,16 +118,22 @@ export async function analyzeParlay(legs: ParlayLeg[]): Promise<ParlayAnalysis> 
 
   const client = new Anthropic({ apiKey: getAnthropicApiKey() })
 
-  const message = await client.messages.create({
-    model: MODEL,
-    max_tokens: 1024,
-    messages: [
-      {
-        role: 'user',
-        content: buildParlayPrompt(legs),
-      },
-    ],
-  })
+  let message: Anthropic.Message
+  try {
+    message = await client.messages.create({
+      model: MODEL,
+      max_tokens: 1024,
+      messages: [
+        {
+          role: 'user',
+          content: buildParlayPrompt(legs),
+        },
+      ],
+    })
+  } catch (err) {
+    console.error('[ai] Claude API error in parlay analysis:', err)
+    throw new Error('AI analysis service is temporarily unavailable. Please try again.')
+  }
 
   const textContent = message.content.find((c) => c.type === 'text')
   if (!textContent || textContent.type !== 'text') {
