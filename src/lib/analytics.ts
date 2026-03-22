@@ -5,6 +5,12 @@ import type { CLVStats } from '@/lib/clv'
 import type { TypeBreakdown, SportBreakdown } from '@/lib/pick-stats'
 import type { Sport, PickOutcome } from '@/lib/supabase/types'
 
+export interface RollingDataPoint {
+  date: string
+  profit: number
+  roi: number
+}
+
 export interface AnalyticsData {
   picks: {
     total: number
@@ -17,6 +23,7 @@ export interface AnalyticsData {
     roi: number
     byType: TypeBreakdown[]
     bySport: SportBreakdown[]
+    rollingROI: RollingDataPoint[]
   }
   clv: CLVStats
   apiUsage: {
@@ -114,6 +121,32 @@ export async function getUserAnalytics(userId: string): Promise<AnalyticsData> {
   weekAgo.setDate(weekAgo.getDate() - 7)
   const recentPicks = picks.filter((p) => new Date(p.created_at) >= weekAgo).length
 
+  // Rolling cumulative ROI by date (resolved picks only)
+  const rollingROI: RollingDataPoint[] = []
+  const resolvedByDate = [...resolved]
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+  let cumProfit = 0
+  let cumUnits = 0
+  let lastDate = ''
+  for (const p of resolvedByDate) {
+    const date = p.created_at.slice(0, 10)
+    cumProfit += p.profit ?? 0
+    cumUnits += p.units
+    if (date !== lastDate) {
+      rollingROI.push({
+        date,
+        profit: Math.round(cumProfit * 100) / 100,
+        roi: cumUnits > 0 ? Math.round((cumProfit / cumUnits) * 10000) / 100 : 0,
+      })
+      lastDate = date
+    } else {
+      // Update the latest point for same date
+      const last = rollingROI[rollingROI.length - 1]
+      last.profit = Math.round(cumProfit * 100) / 100
+      last.roi = cumUnits > 0 ? Math.round((cumProfit / cumUnits) * 10000) / 100 : 0
+    }
+  }
+
   return {
     picks: {
       total: picks.length,
@@ -126,6 +159,7 @@ export async function getUserAnalytics(userId: string): Promise<AnalyticsData> {
       roi,
       byType: calcTypeBreakdown(picks),
       bySport: calcSportBreakdown(picks),
+      rollingROI,
     },
     clv: clvStats,
     apiUsage,

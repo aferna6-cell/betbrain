@@ -1,7 +1,19 @@
+import dynamic from 'next/dynamic'
 import { Badge } from '@/components/ui/badge'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import { profitColor } from '@/lib/format'
 import type { AnalyticsData } from '@/lib/analytics'
+
+const RollingROIChart = dynamic(
+  () => import('@/components/rolling-roi-chart').then((m) => m.RollingROIChart),
+  {
+    loading: () => (
+      <div className="flex h-48 items-center justify-center rounded-lg border border-border bg-card">
+        <p className="text-sm text-muted-foreground">Loading chart...</p>
+      </div>
+    ),
+  }
+)
 
 function StatCard({
   label,
@@ -74,6 +86,14 @@ export function AnalyticsDashboard({ data }: { data: AnalyticsData }) {
           />
         </div>
       </section>
+
+      {/* Rolling ROI Chart */}
+      {picks.rollingROI.length >= 2 && (
+        <section>
+          <h2 className="mb-3 text-lg font-semibold">Cumulative ROI Over Time</h2>
+          <RollingROIChart data={picks.rollingROI} />
+        </section>
+      )}
 
       {/* Activity */}
       <section>
