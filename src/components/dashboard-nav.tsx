@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { SearchPalette } from '@/components/search'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { OddsFormatToggle } from '@/components/odds-format-provider'
 import type { User } from '@supabase/supabase-js'
 
 interface NavBadges {
@@ -97,6 +98,7 @@ export function DashboardNav({ user }: { user: User }) {
         </div>
         <div className="flex items-center gap-4">
           <SearchPalette />
+          <OddsFormatToggle />
           <ThemeToggle />
           <span className="hidden text-sm text-muted-foreground sm:block">
             {user.email}

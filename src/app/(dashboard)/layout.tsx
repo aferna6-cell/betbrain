@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { DashboardNav } from '@/components/dashboard-nav'
 import { KeyboardShortcuts } from '@/components/keyboard-shortcuts'
 import { ShortcutsHelp } from '@/components/shortcuts-help'
+import { OddsFormatProvider } from '@/components/odds-format-provider'
 
 export default async function DashboardLayout({
   children,
@@ -24,12 +25,14 @@ export default async function DashboardLayout({
       >
         Skip to main content
       </a>
+      <OddsFormatProvider>
       <DashboardNav user={user} />
       <KeyboardShortcuts />
       <ShortcutsHelp />
       <main id="main-content" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {children}
       </main>
+      </OddsFormatProvider>
     </div>
   )
 }

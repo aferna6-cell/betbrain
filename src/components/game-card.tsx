@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import { WatchlistButton } from '@/components/watchlist-button'
 import { formatOdds, formatImpliedProb, getBestMoneyline } from '@/lib/odds'
+import { OddsDisplay } from '@/components/odds-display'
 import { formatGameTime, timeAgo } from '@/lib/format'
 import { SPORT_LABELS } from '@/lib/sports/config'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -48,7 +49,7 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         <div className="flex items-center justify-between">
           <span className="font-medium">{game.awayTeam}</span>
           <span className="font-mono text-sm text-muted-foreground">
-            <TermTooltip term="Moneyline">{formatOdds(bestAway)}</TermTooltip>
+            <TermTooltip term="Moneyline"><OddsDisplay odds={bestAway} /></TermTooltip>
             <span className="ml-1 text-xs opacity-60">
               <TermTooltip term="Win Probability">{formatImpliedProb(bestAway)}</TermTooltip>
             </span>
@@ -57,7 +58,7 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         <div className="flex items-center justify-between">
           <span className="font-medium">{game.homeTeam}</span>
           <span className="font-mono text-sm text-muted-foreground">
-            <TermTooltip term="Moneyline">{formatOdds(bestHome)}</TermTooltip>
+            <TermTooltip term="Moneyline"><OddsDisplay odds={bestHome} /></TermTooltip>
             <span className="ml-1 text-xs opacity-60">
               <TermTooltip term="Win Probability">{formatImpliedProb(bestHome)}</TermTooltip>
             </span>
