@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatOdds } from '@/lib/odds'
+import { useOddsFormat } from '@/components/odds-format-provider'
 import type { ParlayLeg, ParlayAnalysis } from '@/lib/ai/parlay-analyzer'
 
 const SPORTS = [
@@ -93,6 +94,7 @@ function LegInput({
 }
 
 function ParlayResult({ result }: { result: ParlayAnalysis }) {
+  const { formatPrice } = useOddsFormat()
   const recColor =
     result.recommendation === 'bet'
       ? 'text-green-500'
@@ -109,7 +111,7 @@ function ParlayResult({ result }: { result: ParlayAnalysis }) {
             {result.legs.length}-Leg Parlay
           </h3>
           <Badge variant="outline" className="font-mono text-xs">
-            {formatOdds(result.combinedOdds)}
+            {formatPrice(result.combinedOdds)}
           </Badge>
           <Badge variant="secondary" className="font-mono text-xs">
             {result.payoutMultiplier.toFixed(2)}x
