@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { getUserAnalytics } from '@/lib/analytics'
 import { AnalyticsDashboard } from '@/components/analytics-dashboard'
+import { TimeAnalysisPanel } from '@/components/time-analysis'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -31,6 +32,14 @@ export default async function AnalyticsPage() {
       </div>
 
       <AnalyticsDashboard data={analytics} />
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Performance by Time of Day</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          When are you making your best (and worst) picks?
+        </p>
+        <TimeAnalysisPanel />
+      </div>
     </div>
   )
 }
