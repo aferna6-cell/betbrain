@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserAnalytics } from '@/lib/analytics'
 import { AnalyticsDashboard } from '@/components/analytics-dashboard'
 import { TimeAnalysisPanel } from '@/components/time-analysis'
+import { ConfidenceCalibrationPanel } from '@/components/confidence-calibration'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -39,6 +40,14 @@ export default async function AnalyticsPage() {
           When are you making your best (and worst) picks?
         </p>
         <TimeAnalysisPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Confidence Calibration</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Are your confidence ratings accurate? Track how well your stated confidence matches actual win rates.
+        </p>
+        <ConfidenceCalibrationPanel />
       </div>
     </div>
   )
