@@ -7,7 +7,7 @@ import { useToast } from '@/components/toast'
 import { TermTooltip } from '@/components/term-tooltip'
 import { isValidAmericanOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
-import { gradePick } from '@/lib/pick-stats'
+import { gradePick, calcDayOfWeekBreakdown } from '@/lib/pick-stats'
 import { calculateStreaks, calculateBadges } from '@/lib/streaks'
 import type { StreakInfo, Badge as BadgeType } from '@/lib/streaks'
 import type {
@@ -581,6 +581,64 @@ function BadgesDisplay({ picks }: { picks: UserPick[] }) {
 }
 
 // ---------------------------------------------------------------------------
+// Day of Week Breakdown
+// ---------------------------------------------------------------------------
+
+function DayOfWeekDisplay({ picks }: { picks: UserPick[] }) {
+  const breakdown = calcDayOfWeekBreakdown(picks)
+
+  if (breakdown.length < 2) return null
+
+  const bestDay = [...breakdown].sort((a, b) => b.roi - a.roi)[0]
+  const worstDay = [...breakdown].sort((a, b) => a.roi - b.roi)[0]
+
+  return (
+    <div className="rounded-lg border border-border bg-card p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-3">
+        Performance by Day of Week
+      </p>
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        {breakdown.map((d) => {
+          const isBest = d.day === bestDay?.day && d.roi > 0
+          const isWorst = d.day === worstDay?.day && d.roi < 0
+          return (
+            <div
+              key={d.day}
+              className={`flex items-center justify-between rounded border px-3 py-2 ${
+                isBest ? 'border-green-500/30 bg-green-500/5' :
+                isWorst ? 'border-red-500/30 bg-red-500/5' :
+                'border-border/50'
+              }`}
+            >
+              <span className="text-xs font-medium">{d.day.slice(0, 3)}</span>
+              <div className="flex items-center gap-3 text-xs">
+                <span>{d.wins}W-{d.losses}L</span>
+                {d.winRate !== null && (
+                  <span className={d.winRate >= 52.4 ? 'text-green-500' : d.winRate < 50 ? 'text-red-500' : ''}>
+                    {d.winRate}%
+                  </span>
+                )}
+                <span className={`font-mono ${d.roi > 0 ? 'text-green-500' : d.roi < 0 ? 'text-red-500' : ''}`}>
+                  {d.roi > 0 ? '+' : ''}{d.roi}%
+                </span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      {bestDay && bestDay.roi > 0 && (
+        <p className="text-xs text-muted-foreground mt-2">
+          Best day: <span className="text-green-500 font-medium">{bestDay.day}</span> ({bestDay.roi > 0 ? '+' : ''}{bestDay.roi}% ROI)
+          {worstDay && worstDay.roi < 0 && (
+            <> &middot; Worst: <span className="text-red-500 font-medium">{worstDay.day}</span> ({worstDay.roi}% ROI)</>
+          )}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // CSV Export
 // ---------------------------------------------------------------------------
 
@@ -1014,6 +1072,7 @@ export function PicksTracker() {
       <StreakDisplay picks={picks} />
       <BadgesDisplay picks={picks} />
       <PickTypeBreakdown picks={picks} />
+      <DayOfWeekDisplay picks={picks} />
       {picks.length > 0 && (
         <div className="flex justify-end">
           <Button

@@ -20,12 +20,23 @@ export interface SportBreakdown {
   roi: number
 }
 
+export interface DayOfWeekBreakdown {
+  day: string
+  dayIndex: number
+  wins: number
+  losses: number
+  total: number
+  winRate: number | null
+  roi: number
+}
+
 interface PickForBreakdown {
   pick_type: string
   sport: string
   outcome: string | null
   profit: number | null
   units: number
+  game_date?: string
 }
 
 /**
@@ -102,4 +113,50 @@ export function calcSportBreakdown(picks: PickForBreakdown[]): SportBreakdown[] 
 
     return { sport, wins, losses, total: sportPicks.length, roi }
   }).sort((a, b) => b.total - a.total)
+}
+
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const
+
+/**
+ * Calculate performance breakdown by day of week.
+ * Helps identify which days the user performs best on.
+ */
+export function calcDayOfWeekBreakdown(picks: PickForBreakdown[]): DayOfWeekBreakdown[] {
+  const resolved = picks.filter(
+    (p) => p.outcome && p.outcome !== 'pending' && p.game_date
+  )
+
+  if (resolved.length === 0) return []
+
+  const byDay = new Map<number, { wins: number; losses: number; profit: number; units: number }>()
+
+  for (const pick of resolved) {
+    const date = new Date(pick.game_date!)
+    const dayIndex = date.getUTCDay()
+    const entry = byDay.get(dayIndex) ?? { wins: 0, losses: 0, profit: 0, units: 0 }
+
+    if (pick.outcome === 'win') entry.wins++
+    else if (pick.outcome === 'loss') entry.losses++
+    entry.profit += pick.profit ?? 0
+    entry.units += pick.units
+
+    byDay.set(dayIndex, entry)
+  }
+
+  return Array.from(byDay.entries())
+    .map(([dayIndex, { wins, losses, profit, units }]) => {
+      const decided = wins + losses
+      const winRate = decided > 0 ? Math.round((wins / decided) * 1000) / 10 : null
+      const roi = units > 0 ? Math.round((profit / units) * 10000) / 100 : 0
+      return {
+        day: DAY_NAMES[dayIndex],
+        dayIndex,
+        wins,
+        losses,
+        total: decided,
+        winRate,
+        roi,
+      }
+    })
+    .sort((a, b) => a.dayIndex - b.dayIndex)
 }

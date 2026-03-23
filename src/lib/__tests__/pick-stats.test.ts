@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calcTypeBreakdown, calcSportBreakdown, gradePick } from '@/lib/pick-stats'
+import { calcTypeBreakdown, calcSportBreakdown, calcDayOfWeekBreakdown, gradePick } from '@/lib/pick-stats'
 
 const makePick = (overrides: Partial<{
   pick_type: string; sport: string; outcome: string | null; profit: number | null; units: number
@@ -157,5 +157,71 @@ describe('gradePick', () => {
 
   it('loss with zero CLV counts as negative', () => {
     expect(gradePick('loss', 0).grade).toBe('F')
+  })
+})
+
+describe('calcDayOfWeekBreakdown', () => {
+  it('returns empty array for no picks', () => {
+    expect(calcDayOfWeekBreakdown([])).toEqual([])
+  })
+
+  it('returns empty for only pending picks', () => {
+    const result = calcDayOfWeekBreakdown([
+      makePick({ outcome: 'pending', ...{ game_date: '2026-03-18' } }),
+    ])
+    expect(result).toEqual([])
+  })
+
+  it('groups picks by day of week', () => {
+    // 2026-03-16 = Monday, 2026-03-17 = Tuesday, 2026-03-18 = Wednesday
+    const picks = [
+      { ...makePick({ outcome: 'win', profit: 1, units: 1 }), game_date: '2026-03-16' },
+      { ...makePick({ outcome: 'win', profit: 1, units: 1 }), game_date: '2026-03-16' },
+      { ...makePick({ outcome: 'loss', profit: -1, units: 1 }), game_date: '2026-03-17' },
+    ]
+    const result = calcDayOfWeekBreakdown(picks)
+    expect(result.length).toBeGreaterThanOrEqual(2)
+
+    const monday = result.find((d) => d.day === 'Monday')
+    expect(monday).toBeDefined()
+    expect(monday!.wins).toBe(2)
+    expect(monday!.losses).toBe(0)
+
+    const tuesday = result.find((d) => d.day === 'Tuesday')
+    expect(tuesday).toBeDefined()
+    expect(tuesday!.wins).toBe(0)
+    expect(tuesday!.losses).toBe(1)
+  })
+
+  it('calculates ROI per day', () => {
+    const picks = [
+      { ...makePick({ outcome: 'win', profit: 2, units: 1 }), game_date: '2026-03-16' },
+      { ...makePick({ outcome: 'loss', profit: -1, units: 1 }), game_date: '2026-03-16' },
+    ]
+    const result = calcDayOfWeekBreakdown(picks)
+    const monday = result.find((d) => d.day === 'Monday')
+    expect(monday).toBeDefined()
+    // ROI = (2 + -1) / (1 + 1) * 100 = 50%
+    expect(monday!.roi).toBe(50)
+  })
+
+  it('sorts by day index (Sunday first)', () => {
+    const picks = [
+      { ...makePick({ outcome: 'win', profit: 1, units: 1 }), game_date: '2026-03-18' }, // Wed
+      { ...makePick({ outcome: 'win', profit: 1, units: 1 }), game_date: '2026-03-16' }, // Mon
+    ]
+    const result = calcDayOfWeekBreakdown(picks)
+    expect(result[0].dayIndex).toBeLessThan(result[1].dayIndex)
+  })
+
+  it('calculates winRate correctly', () => {
+    const picks = [
+      { ...makePick({ outcome: 'win', profit: 1, units: 1 }), game_date: '2026-03-16' },
+      { ...makePick({ outcome: 'win', profit: 1, units: 1 }), game_date: '2026-03-16' },
+      { ...makePick({ outcome: 'loss', profit: -1, units: 1 }), game_date: '2026-03-16' },
+    ]
+    const result = calcDayOfWeekBreakdown(picks)
+    const monday = result.find((d) => d.day === 'Monday')
+    expect(monday!.winRate).toBeCloseTo(66.7, 0)
   })
 })
