@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import dynamic from 'next/dynamic'
+import { getPreferredBookmaker, setPreferredBookmaker } from '@/lib/preferences'
 
 const LineMovementChart = dynamic(
   () => import('@/components/line-movement-chart').then((m) => m.LineMovementChart),
@@ -52,6 +53,20 @@ interface GameAnalysis {
 
 function OddsTable({ game }: { game: NormalizedGame }) {
   const { formatPrice } = useOddsFormat()
+  const [preferredBook, setPreferredBook] = useState<string | null>(null)
+
+  useEffect(() => {
+    setPreferredBook(getPreferredBookmaker())
+  }, [])
+
+  function handleSetPreferred(bookmaker: string) {
+    const next = preferredBook === bookmaker ? null : bookmaker
+    setPreferredBook(next)
+    setPreferredBookmaker(next)
+  }
+
+  const preferredRowClass = 'bg-blue-500/10 border-l-2 border-l-blue-500'
+
   const bestHomeML = getBestMoneyline(game.bookmakers, 'home')
   const bestAwayML = getBestMoneyline(game.bookmakers, 'away')
   const bestHomeSpread = getBestSpreadOdds(game.bookmakers, 'home')
@@ -89,9 +104,14 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                   bk.moneyline ? (
                     <tr
                       key={`ml-${bk.bookmaker}`}
-                      className="border-b border-border/50"
+                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : ''}`}
                     >
-                      <td className="py-2 pr-4 capitalize text-muted-foreground">
+                      <td
+                        className="py-2 pr-4 capitalize text-muted-foreground cursor-pointer hover:text-foreground"
+                        title={bk.bookmaker === preferredBook ? 'Click to unset preferred book' : 'Click to set as preferred book'}
+                        onClick={() => handleSetPreferred(bk.bookmaker)}
+                      >
+                        {bk.bookmaker === preferredBook && <span className="mr-1 text-blue-400">*</span>}
                         {bk.bookmaker.replace(/_/g, ' ')}
                       </td>
                       <td className="py-2 px-4 text-right font-mono">
@@ -155,9 +175,13 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                   bk.spread ? (
                     <tr
                       key={`sp-${bk.bookmaker}`}
-                      className="border-b border-border/50"
+                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : ''}`}
                     >
-                      <td className="py-2 pr-4 capitalize text-muted-foreground">
+                      <td
+                        className="py-2 pr-4 capitalize text-muted-foreground cursor-pointer hover:text-foreground"
+                        onClick={() => handleSetPreferred(bk.bookmaker)}
+                      >
+                        {bk.bookmaker === preferredBook && <span className="mr-1 text-blue-400">*</span>}
                         {bk.bookmaker.replace(/_/g, ' ')}
                       </td>
                       <td className="py-2 px-4 text-right font-mono">
@@ -224,9 +248,13 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                   bk.total ? (
                     <tr
                       key={`tot-${bk.bookmaker}`}
-                      className="border-b border-border/50"
+                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : ''}`}
                     >
-                      <td className="py-2 pr-4 capitalize text-muted-foreground">
+                      <td
+                        className="py-2 pr-4 capitalize text-muted-foreground cursor-pointer hover:text-foreground"
+                        onClick={() => handleSetPreferred(bk.bookmaker)}
+                      >
+                        {bk.bookmaker === preferredBook && <span className="mr-1 text-blue-400">*</span>}
                         {bk.bookmaker.replace(/_/g, ' ')}
                       </td>
                       <td className="py-2 px-4 text-right font-mono text-muted-foreground">
@@ -266,6 +294,18 @@ function OddsTable({ game }: { game: NormalizedGame }) {
       {game.bookmakers.length === 0 && (
         <p className="text-sm text-muted-foreground">
           No odds data available for this game.
+        </p>
+      )}
+
+      {game.bookmakers.length > 0 && (
+        <p className="text-xs text-muted-foreground/60 mt-4">
+          <span className="text-green-500">Green</span> = best price across books
+          {preferredBook && (
+            <> &middot; <span className="text-blue-400">*Blue row</span> = your preferred book ({preferredBook.replace(/_/g, ' ')})</>
+          )}
+          {!preferredBook && (
+            <> &middot; Click any bookmaker name to set it as preferred</>
+          )}
         </p>
       )}
     </div>
