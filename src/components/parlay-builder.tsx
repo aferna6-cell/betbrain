@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useOddsFormat } from '@/components/odds-format-provider'
 import type { ParlayLeg, ParlayAnalysis } from '@/lib/ai/parlay-analyzer'
+import { detectCorrelations, correlationScore } from '@/lib/parlay-correlation'
 
 const SPORTS = [
   { value: 'nba', label: 'NBA' },
@@ -277,6 +278,23 @@ export function ParlayBuilderForm() {
     }
   }
 
+  // Client-side correlation detection (runs instantly as user types)
+  const correlationWarnings = useMemo(() => {
+    const legsForCorrelation = legs.map((leg) => ({
+      description: leg.description,
+      sport: leg.sport,
+      gameId: null, // Will be populated if user comes from game detail
+      team: null,
+      market: null,
+    }))
+    return detectCorrelations(legsForCorrelation)
+  }, [legs])
+
+  const corrScore = useMemo(
+    () => correlationScore(correlationWarnings),
+    [correlationWarnings]
+  )
+
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -306,6 +324,25 @@ export function ParlayBuilderForm() {
             {legs.length}/10 legs
           </span>
         </div>
+
+        {/* Client-side correlation warnings */}
+        {correlationWarnings.length > 0 && (
+          <div className="rounded-md border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 space-y-1">
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-medium text-yellow-500">
+                Correlation Risk: {corrScore}/100
+              </p>
+              {corrScore >= 30 && (
+                <Badge variant="secondary" className="text-[10px] text-yellow-500">
+                  High
+                </Badge>
+              )}
+            </div>
+            {correlationWarnings.map((w, i) => (
+              <p key={i} className="text-xs text-muted-foreground">{w.message}</p>
+            ))}
+          </div>
+        )}
 
         {error && <p className="text-sm text-red-500">{error}</p>}
 
