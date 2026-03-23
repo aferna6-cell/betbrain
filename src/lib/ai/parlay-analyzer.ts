@@ -7,7 +7,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { getAnthropicApiKey } from '@/lib/env'
 import { AI_DISCLAIMER } from '@/lib/ai/analysis'
 
-const MODEL = 'claude-sonnet-4-5-20250514'
+const MODEL = 'claude-sonnet-4-6'
 
 export interface ParlayLeg {
   description: string // e.g. "Lakers ML", "LeBron O25.5 pts"
