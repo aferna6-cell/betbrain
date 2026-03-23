@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { generateDigest } from '@/lib/digest'
 import { DigestPreview } from '@/components/digest-preview'
+import { WeeklyRecapPanel } from '@/components/weekly-recap'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,6 +24,10 @@ export default async function DigestPage() {
       </div>
 
       <DigestPreview digest={digest} />
+
+      <div className="border-t border-border pt-6">
+        <WeeklyRecapPanel />
+      </div>
     </div>
   )
 }
