@@ -421,22 +421,32 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
           )}
         </div>
 
-        {analysis.insightId && (
+        <div className="flex items-center gap-2">
+          {analysis.insightId && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSave}
+              disabled={saving || saved}
+              className={`h-8 gap-1.5 text-xs transition-colors ${
+                saved
+                  ? 'border-green-500/40 text-green-500 hover:text-green-500'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <BookmarkIcon filled={saved} />
+              {saved ? 'Saved' : saving ? 'Saving...' : 'Save'}
+            </Button>
+          )}
           <Button
             variant="outline"
             size="sm"
-            onClick={handleSave}
-            disabled={saving || saved}
-            className={`h-8 gap-1.5 text-xs transition-colors ${
-              saved
-                ? 'border-green-500/40 text-green-500 hover:text-green-500'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
+            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => shareAnalysisToX(game, analysis)}
           >
-            <BookmarkIcon filled={saved} />
-            {saved ? 'Saved' : saving ? 'Saving...' : 'Save'}
+            Share to X
           </Button>
-        )}
+        </div>
       </div>
 
       {/* Summary */}
@@ -484,6 +494,32 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
       </p>
     </div>
   )
+}
+
+// ---------------------------------------------------------------------------
+// Share to X
+// ---------------------------------------------------------------------------
+
+function shareAnalysisToX(game: NormalizedGame, analysis: GameAnalysis) {
+  const side =
+    analysis.valueAssessment.side === 'neither'
+      ? 'No clear edge'
+      : `Value: ${analysis.valueAssessment.side === 'home' ? game.homeTeam : game.awayTeam}`
+  const risk = analysis.riskLevel.toUpperCase()
+  const confidence = analysis.confidence
+
+  const text = [
+    `${game.awayTeam} @ ${game.homeTeam} | AI Analysis`,
+    ``,
+    analysis.summary.length > 200 ? analysis.summary.slice(0, 197) + '...' : analysis.summary,
+    ``,
+    `${side} | Risk: ${risk} | Confidence: ${confidence}%`,
+    ``,
+    `Powered by BetBrain | For informational purposes only`,
+  ].join('\n')
+
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`
+  window.open(url, '_blank', 'noopener,noreferrer,width=550,height=420')
 }
 
 // ---------------------------------------------------------------------------
