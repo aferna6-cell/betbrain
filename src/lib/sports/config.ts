@@ -4,6 +4,7 @@
  */
 
 import type { Sport } from '@/lib/supabase/types'
+export type { Sport } from '@/lib/supabase/types'
 
 // ---------------------------------------------------------------------------
 // Sport key mapping — our internal Sport type -> The Odds API sport keys
@@ -129,6 +130,7 @@ export interface OddsApiOutcome {
   name: string
   price: number
   point?: number
+  description?: string
 }
 
 export interface OddsApiMarket {
@@ -152,4 +154,168 @@ export interface OddsApiGame {
   home_team: string
   away_team: string
   bookmakers: OddsApiBookmaker[]
+}
+
+// ---------------------------------------------------------------------------
+// Player prop market types
+// ---------------------------------------------------------------------------
+
+/**
+ * Prop market keys supported by The Odds API for each sport.
+ * NBA markets: player_points, player_rebounds, player_assists,
+ *              player_threes, player_blocks, player_steals
+ * NFL markets: player_pass_tds, player_rush_yds, player_reception_yds
+ */
+export type NbaPropMarket =
+  | 'player_points'
+  | 'player_rebounds'
+  | 'player_assists'
+  | 'player_threes'
+  | 'player_blocks'
+  | 'player_steals'
+
+export type NflPropMarket =
+  | 'player_pass_tds'
+  | 'player_rush_yds'
+  | 'player_reception_yds'
+
+export type PropMarket = NbaPropMarket | NflPropMarket
+
+/** All NBA prop markets BetBrain fetches. */
+export const NBA_PROP_MARKETS: NbaPropMarket[] = [
+  'player_points',
+  'player_rebounds',
+  'player_assists',
+  'player_threes',
+  'player_blocks',
+  'player_steals',
+]
+
+/** All NFL prop markets BetBrain fetches. */
+export const NFL_PROP_MARKETS: NflPropMarket[] = [
+  'player_pass_tds',
+  'player_rush_yds',
+  'player_reception_yds',
+]
+
+/** Map of sport -> prop markets supported. */
+export const SPORT_PROP_MARKETS: Partial<Record<Sport, PropMarket[]>> = {
+  nba: NBA_PROP_MARKETS,
+  nfl: NFL_PROP_MARKETS,
+}
+
+/** Human-readable labels for each prop market key. */
+export const PROP_MARKET_LABELS: Record<PropMarket, string> = {
+  player_points: 'Points',
+  player_rebounds: 'Rebounds',
+  player_assists: 'Assists',
+  player_threes: '3-Pointers Made',
+  player_blocks: 'Blocks',
+  player_steals: 'Steals',
+  player_pass_tds: 'Passing TDs',
+  player_rush_yds: 'Rushing Yards',
+  player_reception_yds: 'Receiving Yards',
+}
+
+/** Returns true if `value` is a recognized PropMarket key. */
+export function isPropMarket(value: string): value is PropMarket {
+  const all: string[] = [...NBA_PROP_MARKETS, ...NFL_PROP_MARKETS]
+  return all.includes(value)
+}
+
+// ---------------------------------------------------------------------------
+// Normalized player prop types
+// ---------------------------------------------------------------------------
+
+/** One bookmaker's over/under line for a single player prop. */
+export interface NormalizedPropLine {
+  /** Bookmaker key (e.g. "draftkings"). */
+  bookmaker: string
+  /** The over/under line value (e.g. 24.5 for points). */
+  line: number
+  /** American odds for the over. */
+  overOdds: number | null
+  /** American odds for the under. */
+  underOdds: number | null
+  /** ISO-8601 timestamp of when this bookmaker last updated. */
+  lastUpdated: string
+}
+
+/** Aggregated prop offering for a single player across all bookmakers. */
+export interface NormalizedPlayerProp {
+  /** Player's full name as returned by The Odds API. */
+  playerName: string
+  /** The market being offered (e.g. "player_points"). */
+  market: PropMarket
+  /** All bookmaker lines for this player+market combination. */
+  bookmakers: NormalizedPropLine[]
+  /** Best (highest) over odds across all bookmakers. */
+  bestOverOdds: number | null
+  /** Best (highest) under odds across all bookmakers. */
+  bestUnderOdds: number | null
+  /** Most common line value across bookmakers (consensus line). */
+  consensusLine: number | null
+}
+
+/** Full prop odds result for one game. */
+export interface PropOddsResult {
+  /** The Odds API game identifier. */
+  gameId: string
+  sport: Sport
+  homeTeam: string
+  awayTeam: string
+  commenceTime: string
+  /** All player props grouped by player name + market. */
+  props: NormalizedPlayerProp[]
+  /** Whether this data came from cache. */
+  fromCache: boolean
+  /** Whether the cache entry is still within TTL. */
+  isFresh: boolean
+  /** ISO-8601 timestamp of when the cache entry was written. */
+  cachedAt?: string
+  /** Current monthly API call count. */
+  apiUsageCount: number
+  /** Whether usage has crossed the 80% warning threshold. */
+  usageWarning: boolean
+  /** Human-readable message when serving stale or cached data. */
+  dataNotice?: string
+}
+
+// ---------------------------------------------------------------------------
+// Raw Odds API player prop response shapes
+// ---------------------------------------------------------------------------
+
+/**
+ * Raw bookmaker entry from The Odds API player props endpoint.
+ * Prop markets use `description` (player name) on each outcome instead of
+ * the game-level `home_team` / `away_team` naming convention.
+ */
+export interface PropApiOutcome {
+  name: 'Over' | 'Under'
+  description: string  // player name
+  price: number
+  point: number
+}
+
+export interface PropApiMarket {
+  key: PropMarket
+  last_update: string
+  outcomes: PropApiOutcome[]
+}
+
+export interface PropApiBookmaker {
+  key: string
+  title: string
+  last_update: string
+  markets: PropApiMarket[]
+}
+
+export interface PropApiGame {
+  id: string
+  sport_key: string
+  sport_title: string
+  commence_time: string
+  home_team: string
+  away_team: string
+  bookmakers: PropApiBookmaker[]
 }

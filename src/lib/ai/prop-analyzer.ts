@@ -2,14 +2,23 @@
  * Prop bet analyzer — uses Claude to assess whether a player prop bet
  * offers value given the matchup context, usage patterns, and current odds.
  *
+ * Results are cached in prop_analysis_cache so re-viewing the same prop
+ * does not consume the user's daily analysis limit.
+ *
  * Example: "Is LeBron Over 25.5 points a good bet?"
  */
 
 import Anthropic from '@anthropic-ai/sdk'
 import { getAnthropicApiKey } from '@/lib/env'
 import { AI_DISCLAIMER } from '@/lib/ai/analysis'
+import { createServiceClient } from '@/lib/supabase/server'
+import type { Database, Sport } from '@/lib/supabase/types'
 
 const MODEL = 'claude-sonnet-4-5-20250514'
+const CACHE_TTL_MS = 6 * 60 * 60 * 1000 // 6 hours
+
+type PropCacheRow = Database['public']['Tables']['prop_analysis_cache']['Row']
+type PropCacheInsert = Database['public']['Tables']['prop_analysis_cache']['Insert']
 
 export interface PropAnalysisInput {
   playerName: string
@@ -46,12 +55,91 @@ export interface PropAnalysis {
   riskLevel: 'low' | 'medium' | 'high'
   confidence: number
   disclaimer: string
+  fromCache: boolean
 }
 
 function americanToImplied(odds: number): number {
   if (odds > 0) return 100 / (odds + 100)
   return Math.abs(odds) / (Math.abs(odds) + 100)
 }
+
+// ---------------------------------------------------------------------------
+// Cache layer
+// ---------------------------------------------------------------------------
+
+function normalizeString(s: string): string {
+  return s.trim().toLowerCase()
+}
+
+export async function getCachedPropAnalysis(
+  userId: string,
+  input: PropAnalysisInput
+): Promise<PropAnalysis | null> {
+  const supabase = await createServiceClient()
+
+  const { data } = await supabase
+    .from('prop_analysis_cache')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('player_name', normalizeString(input.playerName))
+    .eq('sport', normalizeString(input.sport) as Sport)
+    .eq('team', normalizeString(input.team))
+    .eq('opponent', normalizeString(input.opponent))
+    .eq('prop_market', normalizeString(input.propMarket))
+    .eq('line', input.line)
+    .gt('expires_at', new Date().toISOString())
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (!data) return null
+
+  const row = data as PropCacheRow
+  const result = row.result as unknown as PropAnalysis
+
+  return {
+    ...result,
+    fromCache: true,
+    disclaimer: AI_DISCLAIMER,
+  }
+}
+
+async function cachePropAnalysis(
+  userId: string,
+  input: PropAnalysisInput,
+  analysis: PropAnalysis
+): Promise<void> {
+  const supabase = await createServiceClient()
+
+  const row: PropCacheInsert = {
+    user_id: userId,
+    player_name: normalizeString(input.playerName),
+    sport: normalizeString(input.sport) as Sport,
+    team: normalizeString(input.team),
+    opponent: normalizeString(input.opponent),
+    prop_market: normalizeString(input.propMarket),
+    line: input.line,
+    over_odds: input.overOdds,
+    under_odds: input.underOdds,
+    result: analysis as unknown as Record<string, unknown>,
+    model: MODEL,
+    expires_at: new Date(Date.now() + CACHE_TTL_MS).toISOString(),
+  }
+
+  const { error } = await supabase
+    .from('prop_analysis_cache')
+    .upsert(row, {
+      onConflict: 'user_id,player_name,sport,team,opponent,prop_market,line',
+    })
+
+  if (error) {
+    console.error('[ai] Failed to cache prop analysis:', error.message)
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Prompt construction
+// ---------------------------------------------------------------------------
 
 function buildPropPrompt(input: PropAnalysisInput): string {
   const impliedOver = (americanToImplied(input.overOdds) * 100).toFixed(1)
@@ -98,6 +186,10 @@ Guidelines:
 
 Return ONLY the JSON object, no other text.`
 }
+
+// ---------------------------------------------------------------------------
+// Core analysis function
+// ---------------------------------------------------------------------------
 
 export async function analyzeProp(
   input: PropAnalysisInput
@@ -188,6 +280,7 @@ export async function analyzeProp(
       : 'medium',
     confidence: Math.max(0, Math.min(100, Math.round(parsed.confidence ?? 50))),
     disclaimer: AI_DISCLAIMER,
+    fromCache: false,
   })
 }
 
@@ -200,3 +293,5 @@ function assertDisclaimer<T extends { disclaimer: string }>(analysis: T): T {
   }
   return analysis
 }
+
+export { cachePropAnalysis }

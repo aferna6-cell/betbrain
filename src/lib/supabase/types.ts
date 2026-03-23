@@ -434,6 +434,65 @@ export interface Database {
         }
         Relationships: []
       }
+      prop_analysis_cache: {
+        Row: {
+          id: string
+          user_id: string
+          player_name: string
+          sport: Sport
+          team: string
+          opponent: string
+          prop_market: string
+          line: number
+          over_odds: number
+          under_odds: number
+          result: Record<string, unknown>
+          model: string
+          expires_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          player_name: string
+          sport: Sport
+          team: string
+          opponent: string
+          prop_market: string
+          line: number
+          over_odds: number
+          under_odds: number
+          result: Record<string, unknown>
+          model?: string
+          expires_at: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          player_name?: string
+          sport?: Sport
+          team?: string
+          opponent?: string
+          prop_market?: string
+          line?: number
+          over_odds?: number
+          under_odds?: number
+          result?: Record<string, unknown>
+          model?: string
+          expires_at?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prop_analysis_cache_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       alerts: {
         Row: {
           id: string

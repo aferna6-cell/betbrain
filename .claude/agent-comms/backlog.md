@@ -206,3 +206,28 @@
 - [x] [RESEARCHED] **Signal sample size display (N= count)** — Show N alongside hit rate on all signal views. "52% (N=48)" instead of just "52%". Sharps won't trust signals without statistical context. Quick win — data already in signal_history.
 - [x] [RESEARCHED] **Rolling performance trends** — 30-day rolling ROI chart + macro insights on Analytics page ("Your spreads are +EV, your MLs are -EV"). All data in user_picks. Recharts already in stack.
 - [ ] [RESEARCHED] **Player prop odds aggregation** — Fetch player prop markets from The Odds API (they support player_points, player_rebounds etc). Show prop odds comparison table across books. Unlocks props bettors as a daily-use segment.
+
+## Features — Tier 2: Retention & Monetization
+
+- [ ] **Streak tracking + badges** — Track win streaks, longest streak, best week. Award badges ("5-game heater", "CLV King"). Gamification drives daily return visits
+- [ ] **Pick comparison mode** — Side-by-side compare two games' AI analysis, odds, signals. Helps bettors narrow down between multiple plays
+- [ ] **Odds movement velocity alerts** — Alert when a line is moving unusually fast (steam move). Sharp bettors need to act on steam moves within minutes
+- [ ] **Consensus vs. contrarian indicator** — Show public betting % (or estimate from line movement) and highlight games where the "smart money" side differs from public
+- [ ] **Export picks to CSV/PDF** — Download pick history for tax documentation or personal records
+- [ ] **Correlation warnings on parlays** — Flag when parlay legs are highly correlated (same game, related props) which reduces actual EV
+- [ ] **Multi-game comparison table** — Select 2-5 games and see them in a comparison table with all key metrics side by side
+- [ ] **Game day countdown + notification** — Show countdown timer on game cards, notify user X minutes before games they have picks on
+- [ ] **Alternate lines display** — Show alternate spreads/totals alongside primary line (e.g., "Spread -3.5 at -110" plus "-2.5 at -145" and "-4.5 at +100")
+- [ ] **ROI by day of week** — Analytics showing which days the user performs best on (helps identify patterns)
+- [ ] **Unit size recommendations** — Based on bankroll and Kelly criterion, suggest unit sizes for each pick confidence level
+- [ ] **Odds screen dark/light per-book** — Color-code cells in odds table by book with subtle brand colors for quick visual identification
+- [ ] **Share analysis to Twitter/X** — One-click share of AI analysis summary with game context as formatted tweet
+- [ ] **Seasonal performance reset** — Option to reset pick stats at season boundaries while preserving historical data
+- [ ] **Live score integration** — Show live scores during games for tracked picks (free API or websocket)
+
+## Tests — Coverage Gaps
+- [ ] **Bankroll management tests** — Unit tests for Kelly criterion calculation, drawdown tracking, balance history
+- [ ] **Auto-resolve tests** — Tests for team name matching edge cases, push scenarios, multi-sport resolution
+- [ ] **EV scanner tests** — Unit tests for fair odds calculation, +EV threshold, arbitrage detection math
+- [ ] **Alert trigger tests** — Tests for line movement threshold evaluation, alert creation/deletion
+- [ ] **API route auth tests** — Verify all protected routes return 401 without auth, 403 for wrong tier

@@ -125,6 +125,7 @@ describe('PropAnalysis interface shape', () => {
     riskLevel: 'medium',
     confidence: 68,
     disclaimer: AI_DISCLAIMER,
+    fromCache: false,
     ...overrides,
   })
 
@@ -303,6 +304,7 @@ describe('PropAnalysis recommendation values', () => {
         riskLevel: 'medium',
         confidence: 50,
         disclaimer: AI_DISCLAIMER,
+        fromCache: false,
       }
       expect(validRecommendations).toContain(analysis.recommendation)
     })
@@ -347,6 +349,7 @@ describe('PropAnalysis riskLevel values', () => {
         riskLevel: level,
         confidence: 50,
         disclaimer: AI_DISCLAIMER,
+        fromCache: false,
       }
       expect(validLevels).toContain(analysis.riskLevel)
     })
@@ -379,6 +382,7 @@ describe('PropAnalysis estimatedEdge.side values', () => {
         riskLevel: 'medium',
         confidence: 55,
         disclaimer: AI_DISCLAIMER,
+        fromCache: false,
       }
       expect(validEdgeSides).toContain(analysis.estimatedEdge.side)
     })
@@ -451,6 +455,7 @@ describe('PropAnalysis confidence clamping', () => {
       riskLevel: 'low',
       confidence: 75,
       disclaimer: AI_DISCLAIMER,
+      fromCache: false,
     }
     expect(analysis.confidence).toBeGreaterThanOrEqual(0)
     expect(analysis.confidence).toBeLessThanOrEqual(100)
@@ -501,6 +506,7 @@ describe('PropAnalysis estimatedEdge.percentage clamping', () => {
       riskLevel: 'high',
       confidence: 62,
       disclaimer: AI_DISCLAIMER,
+      fromCache: false,
     }
     expect(analysis.estimatedEdge.percentage).toBeGreaterThanOrEqual(0)
     expect(analysis.estimatedEdge.percentage).toBeLessThanOrEqual(15)
@@ -546,6 +552,7 @@ describe('PropAnalysis projectedRange structure', () => {
       riskLevel: 'medium',
       confidence: 60,
       disclaimer: AI_DISCLAIMER,
+      fromCache: false,
     }
     expect(analysis.projectedRange.low).toBeLessThanOrEqual(analysis.projectedRange.mid)
     expect(analysis.projectedRange.mid).toBeLessThanOrEqual(analysis.projectedRange.high)

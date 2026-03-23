@@ -48,6 +48,37 @@ function ResultCard({ result, sport }: { result: PropAnalysis; sport: string }) 
 
   return (
     <div className="space-y-4 rounded-lg border border-border bg-card p-4">
+      {/* Cached indicator */}
+      {result.fromCache && (
+        <div className="flex items-center gap-1.5 rounded-md bg-blue-500/10 px-3 py-1.5">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-blue-500"
+            aria-hidden="true"
+          >
+            <path d="M12 2v4" />
+            <path d="m16.2 7.8 2.9-2.9" />
+            <path d="M18 12h4" />
+            <path d="m16.2 16.2 2.9 2.9" />
+            <path d="M12 18v4" />
+            <path d="m4.9 19.1 2.9-2.9" />
+            <path d="M2 12h4" />
+            <path d="m4.9 4.9 2.9 2.9" />
+          </svg>
+          <span className="text-xs font-medium text-blue-500">
+            Cached result — did not count against your daily limit
+          </span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -57,6 +88,11 @@ function ResultCard({ result, sport }: { result: PropAnalysis; sport: string }) 
           <p className="text-sm text-muted-foreground">Line: {result.line}</p>
         </div>
         <div className="flex items-center gap-2">
+          {result.fromCache && (
+            <Badge variant="outline" className="text-xs border-blue-500/40 text-blue-500">
+              Cached
+            </Badge>
+          )}
           <Badge
             variant={result.recommendation === 'pass' ? 'secondary' : 'default'}
             className={`text-sm font-bold uppercase ${recColor}`}

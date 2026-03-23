@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server'
 import { badRequest, withAuthenticatedRoute } from '@/lib/api/route-handler'
-import { checkAnalysisLimit, AnalysisLimitError } from '@/lib/ai/analysis'
-import { analyzeProp } from '@/lib/ai/prop-analyzer'
+import {
+  checkAnalysisLimit,
+  AnalysisLimitError,
+  incrementAnalysisCount,
+} from '@/lib/ai/analysis'
+import {
+  analyzeProp,
+  getCachedPropAnalysis,
+  cachePropAnalysis,
+} from '@/lib/ai/prop-analyzer'
 import type { PropAnalysisInput } from '@/lib/ai/prop-analyzer'
 
 export async function POST(request: Request) {
@@ -43,7 +51,24 @@ export async function POST(request: Request) {
         return badRequest('Missing required field: underOdds (number)')
       }
 
-      // Check free tier limit (shared with game analysis)
+      const input: PropAnalysisInput = {
+        playerName,
+        sport,
+        team,
+        opponent,
+        propMarket,
+        line,
+        overOdds,
+        underOdds,
+      }
+
+      // Check cache first — cached results do not count against daily limit
+      const cached = await getCachedPropAnalysis(user.id, input)
+      if (cached) {
+        return NextResponse.json(cached)
+      }
+
+      // No cache hit — check free tier limit before calling AI
       const limitCheck = await checkAnalysisLimit(user.id)
       if (!limitCheck.allowed) {
         return NextResponse.json(
@@ -57,16 +82,13 @@ export async function POST(request: Request) {
         )
       }
 
-      const analysis = await analyzeProp({
-        playerName,
-        sport,
-        team,
-        opponent,
-        propMarket,
-        line,
-        overOdds,
-        underOdds,
-      })
+      const analysis = await analyzeProp(input)
+
+      // Increment daily analysis count and cache the result in parallel
+      await Promise.all([
+        incrementAnalysisCount(user.id),
+        cachePropAnalysis(user.id, input, analysis),
+      ])
 
       return NextResponse.json(analysis)
     }

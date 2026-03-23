@@ -177,7 +177,7 @@ export async function checkAnalysisLimit(
   }
 }
 
-async function incrementAnalysisCount(userId: string): Promise<void> {
+export async function incrementAnalysisCount(userId: string): Promise<void> {
   const supabase = await createServiceClient()
 
   const { data } = await supabase
