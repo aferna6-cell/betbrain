@@ -192,7 +192,7 @@
 - [x] **Sport filter on Smart Signals page** — Filter signals by sport so NFL bettors don't scroll through NBA/MLB/NHL
 - [x] **Sport filter on EV Scanner page** — Filter +EV bets by sport
 - [x] **Log Pick button on game detail page** — Pre-populate pick form with team, sport, odds from game context
-- [ ] **Preferred bookmaker setting** — User profile setting to highlight their primary bookmaker in odds tables
+- [x] **Preferred bookmaker setting** — User profile setting to highlight their primary bookmaker in odds tables
 - [x] **NFL Sunday Slate view** — Group NFL games by time slot (1pm ET, 4:25pm ET, SNF) on game days
 
 ## Props Bettor Gaps (Simulation: Cycle 240)
@@ -209,17 +209,17 @@
 
 ## Features — Tier 2: Retention & Monetization
 
-- [ ] **Streak tracking + badges** — Track win streaks, longest streak, best week. Award badges ("5-game heater", "CLV King"). Gamification drives daily return visits
-- [ ] **Pick comparison mode** — Side-by-side compare two games' AI analysis, odds, signals. Helps bettors narrow down between multiple plays
+- [x] **Streak tracking + badges** — Track win streaks, longest streak, best week. Award badges ("5-game heater", "CLV King"). Gamification drives daily return visits
+- [x] **Pick comparison mode** — Side-by-side compare two games' AI analysis, odds, signals. Helps bettors narrow down between multiple plays
 - [ ] **Odds movement velocity alerts** — Alert when a line is moving unusually fast (steam move). Sharp bettors need to act on steam moves within minutes
 - [ ] **Consensus vs. contrarian indicator** — Show public betting % (or estimate from line movement) and highlight games where the "smart money" side differs from public
-- [ ] **Export picks to CSV/PDF** — Download pick history for tax documentation or personal records
-- [ ] **Correlation warnings on parlays** — Flag when parlay legs are highly correlated (same game, related props) which reduces actual EV
+- [x] **Export picks to CSV** — Download pick history for tax documentation or personal records
+- [x] **Correlation warnings on parlays** — Flag when parlay legs are highly correlated (same game, related props) which reduces actual EV
 - [ ] **Multi-game comparison table** — Select 2-5 games and see them in a comparison table with all key metrics side by side
-- [ ] **Game day countdown + notification** — Show countdown timer on game cards, notify user X minutes before games they have picks on
+- [x] **Game day countdown** — Show countdown timer on game cards, notify user X minutes before games they have picks on
 - [ ] **Alternate lines display** — Show alternate spreads/totals alongside primary line (e.g., "Spread -3.5 at -110" plus "-2.5 at -145" and "-4.5 at +100")
-- [ ] **ROI by day of week** — Analytics showing which days the user performs best on (helps identify patterns)
-- [ ] **Unit size recommendations** — Based on bankroll and Kelly criterion, suggest unit sizes for each pick confidence level
+- [x] **ROI by day of week** — Analytics showing which days the user performs best on (helps identify patterns)
+- [x] **Unit size recommendations** — Based on bankroll and Kelly criterion, suggest unit sizes for each pick confidence level
 - [ ] **Odds screen dark/light per-book** — Color-code cells in odds table by book with subtle brand colors for quick visual identification
 - [ ] **Share analysis to Twitter/X** — One-click share of AI analysis summary with game context as formatted tweet
 - [ ] **Seasonal performance reset** — Option to reset pick stats at season boundaries while preserving historical data

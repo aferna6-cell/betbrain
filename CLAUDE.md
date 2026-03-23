@@ -9,8 +9,8 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **Database:** Supabase (PostgreSQL + Auth)
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
-- **Payments:** Stripe subscriptions
-- **Testing:** Vitest (unit, 1385 tests) + Playwright (E2E, 24 smoke tests)
+- **Payments:** Stripe subscriptions (legacy — personal tool, no active billing)
+- **Testing:** Vitest (unit, 1476 tests) + Playwright (E2E, 24 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
