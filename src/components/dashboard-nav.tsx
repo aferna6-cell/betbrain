@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { SearchPalette } from '@/components/search'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { OddsFormatToggle } from '@/components/odds-format-provider'
+import { NotificationBell } from '@/components/notification-center'
 import type { User } from '@supabase/supabase-js'
 
 interface NavBadges {
@@ -29,6 +30,7 @@ const navLinks = [
   { href: '/dashboard/backtesting', label: 'Backtest' },
   { href: '/dashboard/leaderboard', label: 'Leaders' },
   { href: '/dashboard/compare', label: 'Compare' },
+  { href: '/dashboard/journal', label: 'Journal' },
   { href: '/dashboard/analytics', label: 'Analytics' },
   { href: '/dashboard/api', label: 'API' },
   { href: '/dashboard/glossary', label: 'Glossary' },
@@ -99,6 +101,7 @@ export function DashboardNav({ user }: { user: User }) {
         </div>
         <div className="flex items-center gap-4">
           <SearchPalette />
+          <NotificationBell />
           <OddsFormatToggle />
           <ThemeToggle />
           <span className="hidden text-sm text-muted-foreground sm:block">

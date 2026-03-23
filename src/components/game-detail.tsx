@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import dynamic from 'next/dynamic'
 import { getPreferredBookmaker, setPreferredBookmaker } from '@/lib/preferences'
+import { getBookColor, formatBookName } from '@/lib/book-colors'
 
 const LineMovementChart = dynamic(
   () => import('@/components/line-movement-chart').then((m) => m.LineMovementChart),
@@ -100,19 +101,21 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                 </tr>
               </thead>
               <tbody>
-                {game.bookmakers.map((bk) =>
-                  bk.moneyline ? (
+                {game.bookmakers.map((bk) => {
+                  const bookColor = getBookColor(bk.bookmaker)
+                  return bk.moneyline ? (
                     <tr
                       key={`ml-${bk.bookmaker}`}
-                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : ''}`}
+                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : bookColor.bg}`}
                     >
                       <td
-                        className="py-2 pr-4 capitalize text-muted-foreground cursor-pointer hover:text-foreground"
+                        className={`py-2 pr-4 cursor-pointer hover:text-foreground ${bk.bookmaker === preferredBook ? 'text-blue-400' : bookColor.text}`}
                         title={bk.bookmaker === preferredBook ? 'Click to unset preferred book' : 'Click to set as preferred book'}
                         onClick={() => handleSetPreferred(bk.bookmaker)}
                       >
+                        <span className="inline-block h-2 w-2 rounded-full mr-1.5" style={{ backgroundColor: bookColor.dot }} />
                         {bk.bookmaker === preferredBook && <span className="mr-1 text-blue-400">*</span>}
-                        {bk.bookmaker.replace(/_/g, ' ')}
+                        {formatBookName(bk.bookmaker)}
                       </td>
                       <td className="py-2 px-4 text-right font-mono">
                         <span
@@ -144,7 +147,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                       </td>
                     </tr>
                   ) : null
-                )}
+                })}
               </tbody>
             </table>
           </div>
@@ -171,18 +174,20 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                 </tr>
               </thead>
               <tbody>
-                {game.bookmakers.map((bk) =>
-                  bk.spread ? (
+                {game.bookmakers.map((bk) => {
+                  const bookColor = getBookColor(bk.bookmaker)
+                  return bk.spread ? (
                     <tr
                       key={`sp-${bk.bookmaker}`}
-                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : ''}`}
+                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : bookColor.bg}`}
                     >
                       <td
-                        className="py-2 pr-4 capitalize text-muted-foreground cursor-pointer hover:text-foreground"
+                        className={`py-2 pr-4 cursor-pointer hover:text-foreground ${bk.bookmaker === preferredBook ? 'text-blue-400' : bookColor.text}`}
                         onClick={() => handleSetPreferred(bk.bookmaker)}
                       >
+                        <span className="inline-block h-2 w-2 rounded-full mr-1.5" style={{ backgroundColor: bookColor.dot }} />
                         {bk.bookmaker === preferredBook && <span className="mr-1 text-blue-400">*</span>}
-                        {bk.bookmaker.replace(/_/g, ' ')}
+                        {formatBookName(bk.bookmaker)}
                       </td>
                       <td className="py-2 px-4 text-right font-mono">
                         <span className="mr-2 text-muted-foreground">
@@ -220,7 +225,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                       </td>
                     </tr>
                   ) : null
-                )}
+                })}
               </tbody>
             </table>
           </div>
@@ -244,18 +249,20 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                 </tr>
               </thead>
               <tbody>
-                {game.bookmakers.map((bk) =>
-                  bk.total ? (
+                {game.bookmakers.map((bk) => {
+                  const bookColor = getBookColor(bk.bookmaker)
+                  return bk.total ? (
                     <tr
                       key={`tot-${bk.bookmaker}`}
-                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : ''}`}
+                      className={`border-b border-border/50 ${bk.bookmaker === preferredBook ? preferredRowClass : bookColor.bg}`}
                     >
                       <td
-                        className="py-2 pr-4 capitalize text-muted-foreground cursor-pointer hover:text-foreground"
+                        className={`py-2 pr-4 cursor-pointer hover:text-foreground ${bk.bookmaker === preferredBook ? 'text-blue-400' : bookColor.text}`}
                         onClick={() => handleSetPreferred(bk.bookmaker)}
                       >
+                        <span className="inline-block h-2 w-2 rounded-full mr-1.5" style={{ backgroundColor: bookColor.dot }} />
                         {bk.bookmaker === preferredBook && <span className="mr-1 text-blue-400">*</span>}
-                        {bk.bookmaker.replace(/_/g, ' ')}
+                        {formatBookName(bk.bookmaker)}
                       </td>
                       <td className="py-2 px-4 text-right font-mono text-muted-foreground">
                         {bk.total.line ?? '—'}
@@ -284,7 +291,7 @@ function OddsTable({ game }: { game: NormalizedGame }) {
                       </td>
                     </tr>
                   ) : null
-                )}
+                })}
               </tbody>
             </table>
           </div>

@@ -11,6 +11,7 @@ import { gradePick, calcDayOfWeekBreakdown } from '@/lib/pick-stats'
 import { calculateStreaks, calculateBadges } from '@/lib/streaks'
 import type { StreakInfo, Badge as BadgeType } from '@/lib/streaks'
 import { SeasonResetControl } from '@/components/season-reset'
+import { RegressionAlertsPanel } from '@/components/regression-alerts'
 import { filterCurrentSeason } from '@/lib/seasonal-reset'
 import type {
   Sport,
@@ -1074,6 +1075,7 @@ export function PicksTracker() {
   return (
     <div className="space-y-6">
       <SeasonResetControl onResetChange={setSeasonResetDate} />
+      <RegressionAlertsPanel picks={picks} />
       {stats && <StatsSummary stats={stats} clvStats={clvStats} />}
       <StreakDisplay picks={seasonPicks} />
       <BadgesDisplay picks={seasonPicks} />
