@@ -6,6 +6,7 @@ import { useToast } from '@/components/toast'
 import { calculateBankrollStats, kellyCriterion, type BankrollStats, type BankrollConfig } from '@/lib/bankroll'
 import { profitColor } from '@/lib/format'
 import { TermTooltip } from '@/components/term-tooltip'
+import { BookROITracker } from '@/components/book-roi-tracker'
 
 const STORAGE_KEY = 'betbrain-bankroll-config'
 
@@ -221,6 +222,7 @@ function BalanceHistory({ snapshots }: { snapshots: BankrollStats['snapshots'] }
 export function BankrollDashboard() {
   const [config, setConfig] = useState<BankrollConfig>(getStoredConfig)
   const [stats, setStats] = useState<BankrollStats | null>(null)
+  const [picks, setPicks] = useState<Array<{ id: string; outcome?: string | null; profit?: number | null; units: number }>>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { addToast } = useToast()
@@ -233,6 +235,7 @@ export function BankrollDashboard() {
       if (res.ok) {
         const bankrollStats = calculateBankrollStats(data.picks, cfg)
         setStats(bankrollStats)
+        setPicks(data.picks ?? [])
       } else {
         setError('Failed to load picks')
       }
@@ -279,6 +282,11 @@ export function BankrollDashboard() {
           <StatsCards stats={stats} config={config} />
           <BalanceHistory snapshots={stats.snapshots} />
         </>
+      )}
+      {picks.length > 0 && (
+        <div className="rounded-lg border border-border bg-card p-6">
+          <BookROITracker picks={picks} />
+        </div>
       )}
     </div>
   )

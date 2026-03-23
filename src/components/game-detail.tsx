@@ -23,6 +23,7 @@ const LineMovementChart = dynamic(
 import { InjuryImpactPanel } from '@/components/injury-impact'
 import { H2HHistory } from '@/components/h2h-history'
 import { AddAlertButton } from '@/components/add-alert-button'
+import { GameNotes } from '@/components/game-notes'
 import { formatImpliedProb, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
 import { formatGameTimeFull, timeAgo, RISK_COLORS } from '@/lib/format'
@@ -599,6 +600,7 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
           <TabsTrigger value={2}>Injuries</TabsTrigger>
           <TabsTrigger value={3}>H2H</TabsTrigger>
           <TabsTrigger value={4}>AI Analysis</TabsTrigger>
+          <TabsTrigger value={5}>Notes</TabsTrigger>
         </TabsList>
 
         <TabsContent value={0} className="mt-4 rounded-lg border border-border bg-card p-6">
@@ -639,6 +641,15 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
 
         <TabsContent value={4} className="mt-4 rounded-lg border border-border bg-card p-6">
           <AnalysisPanel game={game} />
+        </TabsContent>
+
+        <TabsContent value={5} className="mt-4 rounded-lg border border-border bg-card p-6">
+          <GameNotes
+            gameId={game.id}
+            sport={game.sport}
+            homeTeam={game.homeTeam}
+            awayTeam={game.awayTeam}
+          />
         </TabsContent>
       </Tabs>
     </div>
