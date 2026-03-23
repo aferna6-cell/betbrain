@@ -7,6 +7,7 @@ import { calculateBankrollStats, kellyCriterion, type BankrollStats, type Bankro
 import { profitColor } from '@/lib/format'
 import { TermTooltip } from '@/components/term-tooltip'
 import { BookROITracker } from '@/components/book-roi-tracker'
+import { BankrollGoals } from '@/components/bankroll-goals'
 
 const STORAGE_KEY = 'betbrain-bankroll-config'
 
@@ -222,7 +223,7 @@ function BalanceHistory({ snapshots }: { snapshots: BankrollStats['snapshots'] }
 export function BankrollDashboard() {
   const [config, setConfig] = useState<BankrollConfig>(getStoredConfig)
   const [stats, setStats] = useState<BankrollStats | null>(null)
-  const [picks, setPicks] = useState<Array<{ id: string; outcome?: string | null; profit?: number | null; units: number }>>([])
+  const [picks, setPicks] = useState<Array<{ id: string; outcome?: string | null; profit?: number | null; units: number; game_date: string }>>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { addToast } = useToast()
@@ -288,6 +289,7 @@ export function BankrollDashboard() {
           <BookROITracker picks={picks} />
         </div>
       )}
+      <BankrollGoals picks={picks} />
     </div>
   )
 }
