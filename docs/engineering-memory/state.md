@@ -1,8 +1,8 @@
 # Engineering State
 ## Last Session (2026-03-23)
-- Built: streak tracking + badges, preferred bookmaker, ROI by day of week, game countdown timer, parlay correlation detection, unit size recommendations, game comparison page, CSV export
+- Built: Steam move detection, consensus/contrarian indicator, seasonal performance reset, share to X, daily highlights summary
 - In progress: (none)
-- Next up: Odds movement velocity alerts, alternate lines display, live score integration
-- Build status: GREEN (1476 tests passing, clean build)
+- Next up: Multi-game comparison, live scores, API route auth tests
+- Build status: GREEN (1510 tests, all passing, clean build)
 - Blockers: (none)
-- Fixed: Google Fonts to local geist package, all Claude models updated to valid claude-sonnet-4-6
+- Test count: 1510 (74 test files)

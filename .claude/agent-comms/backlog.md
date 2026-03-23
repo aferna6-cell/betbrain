@@ -36,198 +36,57 @@
 ## Bugs
 - [ ] (none yet)
 
-## Improvements
-- [x] **Mobile navigation** — Hamburger menu for dashboard nav on small screens _(Cycle 29)_
-- [x] **Error boundaries** — React error boundary components for graceful failures _(Cycle 29)_
-- [x] **Backtesting tests** — Unit tests for deterministic simulation engine _(Cycle 29)_
-- [x] **404 page** — Custom not-found page matching dark theme _(Cycle 29)_
-- [x] **Keyboard shortcuts** — Cmd+K search palette with keyboard nav _(Cycle 30)_
-- [x] **Search** — Global search across games, teams, and analysis _(Cycle 30)_
-- [x] **Landing page footer links** — Add links to How It Works, Blog, Disclaimer in footer _(Cycle 31)_
-- [x] **Signals + digest tests** — Unit tests for Smart Signals detection + digest generation _(Cycle 31)_
-- [x] **Leaderboard + onboarding tests** — Unit tests for leaderboard + email content generators _(Cycle 31)_
-- [x] **Env helper tests** — Unit tests for env.ts getters and fallback logic _(Cycle 31)_
-- [x] **Saved analyses feature** — Bookmark AI analyses for later review _(Cycle 32)_
-- [x] **Dark/light theme toggle** — User preference for theme _(Cycle 32)_
-- [x] **Game watchlist** — Star/favorite games for quick access from dashboard _(Cycle 33)_
-- [x] **Dashboard stats summary** — Cards showing total picks, win rate, ROI at top of dashboard _(Cycle 33)_
-- [x] **Accessibility audit** — ARIA labels, focus management, screen reader support _(Cycle 34)_
-- [x] **Watchlist tests** — Unit tests for localStorage watchlist helpers _(Cycle 34)_
-- [x] **Toast notifications** — Non-blocking feedback for saves, deletes, errors _(Cycle 35)_
-- [x] **Odds conversion utility** — American/decimal/fractional converter + 75 tests _(Cycle 35)_
-- [x] **Profile stats card** — Show user's pick record and achievements on profile page _(Cycle 35)_
-- [x] **Performance monitoring** — Web Vitals tracking component _(Cycle 33)_
-- [x] **Lint cleanup** — Fix all lint errors/warnings, remove unused imports _(Cycle 37)_
-- [x] **Type safety** — Replace `as any` with typed SupabaseClient helper _(Cycle 37)_
-- [x] **Hardcoded secrets fix** — Eliminate false positives in test files _(Cycle 37)_
-- [x] **Parlay analyzer tests** — Unit tests for odds math, validation, interface shapes _(Cycle 38)_
-- [x] **Prop analyzer tests** — Unit tests for implied probability, interface shapes _(Cycle 38)_
+## Features — Tier 2: Retention
 
-## Tests
-- [x] Odds API wrapper — config constants, type compliance, data shape validation _(Cycle 14)_
-- [x] Stats API wrapper — type compliance, isSupportedSport, constants, StatsResult shape _(Cycle 18)_
-- [x] AI analysis — structured output validation, disclaimer present, limit error _(Cycle 14)_
-- [x] Auth flow — signup, login, protected routes, logout _(Cycle 19)_
-- [x] Stripe — free tier limits, pro access, webhook signature _(Cycle 20)_
-- [x] Rate limiting — cache serves stale data when limit hit _(Cycle 21)_
-
-## Content
-- [x] Landing page copy — hero, features, pricing, FAQ _(Cycle 6 — built into landing page)_
-- [x] "How BetBrain Works" explainer page _(Cycle 22)_
-- [x] Legal disclaimer page _(Cycle 22)_
-- [x] Onboarding email sequence (welcome, tutorial, pro nudge) _(Cycle 25)_
-- [x] SEO blog posts: "AI Sports Betting Analytics 2026", "How to Find Value in Betting Lines" _(Cycle 26)_
-
-## Optimization
-- [x] ISR for game pages (rebuild every 5 min) _(Cycle 25)_
-- [x] Loading skeletons on all data components _(Cycle 14)_
-- [x] Lazy load charts _(Cycle 26)_
-- [x] SEO metadata on all pages _(Cycle 14)_
-- [x] OG images for social sharing _(Cycle 27)_
-- [x] Edge runtime for API routes where possible _(Cycle 27)_
-
-## Deployment Readiness (Cycle 65)
-- [x] Deployment dry-run — metadataBase fix, all 53 routes clean _(Cycle 65)_
-- [x] E2E smoke tests — 15 Playwright tests _(Cycle 65)_
-- [x] Performance audit — bundle analysis, no issues _(Cycle 65)_
-- [x] Rate limit hardening — 6 new cache-first tests (862 total) _(Cycle 65)_
-- [x] Architecture decisions — 3 new entries _(Cycle 65)_
-
-## Sharp Bettor Features (Cycles 67-70)
-- [x] **Customer simulation — Sharp NBA bettor** — 14-page walkthrough, 10 gaps found _(Cycle 67)_
-- [x] **CLV (Closing Line Value) tracker** — Migration 003, lib, API with per-pick + aggregate CLV, PATCH endpoint _(Cycle 68)_
-- [x] **Bankroll management dashboard** — Balance tracking, drawdown, Kelly criterion, /dashboard/bankroll _(Cycle 69)_
-- [x] **Empty states polish** — Leaderboard, backtesting, parlay, props initial guidance _(Cycle 70)_
-- [x] **API docs expansion** — 6 endpoints documented (added picks/CLV + odds history) _(Cycle 70)_
-
-## Quick Wins (Cycles 71-72)
-- [x] **Implied probability display** — Show win probability next to moneyline odds _(Cycle 71)_
-- [x] **Cached odds timestamps** — Show "fetched X min ago" instead of "may be outdated" _(Cycle 72)_
-
-## Features (Cycles 73-75)
-- [x] **Spread + total alerts** — Expand alerts beyond moneyline-only (migration 005) _(Cycle 73)_
-- [x] **Guided onboarding flow** — 4-step checklist for first-time users _(Cycle 74)_
-- [x] **Tests + docs** — 11 new tests, 4 architecture decisions _(Cycle 75)_
-
-## Optimization (Cycles 76-80)
-- [x] **useFetch hook** — Generic fetch hook for standardized data fetching _(Cycle 76)_
-- [x] **Server component conversion** — smart-signals + h2h-history (remove unnecessary client JS) _(Cycle 77)_
-- [x] **Shared color extraction** — profitColor, winRateColor, MAGNITUDE_COLORS to format.ts _(Cycle 78)_
-- [x] **odds_history retention** — 30-day cleanup function (migration 006) _(Cycle 79)_
-- [x] **Route handler + alert tests** — 25 new tests covering API helpers + market checking _(Cycle 80)_
-
-## UX Polish (Cycles 81-85)
-- [x] **Set Outcome button** — Pending picks now have clickable "Set result" with auto profit calc _(Cycle 81)_
-- [x] **Implied probability on game cards** — Show win % next to best moneyline _(Cycle 82)_
-- [x] **Nav notification badges** — Triggered alert count + pending picks count _(Cycle 83)_
-- [x] **Bookmaker disagreement indicator** — Yellow "odds disagree" flag when books diverge 15+ pts _(Cycle 84)_
-- [x] **Landing page rewrite** — Sell CLV, bankroll, ROI instead of generic "AI analytics" _(Cycle 85)_
-
-## Pick Tracker + Digest (Cycles 86-90)
-- [x] **Closing odds on pick form** — Optional field at creation time _(Cycle 86)_
-- [x] **Pick deletion** — DELETE endpoint + confirm button _(Cycle 87)_
-- [x] **CLV on profile page** — Avg CLV, weighted CLV, +CLV rate _(Cycle 88)_
-- [x] **Digest weekly stats** — YOUR WEEK section with W-L-P, ROI, CLV rate _(Cycle 89)_
-- [x] **Stats envelope tests** — 3 new tests for StatsResult contract _(Cycle 90)_
-
-## UX + Reliability (Cycles 91-95)
-- [x] **Bankroll loading skeleton** — Skeleton for config, stats, history _(Cycle 91)_
-- [x] **Odds converter link** — Link to tools page from game detail odds tab _(Cycle 92)_
-- [x] **Watchlist page** — Dedicated /dashboard/watchlist with nav link _(Cycle 93)_
-- [x] **Per-page error boundaries** — picks, alerts, bankroll, signals _(Cycle 94)_
-- [x] **Keyboard shortcuts** — vim-style g+key nav, "/" for search, search palette expanded _(Cycle 95)_
-
-## Infrastructure + SEO + Education (Cycles 96-100)
-- [x] **CSP header** — Content-Security-Policy for XSS protection _(Cycle 96)_
-- [x] **Billing daily quota** — Show AI analyses used/remaining _(Cycle 96)_
-- [x] **SEO metadata** — OpenGraph + robots on all public pages _(Cycle 97)_
-- [x] **Lint/type fixes** — Onboarding refactor, unused imports, digest test _(Cycle 98)_
-- [x] **Glossary page** — 15 betting terms defined + TermTooltip component _(Cycle 100)_
-
-## Deep Quality (Cycles 101-106)
-- [x] **Loading skeletons** — glossary + watchlist _(Cycle 101)_
-- [x] **Input sanitization** — sanitize.ts + 11 tests _(Cycle 102)_
-- [x] **Color deduplication** — profitColor() in bankroll _(Cycle 103)_
-- [x] **Sitemap fix** — fixed dates, removed login _(Cycle 105)_
-- [x] **Edge case tests** — timeAgo boundaries — 909 total _(Cycle 106)_
-
-## Final Polish (Cycles 107-120)
-- [x] **Migration naming fix** — sequential 001-007 + DEPLOY-CHECKLIST.md _(Cycle 107)_
-- [x] **GitHub Actions CI** — lint, typecheck, test, build on push/PR _(Cycle 108)_
-- [x] **SETUP.md + .env.example fix** — local dev guide, added STRIPE_PRO_PRICE_ID _(Cycle 109)_
-- [x] **README rewrite** — BetBrain-specific content _(Cycle 111)_
-- [x] **TermTooltip wired** — CLV, ROI, Kelly labels + useFetch test _(Cycle 112)_
-- [x] **Default SVGs removed** — file/globe/next/vercel/window.svg _(Cycle 113)_
-- [x] **CSP header + billing quota** — security + daily analysis display _(Cycle 114)_
-- [x] **SEO metadata** — openGraph + robots on all public pages _(Cycle 115)_
-- [x] **Copy stats button** — share pick record + CLV to clipboard _(Cycle 116)_
-- [x] **Pick filtering/sorting** — by outcome, sport, date/profit/CLV _(Cycle 117)_
-- [x] **Pick type breakdown** — W-L, win rate, ROI per moneyline/spread/etc _(Cycle 118)_
-- [x] **Sport breakdown on profile** — per-sport W-L and ROI _(Cycle 119)_
-- [x] **pick-stats.ts + 9 tests** — extracted breakdown logic to lib _(Cycle 120)_
-
-## Beginner UX Gaps (Simulation: New Bettor — Cycle 125)
-- [x] **Game card tooltips** — Wire TermTooltip to odds format, implied probability, book spread on game cards _(Cycle 130)_
-- [x] **Onboarding checklist rewrite** — Beginner-friendly descriptions explaining the "why" not just the "what" _(Cycle 133)_
-- [x] **"New to betting?" landing section** — Add beginner-friendly explainer links below hero _(Cycle 126)_
-- [x] **Game card legend** — Subtle "Green = best price across books" legend on odds display _(done in Cycle 125, confirmed)_
-- [x] **Dashboard analysis tooltip** — Add "?" explaining what an AI analysis is and the daily limit _(Cycle 127)_
-- [x] **Betting 101 page** — Foundational guide: what's a bet, bookmaker, odds format, spread, total _(Cycle 126)_
-
-## Researched Features (Cycle 128 — Competitor Analysis)
-- [x] [RESEARCHED] **+EV Scanner** — Calculate fair odds from multi-book consensus, flag +EV bets _(Cycle 128)_
-- [x] [RESEARCHED] **Arbitrage detector** — Flag arb opportunities when best odds sum to < 100% implied _(Cycle 128)_
-- [x] [RESEARCHED] **Auto-resolve picks (NBA)** — Use balldontlie game results to automatically mark NBA picks as win/loss/push. Eliminates manual resolution. Competitors auto-track outcomes. _(Cycle 129)_
+- [x] **Streak tracking + badges** — streaks.ts + picks-tracker.tsx
+- [x] **Pick comparison mode** — game-compare.tsx
+- [x] **Steam move detection** — steam-moves.ts, /api/odds/steam, Signals page Steam tab. 14 tests
+- [x] **Consensus vs. contrarian indicator** — consensus.ts, EV Scanner Consensus tab. 10 tests
+- [x] **Export picks to CSV** — picks-tracker.tsx exportPicksToCSV
+- [x] **Correlation warnings on parlays** — parlay-correlation.ts + parlay-builder.tsx
+- [x] **Game day countdown** — game-countdown.tsx + game-card.tsx
+- [x] **ROI by day of week** — pick-stats.ts calcDayOfWeekBreakdown + picks-tracker DayOfWeekDisplay
+- [x] **Unit size recommendations** — unit-sizing.ts + bankroll page
+- [x] **Share analysis to Twitter/X** — game-detail.tsx shareAnalysisToX
+- [x] **Seasonal performance reset** — seasonal-reset.ts, season-reset.tsx, picks-tracker filter. 10 tests
+- [x] **Daily highlights summary** — daily-summary.tsx on dashboard with EV/consensus/signals at a glance
+- [x] **Cache prop analyses** — prop_analysis_cache table + 6hr TTL in prop-analyzer.ts
+- [x] **Preferred bookmaker setting** — preferences.ts + game-detail.tsx OddsTable highlighting
+- [ ] **Multi-game comparison table** — Select 2-5 games with all metrics side by side
+- [ ] **Alternate lines display** — Needs API fetch changes for alternate spread/total markets
+- [ ] **Odds screen per-book colors** — Color-code cells by book brand
+- [ ] **Live score integration** — Show live scores for tracked picks
+- [ ] **Prop market breakdown in pick stats** — Needs prop_market column on user_picks
 
 ## Phase 2 — Post-Launch
 - [ ] **Resend email integration** — Wire up daily digest + alert email notifications
 - [ ] **Additional sports data sources** — NFL/MLB/NHL stats beyond balldontlie (NBA-only)
-- [ ] **Supabase type generation** — Auto-generate types from `supabase gen types` instead of hand-written
-- [x] **Signal historical hit rate** — Track and display signal outcome success rate _(Cycle 121)_
-- [x] **Analytics dashboard** — User engagement metrics, popular games, analysis usage _(Cycle 122)_
-- [x] **Social sharing** — Share picks/analyses with custom OG images _(Cycle 123)_
-- [ ] **Mobile app** — React Native or PWA improvements for mobile users
-
-## Casual NFL Bettor Gaps (Simulation: Cycle 236)
-- [x] **Sport filter on Smart Signals page** — Filter signals by sport so NFL bettors don't scroll through NBA/MLB/NHL
-- [x] **Sport filter on EV Scanner page** — Filter +EV bets by sport
-- [x] **Log Pick button on game detail page** — Pre-populate pick form with team, sport, odds from game context
-- [x] **Preferred bookmaker setting** — User profile setting to highlight their primary bookmaker in odds tables
-- [x] **NFL Sunday Slate view** — Group NFL games by time slot (1pm ET, 4:25pm ET, SNF) on game days
-
-## Props Bettor Gaps (Simulation: Cycle 240)
-- [x] **Dynamic prop market filtering by sport** — Show only relevant markets when sport is selected
-- [x] **Log Pick button on prop analysis result** — One-click pick logging from prop analysis card
-- [ ] **Cache prop analyses** — Store results so re-viewing doesn't cost daily limit
-- [ ] **Prop market breakdown in pick stats** — Win rate per market (points/rebounds/assists/etc)
-- [x] **Add prop analysis to landing page features** — Call out prop betting as a feature for discovery
-
-## Researched Features (Cycle 243 — Competitor Analysis)
-- [x] [RESEARCHED] **Signal sample size display (N= count)** — Show N alongside hit rate on all signal views. "52% (N=48)" instead of just "52%". Sharps won't trust signals without statistical context. Quick win — data already in signal_history.
-- [x] [RESEARCHED] **Rolling performance trends** — 30-day rolling ROI chart + macro insights on Analytics page ("Your spreads are +EV, your MLs are -EV"). All data in user_picks. Recharts already in stack.
-- [ ] [RESEARCHED] **Player prop odds aggregation** — Fetch player prop markets from The Odds API (they support player_points, player_rebounds etc). Show prop odds comparison table across books. Unlocks props bettors as a daily-use segment.
-
-## Features — Tier 2: Retention & Monetization
-
-- [x] **Streak tracking + badges** — Track win streaks, longest streak, best week. Award badges ("5-game heater", "CLV King"). Gamification drives daily return visits
-- [x] **Pick comparison mode** — Side-by-side compare two games' AI analysis, odds, signals. Helps bettors narrow down between multiple plays
-- [ ] **Odds movement velocity alerts** — Alert when a line is moving unusually fast (steam move). Sharp bettors need to act on steam moves within minutes
-- [ ] **Consensus vs. contrarian indicator** — Show public betting % (or estimate from line movement) and highlight games where the "smart money" side differs from public
-- [x] **Export picks to CSV** — Download pick history for tax documentation or personal records
-- [x] **Correlation warnings on parlays** — Flag when parlay legs are highly correlated (same game, related props) which reduces actual EV
-- [ ] **Multi-game comparison table** — Select 2-5 games and see them in a comparison table with all key metrics side by side
-- [x] **Game day countdown** — Show countdown timer on game cards, notify user X minutes before games they have picks on
-- [ ] **Alternate lines display** — Show alternate spreads/totals alongside primary line (e.g., "Spread -3.5 at -110" plus "-2.5 at -145" and "-4.5 at +100")
-- [x] **ROI by day of week** — Analytics showing which days the user performs best on (helps identify patterns)
-- [x] **Unit size recommendations** — Based on bankroll and Kelly criterion, suggest unit sizes for each pick confidence level
-- [ ] **Odds screen dark/light per-book** — Color-code cells in odds table by book with subtle brand colors for quick visual identification
-- [ ] **Share analysis to Twitter/X** — One-click share of AI analysis summary with game context as formatted tweet
-- [ ] **Seasonal performance reset** — Option to reset pick stats at season boundaries while preserving historical data
-- [ ] **Live score integration** — Show live scores during games for tracked picks (free API or websocket)
+- [ ] **Supabase type generation** — Auto-generate types from supabase gen types
+- [ ] **Mobile app** — React Native or PWA improvements
 
 ## Tests — Coverage Gaps
-- [ ] **Bankroll management tests** — Unit tests for Kelly criterion calculation, drawdown tracking, balance history
-- [ ] **Auto-resolve tests** — Tests for team name matching edge cases, push scenarios, multi-sport resolution
-- [ ] **EV scanner tests** — Unit tests for fair odds calculation, +EV threshold, arbitrage detection math
-- [ ] **Alert trigger tests** — Tests for line movement threshold evaluation, alert creation/deletion
-- [ ] **API route auth tests** — Verify all protected routes return 401 without auth, 403 for wrong tier
+- [x] **Bankroll management tests** — bankroll.test.ts (78 lines)
+- [x] **Auto-resolve tests** — auto-resolve.test.ts (460 lines, 55 tests)
+- [x] **EV scanner tests** — ev-scanner.test.ts (413 lines, 146 tests)
+- [x] **Alert trigger tests** — alerts.test.ts (170 lines)
+- [x] **Steam move tests** — steam-moves.test.ts (14 tests)
+- [x] **Consensus tests** — consensus.test.ts (10 tests)
+- [x] **Seasonal reset tests** — seasonal-reset.test.ts (10 tests)
+- [ ] **API route auth tests** — Verify all protected routes return 401 without auth
+
+## Backlog — Future Ideas
+- [ ] **Betting journal** — Free-form notes per day/week with mood, bankroll snapshot, lessons
+- [ ] **Notification center** — In-app feed of triggered alerts, resolved picks, new signals
+- [ ] **Custom signal builder** — User-defined signal criteria (CLV > 3% AND confidence > 70)
+- [ ] **Odds API v2 markets** — Fetch player props, alternate lines, game props
+- [ ] **Performance by time of day** — Morning lines vs game-time betting
+- [ ] **Bankroll goals** — Monthly/weekly targets with progress tracking
+- [ ] **Analysis history timeline** — Past AI analyses with outcome comparison
+- [ ] **Regression alerts** — Notify when ROI drops below threshold or losing streak > N
+- [ ] **Book-specific ROI** — Track ROI per bookmaker
+- [ ] **Parlay hit rate tracking** — Separate parlay vs straight bet stats
+- [ ] **Weekly recap email** — Auto-generated weekly performance summary
+- [ ] **Game notes** — Personal notes on games before/after
+- [ ] **Odds API budget optimizer** — Smart scheduling for popular vs low-interest sports
+- [ ] **Multi-device sync** — Sync localStorage preferences to Supabase profile
+- [ ] **AI model comparison** — Show how different Claude models analyze the same game

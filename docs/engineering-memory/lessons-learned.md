@@ -12,3 +12,9 @@ When detecting multiple correlation types in a single leg pair (same-game + oppo
 
 ### 2026-03-23: `vi.stubGlobal('window', ...)` needed for localStorage tests
 In Vitest without jsdom, `typeof window === 'undefined'` is true. Either use jsdom environment or stub `window` before importing the module under test. The `vitest-environment jsdom` pragma requires jsdom as a dependency.
+
+## 2026-03-23: TypeScript index signature incompatibility
+When creating generic filter functions that accept any object with certain fields, avoid `[key: string]: unknown` index signatures. Strict TypeScript interfaces (like `UserPick`) don't satisfy index signature constraints. Instead, use a minimal interface with only the required fields and extend with `<T extends MinimalInterface>`.
+
+## 2026-03-23: Consensus detection without handle data
+Without actual public betting percentage data, estimating sharp vs public sides requires proxy signals: bookmaker odds disagreement (std dev of implied probabilities), outlier detection, and favorite bias. Cap confidence at 85% since these are estimates. Users appreciate transparency about methodology limitations.

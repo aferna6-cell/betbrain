@@ -15,3 +15,9 @@ The correlation detection supports `gameId` but the current parlay builder uses 
 
 ### Add jsdom to dev dependencies
 Several client-side utilities need DOM for testing. Installing jsdom would simplify test setup vs. manual global stubbing.
+
+## 2026-03-23
+- Steam moves could be enhanced with cross-book agreement detection (when 3+ books move the same direction simultaneously, it's a stronger signal)
+- Consensus indicator should incorporate line movement data from odds_history when available (currently only uses current snapshot)
+- Season reset could auto-detect the current sport's season based on game dates rather than requiring manual selection
+- Daily summary could show "change since yesterday" metrics to create urgency

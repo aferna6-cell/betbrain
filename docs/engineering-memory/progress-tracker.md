@@ -23,3 +23,12 @@ _What was built each session._
 - Expanded: ev-scanner.test.ts (+11), bankroll.test.ts (+6), pick-stats.test.ts (+5)
 
 ### Commits: 9 (fix font, streaks+badges+csv, preferred bookmaker, day-of-week+ev-tests, countdown+bankroll-tests, parlay-correlation+model-fix, unit-sizing+model-fix, compare-page, parlay-ui-wiring)
+
+## Session 2026-03-23
+- **Steam move detection** — `src/lib/steam-moves.ts` pure-function detector for rapid line movement across bookmakers. API route at `/api/odds/steam`. Client component `steam-moves.tsx` with loading/empty/error states. 14 tests. Wired into Signals page as new "Steam Moves" tab.
+- **Consensus vs. contrarian indicator** — `src/lib/consensus.ts` estimates public vs sharp sides from bookmaker odds disagreement, outlier analysis. 10 tests. `consensus-indicator.tsx` with divergence highlighting. Wired into EV Scanner page as new "Consensus" tab.
+- **Seasonal performance reset** — `src/lib/seasonal-reset.ts` with localStorage storage, sport-specific presets (NBA/NFL/MLB/NHL start dates), custom date picker. `season-reset.tsx` UI control. 10 tests. Wired into picks tracker — streaks, badges, type breakdown, day-of-week all respect season filter.
+- **Share analysis to Twitter/X** — `shareAnalysisToX()` in game-detail.tsx. Formats matchup, summary, value assessment into a tweet. Opens Twitter intent URL.
+- **Daily highlights summary** — `daily-summary.tsx` server component on dashboard. Shows top +EV bet, sharp/public divergence count, active signals. Links to full pages. Runs on cached data only.
+- **Backlog update** — Checked off 15+ items that were already implemented but unchecked. Added 15 new future ideas.
+- **Total tests: 1510** (up from 1476)
