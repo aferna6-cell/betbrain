@@ -22,6 +22,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  distDir: '/tmp/betbrain-next-build',
   async headers() {
     return [
       {
