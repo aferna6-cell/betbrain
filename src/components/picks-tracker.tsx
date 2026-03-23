@@ -8,6 +8,8 @@ import { TermTooltip } from '@/components/term-tooltip'
 import { isValidAmericanOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
 import { gradePick } from '@/lib/pick-stats'
+import { calculateStreaks, calculateBadges } from '@/lib/streaks'
+import type { StreakInfo, Badge as BadgeType } from '@/lib/streaks'
 import type {
   Sport,
   PickType,
@@ -484,6 +486,139 @@ function PickTypeBreakdown({ picks }: { picks: UserPick[] }) {
 }
 
 // ---------------------------------------------------------------------------
+// Streak Display
+// ---------------------------------------------------------------------------
+
+function StreakDisplay({ picks }: { picks: UserPick[] }) {
+  const streaks = calculateStreaks(picks)
+
+  if (streaks.currentType === null) return null
+
+  const isHot = streaks.currentType === 'win' && streaks.currentLength >= 3
+  const isCold = streaks.currentType === 'loss' && streaks.currentLength >= 3
+
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className={`rounded-lg border p-4 ${
+        isHot ? 'border-green-500/30 bg-green-500/5' :
+        isCold ? 'border-red-500/30 bg-red-500/5' :
+        'border-border bg-card'
+      }`}>
+        <p className="text-sm text-muted-foreground">Current Streak</p>
+        <p className={`mt-1 text-xl font-semibold ${
+          streaks.currentType === 'win' ? 'text-green-500' : 'text-red-500'
+        }`}>
+          {streaks.currentLength} {streaks.currentType === 'win' ? 'W' : 'L'}
+          {isHot && ' \u{1F525}'}
+        </p>
+      </div>
+      <div className="rounded-lg border border-border bg-card p-4">
+        <p className="text-sm text-muted-foreground">Longest Win Streak</p>
+        <p className="mt-1 text-xl font-semibold text-green-500">
+          {streaks.longestWinStreak}W
+        </p>
+      </div>
+      <div className="rounded-lg border border-border bg-card p-4">
+        <p className="text-sm text-muted-foreground">Longest Loss Streak</p>
+        <p className="mt-1 text-xl font-semibold text-red-500">
+          {streaks.longestLossStreak}L
+        </p>
+      </div>
+      {streaks.bestWeek && (
+        <div className="rounded-lg border border-border bg-card p-4">
+          <p className="text-sm text-muted-foreground">Best Week</p>
+          <p className="mt-1 text-xl font-semibold">
+            {streaks.bestWeek.wins}W-{streaks.bestWeek.losses}L
+          </p>
+          <p className="text-xs text-muted-foreground mt-0.5">{streaks.bestWeek.weekLabel}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Badges Display
+// ---------------------------------------------------------------------------
+
+const BADGE_ICONS: Record<string, string> = {
+  flame: '\u{1F525}',
+  fire: '\u{1F525}\u{1F525}',
+  zap: '\u26A1',
+  target: '\u{1F3AF}',
+  'bar-chart': '\u{1F4CA}',
+  trophy: '\u{1F3C6}',
+  'trending-up': '\u{1F4C8}',
+  brain: '\u{1F9E0}',
+  crown: '\u{1F451}',
+  calendar: '\u{1F4C5}',
+}
+
+function BadgesDisplay({ picks }: { picks: UserPick[] }) {
+  const badges = calculateBadges(picks)
+
+  if (badges.length === 0) return null
+
+  return (
+    <div className="rounded-lg border border-border bg-card p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-3">
+        Badges Earned ({badges.length})
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {badges.map((badge) => (
+          <div
+            key={badge.id}
+            className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5"
+            title={badge.description}
+          >
+            <span className="text-base">{BADGE_ICONS[badge.icon] ?? '\u{2B50}'}</span>
+            <span className="text-xs font-medium">{badge.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// CSV Export
+// ---------------------------------------------------------------------------
+
+function exportPicksToCSV(picks: UserPick[]) {
+  const headers = [
+    'Date', 'Sport', 'Type', 'Team/Side', 'Line', 'Odds',
+    'Closing Odds', 'Units', 'Outcome', 'Profit', 'Notes'
+  ]
+
+  const rows = picks.map((p) => [
+    p.game_date,
+    p.sport.toUpperCase(),
+    p.pick_type,
+    p.pick_team ?? '',
+    p.pick_line !== null ? String(p.pick_line) : '',
+    String(p.odds),
+    p.closing_odds !== null ? String(p.closing_odds) : '',
+    String(p.units),
+    p.outcome ?? 'pending',
+    p.profit !== null ? String(p.profit) : '',
+    (p.notes ?? '').replace(/"/g, '""'),
+  ])
+
+  const csv = [
+    headers.join(','),
+    ...rows.map((r) => r.map((cell) => `"${cell}"`).join(',')),
+  ].join('\n')
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `betbrain-picks-${new Date().toISOString().slice(0, 10)}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+// ---------------------------------------------------------------------------
 // Picks Table
 // ---------------------------------------------------------------------------
 
@@ -876,7 +1011,23 @@ export function PicksTracker() {
   return (
     <div className="space-y-6">
       {stats && <StatsSummary stats={stats} clvStats={clvStats} />}
+      <StreakDisplay picks={picks} />
+      <BadgesDisplay picks={picks} />
       <PickTypeBreakdown picks={picks} />
+      {picks.length > 0 && (
+        <div className="flex justify-end">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              exportPicksToCSV(picks)
+              addToast('Picks exported to CSV', 'success')
+            }}
+          >
+            Export CSV
+          </Button>
+        </div>
+      )}
       {pendingNBAPicks > 0 && (
         <div className="flex items-center gap-3 rounded-lg border border-blue-500/20 bg-blue-500/5 px-4 py-3">
           <p className="text-sm text-blue-400">
