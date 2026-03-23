@@ -56,3 +56,22 @@ _What was built each session._
 - `/dashboard/notifications` — Full notification feed
 
 ### Commits: 6
+
+## Session 2026-03-23 (Session 4)
+
+### Features Built
+1. **Confidence calibration** (`src/lib/confidence-calibration.ts`, `src/components/confidence-calibration.tsx`) — Tracks how well stated confidence levels match actual win rates. Buckets picks into 6 confidence ranges, calculates calibration score (0-100), diagnoses over/under-confidence. localStorage persistence for confidence ratings. Wired into analytics page. 12 tests.
+2. **Monte Carlo simulator** (`src/lib/monte-carlo.ts`, `src/components/monte-carlo.tsx`) — Projects bankroll outcomes over N future bets. Seeded PRNG for reproducibility. Calculates median, percentiles (5/25/75/95), ruin probability, profit probability, expected ROI. SVG trajectory chart with percentile bands. Auto-derives config from pick history. Wired into tools page. 16 tests.
+3. **Fade the public tool** (`src/lib/fade-public.ts`, `src/components/fade-public.tsx`) — Identifies contrarian plays against estimated public side. Scores fade strength (0-100) based on 5 factors: heavy favorite bias, sharp divergence, book disagreement, underdog value, consensus confidence. Best fade odds per bookmaker. Sport filter. Wired into EV scanner as "Fade Public" tab. 12 tests.
+4. **Situational spots detector** (`src/lib/situational-spots.ts`, `src/components/situational-spots.tsx`) — Detects schedule-based edges: back-to-back (NBA/NHL), rest advantage (3+ day diff), 3-in-4 nights, long road trips (4+ consecutive away), home stands, schedule loss spots. Impact rating (1-5). Type filter. Wired into EV scanner as "Situations" tab. 11 tests.
+
+### Tests Added
+- 51 new tests (1615 to 1666 total)
+- New test files: confidence-calibration (12), monte-carlo (16), fade-public (12), situational-spots (11)
+
+### Pages Updated
+- `/dashboard/analytics` — Added Confidence Calibration section
+- `/dashboard/tools` — Added Monte Carlo Simulator section
+- `/dashboard/ev` — Added "Fade Public" and "Situations" tabs
+
+### Commits: 4 (pushed via GitHub MCP)

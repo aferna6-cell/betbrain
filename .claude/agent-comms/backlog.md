@@ -90,18 +90,18 @@
 - [ ] **Odds API budget optimizer** — Smart scheduling for popular vs low-interest sports
 - [ ] **Multi-device sync** — Sync localStorage preferences to Supabase profile
 - [ ] **AI model comparison** — Show how different Claude models analyze the same game
-- [ ] **Confidence calibration** — Track how often 70% confidence picks actually hit ~70%
-- [ ] **Fade the public tool** — Show contrarian picks that go against public consensus
+- [x] **Confidence calibration** — confidence-calibration.ts, confidence-calibration.tsx on analytics page. 12 tests
+- [x] **Fade the public tool** — fade-public.ts, fade-public.tsx on EV scanner Fade tab. 12 tests
 - [ ] **Line shopping alerts** — Notify when a specific book has significantly better odds
 - [ ] **Injury news feed** — Aggregate injury updates from multiple sources
 - [ ] **Weather impact analysis** — For outdoor sports (NFL, MLB), factor in weather
 - [ ] **Referee/umpire tendencies** — Track how officials affect over/unders
-- [ ] **Situational spots** — Detect back-to-back, travel, rest advantage
+- [x] **Situational spots** — situational-spots.ts, situational-spots.tsx on EV scanner Situations tab. 11 tests
 - [ ] **Closing line value dashboard** — Visualize CLV trends over time with charts
 - [ ] **Bet grading system** — Rate bet quality separate from outcome (good process, bad result)
 - [ ] **Smart bankroll allocation** — Auto-suggest how to split bankroll across sports
 - [ ] **Parlay optimizer** — Find the highest EV combination of legs
 - [ ] **Risk-adjusted ROI** — Weight ROI by stake size and variance
 - [ ] **Correlation matrix** — Show which sports/bet types your results correlate with
-- [ ] **Monte Carlo simulator** — Project likely bankroll outcomes over N bets
+- [x] **Monte Carlo simulator** — monte-carlo.ts, monte-carlo.tsx on tools page. 16 tests
 - [ ] **Dark/light mode improvements** — Per-page theming, OLED dark mode
