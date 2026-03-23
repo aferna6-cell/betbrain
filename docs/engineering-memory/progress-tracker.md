@@ -32,3 +32,27 @@ _What was built each session._
 - **Daily highlights summary** — `daily-summary.tsx` server component on dashboard. Shows top +EV bet, sharp/public divergence count, active signals. Links to full pages. Runs on cached data only.
 - **Backlog update** — Checked off 15+ items that were already implemented but unchecked. Added 15 new future ideas.
 - **Total tests: 1510** (up from 1476)
+
+## Session 2026-03-23 (Session 3)
+
+### Features Built
+1. **Betting journal** (`src/lib/journal.ts`, `src/components/betting-journal.tsx`, `/dashboard/journal`) — Daily mood/bankroll/notes tracking. CRUD, stats panel (streak, mood distribution, avg bankroll, top tags), CSV export, tag system with suggestions. 15 tests.
+2. **Notification center** (`src/lib/notifications.ts`, `src/components/notification-center.tsx`, `/dashboard/notifications`) — In-app activity feed. Bell icon in nav with unread count. Filter by type (picks, alerts, signals, +EV, warnings). Deduplication. Notification generators for all event types. 16 tests.
+3. **Per-book color coding** (`src/lib/book-colors.ts`) — Brand colors for 20+ sportsbooks (DraftKings, FanDuel, BetMGM, etc.). Colored dots + row tinting in all 3 odds tables (moneyline, spread, totals). 5 tests.
+4. **Regression alerts** (`src/lib/regression-alerts.ts`, `src/components/regression-alerts.tsx`) — Detect ROI drops, losing streaks (5+), cold sports (<35% win rate), unit drain. Configurable thresholds with localStorage persistence. Wired into picks tracker page. Pushes to notification center. 12 tests.
+5. **Game notes** (`src/lib/game-notes.ts`, `src/components/game-notes.tsx`) — Pre-game thoughts + post-game reflections per game. New "Notes" tab on game detail page. Tags support. 8 tests.
+6. **Book-specific ROI** (`src/lib/book-roi.ts`, `src/components/book-roi-tracker.tsx`) — Assign bookmaker to picks, track record/profit/ROI per book. Sortable table with brand colors. CSV export. Wired into bankroll page. 10 tests.
+7. **Parlay hit rate tracking** (`src/lib/parlay-stats.ts`) — Separate parlay vs straight bet statistics. CRUD for parlay groups. Hit rate, avg legs, profit calculation. 10 tests.
+8. **Weekly recap** (`src/lib/weekly-recap.ts`, `src/components/weekly-recap.tsx`) — Auto-generated weekly performance summary. Best/worst picks, sport breakdown, streak detection, volume/profit vs last week. Wired into digest page. 10 tests.
+9. **Performance by time of day** (`src/lib/time-analysis.ts`, `src/components/time-analysis.tsx`) — 5 time periods with ROI per period. Visual bars. Best/worst time identification. Wired into analytics page. 8 tests.
+10. **Bankroll goals** (`src/lib/bankroll-goals.ts`, `src/components/bankroll-goals.tsx`) — Daily/weekly/monthly/season profit targets. Progress bars, projections, quick templates. Wired into bankroll page. 11 tests.
+
+### Tests Added
+- 105 new tests (1510 to 1615 total)
+- New test files: journal (15), notifications (16), regression-alerts (12), book-colors (5), game-notes (8), book-roi (10), parlay-stats (10), weekly-recap (10), time-analysis (8), bankroll-goals (11)
+
+### New Routes
+- `/dashboard/journal` — Betting journal
+- `/dashboard/notifications` — Full notification feed
+
+### Commits: 6

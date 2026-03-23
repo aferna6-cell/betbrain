@@ -18,3 +18,12 @@ When creating generic filter functions that accept any object with certain field
 
 ## 2026-03-23: Consensus detection without handle data
 Without actual public betting percentage data, estimating sharp vs public sides requires proxy signals: bookmaker odds disagreement (std dev of implied probabilities), outlier detection, and favorite bias. Cap confidence at 85% since these are estimates. Users appreciate transparency about methodology limitations.
+
+## 2026-03-23 (Session 3): localStorage sort ordering is non-deterministic
+When two items are saved near-simultaneously (same millisecond), sorting by `updatedAt` gives non-deterministic order. Tests should use `toContain` checks instead of position assertions, or introduce deliberate time gaps.
+
+## 2026-03-23 (Session 3): Notification deduplication prevents test flakiness
+The notification system deduplicates same-type + same-title within 5 minutes. This prevents flood scenarios but means tests need unique titles or need to clear storage between test runs.
+
+## 2026-03-23 (Session 3): Book color fallbacks prevent runtime errors
+Unknown bookmaker keys (from new sportsbooks appearing in Odds API data) get a neutral gray fallback instead of throwing. Always provide fallback styling for dynamic data from external APIs.

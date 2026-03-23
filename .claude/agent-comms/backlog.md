@@ -52,9 +52,18 @@
 - [x] **Daily highlights summary** — daily-summary.tsx on dashboard with EV/consensus/signals at a glance
 - [x] **Cache prop analyses** — prop_analysis_cache table + 6hr TTL in prop-analyzer.ts
 - [x] **Preferred bookmaker setting** — preferences.ts + game-detail.tsx OddsTable highlighting
+- [x] **Odds screen per-book colors** — book-colors.ts, colored dots + row tinting in odds tables
+- [x] **Betting journal** — journal.ts, betting-journal.tsx, /dashboard/journal. Mood, bankroll, notes, tags, CSV export. 15 tests
+- [x] **Notification center** — notifications.ts, notification-center.tsx, bell icon in nav. Filter by type, mark read. 16 tests
+- [x] **Regression alerts** — regression-alerts.ts + regression-alerts.tsx. ROI drops, losing streaks, cold sports, unit drain. 12 tests
+- [x] **Game notes** — game-notes.ts, game-notes.tsx. Pre/post-game notes tab on game detail. 8 tests
+- [x] **Book-specific ROI** — book-roi.ts, book-roi-tracker.tsx on bankroll page. 10 tests
+- [x] **Parlay hit rate tracking** — parlay-stats.ts. Separate parlay vs straight stats. 10 tests
+- [x] **Weekly recap** — weekly-recap.ts, weekly-recap.tsx on digest page. Best/worst picks, sport breakdown, streaks. 10 tests
+- [x] **Performance by time of day** — time-analysis.ts, time-analysis.tsx on analytics page. 8 tests
+- [x] **Bankroll goals** — bankroll-goals.ts, bankroll-goals.tsx on bankroll page. Templates, progress bars, projections. 11 tests
 - [ ] **Multi-game comparison table** — Select 2-5 games with all metrics side by side
 - [ ] **Alternate lines display** — Needs API fetch changes for alternate spread/total markets
-- [ ] **Odds screen per-book colors** — Color-code cells by book brand
 - [ ] **Live score integration** — Show live scores for tracked picks
 - [ ] **Prop market breakdown in pick stats** — Needs prop_market column on user_picks
 
@@ -75,18 +84,24 @@
 - [ ] **API route auth tests** — Verify all protected routes return 401 without auth
 
 ## Backlog — Future Ideas
-- [ ] **Betting journal** — Free-form notes per day/week with mood, bankroll snapshot, lessons
-- [ ] **Notification center** — In-app feed of triggered alerts, resolved picks, new signals
 - [ ] **Custom signal builder** — User-defined signal criteria (CLV > 3% AND confidence > 70)
 - [ ] **Odds API v2 markets** — Fetch player props, alternate lines, game props
-- [ ] **Performance by time of day** — Morning lines vs game-time betting
-- [ ] **Bankroll goals** — Monthly/weekly targets with progress tracking
 - [ ] **Analysis history timeline** — Past AI analyses with outcome comparison
-- [ ] **Regression alerts** — Notify when ROI drops below threshold or losing streak > N
-- [ ] **Book-specific ROI** — Track ROI per bookmaker
-- [ ] **Parlay hit rate tracking** — Separate parlay vs straight bet stats
-- [ ] **Weekly recap email** — Auto-generated weekly performance summary
-- [ ] **Game notes** — Personal notes on games before/after
 - [ ] **Odds API budget optimizer** — Smart scheduling for popular vs low-interest sports
 - [ ] **Multi-device sync** — Sync localStorage preferences to Supabase profile
 - [ ] **AI model comparison** — Show how different Claude models analyze the same game
+- [ ] **Confidence calibration** — Track how often 70% confidence picks actually hit ~70%
+- [ ] **Fade the public tool** — Show contrarian picks that go against public consensus
+- [ ] **Line shopping alerts** — Notify when a specific book has significantly better odds
+- [ ] **Injury news feed** — Aggregate injury updates from multiple sources
+- [ ] **Weather impact analysis** — For outdoor sports (NFL, MLB), factor in weather
+- [ ] **Referee/umpire tendencies** — Track how officials affect over/unders
+- [ ] **Situational spots** — Detect back-to-back, travel, rest advantage
+- [ ] **Closing line value dashboard** — Visualize CLV trends over time with charts
+- [ ] **Bet grading system** — Rate bet quality separate from outcome (good process, bad result)
+- [ ] **Smart bankroll allocation** — Auto-suggest how to split bankroll across sports
+- [ ] **Parlay optimizer** — Find the highest EV combination of legs
+- [ ] **Risk-adjusted ROI** — Weight ROI by stake size and variance
+- [ ] **Correlation matrix** — Show which sports/bet types your results correlate with
+- [ ] **Monte Carlo simulator** — Project likely bankroll outcomes over N bets
+- [ ] **Dark/light mode improvements** — Per-page theming, OLED dark mode

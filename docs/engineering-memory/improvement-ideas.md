@@ -21,3 +21,13 @@ Several client-side utilities need DOM for testing. Installing jsdom would simpl
 - Consensus indicator should incorporate line movement data from odds_history when available (currently only uses current snapshot)
 - Season reset could auto-detect the current sport's season based on game dates rather than requiring manual selection
 - Daily summary could show "change since yesterday" metrics to create urgency
+
+## 2026-03-23 (Session 3)
+- Notification center could integrate with browser Notification API for push-style alerts
+- Book ROI tracker should eventually store assignments in Supabase for cross-device sync
+- Betting journal could support image attachments (screenshots of bets)
+- Weekly recap could auto-generate a shareable Twitter/X image card
+- Time analysis could factor in day-of-week combined with time-of-day for more granular patterns
+- Bankroll goals could send notifications when approaching or achieving targets
+- Game notes could be surfaced in the comparison table for multi-game analysis
+- Parlay stats component needs UI — currently library-only, no visual display yet
