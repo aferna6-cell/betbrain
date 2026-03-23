@@ -625,6 +625,7 @@ describe('PropAnalysis keyFactors cap', () => {
       riskLevel: 'low',
       confidence: 72,
       disclaimer: AI_DISCLAIMER,
+      fromCache: false,
     }
     expect(analysis.keyFactors.length).toBeLessThanOrEqual(6)
     expect(analysis.keyFactors).toHaveLength(4)
@@ -701,6 +702,7 @@ describe('PropAnalysis disclaimer enforcement', () => {
       riskLevel: 'medium',
       confidence: 58,
       disclaimer: AI_DISCLAIMER,
+      fromCache: false,
     }
     expect(analysis.disclaimer).toBeTruthy()
     expect(analysis.disclaimer).toContain('informational purposes only')
@@ -734,6 +736,7 @@ describe('PropAnalysis impliedProbability field', () => {
       riskLevel: 'medium',
       confidence: 50,
       disclaimer: AI_DISCLAIMER,
+      fromCache: false,
     }
     expect(analysis.impliedProbability.over).toBeGreaterThan(0)
     expect(analysis.impliedProbability.over).toBeLessThan(1)
