@@ -264,4 +264,150 @@ describe('Fair probability calculation', () => {
     const fairAway = awayImplied / overround
     expect(fairHome + fairAway).toBeCloseTo(1, 5)
   })
+
+  it('americanToImplied converts +100 correctly (even money)', () => {
+    const implied = americanToImplied(100)
+    expect(implied).toBeCloseTo(0.5, 3)
+  })
+
+  it('americanToImplied converts -200 correctly (heavy favorite)', () => {
+    const implied = americanToImplied(-200)
+    expect(implied).toBeCloseTo(0.6667, 3)
+  })
+
+  it('americanToImplied converts +300 correctly (long shot)', () => {
+    const implied = americanToImplied(300)
+    expect(implied).toBeCloseTo(0.25, 3)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 6. Advanced EV edge cases
+// ---------------------------------------------------------------------------
+
+describe('scanForEV edge cases', () => {
+  it('handles games where one bookmaker has null moneyline', () => {
+    const game = makeGame([
+      makeBookmaker('DK', -110, -110),
+      makeBookmaker('FD', -110, -110),
+      makeBookmaker('MGM', -110, -110),
+      { bookmaker: 'NullBook', moneyline: null, spread: null, total: null, lastUpdated: '2026-03-17T08:00:00Z' },
+    ])
+    // Should not throw
+    const result = scanForEV([game])
+    expect(result.gamesScanned).toBe(1)
+  })
+
+  it('handles heavily lopsided odds without NaN or Infinity', () => {
+    const game = makeGame([
+      makeBookmaker('DK', -500, +400),
+      makeBookmaker('FD', -500, +400),
+      makeBookmaker('MGM', -500, +400),
+      makeBookmaker('Sharp', -450, +420),
+    ])
+    const result = scanForEV([game])
+    for (const opp of result.opportunities) {
+      expect(isFinite(opp.ev)).toBe(true)
+      expect(isNaN(opp.ev)).toBe(false)
+      expect(isFinite(opp.fairOdds)).toBe(true)
+    }
+  })
+
+  it('EV values are rounded to 1 decimal place', () => {
+    const game = makeGame([
+      makeBookmaker('DK', -115, -105),
+      makeBookmaker('FD', -115, -105),
+      makeBookmaker('MGM', -115, -105),
+      makeBookmaker('Sharp', -100, -105),
+    ])
+    const result = scanForEV([game])
+    for (const opp of result.opportunities) {
+      const decimals = (opp.ev.toString().split('.')[1] || '').length
+      expect(decimals).toBeLessThanOrEqual(1)
+    }
+  })
+
+  it('fairProbability + bookImplied are rounded to 3 decimal places', () => {
+    const game = makeGame([
+      makeBookmaker('DK', -115, -105),
+      makeBookmaker('FD', -115, -105),
+      makeBookmaker('MGM', -115, -105),
+      makeBookmaker('Sharp', -100, +110),
+    ])
+    const result = scanForEV([game])
+    for (const opp of result.opportunities) {
+      const fpDecimals = (opp.fairProbability.toString().split('.')[1] || '').length
+      const biDecimals = (opp.bookImplied.toString().split('.')[1] || '').length
+      expect(fpDecimals).toBeLessThanOrEqual(3)
+      expect(biDecimals).toBeLessThanOrEqual(3)
+    }
+  })
+
+  it('scans multiple games independently', () => {
+    const game1 = makeGame([
+      makeBookmaker('DK', -110, -110),
+      makeBookmaker('FD', -110, -110),
+      makeBookmaker('MGM', -110, -110),
+    ], { id: 'g1', homeTeam: 'Lakers', awayTeam: 'Celtics' })
+
+    const game2 = makeGame([
+      makeBookmaker('DK', -120, +100),
+      makeBookmaker('FD', -120, +100),
+      makeBookmaker('MGM', -120, +100),
+      makeBookmaker('Sharp', -120, +130), // away significantly better
+    ], { id: 'g2', homeTeam: 'Warriors', awayTeam: 'Bucks' })
+
+    const result = scanForEV([game1, game2])
+    expect(result.gamesScanned).toBe(2)
+    // Only game2 should have opportunities (if any)
+    const game2Opps = result.opportunities.filter((o) => o.game.id === 'g2')
+    // game1 is perfectly balanced, shouldn't have any
+    const game1Opps = result.opportunities.filter((o) => o.game.id === 'g1')
+    expect(game1Opps).toHaveLength(0)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 7. Arbitrage edge cases
+// ---------------------------------------------------------------------------
+
+describe('detectArbitrage edge cases', () => {
+  it('skips games with only one bookmaker', () => {
+    const game = makeGame([
+      makeBookmaker('DK', -110, -110),
+    ])
+    expect(detectArbitrage([game])).toHaveLength(0)
+  })
+
+  it('no arb with standard vig lines', () => {
+    // Standard US odds: -110/-110 = 52.38% + 52.38% = 104.76% > 100%
+    const game = makeGame([
+      makeBookmaker('DK', -110, -110),
+      makeBookmaker('FD', -108, -112),
+      makeBookmaker('MGM', -112, -108),
+    ])
+    expect(detectArbitrage([game])).toHaveLength(0)
+  })
+
+  it('arb totalImplied is always < 1 when arb found', () => {
+    const game = makeGame([
+      makeBookmaker('DK', +115, -130),
+      makeBookmaker('FD', -130, +115),
+    ])
+    const arbs = detectArbitrage([game])
+    for (const arb of arbs) {
+      expect(arb.totalImplied).toBeLessThan(1)
+    }
+  })
+
+  it('arb profit is positive when totalImplied < 1', () => {
+    const game = makeGame([
+      makeBookmaker('DK', +110, -130),
+      makeBookmaker('FD', -130, +110),
+    ])
+    const arbs = detectArbitrage([game])
+    for (const arb of arbs) {
+      expect(arb.profit).toBeGreaterThan(0)
+    }
+  })
 })
