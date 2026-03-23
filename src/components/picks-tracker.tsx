@@ -10,6 +10,8 @@ import { useOddsFormat } from '@/components/odds-format-provider'
 import { gradePick, calcDayOfWeekBreakdown } from '@/lib/pick-stats'
 import { calculateStreaks, calculateBadges } from '@/lib/streaks'
 import type { StreakInfo, Badge as BadgeType } from '@/lib/streaks'
+import { SeasonResetControl } from '@/components/season-reset'
+import { filterCurrentSeason } from '@/lib/seasonal-reset'
 import type {
   Sport,
   PickType,
@@ -985,6 +987,7 @@ export function PicksTracker() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [resolving, setResolving] = useState(false)
+  const [seasonResetDate, setSeasonResetDate] = useState<string | null>(null)
   const { addToast } = useToast()
 
   const fetchPicks = useCallback(async () => {
@@ -1066,13 +1069,16 @@ export function PicksTracker() {
     )
   }
 
+  const seasonPicks = filterCurrentSeason(picks, seasonResetDate)
+
   return (
     <div className="space-y-6">
+      <SeasonResetControl onResetChange={setSeasonResetDate} />
       {stats && <StatsSummary stats={stats} clvStats={clvStats} />}
-      <StreakDisplay picks={picks} />
-      <BadgesDisplay picks={picks} />
-      <PickTypeBreakdown picks={picks} />
-      <DayOfWeekDisplay picks={picks} />
+      <StreakDisplay picks={seasonPicks} />
+      <BadgesDisplay picks={seasonPicks} />
+      <PickTypeBreakdown picks={seasonPicks} />
+      <DayOfWeekDisplay picks={seasonPicks} />
       {picks.length > 0 && (
         <div className="flex justify-end">
           <Button
