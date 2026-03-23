@@ -8,8 +8,12 @@ export const metadata: Metadata = {
 
 export const revalidate = 300 // Rebuild every 5 minutes
 import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
+import { scanForEV } from '@/lib/ev-scanner'
+import { analyzeAllConsensus } from '@/lib/consensus'
+import { detectSmartSignals } from '@/lib/signals'
 import { GamesDashboard } from '@/components/games-dashboard'
 import { DashboardStats } from '@/components/dashboard-stats'
+import { DailySummary } from '@/components/daily-summary'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 import { WhatsNew } from '@/components/whats-new'
 import { TermTooltip } from '@/components/term-tooltip'
@@ -41,6 +45,16 @@ export default async function DashboardPage() {
   }
 
   const totalGames = Object.values(gamesBySport).flat().length
+  const allGames = Object.values(gamesBySport).flat()
+
+  // Run lightweight analysis on cached data (no API calls)
+  const [evResult, consensus, signals] = await Promise.all([
+    Promise.resolve(scanForEV(allGames)),
+    Promise.resolve(analyzeAllConsensus(allGames)),
+    detectSmartSignals(allGames),
+  ])
+
+  const divergences = consensus.filter((c) => c.divergence)
 
   return (
     <div className="space-y-6">
@@ -57,6 +71,14 @@ export default async function DashboardPage() {
 
       <OnboardingChecklist />
       <WhatsNew />
+
+      <DailySummary
+        evCount={evResult.opportunities.length}
+        topEV={evResult.opportunities[0] ?? null}
+        divergenceCount={divergences.length}
+        topDivergence={divergences[0] ?? null}
+        signalCount={signals.length}
+      />
 
       <DashboardStats />
 
