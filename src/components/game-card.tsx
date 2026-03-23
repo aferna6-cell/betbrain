@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { AnalyzeButton } from '@/components/analysis-dialog'
 import { WatchlistButton } from '@/components/watchlist-button'
+import { GameCountdown } from '@/components/game-countdown'
 import { formatImpliedProb, getBestMoneyline } from '@/lib/odds'
 import { OddsDisplay } from '@/components/odds-display'
 import { formatGameTime, timeAgo } from '@/lib/format'
@@ -31,10 +32,11 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         <Badge variant="secondary" className="text-xs font-semibold uppercase">
           {SPORT_LABELS[game.sport] ?? game.sport.toUpperCase()}
         </Badge>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <span className="text-xs text-muted-foreground">
             {formatGameTime(game.commenceTime)}
           </span>
+          <GameCountdown commenceTime={game.commenceTime} />
           <WatchlistButton
             gameId={game.id}
             sport={game.sport}
