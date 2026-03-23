@@ -14,7 +14,7 @@ import { AI_DISCLAIMER } from '@/lib/ai/analysis'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { Database, Sport } from '@/lib/supabase/types'
 
-const MODEL = 'claude-sonnet-4-5-20250514'
+const MODEL = 'claude-sonnet-4-6'
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000 // 6 hours
 
 type PropCacheRow = Database['public']['Tables']['prop_analysis_cache']['Row']

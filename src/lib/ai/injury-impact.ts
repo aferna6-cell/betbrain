@@ -8,7 +8,7 @@ import { getAnthropicApiKey } from '@/lib/env'
 import { AI_DISCLAIMER } from '@/lib/ai/analysis'
 import type { NormalizedGame } from '@/lib/sports/config'
 
-const MODEL = 'claude-sonnet-4-5-20250514'
+const MODEL = 'claude-sonnet-4-6'
 
 export interface InjuryImpactAnalysis {
   playerName: string

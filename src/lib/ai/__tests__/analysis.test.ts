@@ -27,7 +27,7 @@ describe('GameAnalysis type compliance', () => {
       confidence: 72,
       disclaimer: AI_DISCLAIMER,
       fromCache: false,
-      model: 'claude-sonnet-4-5-20250514',
+      model: 'claude-sonnet-4-6',
     }
 
     expect(analysis.summary).toBeTruthy()

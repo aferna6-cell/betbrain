@@ -22,7 +22,7 @@ type AiInsightInsert = Database['public']['Tables']['ai_insights']['Insert']
 export const AI_DISCLAIMER =
   'For informational purposes only. This is not financial or betting advice. Past performance does not guarantee future results. Always gamble responsibly.'
 
-const MODEL = 'claude-sonnet-4-5-20250514'
+const MODEL = 'claude-sonnet-4-6'
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000 // 6 hours
 
 export interface GameAnalysis {
