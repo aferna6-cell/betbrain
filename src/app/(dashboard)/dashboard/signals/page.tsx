@@ -4,6 +4,7 @@ import { detectSmartSignals } from '@/lib/signals'
 import { getSignalHistory, getSignalStats } from '@/lib/signal-history'
 import { SmartSignalsView } from '@/components/smart-signals'
 import { SignalHistoryView } from '@/components/signal-history'
+import { SteamMovesView } from '@/components/steam-moves'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -37,6 +38,9 @@ export default async function SignalsPage() {
           <TabsTrigger value="current">
             Current Signals{signals.length > 0 ? ` (${signals.length})` : ''}
           </TabsTrigger>
+          <TabsTrigger value="steam">
+            Steam Moves
+          </TabsTrigger>
           <TabsTrigger value="history">
             Hit Rate{stats.hitRate !== null ? ` — ${stats.hitRate}%` : ''}
           </TabsTrigger>
@@ -44,6 +48,10 @@ export default async function SignalsPage() {
 
         <TabsContent value="current">
           <SmartSignalsView signals={signals} />
+        </TabsContent>
+
+        <TabsContent value="steam">
+          <SteamMovesView />
         </TabsContent>
 
         <TabsContent value="history">
