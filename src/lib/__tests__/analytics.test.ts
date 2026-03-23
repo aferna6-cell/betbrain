@@ -31,6 +31,7 @@ function makeAnalytics(overrides: Partial<AnalyticsData> = {}): AnalyticsData {
         { sport: 'nba', wins: 8, losses: 5, total: 14, roi: 22 },
         { sport: 'nfl', wins: 2, losses: 2, total: 6, roi: 5 },
       ],
+      rollingROI: [],
     },
     clv: {
       averageCLV: 1.5,
@@ -136,7 +137,7 @@ describe('Empty analytics', () => {
       picks: {
         total: 0, wins: 0, losses: 0, pushes: 0, pending: 0,
         winRate: null, totalProfit: 0, roi: 0,
-        byType: [], bySport: [],
+        byType: [], bySport: [], rollingROI: [],
       },
       clv: {
         averageCLV: 0, totalPicks: 0,

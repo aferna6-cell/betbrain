@@ -71,9 +71,9 @@ const mockNormalizeTeamName = vi.fn((name: string) => name.toLowerCase().trim())
 const mockResolveSignalOutcome = vi.fn().mockReturnValue('win')
 
 vi.mock('@/lib/auto-resolve', () => ({
-  resolvePicksBatch: (...args: unknown[]) => mockResolvePicksBatch(...args),
-  nbaGameToResult: (...args: unknown[]) => mockNbaGameToResult(...args),
-  normalizeTeamName: (...args: unknown[]) => mockNormalizeTeamName(...args),
+  resolvePicksBatch: (...args: Parameters<typeof mockResolvePicksBatch>) => mockResolvePicksBatch(...args),
+  nbaGameToResult: (...args: Parameters<typeof mockNbaGameToResult>) => mockNbaGameToResult(...args),
+  normalizeTeamName: (...args: Parameters<typeof mockNormalizeTeamName>) => mockNormalizeTeamName(...args),
   resolveSignalOutcome: (...args: unknown[]) => mockResolveSignalOutcome(...args),
 }))
 
