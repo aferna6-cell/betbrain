@@ -6,6 +6,7 @@ import { SmartSignalsView } from '@/components/smart-signals'
 import { SignalHistoryView } from '@/components/signal-history'
 import { SteamMovesView } from '@/components/steam-moves'
 import { OddsVelocityPanel } from '@/components/odds-velocity'
+import { LineMovementHeatmap } from '@/components/line-movement-heatmap'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -45,6 +46,9 @@ export default async function SignalsPage() {
           <TabsTrigger value="velocity">
             Line Velocity
           </TabsTrigger>
+          <TabsTrigger value="heatmap">
+            Heatmap
+          </TabsTrigger>
           <TabsTrigger value="history">
             Hit Rate{stats.hitRate !== null ? ` — ${stats.hitRate}%` : ''}
           </TabsTrigger>
@@ -65,6 +69,12 @@ export default async function SignalsPage() {
               This view requires odds history snapshots to compare movement.
             </p>
             <OddsVelocityPanel alerts={[]} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="heatmap">
+          <div className="mt-4">
+            <LineMovementHeatmap games={allGames} />
           </div>
         </TabsContent>
 

@@ -23,8 +23,9 @@ function makeBookmaker(
   return {
     bookmaker: name,
     moneyline: { home: homeOdds, away: awayOdds },
-    spreads: { home: -110, away: -110, line: spreadLine },
-    totals: { over: -110, under: -110, line: totalLine },
+    spread: { homeLine: spreadLine, homeOdds: -110, awayLine: -spreadLine, awayOdds: -110 },
+    total: { line: totalLine, overOdds: -110, underOdds: -110 },
+    lastUpdated: new Date().toISOString(),
   }
 }
 

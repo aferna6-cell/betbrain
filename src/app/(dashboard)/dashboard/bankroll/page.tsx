@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { BankrollDashboard } from '@/components/bankroll-dashboard'
+import { BankrollRecoveryCalculator } from '@/components/bankroll-recovery'
 
 export const metadata: Metadata = {
   title: 'Bankroll Management — BetBrain',
@@ -17,6 +18,7 @@ export default function BankrollPage() {
       </div>
 
       <BankrollDashboard />
+      <BankrollRecoveryCalculator />
     </div>
   )
 }
