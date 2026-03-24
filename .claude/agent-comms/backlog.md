@@ -39,7 +39,7 @@
 - [ ] **Book-specific line shopping** — Show which book consistently has best lines per market type
 - [ ] **Bet replay viewer** — Step through historical odds movement for a game you bet on
 - [ ] **Bankroll allocation rebalancer** — Alert when sport allocation drifts from target
-- [ ] **Sharp book identifier** — Track which books are consistently early movers
+- [x] **Sharp book identifier** — Track which books are consistently early movers
 - [ ] **Automated closing odds backfill** — For picks with missing closing_odds, estimate from historical data
 - [ ] **Odds movement replay** — Animate line movement over time for educational review
 - [ ] **EV decay tracker** — Track how EV of a spotted opportunity decays over time
@@ -66,7 +66,7 @@
 - [ ] **Bankroll correlation tracker** — Track how bankroll changes correlate with specific factors
 - [ ] **Bet slip screenshot parser** — OCR-based pick import from sportsbook screenshots
 - [ ] **Real-time odds alerts** — Push notification when tracked game odds hit target
-- [ ] **Position sizing backtest** — Simulate historical performance with different unit strategies
+- [x] **Position sizing backtest** — Simulate historical performance with different unit strategies
 - [ ] **Multi-leg hedge optimizer** — Optimal hedge across multiple open bets
 - [ ] **Closing line prediction model** — Predict where the closing line will be
 - [ ] **Sport-specific dashboards** — Custom widgets per sport (rushing yards for NFL, etc.)
@@ -79,20 +79,20 @@
 - [ ] **Odds API request optimizer** — Batch requests to minimize API calls per insight
 
 ## New Ideas (Session 10 — 2026-03-24)
-- [ ] **Bet sizing confidence matrix** — Grid of confidence vs edge size showing optimal unit count
+- [x] **Bet sizing confidence matrix** — Grid of confidence vs edge size showing optimal unit count
 - [ ] **Sharp money flow tracker** — Track which direction sharp bettors are moving across all games
-- [ ] **Vig comparison by book** — Which books consistently offer lowest vig per sport
+- [x] **Vig comparison by book** — Which books consistently offer lowest vig per sport
 - [ ] **Game-day weather overlay** — Show weather conditions for outdoor sports (NFL, MLB)
-- [ ] **Momentum detector** — Track which teams are on winning/losing streaks with odds impact
+- [x] **Momentum detector** — Track which teams are on winning/losing streaks with odds impact
 - [ ] **Value decay timeline** — Show how +EV opportunities erode as game time approaches
 - [ ] **Bankroll allocation optimizer** — AI-suggested allocation across sports based on historical edge
 - [ ] **Pick journal auto-tagging** — Auto-detect and tag pick types (fade, steam chase, system play)
-- [ ] **Spread vs ML value calculator** — When is spread better than moneyline for same side
+- [x] **Spread vs ML value calculator** — When is spread better than moneyline for same side
 - [ ] **Back-to-back fatigue model** — Quantify fatigue impact on NBA/NHL back-to-back games
 - [ ] **Referee/umpire impact tracker** — Track over/under tendencies by game official
 - [ ] **Parlay correlation matrix** — Visual heatmap of which leg types correlate
-- [ ] **Consensus line tracker** — Track where the consensus line opened vs current
-- [ ] **Implied team totals** — Derive expected points per team from total + spread
+- [x] **Consensus line tracker** — Track where the consensus line opened vs current
+- [x] **Implied team totals** — Derive expected points per team from total + spread
 - [ ] **Cash-out timing optimizer** — When to cash out based on live game state and EV
 
 ## Completed — Session 9 (2026-03-24)
@@ -113,3 +113,35 @@
 - [x] **Parlay optimizer** — Find best parlay combinations with EV, correlation, and payout scoring _(Session 10)_
 - [x] **Win probability curves** — No-vig consensus win probabilities with per-book breakdown _(Session 10)_
 - [x] **Odds arbitrage scanner** — Extended to all markets (was moneyline-only) _(Session 10)_
+
+## Completed — Session 11 (2026-03-24)
+- [x] **Implied team totals** — Derive expected points per team from total + spread (24 tests) _(Session 11)_
+- [x] **Spread vs ML value calculator** — When is spread better than moneyline for same side (16 tests) _(Session 11)_
+- [x] **Sharp book identifier** — Score bookmakers by independence and best-line rate (11 tests) _(Session 11)_
+- [x] **Position sizing backtest** — Replay pick history with different staking strategies (24 tests) _(Session 11)_
+- [x] **Vig comparison by book** — Per-bookmaker vig analysis across all markets (16 tests) _(Session 11)_
+- [x] **Bet sizing confidence matrix** — Interactive edge x confidence grid for unit sizing (14 tests) _(Session 11)_
+- [x] **Momentum detector** — Team streak tracking with hot/cold classification (22 tests) _(Session 11)_
+- [x] **Consensus line tracker** — Market consensus with bookmaker deviation detection (14 tests) _(Session 11)_
+
+## New Ideas (Session 11 — 2026-03-24)
+- [ ] [P1] [feat]: Closing line auto-capture cron — Scheduled job to snapshot consensus odds 5 min before game time | Files: src/lib/closing-line-capture.ts, vercel.json | Done when: cron job runs and populates closing_odds for open picks
+- [ ] [P1] [feat]: Custom signal builder — User-defined composite signal criteria with AND/OR logic | Files: src/lib/custom-signals.ts, src/components/custom-signal-builder.tsx | Done when: user can create, save, and evaluate custom signal rules
+- [ ] [P2] [feat]: Odds movement replay — Animated timeline playback of line movement for any game | Files: src/lib/odds-replay.ts, src/components/odds-replay.tsx | Done when: SVG animation shows line progression
+- [ ] [P2] [feat]: Live score ticker — Real-time score updates for tracked games on dashboard | Files: src/lib/live-scores.ts, src/components/live-ticker.tsx | Done when: ticker shows current scores
+- [ ] [P2] [feat]: EV decay tracker — Track how +EV opportunity value erodes over time | Files: src/lib/ev-decay.ts, src/components/ev-decay.tsx | Done when: chart shows EV decay curve
+- [ ] [P2] [feat]: Reverse line movement alerts — Notification when RLM detected on tracked game | Files: src/lib/rlm-alerts.ts | Done when: notification fires on RLM
+- [ ] [P2] [feat]: Cross-sport sharp action correlation — Alert on multi-sport sharp clusters | Files: src/lib/cross-sport-sharp.ts | Done when: cross-sport sharp patterns detected
+- [ ] [P3] [test]: Implied team totals edge cases — Zero spread, extreme totals, single book | Files: src/lib/__tests__/implied-team-totals.test.ts | Done when: 5+ edge case tests pass
+- [ ] [P3] [test]: Sharp book identifier stress test — Large game sets, identical lines | Files: src/lib/__tests__/sharp-book-identifier.test.ts | Done when: 5+ stress tests pass
+- [ ] [P3] [test]: Position sizing backtest boundaries — Zero bankroll, 100% loss, extreme Kelly | Files: src/lib/__tests__/position-sizing-backtest.test.ts | Done when: 5+ boundary tests pass
+- [ ] [P3] [test]: Vig comparison 3-way market — Soccer/MMA with draw odds | Files: src/lib/__tests__/vig-comparison.test.ts | Done when: 3-way vig calculation tested
+- [ ] [P3] [test]: Momentum detector full season — 82-game NBA schedule scenario | Files: src/lib/__tests__/momentum-detector.test.ts | Done when: realistic season tested
+- [ ] [P3] [fix]: Consensus line tracker sport-specific thresholds — NBA vs NHL deviation thresholds | Files: src/lib/consensus-line-tracker.ts | Done when: sport-specific thresholds used
+- [ ] [P3] [fix]: Spread vs ML pickem edge case — Handle 0 spread gracefully | Files: src/lib/spread-vs-ml.ts | Done when: pick'em games work correctly
+- [ ] [P2] [feat]: Game environment factors — Weather, altitude for NFL/MLB | Files: src/lib/game-environment.ts | Done when: weather on game detail for outdoor sports
+- [ ] [P3] [feat]: Bankroll allocation drift chart — Actual vs target allocation over time | Files: src/lib/allocation-drift.ts | Done when: SVG chart shows drift
+- [ ] [P3] [feat]: Unit sizing history chart — Track unit sizes over time | Files: src/lib/sizing-history.ts | Done when: line chart with trend
+- [ ] [P2] [feat]: Bet portfolio risk gauge — Portfolio-level risk exposure visualization | Files: src/lib/portfolio-risk.ts | Done when: pie chart shows exposure
+- [ ] [P4] [chore]: CLAUDE.md test count update — Keep test count current | Files: CLAUDE.md | Done when: test count matches actual
+- [ ] [P3] [feat]: Value decay timeline — Historical analysis of +EV correction speed | Files: src/lib/value-decay.ts | Done when: avg correction time per sport computed

@@ -1,21 +1,24 @@
 # Engineering State
-## Current Session (2026-03-24, Session 10)
-- Build status: GREEN (2719 tests, all passing, clean build)
+## Current Session (2026-03-24, Session 11)
+- Build status: GREEN (2860 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 2719 (144 test files)
+- Test count: 2860 (152 test files)
 - In progress: (none)
 - Next up: Pick from remaining ideas list
 
 ## Key changes this session
-- Multi-market arbitrage scanner: spread + total arb detection with stake calculator (21 tests)
-- Game script predictor: predict blowout, close, OT from odds patterns (30 tests)
-- Daily slate: cross-sport same-day summary with ranked top games (20 tests)
-- Quick re-analyze button: force-refresh AI analysis bypassing 6hr cache
-- Parlay optimizer: find best N-leg combinations from today's games (22 tests)
-- Win probability panel: no-vig consensus probabilities with per-book breakdown (17 tests)
-- Game Script tab on game detail page with probability bars
-- Updated EV Scanner with 3 new tabs (Arbitrage, Game Scripts, Win Prob)
-- Updated dashboard with Daily Slate widget
-- Updated parlay page with Optimizer tab
-- 110 new tests (2609 -> 2719)
-- Added 15 new backlog ideas
+- Implied team totals: derive expected points from spread + total (24 tests)
+- Spread vs ML value calculator: when to bet spread vs moneyline (16 tests)
+- Sharp book identifier: score bookmakers by independence and best-line rate (11 tests)
+- Position sizing backtest: replay pick history with 5 staking strategies (24 tests)
+- Vig comparison by book: per-bookmaker vig across ML/spread/total (16 tests)
+- Bet sizing confidence matrix: interactive edge x confidence grid (14 tests)
+- Momentum detector: team streak tracking with hot/cold classification (22 tests)
+- Consensus line tracker: median-based market consensus with deviation detection (14 tests)
+- All 8 features have UI components wired into existing pages
+- EV Scanner page: +4 new tabs (Team Totals, Spread vs ML, Sharp Books, Vig Compare)
+- Signals page: +1 new tab (Consensus)
+- Tools page: +2 new sections (Sizing Confidence Matrix, Position Sizing Backtest)
+- Analytics page: +1 new section (Team Momentum)
+- 141 new tests (2719 -> 2860)
+- Added 20 new backlog ideas (incl. 5 test, 2 fix items)

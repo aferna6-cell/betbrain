@@ -102,3 +102,18 @@ NBA blowout is 10+ points, NHL blowout is 2.5+ goals, MLB is 3+ runs. Using spor
 
 ## 2026-03-24 (Session 10): Parlay optimizer combination explosion
 C(N,K) grows fast — 8 candidates with K=4 gives 70 combos, but 15 candidates gives 1365. Always cap max combinations (default 500 per leg count) to prevent memory issues. Filter impossible combos early (opposing sides) to reduce output set.
+
+## 2026-03-24 (Session 11): Implied team total formula direction
+The formula is: homeTotal = (gameTotal - homeSpread) / 2, awayTotal = (gameTotal + homeSpread) / 2. When home spread is negative (favorite), home is expected to score MORE. The subtraction of a negative spread adds to the home total. Easy to get the sign wrong — always trace with a concrete example: Lakers -5.5, total 224.5 → Lakers expected 115, opponent 109.5.
+
+## 2026-03-24 (Session 11): Spread vs ML value depends on favorite size
+Small favorites (-1 to -2.5): ML often better because payout is similar to spread but no number to cover. Big favorites (-7+): Spread pays significantly more. Big underdogs (+7+): Spread gives a large cushion. This three-tier analysis avoids the trap of always recommending one market.
+
+## 2026-03-24 (Session 11): Sharp book detection needs multiple games
+A single game doesn't tell you much — any book can be an outlier by chance. Need 5+ games minimum to start seeing patterns. The sharpness score combines outlier rate (30%), best-line rate (30%), not-worst rate (20%), and avg deviation (20%).
+
+## 2026-03-24 (Session 11): Anti-Martingale resets on loss
+The anti-Martingale strategy (increase after wins) must reset to base unit after a loss, not decrease. This is the opposite of traditional Martingale. It lets winning streaks compound while limiting downside on losing streaks.
+
+## 2026-03-24 (Session 11): Detached HEAD from cherry-pick chains
+When multiple sessions cherry-pick work without proper branch management, git can end up in detached HEAD. Fix: checkout master, then merge the detached commit. The merge strategy handles file-level conflicts better than cherry-picking individual commits.

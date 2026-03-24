@@ -253,3 +253,27 @@ _What was built each session._
 - `/dashboard/games/[gameId]` — Added Game Script tab, Re-analyze button
 
 ### Commits: 6 (arb scanner, game script, daily slate, re-analyze+game-detail, parlay optimizer, win probability)
+
+## Session 2026-03-24 (Session 11)
+
+### Features Built
+1. **Implied team totals** (`src/lib/implied-team-totals.ts`, `src/components/implied-team-totals.tsx`) — Derive expected points per team from spread + total. Consensus averaging, scoring environment classification (high/average/low), bookmaker breakdown. New "Team Totals" tab on EV Scanner. 24 tests.
+2. **Spread vs ML value calculator** (`src/lib/spread-vs-ml.ts`, `src/components/spread-vs-ml.tsx`) — Compare spread vs moneyline value per side. Analyzes small/mid/big favorites and underdogs with specific recommendations. Break-even analysis. New "Spread vs ML" tab on EV Scanner. 16 tests.
+3. **Sharp book identifier** (`src/lib/sharp-book-identifier.ts`, `src/components/sharp-book-identifier.tsx`) — Score bookmakers by outlier rate, best-line rate, deviation from consensus. Per-market breakdown (ML/spread/total). Classification as sharp/moderate/soft. New "Sharp Books" tab on EV Scanner. 11 tests.
+4. **Position sizing backtest** (`src/lib/position-sizing-backtest.ts`, `src/components/position-sizing-backtest.tsx`) — Replay pick history with 5 strategies (flat, percentage, Kelly, confidence-scaled, anti-Martingale). SVG trajectory chart, Sharpe ratio, max drawdown, bust detection. Added to Tools page. 24 tests.
+5. **Vig comparison by bookmaker** (`src/lib/vig-comparison.ts`, `src/components/vig-comparison.tsx`) — Calculate per-bookmaker vig across ML/spread/total. Per-sport breakdown, low-vig/average/high-vig classification. New "Vig Compare" tab on EV Scanner. 16 tests.
+6. **Bet sizing confidence matrix** (`src/lib/sizing-confidence-matrix.ts`, `src/components/sizing-confidence-matrix.tsx`) — Interactive 5x7 grid of confidence levels vs edge percentages. Kelly-derived units with risk classification. Quick lookup tool. Added to Tools page. 14 tests.
+7. **Momentum detector** (`src/lib/momentum-detector.ts`, `src/components/momentum-detector.tsx`) — Team streak detection with weighted momentum scoring. Hot/warm/neutral/cool/cold classification. Fade opportunity detection (hot underdog, cold favorite). Added to Analytics page. 22 tests.
+8. **Consensus line tracker** (`src/lib/consensus-line-tracker.ts`, `src/components/consensus-line-tracker.tsx`) — Median-based market consensus with bookmaker deviation detection. Moneyline, spread, and total consensus. New "Consensus" tab on Signals page. 14 tests.
+
+### Tests Added
+- 141 new tests (2719 to 2860 total)
+- New test files: implied-team-totals (24), spread-vs-ml (16), sharp-book-identifier (11), position-sizing-backtest (24), vig-comparison (16), sizing-confidence-matrix (14), momentum-detector (22), consensus-line-tracker (14)
+
+### Pages Updated
+- `/dashboard/ev` — Added Team Totals, Spread vs ML, Sharp Books, Vig Compare tabs
+- `/dashboard/tools` — Added Sizing Confidence Matrix, Position Sizing Backtest sections
+- `/dashboard/signals` — Added Consensus tab
+- `/dashboard/analytics` — Added Team Momentum section
+
+### Commits: 5 (4 feature commits + 1 session close)
