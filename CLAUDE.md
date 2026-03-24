@@ -62,6 +62,10 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - `src/lib/drawdown-heatmap.ts` — Calendar view of bankroll drawdown depth
 - `src/lib/smart-bankroll-alerts.ts` — Configurable bankroll health alerts
 - `src/lib/pick-dependencies.ts` — Correlated picks detection and clustering
+- `src/lib/game-script.ts` — Game flow prediction (blowout, close, OT)
+- `src/lib/daily-slate.ts` — Cross-sport daily summary with ranked games
+- `src/lib/parlay-optimizer.ts` — Find optimal parlay combinations from pick pool
+- `src/lib/win-probability.ts` — No-vig consensus win probabilities
 - `src/lib/stripe.ts` — Stripe client singleton (legacy, bypassed)
 - `e2e/` — Playwright E2E smoke tests
 - `scripts/` — Health-check, daily review, post-deploy verification
@@ -75,7 +79,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (2609 tests)
+npm run test         # Run Vitest unit tests (2719 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md

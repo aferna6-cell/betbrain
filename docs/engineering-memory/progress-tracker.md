@@ -231,3 +231,25 @@ _What was built each session._
 - `/dashboard/tools` — Added Kelly fraction simulator
 
 ### Commits: 5 (pushed via git push)
+
+## Session 2026-03-24 (Session 10)
+
+### Features Built
+1. **Multi-market arbitrage scanner** (`src/lib/ev-scanner.ts` extension, `src/components/arbitrage-scanner.tsx`) — Extended arb detection from moneyline-only to cover spreads and totals. Stake calculator shows optimal split for any wager amount. Market-type color coding. New Arbitrage tab on EV Scanner. 21 tests.
+2. **Game script predictor** (`src/lib/game-script.ts`, `src/components/game-script-panel.tsx`) — Predicts game flow: blowout, comfortable, close, coin flip, OT candidate. Sport-specific thresholds for NBA/NFL/MLB/NHL. Probability distribution, scoring environment, narrative generation. New Game Scripts tab on EV Scanner + Game Script tab on game detail page. 30 tests.
+3. **Daily slate** (`src/lib/daily-slate.ts`, `src/components/daily-slate.tsx`) — Cross-sport same-day summary. Aggregates games, scores interest level per game, determines slate verdict (loaded/solid/average/light/empty). Sport pills with EV counts, top 5 ranked games. Added to dashboard. 20 tests.
+4. **Quick re-analyze button** — Added `forceRefresh` parameter to `analyzeGame()` and `/api/analysis` route. Re-analyze button on game detail page bypasses 6-hour cache. Resets saved state on re-analysis.
+5. **Parlay optimizer** (`src/lib/parlay-optimizer.ts`, `src/components/parlay-optimizer.tsx`) — Generates N-leg combinations from candidate picks, scores by EV + correlation risk + confidence. Filters impossible combos (opposing sides). Highlights best EV, safest, and best payout. Interactive pick selector with game grouping. New Optimizer tab on parlay page. 22 tests.
+6. **Win probability panel** (`src/lib/win-probability.ts`, `src/components/win-probability.tsx`) — No-vig consensus probabilities per game. Per-book breakdown with disagreement analysis, vig tilt detection, most/least bullish identification. Visual probability bars. New Win Prob tab on EV Scanner. 17 tests.
+
+### Tests Added
+- 110 new tests (2609 to 2719 total)
+- New test files: multi-market-arb (21), game-script (30), daily-slate (20), parlay-optimizer (22), win-probability (17)
+
+### Pages Updated
+- `/dashboard/ev` — Added Arbitrage, Game Scripts, Win Prob tabs
+- `/dashboard` — Added Daily Slate widget
+- `/dashboard/parlay` — Added Optimizer tab
+- `/dashboard/games/[gameId]` — Added Game Script tab, Re-analyze button
+
+### Commits: 6 (arb scanner, game script, daily slate, re-analyze+game-detail, parlay optimizer, win probability)

@@ -93,3 +93,12 @@ Union-find (disjoint set) is the right algorithm for grouping correlated picks i
 
 ## 2026-03-24 (Session 9): Smart alerts need deduplication by type
 When running periodic alert checks, the same condition (e.g., "5-game losing streak") will trigger every time. Deduplication by alert type prevents flooding. Keep only the most recent alert per type, and let users dismiss individually. Save dismissed state to localStorage to persist across page loads.
+
+## 2026-03-24 (Session 10): Spread arb detection requires same-line matching
+When detecting spread arbitrage, only compare books posting the same spread number (e.g. -3.5). Different spread numbers represent different markets and cannot form a true arbitrage pair. Group by absolute line value before comparing.
+
+## 2026-03-24 (Session 10): Game script thresholds vary dramatically by sport
+NBA blowout is 10+ points, NHL blowout is 2.5+ goals, MLB is 3+ runs. Using sport-specific threshold records avoids one-size-fits-all logic. OT base rates also differ hugely (NBA ~6%, NHL ~23%).
+
+## 2026-03-24 (Session 10): Parlay optimizer combination explosion
+C(N,K) grows fast — 8 candidates with K=4 gives 70 combos, but 15 candidates gives 1365. Always cap max combinations (default 500 per leg count) to prevent memory issues. Filter impossible combos early (opposing sides) to reduce output set.

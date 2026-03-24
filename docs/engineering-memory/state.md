@@ -1,19 +1,21 @@
 # Engineering State
-## Current Session (2026-03-24, Session 9)
-- Build status: GREEN (2609 tests, all passing, clean build)
+## Current Session (2026-03-24, Session 10)
+- Build status: GREEN (2719 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 2609 (138 test files)
+- Test count: 2719 (144 test files)
 - In progress: (none)
-- Next up: Pick from remaining ideas list (odds arbitrage scanner, bet replay viewer, etc.)
+- Next up: Pick from remaining ideas list
 
 ## Key changes this session
-- Multi-book account tracker: track balances, deposits, withdrawals across sportsbooks (38 tests)
-- Historical CLV distribution: histogram of CLV values with bucket analysis (24 tests)
-- EV attribution: 6-factor analysis of which factors drive your edge (14 tests)
-- Kelly bankroll simulator: compare trajectories at different Kelly fractions (17 tests)
-- Seasonal trend detector: monthly, weekly, day-of-week performance patterns (17 tests)
-- Bankroll drawdown heatmap: calendar view of drawdown depth by day (19 tests)
-- Smart bankroll alerts: 5 alert types with configurable thresholds (20 tests)
-- Pick dependency graph: visualize correlated picks with union-find clustering (15 tests)
-- Updated backlog: checked off 8 items, added 15 new ideas
-- 164 new tests (2445 -> 2609)
+- Multi-market arbitrage scanner: spread + total arb detection with stake calculator (21 tests)
+- Game script predictor: predict blowout, close, OT from odds patterns (30 tests)
+- Daily slate: cross-sport same-day summary with ranked top games (20 tests)
+- Quick re-analyze button: force-refresh AI analysis bypassing 6hr cache
+- Parlay optimizer: find best N-leg combinations from today's games (22 tests)
+- Win probability panel: no-vig consensus probabilities with per-book breakdown (17 tests)
+- Game Script tab on game detail page with probability bars
+- Updated EV Scanner with 3 new tabs (Arbitrage, Game Scripts, Win Prob)
+- Updated dashboard with Daily Slate widget
+- Updated parlay page with Optimizer tab
+- 110 new tests (2609 -> 2719)
+- Added 15 new backlog ideas
