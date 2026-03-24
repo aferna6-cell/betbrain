@@ -8,6 +8,7 @@ import { AutoGradePanel } from '@/components/auto-grade'
 import { PickImportPanel } from '@/components/pick-import'
 import { KellySimulatorPanel } from '@/components/kelly-simulator'
 import { PositionSizingBacktestPanel } from '@/components/position-sizing-backtest'
+import { SizingConfidenceMatrixPanel } from '@/components/sizing-confidence-matrix'
 import { getOddsApiUsage } from '@/lib/sports/odds'
 
 export const metadata: Metadata = {
@@ -79,6 +80,15 @@ export default async function ToolsPage() {
           Use Monte Carlo simulation to project likely bankroll outcomes based on your stats.
         </p>
         <MonteCarloSimulator />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Sizing Confidence Matrix</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Interactive grid showing optimal unit count at each combination of confidence level and edge size.
+          Helps standardize position sizing decisions.
+        </p>
+        <SizingConfidenceMatrixPanel />
       </div>
 
       <div className="border-t border-border pt-6">

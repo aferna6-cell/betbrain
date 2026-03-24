@@ -8,6 +8,7 @@ import { calculateAllWinProbabilities } from '@/lib/win-probability'
 import { analyzeAllImpliedTotals } from '@/lib/implied-team-totals'
 import { analyzeAllSpreadVsML } from '@/lib/spread-vs-ml'
 import { identifySharpBooks } from '@/lib/sharp-book-identifier'
+import { compareVig } from '@/lib/vig-comparison'
 import { EVScannerView } from '@/components/ev-scanner-view'
 import { ArbitrageScannerView } from '@/components/arbitrage-scanner'
 import { GameScriptPanel } from '@/components/game-script-panel'
@@ -19,6 +20,7 @@ import { PublicMoneyPanel } from '@/components/public-money'
 import { ImpliedTeamTotalsPanel } from '@/components/implied-team-totals'
 import { SpreadVsMLPanel } from '@/components/spread-vs-ml'
 import { SharpBookPanel } from '@/components/sharp-book-identifier'
+import { VigComparisonPanel } from '@/components/vig-comparison'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -43,6 +45,7 @@ export default async function EVScannerPage() {
   const impliedTotals = analyzeAllImpliedTotals(allGames)
   const spreadVsML = analyzeAllSpreadVsML(allGames)
   const sharpBooks = identifySharpBooks(allGames)
+  const vigComparison = compareVig(allGames)
 
   const totalEVCount = fullEV.allSorted.length
 
@@ -89,6 +92,9 @@ export default async function EVScannerPage() {
           </TabsTrigger>
           <TabsTrigger value="sharpbooks">
             Sharp Books{sharpBooks.scores.length > 0 ? ` (${sharpBooks.scores.length})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="vig">
+            Vig Compare
           </TabsTrigger>
         </TabsList>
 
@@ -190,6 +196,16 @@ export default async function EVScannerPage() {
               Sharp books deviate from consensus more often and consistently offer the best prices.
             </div>
             <SharpBookPanel result={sharpBooks} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="vig">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Compares the vig (juice/overround) each bookmaker charges across moneyline, spread,
+              and total markets. Lower vig = more value for the bettor.
+            </div>
+            <VigComparisonPanel result={vigComparison} />
           </div>
         </TabsContent>
       </Tabs>
