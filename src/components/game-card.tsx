@@ -68,6 +68,15 @@ export function GameCard({ game }: { game: NormalizedGame }) {
         </div>
       </div>
 
+      {game.cachedAt && !game.isFresh && (
+        <div className="mb-3 flex items-center gap-1.5">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-orange-500/70 animate-pulse" />
+          <span className="text-[10px] text-orange-400/80">
+            Odds from {timeAgo(game.cachedAt)}
+          </span>
+        </div>
+      )}
+
       {maxRange >= 15 && (
         <div className="mb-3 flex items-center gap-1.5">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-yellow-500" />

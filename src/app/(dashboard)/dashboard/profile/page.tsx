@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { ProfileForm } from './profile-form'
 import { ShareButton } from '@/components/share-button'
 import { calculateCLVStats } from '@/lib/clv'
+import { generateInsights } from '@/lib/performance-insights'
 import type { Database, Sport } from '@/lib/supabase/types'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
@@ -83,6 +84,20 @@ export default async function ProfilePage() {
   const picks = (picksData as UserPickRow[] | null) ?? []
   const stats = calcPickStats(picks)
   const clvStats = calculateCLVStats(picks)
+  const insightResult = generateInsights(picks.map((p) => ({
+    id: p.id,
+    sport: p.sport,
+    pick_type: p.pick_type,
+    outcome: p.outcome,
+    odds: p.odds,
+    profit: p.profit,
+    units: p.units,
+    game_date: p.game_date,
+    closing_odds: p.closing_odds,
+  })))
+  const topInsights = insightResult.insights
+    .filter((i) => i.confidence >= 50)
+    .slice(0, 3)
 
   return (
     <div className="space-y-6">
@@ -270,6 +285,33 @@ export default async function ProfilePage() {
               </div>
               <p className="text-xs text-muted-foreground">
                 Positive CLV means you consistently get better prices than the closing line — the #1 predictor of long-term profitability.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {topInsights.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Key Insights</CardTitle>
+              <CardDescription>Top patterns from your betting history</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {topInsights.map((insight, i) => (
+                <div key={i} className="rounded border border-border/50 p-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`h-2 w-2 rounded-full ${
+                      insight.sentiment === 'positive' ? 'bg-green-500' :
+                      insight.sentiment === 'negative' ? 'bg-red-500' : 'bg-blue-500'
+                    }`} />
+                    <span className="text-sm font-medium">{insight.title}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-1">{insight.description}</p>
+                  <p className="text-xs text-blue-400">{insight.action}</p>
+                </div>
+              ))}
+              <p className="text-[10px] text-muted-foreground/60">
+                For informational purposes only. Not financial advice.
               </p>
             </CardContent>
           </Card>

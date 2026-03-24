@@ -152,6 +152,15 @@ export function TodaysAction() {
               </span>
             </div>
             <div className="flex items-center gap-3">
+              {pick.external_game_id && (
+                <Link
+                  href={`/dashboard/games/${encodeURIComponent(pick.external_game_id)}`}
+                  className="text-[10px] text-blue-400 hover:text-blue-300 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Analyze
+                </Link>
+              )}
               {(!pick.outcome || pick.outcome === 'pending') && (
                 <GameCountdown commenceTime={pick.game_date} />
               )}
