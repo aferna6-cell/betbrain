@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { NotificationPage } from '@/components/notification-center'
+import { NotificationPreferencesPanel } from '@/components/notification-preferences'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const metadata: Metadata = {
   title: 'Notifications — BetBrain',
@@ -15,7 +17,21 @@ export default function NotificationsRoute() {
           Your activity feed — picks resolved, alerts triggered, signals detected.
         </p>
       </div>
-      <NotificationPage />
+
+      <Tabs defaultValue="feed">
+        <TabsList>
+          <TabsTrigger value="feed">Feed</TabsTrigger>
+          <TabsTrigger value="preferences">Preferences</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="feed">
+          <NotificationPage />
+        </TabsContent>
+
+        <TabsContent value="preferences" className="mt-4">
+          <NotificationPreferencesPanel />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
