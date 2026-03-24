@@ -36,18 +36,7 @@
 ## Bugs
 - [ ] (none yet)
 
-## Features — Tier 2: Retention (all complete)
-
-- [x] Streak tracking + badges, Pick comparison, Steam moves, Consensus indicator
-- [x] CSV export, Parlay correlation warnings, Game countdown, ROI by day
-- [x] Unit sizing (lib + UI card), Share to X, Seasonal reset, Daily summary
-- [x] Prop analysis cache, Preferred bookmaker, Per-book colors
-- [x] Betting journal, Notification center, Regression alerts, Game notes
-- [x] Book ROI tracker, Parlay stats (lib + UI), Weekly recap, Time analysis
-- [x] Bankroll goals, Today's Action widget, Stripe tier bypass
-
 ## Remaining Features
-- [ ] **Multi-game comparison table** — Select 2-5 games with all metrics side by side
 - [ ] **Alternate lines display** — Needs API fetch changes for alternate spread/total markets
 - [ ] **Live score integration** — Show live scores for tracked picks
 - [ ] **Prop market breakdown in pick stats** — Needs prop_market column on user_picks
@@ -59,51 +48,7 @@
 - [ ] **Mobile app** — React Native or PWA improvements
 
 ## Tests — Coverage Gaps
-- [x] Bankroll, Auto-resolve, EV scanner, Alerts, Steam, Consensus, Seasonal reset, Unit sizing
 - [ ] **API route auth tests** — Verify all protected routes return 401 without auth
-
-## Backlog — Future Ideas
-- [ ] **Custom signal builder** — User-defined signal criteria (CLV > 3% AND confidence > 70)
-- [ ] **Odds API v2 markets** — Fetch player props, alternate lines, game props
-- [ ] **Analysis history timeline** — Past AI analyses with outcome comparison
-- [ ] **Odds API budget optimizer** — Smart scheduling for popular vs low-interest sports
-- [ ] **Multi-device sync** — Sync localStorage preferences to Supabase profile
-- [ ] **AI model comparison** — Show how different Claude models analyze the same game
-- [x] **Line shopping alerts** — Line Shopping tab on game detail with best lines, juice, discrepancies _(Session 5)_
-- [ ] **Injury news feed** — Aggregate injury updates from multiple sources
-- [ ] **Weather impact analysis** — For outdoor sports (NFL, MLB), factor in weather
-- [ ] **Referee/umpire tendencies** — Track how officials affect over/unders
-- [x] **Closing line value dashboard** — Visualize CLV trends over time with charts
-- [x] **Smart bankroll allocation** — Auto-suggest how to split bankroll across sports
-- [ ] **Parlay optimizer** — Find the highest EV combination of legs
-- [x] **Risk-adjusted ROI** — Weight ROI by stake size and variance
-- [x] **Correlation matrix** — Show which sports/bet types your results correlate with
-- [ ] **Dark/light mode improvements** — Per-page theming, OLED dark mode
-- [x] **CLV trend chart** — Recharts line chart showing CLV trends over time on analytics page
-- [x] **Quick analysis from Today's Action** — Button on pick cards to jump to game detail _(Session 6)_
-- [x] **Closing odds auto-capture** — Background job to snapshot odds at game start time
-- [ ] **Results feed** — Real-time feed showing today's game results as they finalize
-- [x] **Pick templates** — Save common pick configurations for quick logging
-- [x] **Home/away splits** — Analytics showing performance on home vs away picks
-- [x] **Odds movement velocity alerts** — Alert when a line is moving unusually fast
-- [x] **Daily review prompt** — End-of-day prompt asking to grade/reflect on today's picks _(Session 6)_
-- [x] **Bankroll graph on dashboard** — Mini sparkline of bankroll trend in stats grid
-- [x] **Pick streak indicators in Today's Action** — Show win/loss streak per sport _(Session 6)_
-- [x] **Model accuracy tracking** — AI confidence vs actual outcomes over time
-- [ ] **Prop analysis history** — Past prop analyses with outcomes
-- [x] **Quick filters on dashboard** — "Only games I have picks on" / "Only with signals"
-- [x] **Copy analysis to clipboard** — One-click copy for sharing in group chats
-- [x] **Performance by bookmaker** — Which book gives best CLV? Track and show. _(Session 6)_
-- [x] **Alternate line calculator** — Show what alternate lines pay and their EV
-- [x] **Public betting % estimates** — Use odds movement to estimate public money direction _(Session 6)_
-- [x] **Season summary generator** — Auto-generate end-of-season report
-- [x] **Notification preferences** — Choose which event types trigger notifications
-- [x] **Bankroll recovery calculator** — How many bets to recover from this drawdown? _(Session 6)_
-- [x] **Pre-bet risk scorecard UI** — Wire risk-assessment.ts into pick form with visual risk meter _(Session 6)_
-- [x] **Value plays page** — Dedicated /dashboard/value page with all value plays _(Session 6)_
-- [x] **Performance insights on profile** — Show top 3 insights on profile page _(Session 6)_
-- [x] **Line movement heatmap** — Visual heatmap of which games have the most line movement _(Session 6)_
-- [x] **Odds staleness indicator on game cards** — Show last update time relative to game start _(Session 6)_
 
 ## Remaining Ideas
 - [ ] **Closing line auto-capture cron** — Background job to run matchClosingLines before game starts
@@ -113,13 +58,7 @@
 - [ ] **Performance by time-to-game** — Track ROI based on how far before game start the bet was placed
 - [ ] **Book-specific line shopping** — Show which book consistently has best lines per market type
 - [ ] **Pick import from CSV** — Upload historical picks for analysis
-- [ ] **Bet grading system** — Rate bet quality separate from outcome (process vs result)
-
-## New Ideas (Session 6 — 2026-03-24)
 - [ ] **Bet replay viewer** — Step through historical odds movement for a game you bet on
-- [ ] **Kelly fraction override** — Allow manual Kelly adjustment (quarter/half/full) per bet
-- [ ] **Hedge calculator on game detail** — Calculate hedge from game detail page for live hedging
-- [ ] **Profit calendar** — Monthly calendar view colored by daily P/L (green/red/gray)
 - [ ] **Bankroll allocation rebalancer** — Alert when sport allocation drifts from target
 - [ ] **Sharp book identifier** — Track which books are consistently early movers
 - [ ] **Game script predictor** — AI-powered prediction of game flow (blowout, close, OT)
@@ -132,7 +71,23 @@
 - [ ] **Reverse engineer fair odds** — Given a final score, what were the "true" odds?
 - [ ] **Alert templates** — Save common alert configurations for quick setup
 - [ ] **Cross-sport correlation alerts** — Alert when multiple sports show correlated sharp action
-- [ ] **Odds API usage forecast** — Predict when you'll exhaust monthly budget at current rate
 - [ ] **In-app changelog with feature tours** — Interactive walkthroughs of new features
 - [ ] **Player prop value scanner** — When Odds API props are available, scan for +EV props
-- [ ] **Bet sizing optimizer** — Suggest optimal unit sizes based on Kelly and recent performance
+- [ ] **Prop analysis history** — Past prop analyses with outcomes
+
+## New Ideas (Session 7 — 2026-03-24)
+- [ ] **Process grade history** — Track bet grading scores over time, show trend on analytics
+- [ ] **Pre-game checklist enforcer** — Require thesis + line shop before allowing pick log
+- [ ] **Bankroll milestone alerts** — Notify when bankroll crosses key thresholds (2x, etc.)
+- [ ] **Odds screen comparator** — Side-by-side visual diff of odds at two points in time
+- [ ] **Pick confidence vs CLV scatter** — Scatter plot of confidence rating vs actual CLV
+- [ ] **Auto-grade from pick data** — Infer grading criteria from pick metadata (timing, CLV)
+- [ ] **Streak probability calculator** — What are the odds of your current streak continuing?
+- [ ] **Unit sizing history chart** — Track how your unit sizing changes over time
+- [ ] **Daily P/L notification** — Evening summary notification with day's P/L
+- [ ] **Parlay leg correlation heatmap** — Visual matrix of correlated parlay legs
+- [ ] **Fade tracker** — Track performance of contrarian plays vs public side
+- [ ] **Line movement alert thresholds** — Customizable thresholds for different sports
+- [ ] **Bankroll allocation drift chart** — Visual history of sport allocation vs target
+- [ ] **Pick quality vs outcome matrix** — 2x2 grid of process (good/bad) vs outcome (win/loss)
+- [ ] **Weekly process grade report** — Average bet grading score per week with trends

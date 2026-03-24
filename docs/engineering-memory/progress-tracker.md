@@ -163,3 +163,20 @@ _What was built each session._
 - `/dashboard/value` — Dedicated value plays page
 
 ### Commits: 6
+
+## Session 2026-03-24 (Session 7)
+
+### Features Built
+1. **Profit calendar** (`src/lib/profit-calendar.ts`, `src/components/profit-calendar.tsx`) — Monthly calendar view colored by daily P/L. 7 heat tiers (big-loss to big-win). Day detail popup, best/worst day summary, daily win/lose streaks. Month navigation. Added to analytics page. 26 tests.
+2. **Hedge calculator** (`src/components/hedge-calculator.tsx`) — New "Hedge" tab on game detail page. Quick-fill from current best moneyline lines. Scenario breakdown (if original wins vs hedge wins). Guaranteed profit calculation. Uses existing `calculateHedge` from bet-calculator.ts.
+3. **API usage forecast** (`src/lib/api-usage-forecast.ts`, `src/components/api-usage-forecast.tsx`) — Predicts when monthly Odds API budget will exhaust. Daily burn rate with weighted history, projected month-end usage, exhaustion date, sustainable rate. 4 status levels (safe/warning/danger/exhausted). Added to tools page. 18 tests.
+4. **Kelly fraction override** (`src/lib/kelly-override.ts`, `src/components/kelly-override.tsx`) — Configurable Kelly criterion multiplier (quarter/half/three-quarter/full/custom). Global setting + per-bet overrides via localStorage. Edge-confidence-adjusted Kelly. Added to bankroll page. 22 tests.
+5. **Results feed** (`src/lib/results-feed.ts`, `src/components/results-feed.tsx`) — Daily pick outcomes timeline on dashboard. Date navigation, running P/L, win/loss/push count, pending tracking. Matches picks with game data. Added to dashboard. 17 tests.
+6. **Bet sizing optimizer** (`src/lib/bet-sizing-optimizer.ts`, `src/components/bet-sizing-optimizer.tsx`) — 5-factor scoring (win rate, ROI, sample size, bankroll health, Kelly aggression). Adjusts unit size 0.5x-1.5x based on recent 14-day performance. Visual factor breakdown. Added to bankroll page. 15 tests.
+7. **Bet grading system** (`src/lib/bet-grading.ts`, `src/components/bet-grading.tsx`) — 6-factor process quality scoring: research/thesis, line shopping, CLV, sizing discipline, system adherence, timing. Letter grades A+ to F. Outcome alignment detection (lucky/unlucky). Interactive checklist UI. Added to tools page. 19 tests.
+
+### Tests Added
+- 117 new tests (2013 to 2130 total)
+- New test files: profit-calendar (26), api-usage-forecast (18), kelly-override (22), results-feed (17), bet-sizing-optimizer (15), bet-grading (19)
+
+### Commits: 7

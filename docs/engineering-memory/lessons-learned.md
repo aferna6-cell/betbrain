@@ -57,3 +57,12 @@ The risk assessment composite score uses weighted factors (30% bankroll, 25% odd
 
 ## 2026-03-24 (Session 6): localStorage data for client components
 Multiple features (risk scorecard, bankroll recovery, daily review) read from localStorage. Always: (1) guard with typeof window check, (2) wrap in try-catch since storage can be full or disabled, (3) provide sensible defaults, (4) load in useEffect not during render to avoid SSR mismatch.
+
+## 2026-03-24 (Session 7): getBestMoneyline returns number, not object
+The `getBestMoneyline()` function in `src/lib/odds.ts` returns `number | null`, not an object with an `odds` property. When using it in components, access the value directly (e.g., `formatOdds(bestHomeML)`) rather than as a property. Always check the return type of utility functions before using them in new components.
+
+## 2026-03-24 (Session 7): Process vs outcome in bet grading
+The bet grading system deliberately separates process quality from outcome. A losing bet with good process (thesis, line shopped, followed system) gets a high grade. This aligns with long-term betting theory: good process beats good results over time. The "outcome alignment" metric identifies lucky wins (bad process, good result) vs unlucky losses (good process, bad result).
+
+## 2026-03-24 (Session 7): Weighted daily burn rate for API usage
+For API usage forecasting, a weighted recent average (more recent days weigh more) provides better predictions than a simple average. This captures trends like "I used more this weekend because football was on." The formula: weight each day by its position (most recent = highest), divide by sum of weights.
