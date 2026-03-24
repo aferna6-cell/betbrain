@@ -124,57 +124,23 @@ async function trackClaudeUsage(): Promise<void> {
 export async function checkAnalysisLimit(
   userId: string
 ): Promise<{ allowed: boolean; used: number; limit: number }> {
+  // Personal tool — no tier gating. All analyses are unlimited.
+  // Stripe/subscription checks bypassed intentionally.
   const supabase = await createServiceClient()
 
   const { data } = await supabase
     .from('profiles')
-    .select('subscription_tier, analyses_today, analyses_reset_at')
+    .select('analyses_today')
     .eq('id', userId)
     .single()
 
   const profile = data as Pick<
     Database['public']['Tables']['profiles']['Row'],
-    'subscription_tier' | 'analyses_today' | 'analyses_reset_at'
+    'analyses_today'
   > | null
 
-  if (!profile) {
-    return { allowed: false, used: 0, limit: 0 }
-  }
-
-  if (profile.subscription_tier === 'pro') {
-    return { allowed: true, used: profile.analyses_today, limit: Infinity }
-  }
-
-  const limit = 3
-  const now = new Date()
-  const resetAt = new Date(profile.analyses_reset_at)
-
-  // Reset counter if we've crossed midnight
-  if (now > resetAt) {
-    const { error: resetError } = await supabase
-      .from('profiles')
-      .update({
-        analyses_today: 0,
-        analyses_reset_at: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + 1
-        ).toISOString(),
-      })
-      .eq('id', userId)
-
-    if (resetError) {
-      console.error('[ai] Failed to reset analysis count:', resetError.message)
-    }
-
-    return { allowed: true, used: 0, limit }
-  }
-
-  return {
-    allowed: profile.analyses_today < limit,
-    used: profile.analyses_today,
-    limit,
-  }
+  const used = profile?.analyses_today ?? 0
+  return { allowed: true, used, limit: Infinity }
 }
 
 export async function incrementAnalysisCount(userId: string): Promise<void> {

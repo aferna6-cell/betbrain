@@ -136,22 +136,15 @@ export default async function ProfilePage() {
           <CardContent className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Plan</p>
-              <p className="text-2xl font-bold capitalize">
-                {profile?.subscription_tier ?? 'Free'}
-              </p>
+              <p className="text-2xl font-bold">Personal</p>
             </div>
             <Separator />
             <div>
               <p className="text-sm text-muted-foreground">Daily analyses used</p>
               <p className="font-medium">
-                {profile?.analyses_today ?? 0} / {profile?.subscription_tier === 'pro' ? 'Unlimited' : '3'}
+                {profile?.analyses_today ?? 0} / Unlimited
               </p>
             </div>
-            {profile?.subscription_tier === 'free' && (
-              <p className="text-sm text-muted-foreground">
-                Upgrade to Pro for unlimited analyses, all leagues, and alerts.
-              </p>
-            )}
           </CardContent>
         </Card>
 

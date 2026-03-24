@@ -84,17 +84,15 @@ export default async function DashboardPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border border-border bg-card p-6">
-          <p className="text-sm text-muted-foreground">Subscription</p>
-          <p className="mt-1 text-2xl font-semibold capitalize">
-            {profile?.subscription_tier ?? 'Free'}
-          </p>
+          <p className="text-sm text-muted-foreground">Plan</p>
+          <p className="mt-1 text-2xl font-semibold">Personal</p>
         </div>
         <div className="rounded-lg border border-border bg-card p-6">
           <p className="text-sm text-muted-foreground"><TermTooltip term="Analysis">Analyses</TermTooltip> Today</p>
           <p className="mt-1 text-2xl font-semibold">
             {profile?.analyses_today ?? 0}
             <span className="text-sm font-normal text-muted-foreground">
-              {' '}/ {profile?.subscription_tier === 'pro' ? '\u221E' : '3'}
+              {' '}/ {'\u221E'}
             </span>
           </p>
         </div>

@@ -34,7 +34,7 @@ const navLinks = [
   { href: '/dashboard/analytics', label: 'Analytics' },
   { href: '/dashboard/api', label: 'API' },
   { href: '/dashboard/glossary', label: 'Glossary' },
-  { href: '/dashboard/billing', label: 'Billing' },
+  { href: '/dashboard/tools', label: 'Tools' },
   { href: '/dashboard/profile', label: 'Profile' },
 ]
 

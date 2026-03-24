@@ -1,68 +1,50 @@
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
-  title: 'Billing — BetBrain',
-  description: 'Manage your BetBrain subscription.',
+  title: 'Usage — BetBrain',
+  description: 'View your BetBrain usage stats.',
 }
-import { BillingPanel } from '@/components/billing-panel'
-import type { Database } from '@/lib/supabase/types'
 
-type Profile = Database['public']['Tables']['profiles']['Row']
-
-export default async function BillingPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  const { data } = await supabase
-    .from('profiles')
-    .select('subscription_tier, stripe_customer_id, stripe_subscription_id, analyses_today')
-    .eq('id', user!.id)
-    .single()
-
-  const profile = data as Pick<
-    Profile,
-    'subscription_tier' | 'stripe_customer_id' | 'stripe_subscription_id' | 'analyses_today'
-  > | null
-
-  const tier = profile?.subscription_tier ?? 'free'
-  const analysesToday = profile?.analyses_today ?? 0
-  const limit = tier === 'pro' ? null : 3
-
+export default function BillingPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Billing</h1>
+        <h1 className="text-3xl font-bold">Usage</h1>
         <p className="mt-1 text-muted-foreground">
-          Manage your subscription and billing
+          Personal tool — all features are unlimited.
         </p>
       </div>
 
-      {/* Daily quota display */}
-      <div className="rounded-lg border border-border bg-card p-4 flex items-center justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">AI Analyses Today</p>
-          <p className="text-xl font-bold">
-            {analysesToday}
-            {limit !== null && (
-              <span className="text-sm font-normal text-muted-foreground"> / {limit}</span>
-            )}
-            {limit === null && (
-              <span className="ml-2 text-sm font-normal text-green-500">Unlimited</span>
-            )}
-          </p>
-        </div>
-        {limit !== null && analysesToday >= limit && (
-          <span className="text-xs text-yellow-500">Daily limit reached — upgrade to Pro for unlimited</span>
-        )}
+      <div className="rounded-lg border border-border bg-card p-6">
+        <h2 className="text-xl font-bold mb-2">Personal License</h2>
+        <p className="text-muted-foreground text-sm">
+          BetBrain is configured as a personal analytics tool. All AI analyses,
+          signals, and features are available without limits. API call caching
+          keeps you within free-tier rate limits for external data sources.
+        </p>
+        <ul className="mt-4 space-y-2 text-sm">
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-green-500">+</span>
+            <span>Unlimited AI analyses</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-green-500">+</span>
+            <span>All sports coverage</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-green-500">+</span>
+            <span>Smart Signals, +EV scanner, arbitrage detection</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-green-500">+</span>
+            <span>Line movement alerts</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="mt-0.5 text-green-500">+</span>
+            <span>Auto-resolve picks</span>
+          </li>
+        </ul>
       </div>
-
-      <BillingPanel
-        tier={tier}
-        hasSubscription={!!profile?.stripe_subscription_id}
-      />
     </div>
   )
 }
