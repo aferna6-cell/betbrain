@@ -4,9 +4,11 @@ import { scanForEV, detectArbitrage, detectMultiMarketArbitrage, scanAllMarketsF
 import { analyzeAllConsensus } from '@/lib/consensus'
 import { findFadeOpportunities } from '@/lib/fade-public'
 import { predictAllGameScripts } from '@/lib/game-script'
+import { calculateAllWinProbabilities } from '@/lib/win-probability'
 import { EVScannerView } from '@/components/ev-scanner-view'
 import { ArbitrageScannerView } from '@/components/arbitrage-scanner'
 import { GameScriptPanel } from '@/components/game-script-panel'
+import { WinProbabilityPanel } from '@/components/win-probability'
 import { ConsensusView } from '@/components/consensus-indicator'
 import { FadePublicTool } from '@/components/fade-public'
 import { SituationalSpotsPanel } from '@/components/situational-spots'
@@ -29,6 +31,7 @@ export default async function EVScannerPage() {
   const multiArbs = detectMultiMarketArbitrage(allGames)
   const fullEV = scanAllMarketsForEV(allGames)
   const gameScripts = predictAllGameScripts(allGames)
+  const winProbs = calculateAllWinProbabilities(allGames)
   const consensus = analyzeAllConsensus(allGames)
   const fades = findFadeOpportunities(allGames)
 
@@ -62,6 +65,9 @@ export default async function EVScannerPage() {
           </TabsTrigger>
           <TabsTrigger value="spots">
             Situations
+          </TabsTrigger>
+          <TabsTrigger value="winprob">
+            Win Prob{winProbs.length > 0 ? ` (${winProbs.length})` : ''}
           </TabsTrigger>
           <TabsTrigger value="public">
             Public %
@@ -119,6 +125,16 @@ export default async function EVScannerPage() {
             <SituationalSpotsPanel games={allGames} />
           </div>
         </TabsContent>
+        <TabsContent value="winprob">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              No-vig win probabilities derived from bookmaker consensus. Shows how much
+              each book agrees/disagrees and which books are most bullish on each team.
+            </div>
+            <WinProbabilityPanel probabilities={winProbs} />
+          </div>
+        </TabsContent>
+
         <TabsContent value="public">
           <div className="space-y-4">
             <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
