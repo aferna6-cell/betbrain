@@ -21,6 +21,7 @@ const navLinks = [
   { href: '/dashboard/watchlist', label: 'Watchlist' },
   { href: '/dashboard/signals', label: 'Signals' },
   { href: '/dashboard/ev', label: '+EV' },
+  { href: '/dashboard/value', label: 'Value' },
   { href: '/dashboard/alerts', label: 'Alerts' },
   { href: '/dashboard/picks', label: 'Picks' },
   { href: '/dashboard/bankroll', label: 'Bankroll' },

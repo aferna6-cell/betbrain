@@ -52,7 +52,7 @@ export function ValuePlaysWidget({ games }: { games: NormalizedGame[] }) {
       {result.plays.length > 5 && (
         <div className="px-4 py-2 text-center border-t border-border/30">
           <Link
-            href="/dashboard/ev"
+            href="/dashboard/value"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             View all {result.plays.length} value plays &rarr;

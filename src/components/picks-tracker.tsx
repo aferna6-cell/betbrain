@@ -14,6 +14,7 @@ import { SeasonResetControl } from '@/components/season-reset'
 import { RegressionAlertsPanel } from '@/components/regression-alerts'
 import { filterCurrentSeason } from '@/lib/seasonal-reset'
 import { ParlayStatsDisplay } from '@/components/parlay-stats-display'
+import { RiskScorecard } from '@/components/risk-scorecard'
 import type {
   Sport,
   PickType,
@@ -85,6 +86,10 @@ function PickForm({
 }) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [riskOdds, setRiskOdds] = useState<number | null>(null)
+  const [riskUnits, setRiskUnits] = useState(1)
+  const [riskSport, setRiskSport] = useState('nba')
+  const [riskBetType, setRiskBetType] = useState('moneyline')
 
   // Pre-fill from URL params (e.g. from game detail "Log Pick" button)
   const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
@@ -179,7 +184,7 @@ function PickForm({
           <label htmlFor="pick-sport" className="mb-1 block text-sm text-muted-foreground">
             Sport
           </label>
-          <select id="pick-sport" name="sport" required defaultValue={prefill.sport || 'nba'} className={inputClass}>
+          <select id="pick-sport" name="sport" required defaultValue={prefill.sport || 'nba'} onChange={(e) => setRiskSport(e.target.value)} className={inputClass}>
             <option value="nba">NBA</option>
             <option value="nfl">NFL</option>
             <option value="mlb">MLB</option>
@@ -191,7 +196,7 @@ function PickForm({
           <label htmlFor="pick-pickType" className="mb-1 block text-sm text-muted-foreground">
             Pick Type
           </label>
-          <select id="pick-pickType" name="pickType" required className={inputClass}>
+          <select id="pick-pickType" name="pickType" required onChange={(e) => setRiskBetType(e.target.value)} className={inputClass}>
             <option value="moneyline">Moneyline</option>
             <option value="spread">Spread</option>
             <option value="over">Over</option>
@@ -236,6 +241,7 @@ function PickForm({
             type="number"
             required
             placeholder="e.g. -110"
+            onChange={(e) => setRiskOdds(e.target.value ? Number(e.target.value) : null)}
             className={inputClass}
           />
         </div>
@@ -264,6 +270,7 @@ function PickForm({
             step="0.5"
             min="0.5"
             defaultValue="1"
+            onChange={(e) => setRiskUnits(Number(e.target.value) || 1)}
             className={inputClass}
           />
         </div>
@@ -294,6 +301,8 @@ function PickForm({
           />
         </div>
       </div>
+
+      <RiskScorecard odds={riskOdds} units={riskUnits} sport={riskSport} betType={riskBetType} />
 
       <div className="flex items-center gap-4">
         <Button type="submit" disabled={submitting}>
