@@ -18,6 +18,7 @@ import { WeeklyProcessGradePanel } from '@/components/weekly-process-grade'
 import { FadeTrackerPanel } from '@/components/fade-tracker'
 import { ConfidenceClvScatterPanel } from '@/components/confidence-clv-scatter'
 import { TagPerformancePanel } from '@/components/pick-tags'
+import { ExpectedWinsChart } from '@/components/expected-wins'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -159,6 +160,16 @@ export default async function AnalyticsPage() {
           Compare your contrarian (underdog) plays vs public-side favorites. Are your fades profitable?
         </p>
         <FadeTrackerPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Expected vs Actual Wins</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Compare your actual wins to what the odds predicted. Running hot means
+          more wins than expected — enjoy it, but expect regression. Running cold
+          means positive regression may be coming.
+        </p>
+        <ExpectedWinsChart />
       </div>
 
       <div className="border-t border-border pt-6">
