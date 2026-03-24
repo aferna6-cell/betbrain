@@ -24,6 +24,7 @@ import { CLVDistributionPanel } from '@/components/clv-distribution'
 import { SeasonalTrendsPanel } from '@/components/seasonal-trends'
 import { PickDependenciesPanel } from '@/components/pick-dependencies'
 import { EVAttributionPanel } from '@/components/ev-attribution'
+import { MomentumDetectorPanel } from '@/components/momentum-detector'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -238,6 +239,15 @@ export default async function AnalyticsPage() {
           Low or negative correlation means better diversification.
         </p>
         <CorrelationMatrixPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Team Momentum</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Track which teams are on hot or cold streaks. Identifies potential
+          fade opportunities when streaks create overreaction in odds.
+        </p>
+        <MomentumDetectorPanel result={{ teams: [], hotTeams: [], coldTeams: [] }} />
       </div>
     </div>
   )

@@ -9,6 +9,8 @@ import { OddsVelocityPanel } from '@/components/odds-velocity'
 import { LineMovementHeatmap } from '@/components/line-movement-heatmap'
 import { SharpMoneyFlowPanel } from '@/components/sharp-money-flow'
 import { detectSharpFlow, type SharpSignal, type GameOddsTimeline, type OddsPoint } from '@/lib/sharp-money-flow'
+import { trackConsensus } from '@/lib/consensus-line-tracker'
+import { ConsensusLineTrackerPanel } from '@/components/consensus-line-tracker'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -27,6 +29,7 @@ export default async function SignalsPage() {
 
   const allGames = Array.from(oddsMap.values()).flatMap((r) => r.games)
   const signals = await detectSmartSignals(allGames)
+  const consensusTracker = trackConsensus(allGames)
 
   return (
     <div className="space-y-6">
@@ -53,6 +56,9 @@ export default async function SignalsPage() {
           </TabsTrigger>
           <TabsTrigger value="sharp">
             Sharp Flow
+          </TabsTrigger>
+          <TabsTrigger value="consensus">
+            Consensus{consensusTracker.gamesWithDeviations > 0 ? ` (${consensusTracker.gamesWithDeviations})` : ''}
           </TabsTrigger>
           <TabsTrigger value="history">
             Hit Rate{stats.hitRate !== null ? ` — ${stats.hitRate}%` : ''}
@@ -93,6 +99,16 @@ export default async function SignalsPage() {
               summary={{ totalSignals: 0, rlmCount: 0, lateSteamCount: 0, openingValueCount: 0, strongSignals: [], multiSignalGames: [] }}
               signals={[]}
             />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="consensus">
+          <div className="mt-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Market consensus lines with bookmaker deviations. Books deviating from the median may
+              offer value (stale lines) or signal early movement.
+            </p>
+            <ConsensusLineTrackerPanel result={consensusTracker} />
           </div>
         </TabsContent>
 
