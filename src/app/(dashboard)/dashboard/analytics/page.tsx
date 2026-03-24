@@ -9,6 +9,7 @@ import { HomeAwaySplits } from '@/components/home-away-splits'
 import { ModelAccuracyPanel } from '@/components/model-accuracy'
 import { SeasonSummaryPanel } from '@/components/season-summary'
 import { CorrelationMatrixPanel } from '@/components/correlation-matrix'
+import { PerformanceInsights } from '@/components/performance-insights'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -35,6 +36,10 @@ export default async function AnalyticsPage() {
         <p className="mt-1 text-muted-foreground">
           Your pick performance, activity metrics, and API usage at a glance.
         </p>
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <PerformanceInsights />
       </div>
 
       <div className="border-b border-border pb-6">
