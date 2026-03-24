@@ -11,6 +11,7 @@ import { SeasonSummaryPanel } from '@/components/season-summary'
 import { CorrelationMatrixPanel } from '@/components/correlation-matrix'
 import { PerformanceInsights } from '@/components/performance-insights'
 import { BookPerformancePanel } from '@/components/book-performance'
+import { ProfitCalendar } from '@/components/profit-calendar'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -49,6 +50,15 @@ export default async function AnalyticsPage() {
           Your overall season performance at a glance, with a letter grade and key highlights.
         </p>
         <SeasonSummaryPanel />
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <h2 className="text-xl font-bold mb-2">Profit Calendar</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Monthly calendar view of your daily P/L. Green days are profitable, red days are losses.
+          Click any day for details.
+        </p>
+        <ProfitCalendar />
       </div>
 
       <AnalyticsDashboard data={analytics} />
