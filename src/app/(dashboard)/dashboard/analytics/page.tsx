@@ -20,6 +20,7 @@ import { ConfidenceClvScatterPanel } from '@/components/confidence-clv-scatter'
 import { TagPerformancePanel } from '@/components/pick-tags'
 import { ExpectedWinsChart } from '@/components/expected-wins'
 import { BetTimingPanel } from '@/components/bet-timing'
+import { CLVDistributionPanel } from '@/components/clv-distribution'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -189,6 +190,15 @@ export default async function AnalyticsPage() {
           &quot;value&quot;, &quot;revenge game&quot;, or &quot;prime time&quot; to discover your best edges.
         </p>
         <TagPerformancePanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">CLV Distribution</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Histogram of your closing line value across all picks. Understand the shape
+          of your edge and where most value is captured.
+        </p>
+        <CLVDistributionPanel />
       </div>
 
       <div className="border-t border-border pt-6">

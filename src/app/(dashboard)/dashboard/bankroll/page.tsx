@@ -4,6 +4,7 @@ import { BankrollRecoveryCalculator } from '@/components/bankroll-recovery'
 import { KellyOverridePanel } from '@/components/kelly-override'
 import { BetSizingOptimizer } from '@/components/bet-sizing-optimizer'
 import { BankrollMilestonesPanel } from '@/components/bankroll-milestones'
+import { MultiBookTracker } from '@/components/multi-book-tracker'
 
 export const metadata: Metadata = {
   title: 'Bankroll Management — BetBrain',
@@ -28,6 +29,14 @@ export default function BankrollPage() {
 
       <div className="border-t border-border pt-6">
         <BetSizingOptimizer />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Sportsbook Accounts</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Track balances across all your sportsbook accounts. See total portfolio value, allocation, and P/L per book.
+        </p>
+        <MultiBookTracker />
       </div>
 
       <BankrollRecoveryCalculator />
