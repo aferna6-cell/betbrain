@@ -21,6 +21,7 @@ import { BankrollSparkline } from '@/components/bankroll-sparkline'
 import { ValuePlaysWidget } from '@/components/value-plays'
 import { DailyReviewPrompt } from '@/components/daily-review'
 import { TermTooltip } from '@/components/term-tooltip'
+import { ResultsFeed } from '@/components/results-feed'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
 
@@ -85,6 +86,7 @@ export default async function DashboardPage() {
       />
 
       <DailyReviewPrompt />
+      <ResultsFeed games={allGames} />
       <TodaysAction />
       <ValuePlaysWidget games={allGames} />
       <DashboardStats />
