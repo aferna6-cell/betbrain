@@ -21,6 +21,7 @@ import { TagPerformancePanel } from '@/components/pick-tags'
 import { ExpectedWinsChart } from '@/components/expected-wins'
 import { BetTimingPanel } from '@/components/bet-timing'
 import { CLVDistributionPanel } from '@/components/clv-distribution'
+import { SeasonalTrendsPanel } from '@/components/seasonal-trends'
 import { EVAttributionPanel } from '@/components/ev-attribution'
 import { redirect } from 'next/navigation'
 
@@ -209,6 +210,15 @@ export default async function AnalyticsPage() {
           of your edge and where most value is captured.
         </p>
         <CLVDistributionPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Seasonal Trends</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Identify recurring performance patterns by month, week, and day of week.
+          Spot your best and worst calendar periods.
+        </p>
+        <SeasonalTrendsPanel />
       </div>
 
       <div className="border-t border-border pt-6">
