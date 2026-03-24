@@ -30,4 +30,11 @@ Several client-side utilities need DOM for testing. Installing jsdom would simpl
 - Time analysis could factor in day-of-week combined with time-of-day for more granular patterns
 - Bankroll goals could send notifications when approaching or achieving targets
 - Game notes could be surfaced in the comparison table for multi-game analysis
-- Parlay stats component needs UI — currently library-only, no visual display yet
+- ~~Parlay stats component needs UI~~ — DONE (ParlayStatsDisplay wired into picks tracker)
+
+## 2026-03-24
+- The TodaysAction widget only shows picks for the exact current date. Could expand to show "next 24 hours" for evening bettors reviewing morning lines.
+- Unit sizing card could persist the recommended confidence level to pre-fill when logging the pick.
+- The Stripe code (routes, tests, lib) could be fully removed in a dedicated cleanup pass. Currently bypassed but still in the codebase.
+- Consider adding a "Quick Analysis" button directly on the TodaysAction widget cards.
+- The billing page still exists at /dashboard/billing — could redirect to /dashboard/tools instead.

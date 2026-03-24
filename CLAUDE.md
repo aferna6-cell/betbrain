@@ -9,8 +9,8 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **Database:** Supabase (PostgreSQL + Auth)
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
-- **Payments:** Stripe subscriptions (legacy — personal tool, no active billing)
-- **Testing:** Vitest (unit, 1476 tests) + Playwright (E2E, 24 smoke tests)
+- **Payments:** None (personal tool — Stripe code is legacy, tier checks bypassed)
+- **Testing:** Vitest (unit, 1681 tests) + Playwright (E2E, 24 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
@@ -40,7 +40,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (1385 tests)
+npm run test         # Run Vitest unit tests (1681 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md
@@ -56,6 +56,8 @@ npm run evening:auto # Run scripts/daily/evening-auto.sh
 - The Odds API free tier: 500 requests/month — cache aggressively
 - Every AI analysis must be structured: summary, key factors, value assessment, risk level
 - Dark theme throughout the dashboard
+- This is a PERSONAL TOOL — no Stripe, no subscriptions, no pricing tiers, no multi-user features
+- All features are unlimited (analysis limits bypassed)
 - Stage specific files when committing (`git add <files>`) — never `git add .` or `git add -A`
 - Do NOT auto-push — only push when explicitly asked
 

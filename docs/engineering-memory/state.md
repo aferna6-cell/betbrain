@@ -1,8 +1,18 @@
 # Engineering State
-## Last Session (2026-03-23, Session 4)
-- Built: Confidence calibration, Monte Carlo simulator, Fade the public tool, Situational spots detector
+## Current Session (2026-03-24)
+- Built: Stripe tier bypass, parlay stats UI, unit sizing card, Today's Action widget, landing page de-SaaS
 - In progress: (none)
-- Next up: Custom signal builder, CLV dashboard, line shopping alerts, bet grading system
-- Build status: GREEN (1666 tests, all passing, clean build)
+- Next up: More test coverage, additional dashboard improvements
+- Build status: GREEN (1681 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 1666 (88 test files)
+- Test count: 1681 (89 test files)
+
+## Key changes this session
+- Bypassed all Stripe/subscription tier gating (personal tool)
+- Replaced landing page pricing with single "Personal" plan
+- Updated FAQ to remove subscription references
+- Added ParlayStatsDisplay component (shows straight vs parlay breakdown)
+- Added UnitSizingCard component (Kelly-based sizing on game detail page)
+- Added TodaysAction dashboard widget (pending picks with countdowns)
+- Added 15 unit sizing integration tests
+- Replaced Google Fonts with local geist package (build fix)

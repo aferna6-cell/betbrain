@@ -27,3 +27,9 @@ The notification system deduplicates same-type + same-title within 5 minutes. Th
 
 ## 2026-03-23 (Session 3): Book color fallbacks prevent runtime errors
 Unknown bookmaker keys (from new sportsbooks appearing in Odds API data) get a neutral gray fallback instead of throwing. Always provide fallback styling for dynamic data from external APIs.
+
+## 2026-03-24: Bypassing SaaS code is safer than removing it
+Rather than deleting all Stripe/subscription code (which would break 15+ files and their tests), the pragmatic approach is to bypass the tier check functions to always return "unlimited." This preserves code structure and test coverage while making the app function as a personal tool. The Stripe API routes still exist but are unreachable from the UI.
+
+## 2026-03-24: Check for duplicate imports before adding new ones
+When adding `getBestMoneyline` to game-detail.tsx, the import already existed on a different line. Turbopack gives a "Duplicate declaration" error. Always grep for the import name in the target file before adding.

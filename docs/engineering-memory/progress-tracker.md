@@ -75,3 +75,28 @@ _What was built each session._
 - `/dashboard/ev` — Added "Fade Public" and "Situations" tabs
 
 ### Commits: 4 (pushed via GitHub MCP)
+
+## Session 2026-03-24
+
+### Bug Fixes
+- Google Fonts fetch fails in sandbox: confirmed geist local package fix was already on remote
+
+### De-SaaS Changes
+- Bypassed Stripe tier gating in `checkAnalysisLimit()` — all analyses now unlimited
+- Replaced billing page with simple "Personal" usage page
+- Removed Billing from nav, replaced with Tools link
+- Dashboard shows "Personal" plan instead of Free/Pro
+- Profile page shows unlimited analyses
+- Landing page: replaced Free/Pro pricing grid with single "Personal" plan
+- FAQ: removed subscription/pricing questions, updated Smart Signals description
+
+### Features Built
+1. **ParlayStatsDisplay** (`src/components/parlay-stats-display.tsx`) — Straight vs parlay breakdown: W/L/profit/ROI for each. Only renders when user has parlay groups. Wired into picks tracker.
+2. **UnitSizingCard** (`src/components/unit-sizing-card.tsx`) — Kelly criterion-based unit sizing shown on game detail page after AI analysis. 4 confidence tiers with bankroll cap. Reads bankroll config from localStorage.
+3. **TodaysAction** (`src/components/todays-action.tsx`) — Dashboard widget showing today's pending picks with countdowns, resolved results, units at risk, running P/L. Auto-hides if no picks today.
+
+### Tests Added
+- 15 new tests (1666 to 1681 total)
+- New test file: unit-sizing-integration.test.ts (15 tests)
+
+### Commits: 6
