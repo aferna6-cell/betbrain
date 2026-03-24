@@ -17,6 +17,7 @@ import { DailySummary } from '@/components/daily-summary'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 import { WhatsNew } from '@/components/whats-new'
 import { TodaysAction } from '@/components/todays-action'
+import { BankrollSparkline } from '@/components/bankroll-sparkline'
 import { TermTooltip } from '@/components/term-tooltip'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -83,6 +84,7 @@ export default async function DashboardPage() {
 
       <TodaysAction />
       <DashboardStats />
+      <BankrollSparkline />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border border-border bg-card p-6">

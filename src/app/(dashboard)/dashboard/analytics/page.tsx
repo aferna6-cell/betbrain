@@ -5,6 +5,7 @@ import { AnalyticsDashboard } from '@/components/analytics-dashboard'
 import { TimeAnalysisPanel } from '@/components/time-analysis'
 import { ConfidenceCalibrationPanel } from '@/components/confidence-calibration'
 import { CLVTrendSection } from '@/components/clv-trend-section'
+import { HomeAwaySplits } from '@/components/home-away-splits'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -50,6 +51,14 @@ export default async function AnalyticsPage() {
           When are you making your best (and worst) picks?
         </p>
         <TimeAnalysisPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Home / Away Splits</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Compare your performance on home picks vs away picks.
+        </p>
+        <HomeAwaySplits />
       </div>
 
       <div className="border-t border-border pt-6">

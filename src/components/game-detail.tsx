@@ -347,6 +347,14 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
   const [error, setError] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  function handleCopy() {
+    if (!analysis) return
+    copyAnalysisToClipboard(game, analysis)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   async function handleAnalyze() {
     setLoading(true)
@@ -450,6 +458,18 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
           <Button
             variant="outline"
             size="sm"
+            className={`h-8 text-xs transition-colors ${
+              copied
+                ? 'border-green-500/40 text-green-500 hover:text-green-500'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+            onClick={handleCopy}
+          >
+            {copied ? 'Copied!' : 'Copy'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
             className="h-8 text-xs text-muted-foreground hover:text-foreground"
             onClick={() => shareAnalysisToX(game, analysis)}
           >
@@ -512,6 +532,45 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
       </p>
     </div>
   )
+}
+
+// ---------------------------------------------------------------------------
+// Copy to Clipboard
+// ---------------------------------------------------------------------------
+
+function copyAnalysisToClipboard(game: NormalizedGame, analysis: GameAnalysis) {
+  const side =
+    analysis.valueAssessment.side === 'neither'
+      ? 'No clear edge'
+      : `Value: ${analysis.valueAssessment.side === 'home' ? game.homeTeam : game.awayTeam}`
+  const risk = analysis.riskLevel.toUpperCase()
+  const confidence = analysis.confidence
+
+  const text = [
+    `${game.awayTeam} @ ${game.homeTeam} | AI Analysis`,
+    ``,
+    analysis.summary,
+    ``,
+    `Key Factors:`,
+    ...analysis.keyFactors.map((f, i) => `${i + 1}. ${f}`),
+    ``,
+    `${side} | Risk: ${risk} | Confidence: ${confidence}%`,
+    analysis.valueAssessment.reasoning,
+    ``,
+    `For informational purposes only. Not financial advice.`,
+  ].join('\n')
+
+  navigator.clipboard.writeText(text).catch(() => {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea')
+    textarea.value = text
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textarea)
+  })
 }
 
 // ---------------------------------------------------------------------------
