@@ -180,3 +180,28 @@ _What was built each session._
 - New test files: profit-calendar (26), api-usage-forecast (18), kelly-override (22), results-feed (17), bet-sizing-optimizer (15), bet-grading (19)
 
 ### Commits: 7
+
+## Session 2026-03-24 (Session 8)
+
+### Features Built
+1. **Quality vs outcome matrix** (`src/lib/quality-outcome-matrix.ts`, `src/components/quality-outcome-matrix.tsx`) — 2x2 grid mapping process quality (good/bad) to outcomes (win/loss). Sustainability score, luck factor, discipline score. Interactive quadrant detail view. Wired into analytics page. 17 tests.
+2. **Streak probability calculator** (`src/lib/streak-probability.ts`, `src/components/streak-probability.tsx`) — Continuation odds (1/3/5 extensions), expected streak length, unusual streak detection (<5%), occurrence probability table. Visual bars + expandable table. Wired into analytics page. 23 tests.
+3. **CSV pick import** (`src/lib/pick-import.ts`, `src/components/pick-import.tsx`) — Flexible column aliases (10+ column name variants), date format normalization (ISO, MM/DD/YYYY, MM-DD-YYYY), quoted field handling, per-row error reporting. Drag-drop + paste UI with preview table. Template download. Wired into tools page. 22 tests.
+4. **Auto-grade from pick data** (`src/lib/auto-grade.ts`, `src/components/auto-grade.tsx`) — Infer 7 grading criteria from metadata: thesis (from notes), line shopping (from odds), CLV (from closing_odds), sizing, timing, chase detection (from recent picks), system adherence. Confidence levels (high/medium/low). Expandable per-pick detail. Wired into tools page. 21 tests.
+5. **Weekly process grade** (`src/lib/weekly-process-grade.ts`, `src/components/weekly-process-grade.tsx`) — Aggregate auto-grade scores by ISO week. Linear regression trend detection (improving/declining/stable). Best/worst week, chase count, CLV stats per week. Visual bar chart. Wired into analytics page. 14 tests.
+6. **Fade tracker** (`src/lib/fade-tracker.ts`, `src/components/fade-tracker.tsx`) — Classify picks as contrarian (underdog) or public-side. Win rate + ROI comparison, fade edge calculation. By-sport breakdown. Public percentage estimation from odds. Wired into analytics page. 17 tests.
+7. **Bankroll milestone alerts** (`src/lib/bankroll-milestones.ts`, `src/components/bankroll-milestones.tsx`) — Growth milestones (10%-1000%), drawdown alerts (10%/25%/50%), ATH detection. Milestone progress bars, dismissible alerts, milestone checklist. Reads from journal entries. Wired into bankroll page. 17 tests.
+8. **Odds screen comparator** (`src/lib/odds-comparator.ts`, `src/components/odds-comparator.tsx`) — Side-by-side visual diff of odds at two points in time. Per-bookmaker change table (ML, spread, total). Significant movement detection, biggest move highlighting. 20 tests.
+9. **Pick confidence vs CLV scatter** (`src/lib/confidence-clv-scatter.ts`, `src/components/confidence-clv-scatter.tsx`) — Scatter plot (SVG) of confidence ratings vs closing line value. Pearson correlation with strength classification. Average CLV by confidence level. Wired into analytics page. 11 tests.
+10. **Alert templates** (`src/lib/alert-templates.ts`, `src/components/alert-templates.tsx`) — Save/reuse alert configurations. 5 built-in starters (NBA underdog, NFL key number, etc.). Create custom, usage tracking, sport/category filters, sorted by frequency. 16 tests.
+
+### Tests Added
+- 178 new tests (2130 to 2308 total)
+- New test files: quality-outcome-matrix (17), streak-probability (23), pick-import (22), auto-grade (21), weekly-process-grade (14), fade-tracker (17), bankroll-milestones (17), odds-comparator (20), confidence-clv-scatter (11), alert-templates (16)
+
+### Pages Updated
+- `/dashboard/analytics` — Added quality-outcome matrix, streak probability, weekly process grade, fade tracker, confidence-CLV scatter
+- `/dashboard/tools` — Added auto-grade panel, CSV import panel
+- `/dashboard/bankroll` — Added bankroll milestones
+
+### Commits: 3 (pushed via git push)

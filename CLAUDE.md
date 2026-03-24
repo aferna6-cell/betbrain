@@ -10,7 +10,7 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
 - **Payments:** None (personal tool — Stripe code is legacy, tier checks bypassed)
-- **Testing:** Vitest (unit, 2130 tests) + Playwright (E2E, 24 smoke tests)
+- **Testing:** Vitest (unit, 2308 tests) + Playwright (E2E, 24 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
@@ -44,6 +44,16 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - `src/lib/results-feed.ts` — Daily pick results timeline with outcome matching
 - `src/lib/bet-sizing-optimizer.ts` — Performance-based unit sizing adjustment
 - `src/lib/bet-grading.ts` — 6-factor bet process quality grading (A+ to F)
+- `src/lib/quality-outcome-matrix.ts` — 2x2 process quality vs outcome matrix
+- `src/lib/streak-probability.ts` — Streak continuation probability calculator
+- `src/lib/pick-import.ts` — CSV pick import with flexible column mapping
+- `src/lib/auto-grade.ts` — Auto-grade picks from metadata (CLV, timing, chase)
+- `src/lib/weekly-process-grade.ts` — Weekly process grade trends with regression
+- `src/lib/fade-tracker.ts` — Contrarian vs public-side performance tracking
+- `src/lib/bankroll-milestones.ts` — Growth milestones and drawdown alerts
+- `src/lib/odds-comparator.ts` — Side-by-side odds diff at two timestamps
+- `src/lib/confidence-clv-scatter.ts` — Confidence vs CLV scatter analysis
+- `src/lib/alert-templates.ts` — Save/reuse alert configurations
 - `src/lib/stripe.ts` — Stripe client singleton (legacy, bypassed)
 - `e2e/` — Playwright E2E smoke tests
 - `scripts/` — Health-check, daily review, post-deploy verification
@@ -57,7 +67,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (2130 tests)
+npm run test         # Run Vitest unit tests (2308 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md

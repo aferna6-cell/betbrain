@@ -66,3 +66,18 @@ The bet grading system deliberately separates process quality from outcome. A lo
 
 ## 2026-03-24 (Session 7): Weighted daily burn rate for API usage
 For API usage forecasting, a weighted recent average (more recent days weigh more) provides better predictions than a simple average. This captures trends like "I used more this weekend because football was on." The formula: weight each day by its position (most recent = highest), divide by sum of weights.
+
+## 2026-03-24 (Session 8): PickForAutoGrade interface must match component usage
+When creating a pure-function library type and a separate component that uses it, the component may access fields not in the interface (like `pick_team`). Always check what fields the component will display and include them in the interface, even if the pure function doesn't need them.
+
+## 2026-03-24 (Session 8): Fade classification without public betting data
+Without actual public betting percentage data, classifying picks as "fades" requires a heuristic based on odds. Underdogs (+100 and above) are classified as fades with fade strength scaling with odds. This is a rough proxy — real public betting data from APIs like Action Network would be more accurate. Always document methodology limitations.
+
+## 2026-03-24 (Session 8): CSV import needs flexible column mapping
+Users export picks from different platforms with different column names. Supporting 2-3 aliases per column (e.g., "odds", "price", "line_price") dramatically improves import success rate. Date format normalization (ISO, US slash, US dash) is equally important.
+
+## 2026-03-24 (Session 8): Chase bet detection heuristics
+Chase bets can be detected by looking at: (1) the previous pick was a loss, (2) the new pick was placed within 2 hours, (3) the unit size is elevated (>1.2x previous). All three conditions together have high precision but low recall — some chase bets won't be caught. This is acceptable for an auto-grading heuristic.
+
+## 2026-03-24 (Session 8): Pearson correlation needs sufficient sample size
+Pearson correlation with fewer than 10 data points is unreliable. The confidence-CLV scatter analysis correctly classifies any result with < 10 points as "insufficient" regardless of the computed correlation value. This prevents users from drawing conclusions from small samples.
