@@ -22,6 +22,7 @@ import { ExpectedWinsChart } from '@/components/expected-wins'
 import { BetTimingPanel } from '@/components/bet-timing'
 import { CLVDistributionPanel } from '@/components/clv-distribution'
 import { SeasonalTrendsPanel } from '@/components/seasonal-trends'
+import { PickDependenciesPanel } from '@/components/pick-dependencies'
 import { EVAttributionPanel } from '@/components/ev-attribution'
 import { redirect } from 'next/navigation'
 
@@ -219,6 +220,15 @@ export default async function AnalyticsPage() {
           Spot your best and worst calendar periods.
         </p>
         <SeasonalTrendsPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Pick Dependencies</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Visualize correlated picks: same game, same team, same day/sport clusters.
+          High correlation means concentrated risk.
+        </p>
+        <PickDependenciesPanel />
       </div>
 
       <div className="border-t border-border pt-6">
