@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { BankrollDashboard } from '@/components/bankroll-dashboard'
 import { BankrollRecoveryCalculator } from '@/components/bankroll-recovery'
+import { KellyOverridePanel } from '@/components/kelly-override'
 
 export const metadata: Metadata = {
   title: 'Bankroll Management — BetBrain',
@@ -18,6 +19,11 @@ export default function BankrollPage() {
       </div>
 
       <BankrollDashboard />
+
+      <div className="border-t border-border pt-6">
+        <KellyOverridePanel />
+      </div>
+
       <BankrollRecoveryCalculator />
     </div>
   )
