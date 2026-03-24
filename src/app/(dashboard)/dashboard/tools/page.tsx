@@ -3,6 +3,7 @@ import { OddsConverter } from '@/components/odds-converter'
 import { MonteCarloSimulator } from '@/components/monte-carlo'
 import { BetCalculator } from '@/components/bet-calculator'
 import { ApiUsageForecastPanel } from '@/components/api-usage-forecast'
+import { BetGradingCard } from '@/components/bet-grading'
 import { getOddsApiUsage } from '@/lib/sports/odds'
 
 export const metadata: Metadata = {
@@ -31,6 +32,10 @@ export default async function ToolsPage() {
           Monitor your Odds API usage and forecast when you&apos;ll run out of requests this month.
         </p>
         <ApiUsageForecastPanel usedRequests={apiUsage.count} monthlyBudget={apiUsage.limit} />
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <BetGradingCard />
       </div>
 
       <BetCalculator />
