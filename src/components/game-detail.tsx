@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import dynamic from 'next/dynamic'
 import { getPreferredBookmaker, setPreferredBookmaker } from '@/lib/preferences'
 import { getBookColor, formatBookName } from '@/lib/book-colors'
+import { UnitSizingCard } from '@/components/unit-sizing-card'
 
 const LineMovementChart = dynamic(
   () => import('@/components/line-movement-chart').then((m) => m.LineMovementChart),
@@ -495,6 +496,15 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
           {analysis.valueAssessment.reasoning}
         </p>
       </div>
+
+      {/* Unit Sizing Recommendation */}
+      {analysis.valueAssessment.side !== 'neither' && (() => {
+        const bestOdds = getBestMoneyline(game.bookmakers, analysis.valueAssessment.side)
+        if (!bestOdds) return null
+        // Use confidence as a rough win probability proxy (scaled from 0-100 to 0-1)
+        const winProb = analysis.confidence / 100
+        return <UnitSizingCard winProbability={winProb} americanOdds={bestOdds} />
+      })()}
 
       {/* Disclaimer */}
       <p className="border-t border-border pt-3 text-xs italic text-muted-foreground">

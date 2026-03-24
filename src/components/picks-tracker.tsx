@@ -13,6 +13,7 @@ import type { StreakInfo, Badge as BadgeType } from '@/lib/streaks'
 import { SeasonResetControl } from '@/components/season-reset'
 import { RegressionAlertsPanel } from '@/components/regression-alerts'
 import { filterCurrentSeason } from '@/lib/seasonal-reset'
+import { ParlayStatsDisplay } from '@/components/parlay-stats-display'
 import type {
   Sport,
   PickType,
@@ -1080,6 +1081,7 @@ export function PicksTracker() {
       <StreakDisplay picks={seasonPicks} />
       <BadgesDisplay picks={seasonPicks} />
       <PickTypeBreakdown picks={seasonPicks} />
+      <ParlayStatsDisplay picks={seasonPicks} />
       <DayOfWeekDisplay picks={seasonPicks} />
       {picks.length > 0 && (
         <div className="flex justify-end">
