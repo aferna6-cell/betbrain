@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { getAllOdds } from '@/lib/sports/odds'
-import { scanForEV, detectArbitrage } from '@/lib/ev-scanner'
+import { scanForEV, detectArbitrage, detectMultiMarketArbitrage, scanAllMarketsForEV } from '@/lib/ev-scanner'
 import { analyzeAllConsensus } from '@/lib/consensus'
 import { findFadeOpportunities } from '@/lib/fade-public'
 import { EVScannerView } from '@/components/ev-scanner-view'
+import { ArbitrageScannerView } from '@/components/arbitrage-scanner'
 import { ConsensusView } from '@/components/consensus-indicator'
 import { FadePublicTool } from '@/components/fade-public'
 import { SituationalSpotsPanel } from '@/components/situational-spots'
@@ -23,22 +24,29 @@ export default async function EVScannerPage() {
 
   const evResult = scanForEV(allGames)
   const arbs = detectArbitrage(allGames)
+  const multiArbs = detectMultiMarketArbitrage(allGames)
+  const fullEV = scanAllMarketsForEV(allGames)
   const consensus = analyzeAllConsensus(allGames)
   const fades = findFadeOpportunities(allGames)
+
+  const totalEVCount = fullEV.allSorted.length
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">+EV Scanner</h1>
         <p className="mt-1 text-muted-foreground">
-          Find value bets, contrarian plays, and situational edges across all games.
+          Find value bets, arbitrage across all markets, contrarian plays, and situational edges.
         </p>
       </div>
 
       <Tabs defaultValue="ev">
-        <TabsList>
+        <TabsList className="flex-wrap">
           <TabsTrigger value="ev">
-            +EV Bets{evResult.opportunities.length > 0 ? ` (${evResult.opportunities.length})` : ''}
+            +EV Bets{totalEVCount > 0 ? ` (${totalEVCount})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="arb">
+            Arbitrage{multiArbs.length > 0 ? ` (${multiArbs.length})` : ''}
           </TabsTrigger>
           <TabsTrigger value="consensus">
             Consensus{consensus.filter((c) => c.divergence).length > 0 ? ` (${consensus.filter((c) => c.divergence).length} diverge)` : ''}
@@ -60,6 +68,16 @@ export default async function EVScannerPage() {
             arbitrage={arbs}
             gamesScanned={evResult.gamesScanned}
           />
+        </TabsContent>
+
+        <TabsContent value="arb">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Scans all games across moneyline, spread, and totals markets for arbitrage opportunities.
+              An arb exists when combined implied probabilities across different bookmakers sum to less than 100%.
+            </div>
+            <ArbitrageScannerView arbs={multiArbs} gamesScanned={allGames.length} />
+          </div>
         </TabsContent>
 
         <TabsContent value="consensus">
