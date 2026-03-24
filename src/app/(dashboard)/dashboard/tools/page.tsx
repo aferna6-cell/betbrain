@@ -6,6 +6,7 @@ import { ApiUsageForecastPanel } from '@/components/api-usage-forecast'
 import { BetGradingCard } from '@/components/bet-grading'
 import { AutoGradePanel } from '@/components/auto-grade'
 import { PickImportPanel } from '@/components/pick-import'
+import { KellySimulatorPanel } from '@/components/kelly-simulator'
 import { getOddsApiUsage } from '@/lib/sports/odds'
 
 export const metadata: Metadata = {
@@ -60,6 +61,15 @@ export default async function ToolsPage() {
 
       <div className="border-t border-border pt-6">
         <OddsConverter />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Kelly Fraction Simulator</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Compare bankroll trajectories with different Kelly fractions. See how aggressive
+          vs conservative sizing affects growth, volatility, and ruin risk.
+        </p>
+        <KellySimulatorPanel />
       </div>
 
       <div className="border-t border-border pt-6">
