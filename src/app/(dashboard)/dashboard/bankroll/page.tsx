@@ -3,6 +3,7 @@ import { BankrollDashboard } from '@/components/bankroll-dashboard'
 import { BankrollRecoveryCalculator } from '@/components/bankroll-recovery'
 import { KellyOverridePanel } from '@/components/kelly-override'
 import { BetSizingOptimizer } from '@/components/bet-sizing-optimizer'
+import { BankrollMilestonesPanel } from '@/components/bankroll-milestones'
 
 export const metadata: Metadata = {
   title: 'Bankroll Management — BetBrain',
@@ -30,6 +31,14 @@ export default function BankrollPage() {
       </div>
 
       <BankrollRecoveryCalculator />
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Milestones</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Track your bankroll growth against key milestones. Get alerts when you hit new highs or drawdowns.
+        </p>
+        <BankrollMilestonesPanel />
+      </div>
     </div>
   )
 }

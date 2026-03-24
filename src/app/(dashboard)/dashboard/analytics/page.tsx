@@ -14,6 +14,8 @@ import { BookPerformancePanel } from '@/components/book-performance'
 import { ProfitCalendar } from '@/components/profit-calendar'
 import { QualityOutcomeMatrixPanel } from '@/components/quality-outcome-matrix'
 import { StreakProbabilityPanel } from '@/components/streak-probability'
+import { WeeklyProcessGradePanel } from '@/components/weekly-process-grade'
+import { FadeTrackerPanel } from '@/components/fade-tracker'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -130,6 +132,22 @@ export default async function AnalyticsPage() {
           What are the odds of your current streak continuing? Are you running hot or cold relative to expectations?
         </p>
         <StreakProbabilityPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Weekly Process Grade</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Track how your betting process quality changes week over week. Improving trends mean more sustainable profits.
+        </p>
+        <WeeklyProcessGradePanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Fade Tracker</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Compare your contrarian (underdog) plays vs public-side favorites. Are your fades profitable?
+        </p>
+        <FadeTrackerPanel />
       </div>
 
       <div className="border-t border-border pt-6">
