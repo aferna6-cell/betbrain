@@ -33,3 +33,9 @@ Rather than deleting all Stripe/subscription code (which would break 15+ files a
 
 ## 2026-03-24: Check for duplicate imports before adding new ones
 When adding `getBestMoneyline` to game-detail.tsx, the import already existed on a different line. Turbopack gives a "Duplicate declaration" error. Always grep for the import name in the target file before adding.
+
+## 2026-03-24 (Session 2): TypeScript nullable state in callbacks
+When using `useState<T | null>(null)`, callback closures reference the state type which includes `null`. Using `prefs!.field` works but `typeof prefs.field` fails because TS narrows the value but not the type in `typeof`. Solution: extract to a local variable first or add an explicit null check before the callback body.
+
+## 2026-03-24 (Session 2): Pearson correlation test data must match expected behavior
+[1,0,1,0,1] vs [0,1,0,1,0] has r=-1.0 (perfectly inversely correlated), not ~0. For truly uncorrelated data, use random-looking sequences that don't follow a pattern.

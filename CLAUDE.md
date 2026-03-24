@@ -10,7 +10,7 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
 - **Payments:** None (personal tool — Stripe code is legacy, tier checks bypassed)
-- **Testing:** Vitest (unit, 1692 tests) + Playwright (E2E, 24 smoke tests)
+- **Testing:** Vitest (unit, 1787 tests) + Playwright (E2E, 24 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
@@ -40,7 +40,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (1692 tests)
+npm run test         # Run Vitest unit tests (1787 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md

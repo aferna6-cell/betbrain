@@ -102,3 +102,24 @@ _What was built each session._
 4. **CLV Trend Chart** (`src/components/clv-trend-chart.tsx`, `src/components/clv-trend-section.tsx`) — Recharts line chart showing per-pick CLV and running average over time. Shows when user has 3+ picks with closing odds. Wired into analytics page.
 
 ### Commits: 8
+
+## Session 2026-03-24 (Session 2)
+
+### Features Built
+1. **Copy analysis to clipboard** — One-click copy of AI analysis with key factors, value assessment. Visual "Copied!" feedback. On game detail page.
+2. **Bankroll sparkline** (`src/components/bankroll-sparkline.tsx`) — SVG sparkline showing running P/L curve on dashboard. Zero baseline, gradient fill, endpoint dot.
+3. **Home/away splits** (`src/lib/bankroll-history.ts`, `src/components/home-away-splits.tsx`) — Win rate, ROI, profit for home vs away picks. On analytics page.
+4. **Quick game filters** — Dashboard pill buttons: +EV, Signals, My Picks. Colored per type (green/blue/purple). Fetches user picks client-side for "My Picks" filter.
+5. **Model accuracy tracking** (`src/lib/model-accuracy.ts`, `src/components/model-accuracy.tsx`) — Brier score, confidence bucket breakdown, risk-level accuracy, recent prediction heatmap. On analytics page.
+6. **Pick templates** (`src/lib/pick-templates.ts`, `src/components/pick-templates.tsx`) — Save/load common pick configs. Usage tracking, frequency-based sorting. Suggest templates from history patterns.
+7. **Odds velocity detection** (`src/lib/odds-velocity.ts`, `src/components/odds-velocity.tsx`) — Detect rapid coordinated line movement across 2+ books. Severity: moderate/sharp/extreme. "Line Velocity" tab on Signals page.
+8. **Smart bankroll allocation** (`src/lib/bankroll-allocation.ts`, `src/components/bankroll-allocation.tsx`) — Kelly-inspired sport weighting. Visual allocation bar with per-sport ROI/confidence. Min 5% / max 50% caps. On bankroll page.
+9. **Notification preferences** (`src/lib/notification-preferences.ts`, `src/components/notification-preferences.tsx`) — Per-type toggles, mute-all, quiet hours (wraps midnight), desktop notification permission. "Preferences" tab on notifications page.
+10. **Season summary generator** (`src/lib/season-summary.ts`, `src/components/season-summary.tsx`) — Letter grade (A+ to F), record/ROI/profit, best/worst sport/month, streaks, bet type breakdown. Copy to clipboard. On analytics page.
+11. **Correlation matrix** (`src/lib/correlation-matrix.ts`, `src/components/correlation-matrix.tsx`) — Pearson correlation between sport/bet-type daily win rates. NxN heatmap, toggle sport vs bet type. On analytics page.
+
+### Tests Added
+- 95 new tests (1692 to 1787 total)
+- New test files: bankroll-history (15), model-accuracy (13), pick-templates (7), odds-velocity (14), bankroll-allocation (14), notification-preferences (8), season-summary (11), correlation-matrix (13)
+
+### Commits: 8
