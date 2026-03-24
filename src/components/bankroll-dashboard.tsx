@@ -8,6 +8,7 @@ import { profitColor } from '@/lib/format'
 import { TermTooltip } from '@/components/term-tooltip'
 import { BookROITracker } from '@/components/book-roi-tracker'
 import { BankrollGoals } from '@/components/bankroll-goals'
+import { BankrollAllocationPanel } from '@/components/bankroll-allocation'
 
 const STORAGE_KEY = 'betbrain-bankroll-config'
 
@@ -290,6 +291,13 @@ export function BankrollDashboard() {
         </div>
       )}
       <BankrollGoals picks={picks} />
+      <div className="space-y-2">
+        <h2 className="text-lg font-semibold">Smart Allocation</h2>
+        <p className="text-sm text-muted-foreground">
+          Suggested bankroll split across sports based on your historical performance.
+        </p>
+        <BankrollAllocationPanel />
+      </div>
     </div>
   )
 }
