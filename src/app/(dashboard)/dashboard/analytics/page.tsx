@@ -8,6 +8,7 @@ import { CLVTrendSection } from '@/components/clv-trend-section'
 import { HomeAwaySplits } from '@/components/home-away-splits'
 import { ModelAccuracyPanel } from '@/components/model-accuracy'
 import { SeasonSummaryPanel } from '@/components/season-summary'
+import { CorrelationMatrixPanel } from '@/components/correlation-matrix'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -86,6 +87,15 @@ export default async function AnalyticsPage() {
           Brier score, and accuracy by confidence level.
         </p>
         <ModelAccuracyPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Correlation Matrix</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          See how your performance in different sports or bet types correlates.
+          Low or negative correlation means better diversification.
+        </p>
+        <CorrelationMatrixPanel />
       </div>
     </div>
   )
