@@ -3,8 +3,10 @@ import { getAllOdds } from '@/lib/sports/odds'
 import { scanForEV, detectArbitrage, detectMultiMarketArbitrage, scanAllMarketsForEV } from '@/lib/ev-scanner'
 import { analyzeAllConsensus } from '@/lib/consensus'
 import { findFadeOpportunities } from '@/lib/fade-public'
+import { predictAllGameScripts } from '@/lib/game-script'
 import { EVScannerView } from '@/components/ev-scanner-view'
 import { ArbitrageScannerView } from '@/components/arbitrage-scanner'
+import { GameScriptPanel } from '@/components/game-script-panel'
 import { ConsensusView } from '@/components/consensus-indicator'
 import { FadePublicTool } from '@/components/fade-public'
 import { SituationalSpotsPanel } from '@/components/situational-spots'
@@ -26,6 +28,7 @@ export default async function EVScannerPage() {
   const arbs = detectArbitrage(allGames)
   const multiArbs = detectMultiMarketArbitrage(allGames)
   const fullEV = scanAllMarketsForEV(allGames)
+  const gameScripts = predictAllGameScripts(allGames)
   const consensus = analyzeAllConsensus(allGames)
   const fades = findFadeOpportunities(allGames)
 
@@ -47,6 +50,9 @@ export default async function EVScannerPage() {
           </TabsTrigger>
           <TabsTrigger value="arb">
             Arbitrage{multiArbs.length > 0 ? ` (${multiArbs.length})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="scripts">
+            Game Scripts{gameScripts.length > 0 ? ` (${gameScripts.length})` : ''}
           </TabsTrigger>
           <TabsTrigger value="consensus">
             Consensus{consensus.filter((c) => c.divergence).length > 0 ? ` (${consensus.filter((c) => c.divergence).length} diverge)` : ''}
@@ -77,6 +83,16 @@ export default async function EVScannerPage() {
               An arb exists when combined implied probabilities across different bookmakers sum to less than 100%.
             </div>
             <ArbitrageScannerView arbs={multiArbs} gamesScanned={allGames.length} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="scripts">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Predicts game flow — blowout, close game, or overtime candidate — based on spread,
+              total, and moneyline patterns across bookmakers.
+            </div>
+            <GameScriptPanel scripts={gameScripts} />
           </div>
         </TabsContent>
 
