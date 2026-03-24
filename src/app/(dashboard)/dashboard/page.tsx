@@ -19,6 +19,7 @@ import { WhatsNew } from '@/components/whats-new'
 import { TodaysAction } from '@/components/todays-action'
 import { BankrollSparkline } from '@/components/bankroll-sparkline'
 import { ValuePlaysWidget } from '@/components/value-plays'
+import { DailyReviewPrompt } from '@/components/daily-review'
 import { TermTooltip } from '@/components/term-tooltip'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -83,6 +84,7 @@ export default async function DashboardPage() {
         signalCount={signals.length}
       />
 
+      <DailyReviewPrompt />
       <TodaysAction />
       <ValuePlaysWidget games={allGames} />
       <DashboardStats />

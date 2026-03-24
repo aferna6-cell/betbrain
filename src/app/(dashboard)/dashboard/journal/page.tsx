@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { BettingJournal } from '@/components/betting-journal'
+import { ReviewHistory } from '@/components/daily-review'
 
 export const metadata: Metadata = {
   title: 'Betting Journal — BetBrain',
@@ -16,6 +17,14 @@ export default function JournalPage() {
         </p>
       </div>
       <BettingJournal />
+
+      <div className="pt-6">
+        <h2 className="text-xl font-bold mb-1">Daily Reviews</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Grade your daily decision-making process separately from outcomes.
+        </p>
+        <ReviewHistory />
+      </div>
     </div>
   )
 }
