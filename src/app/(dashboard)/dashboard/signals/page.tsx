@@ -7,6 +7,8 @@ import { SignalHistoryView } from '@/components/signal-history'
 import { SteamMovesView } from '@/components/steam-moves'
 import { OddsVelocityPanel } from '@/components/odds-velocity'
 import { LineMovementHeatmap } from '@/components/line-movement-heatmap'
+import { SharpMoneyFlowPanel } from '@/components/sharp-money-flow'
+import { detectSharpFlow, type SharpSignal, type GameOddsTimeline, type OddsPoint } from '@/lib/sharp-money-flow'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -49,6 +51,9 @@ export default async function SignalsPage() {
           <TabsTrigger value="heatmap">
             Heatmap
           </TabsTrigger>
+          <TabsTrigger value="sharp">
+            Sharp Flow
+          </TabsTrigger>
           <TabsTrigger value="history">
             Hit Rate{stats.hitRate !== null ? ` — ${stats.hitRate}%` : ''}
           </TabsTrigger>
@@ -75,6 +80,19 @@ export default async function SignalsPage() {
         <TabsContent value="heatmap">
           <div className="mt-4">
             <LineMovementHeatmap games={allGames} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="sharp">
+          <div className="mt-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Detects reverse line movement, late steam, and opening line value.
+              Sharp money moves lines opposite to public action — the strongest edge signal.
+            </p>
+            <SharpMoneyFlowPanel
+              summary={{ totalSignals: 0, rlmCount: 0, lateSteamCount: 0, openingValueCount: 0, strongSignals: [], multiSignalGames: [] }}
+              signals={[]}
+            />
           </div>
         </TabsContent>
 
