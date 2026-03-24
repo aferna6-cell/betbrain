@@ -3,9 +3,9 @@
 - Built: Stripe tier bypass, parlay stats UI, unit sizing card, Today's Action widget, landing page de-SaaS
 - In progress: (none)
 - Next up: More test coverage, additional dashboard improvements
-- Build status: GREEN (1681 tests, all passing, clean build)
+- Build status: GREEN (1692 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 1681 (89 test files)
+- Test count: 1692 (90 test files)
 
 ## Key changes this session
 - Bypassed all Stripe/subscription tier gating (personal tool)
@@ -16,3 +16,4 @@
 - Added TodaysAction dashboard widget (pending picks with countdowns)
 - Added 15 unit sizing integration tests
 - Replaced Google Fonts with local geist package (build fix)
+- Added CLV trend chart on analytics page (recharts line chart + 11 tests)

@@ -96,7 +96,9 @@ _What was built each session._
 3. **TodaysAction** (`src/components/todays-action.tsx`) — Dashboard widget showing today's pending picks with countdowns, resolved results, units at risk, running P/L. Auto-hides if no picks today.
 
 ### Tests Added
-- 15 new tests (1666 to 1681 total)
-- New test file: unit-sizing-integration.test.ts (15 tests)
+- 26 new tests (1666 to 1692 total)
+- New test files: unit-sizing-integration.test.ts (15), clv-trend.test.ts (11)
 
-### Commits: 6
+4. **CLV Trend Chart** (`src/components/clv-trend-chart.tsx`, `src/components/clv-trend-section.tsx`) — Recharts line chart showing per-pick CLV and running average over time. Shows when user has 3+ picks with closing odds. Wired into analytics page.
+
+### Commits: 8
