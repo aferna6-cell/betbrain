@@ -4,6 +4,7 @@ import { getUserAnalytics } from '@/lib/analytics'
 import { AnalyticsDashboard } from '@/components/analytics-dashboard'
 import { TimeAnalysisPanel } from '@/components/time-analysis'
 import { ConfidenceCalibrationPanel } from '@/components/confidence-calibration'
+import { CLVTrendSection } from '@/components/clv-trend-section'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -33,6 +34,15 @@ export default async function AnalyticsPage() {
       </div>
 
       <AnalyticsDashboard data={analytics} />
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">CLV Trend</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Track your closing line value over time. Consistently beating the closing line
+          is the single best predictor of long-term profitability.
+        </p>
+        <CLVTrendSection />
+      </div>
 
       <div className="border-t border-border pt-6">
         <h2 className="text-xl font-bold mb-2">Performance by Time of Day</h2>
