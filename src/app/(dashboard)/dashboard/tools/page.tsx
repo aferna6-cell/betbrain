@@ -4,6 +4,8 @@ import { MonteCarloSimulator } from '@/components/monte-carlo'
 import { BetCalculator } from '@/components/bet-calculator'
 import { ApiUsageForecastPanel } from '@/components/api-usage-forecast'
 import { BetGradingCard } from '@/components/bet-grading'
+import { AutoGradePanel } from '@/components/auto-grade'
+import { PickImportPanel } from '@/components/pick-import'
 import { getOddsApiUsage } from '@/lib/sports/odds'
 
 export const metadata: Metadata = {
@@ -36,6 +38,22 @@ export default async function ToolsPage() {
 
       <div className="border-b border-border pb-6">
         <BetGradingCard />
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <h2 className="text-xl font-bold mb-2">Auto-Grade Picks</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Automatically grade your resolved picks based on available metadata — timing, CLV, sizing discipline, and chase detection.
+        </p>
+        <AutoGradePanel />
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <h2 className="text-xl font-bold mb-2">Import Picks</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Bulk import historical picks from a CSV file. Supports flexible column names and multiple date formats.
+        </p>
+        <PickImportPanel />
       </div>
 
       <BetCalculator />

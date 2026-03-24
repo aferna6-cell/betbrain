@@ -12,6 +12,8 @@ import { CorrelationMatrixPanel } from '@/components/correlation-matrix'
 import { PerformanceInsights } from '@/components/performance-insights'
 import { BookPerformancePanel } from '@/components/book-performance'
 import { ProfitCalendar } from '@/components/profit-calendar'
+import { QualityOutcomeMatrixPanel } from '@/components/quality-outcome-matrix'
+import { StreakProbabilityPanel } from '@/components/streak-probability'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -112,6 +114,22 @@ export default async function AnalyticsPage() {
           Track CLV, win rate, and ROI per bookmaker.
         </p>
         <BookPerformancePanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Quality vs Outcome</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Process quality mapped against outcomes. Earned wins are sustainable, lucky wins will regress.
+        </p>
+        <QualityOutcomeMatrixPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Streak Analysis</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          What are the odds of your current streak continuing? Are you running hot or cold relative to expectations?
+        </p>
+        <StreakProbabilityPanel />
       </div>
 
       <div className="border-t border-border pt-6">
