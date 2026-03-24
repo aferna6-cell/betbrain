@@ -39,3 +39,12 @@ When using `useState<T | null>(null)`, callback closures reference the state typ
 
 ## 2026-03-24 (Session 2): Pearson correlation test data must match expected behavior
 [1,0,1,0,1] vs [0,1,0,1,0] has r=-1.0 (perfectly inversely correlated), not ~0. For truly uncorrelated data, use random-looking sequences that don't follow a pattern.
+
+## 2026-03-24 (Session 5): Deduplication in value scoring
+When combining signals from multiple sources (EV scanner, line shopping, disagreement), plays for the same game+side get deduplicated. The deduplication keeps the highest-scored play. Tests should check for "at least one play for this game" rather than specific reason types, since a +EV play may deduplicate away a disagreement play for the same game.
+
+## 2026-03-24 (Session 5): Rebase conflicts with memory files
+When rebasing onto a remote that also has engineering memory files, git shows add/add conflicts. Use `git rebase --skip` if the remote version has better content from a prior session. Always commit memory files before pulling.
+
+## 2026-03-24 (Session 5): Spread "best line" sorting
+For spread bets, "best" depends on which side you're betting. A higher spread line is better for the side receiving points. Sort by line value first (higher = better), then by implied probability (lower = better price) as tiebreaker.

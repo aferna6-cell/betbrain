@@ -123,3 +123,19 @@ _What was built each session._
 - New test files: bankroll-history (15), model-accuracy (13), pick-templates (7), odds-velocity (14), bankroll-allocation (14), notification-preferences (8), season-summary (11), correlation-matrix (13)
 
 ### Commits: 8
+
+## Session 2026-03-24 (Session 5)
+
+### Features Built
+1. **Line shopping tool** (`src/lib/line-shopping.ts`, `src/components/line-shopping.tsx`) — Best lines across bookmakers, juice comparison, key line discrepancies, NFL key number crossing. "Line Shop" tab on game detail page. 33 tests.
+2. **Bet calculator** (`src/lib/bet-calculator.ts`, `src/components/bet-calculator.tsx`) — Single bet payout, hedge bet calculator, parlay calculator. EV calculation, Kelly sizing, break-even win rate. Added to /dashboard/tools. 38 tests.
+3. **Value finder** (`src/lib/value-finder.ts`, `src/components/value-plays.tsx`) — Composite scoring from +EV, key line discrepancy, bookmaker disagreement, low juice. Dashboard widget showing top 5 plays. 15 tests.
+4. **Performance insights** (`src/lib/performance-insights.ts`, `src/components/performance-insights.tsx`) — 6-dimension analysis: bet type, sport, odds range, CLV, volume, timing. Actionable recommendations. Category filters. Added to analytics page. 18 tests.
+5. **Closing line capture** (`src/lib/closing-line-capture.ts`) — Automatic consensus odds matching, CLV calculation, team name normalization. 24 tests.
+6. **Risk assessment** (`src/lib/risk-assessment.ts`) — 5-factor pre-bet risk scoring: bankroll exposure, odds value, tilt/recency, portfolio concentration, unit sizing. 26 tests.
+
+### Tests Added
+- 154 new tests (1787 to 1941 total)
+- New test files: line-shopping (33), bet-calculator (38), value-finder (15), performance-insights (18), closing-line-capture (24), risk-assessment (26)
+
+### Commits: 7 (font fix resolution, line shopping, bet calculator, value finder, performance insights, closing line capture, risk assessment)

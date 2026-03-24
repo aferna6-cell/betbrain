@@ -10,7 +10,7 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
 - **Payments:** None (personal tool — Stripe code is legacy, tier checks bypassed)
-- **Testing:** Vitest (unit, 1787 tests) + Playwright (E2E, 24 smoke tests)
+- **Testing:** Vitest (unit, 1941 tests) + Playwright (E2E, 24 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
@@ -27,7 +27,13 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - `src/lib/env.ts` — Canonical env var access (all env reads go through here)
 - `src/lib/auto-resolve.ts` — NBA pick auto-resolution (team matching, outcome determination)
 - `src/lib/ev-scanner.ts` — +EV scanner + arbitrage detection
-- `src/lib/stripe.ts` — Stripe client singleton
+- `src/lib/line-shopping.ts` — Best line finder, juice comparison, key line discrepancies
+- `src/lib/bet-calculator.ts` — Payout, hedge, parlay calculators + EV math
+- `src/lib/value-finder.ts` — Composite value play scoring across all games
+- `src/lib/performance-insights.ts` — Actionable feedback on betting patterns (6 dimensions)
+- `src/lib/closing-line-capture.ts` — Automatic closing odds capture for CLV tracking
+- `src/lib/risk-assessment.ts` — Pre-bet risk scoring (5-factor composite)
+- `src/lib/stripe.ts` — Stripe client singleton (legacy, bypassed)
 - `e2e/` — Playwright E2E smoke tests
 - `scripts/` — Health-check, daily review, post-deploy verification
 - `vercel.json` — Cron job config (daily auto-resolve at 10am ET)
@@ -40,7 +46,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (1787 tests)
+npm run test         # Run Vitest unit tests (1941 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md
