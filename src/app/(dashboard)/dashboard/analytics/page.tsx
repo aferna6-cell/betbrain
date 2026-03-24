@@ -17,6 +17,7 @@ import { StreakProbabilityPanel } from '@/components/streak-probability'
 import { WeeklyProcessGradePanel } from '@/components/weekly-process-grade'
 import { FadeTrackerPanel } from '@/components/fade-tracker'
 import { ConfidenceClvScatterPanel } from '@/components/confidence-clv-scatter'
+import { TagPerformancePanel } from '@/components/pick-tags'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -158,6 +159,15 @@ export default async function AnalyticsPage() {
           Compare your contrarian (underdog) plays vs public-side favorites. Are your fades profitable?
         </p>
         <FadeTrackerPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Tag Performance</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Track performance by custom tags. Tag your picks with categories like
+          &quot;value&quot;, &quot;revenge game&quot;, or &quot;prime time&quot; to discover your best edges.
+        </p>
+        <TagPerformancePanel />
       </div>
 
       <div className="border-t border-border pt-6">
