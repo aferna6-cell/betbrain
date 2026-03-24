@@ -15,6 +15,9 @@ import { RegressionAlertsPanel } from '@/components/regression-alerts'
 import { filterCurrentSeason } from '@/lib/seasonal-reset'
 import { ParlayStatsDisplay } from '@/components/parlay-stats-display'
 import { RiskScorecard } from '@/components/risk-scorecard'
+import { PregameChecklist } from '@/components/pregame-checklist'
+import { recordChecklistCompletion } from '@/lib/pregame-checklist'
+import type { ChecklistValidation } from '@/lib/pregame-checklist'
 import type {
   Sport,
   PickType,
@@ -90,6 +93,8 @@ function PickForm({
   const [riskUnits, setRiskUnits] = useState(1)
   const [riskSport, setRiskSport] = useState('nba')
   const [riskBetType, setRiskBetType] = useState('moneyline')
+  const [checklistValid, setChecklistValid] = useState(false)
+  const [checklistScore, setChecklistScore] = useState(0)
 
   // Pre-fill from URL params (e.g. from game detail "Log Pick" button)
   const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
@@ -147,6 +152,12 @@ function PickForm({
         return
       }
 
+      // Record checklist process score for history tracking
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (typeof window !== 'undefined' && (window as any).__checklistRecordCompletion) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).__checklistRecordCompletion()
+      }
       form.reset()
       onSubmit()
     } catch {
@@ -304,8 +315,16 @@ function PickForm({
 
       <RiskScorecard odds={riskOdds} units={riskUnits} sport={riskSport} betType={riskBetType} />
 
+      <PregameChecklist
+        onValidationChange={(v: ChecklistValidation) => {
+          setChecklistValid(v.valid)
+          setChecklistScore(v.processScore)
+        }}
+        compact
+      />
+
       <div className="flex items-center gap-4">
-        <Button type="submit" disabled={submitting}>
+        <Button type="submit" disabled={submitting || !checklistValid}>
           {submitting ? 'Saving...' : 'Log Pick'}
         </Button>
         {error && <p className="text-sm text-red-500">{error}</p>}
