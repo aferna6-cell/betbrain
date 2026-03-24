@@ -16,6 +16,7 @@ import { QualityOutcomeMatrixPanel } from '@/components/quality-outcome-matrix'
 import { StreakProbabilityPanel } from '@/components/streak-probability'
 import { WeeklyProcessGradePanel } from '@/components/weekly-process-grade'
 import { FadeTrackerPanel } from '@/components/fade-tracker'
+import { ConfidenceClvScatterPanel } from '@/components/confidence-clv-scatter'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -90,6 +91,15 @@ export default async function AnalyticsPage() {
           Compare your performance on home picks vs away picks.
         </p>
         <HomeAwaySplits />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Confidence vs CLV</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Scatter plot of your confidence ratings against actual closing line value.
+          Higher confidence should predict better CLV if your calibration is good.
+        </p>
+        <ConfidenceClvScatterPanel />
       </div>
 
       <div className="border-t border-border pt-6">
