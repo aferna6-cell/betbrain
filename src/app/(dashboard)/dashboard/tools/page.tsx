@@ -7,6 +7,7 @@ import { BetGradingCard } from '@/components/bet-grading'
 import { AutoGradePanel } from '@/components/auto-grade'
 import { PickImportPanel } from '@/components/pick-import'
 import { KellySimulatorPanel } from '@/components/kelly-simulator'
+import { PositionSizingBacktestPanel } from '@/components/position-sizing-backtest'
 import { getOddsApiUsage } from '@/lib/sports/odds'
 
 export const metadata: Metadata = {
@@ -78,6 +79,15 @@ export default async function ToolsPage() {
           Use Monte Carlo simulation to project likely bankroll outcomes based on your stats.
         </p>
         <MonteCarloSimulator />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Position Sizing Backtest</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Replay your pick history with different staking strategies (flat, percentage, Kelly, confidence-scaled)
+          to see which sizing approach would have performed best.
+        </p>
+        <PositionSizingBacktestPanel picks={[]} />
       </div>
     </div>
   )

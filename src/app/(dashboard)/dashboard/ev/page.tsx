@@ -5,6 +5,9 @@ import { analyzeAllConsensus } from '@/lib/consensus'
 import { findFadeOpportunities } from '@/lib/fade-public'
 import { predictAllGameScripts } from '@/lib/game-script'
 import { calculateAllWinProbabilities } from '@/lib/win-probability'
+import { analyzeAllImpliedTotals } from '@/lib/implied-team-totals'
+import { analyzeAllSpreadVsML } from '@/lib/spread-vs-ml'
+import { identifySharpBooks } from '@/lib/sharp-book-identifier'
 import { EVScannerView } from '@/components/ev-scanner-view'
 import { ArbitrageScannerView } from '@/components/arbitrage-scanner'
 import { GameScriptPanel } from '@/components/game-script-panel'
@@ -13,6 +16,9 @@ import { ConsensusView } from '@/components/consensus-indicator'
 import { FadePublicTool } from '@/components/fade-public'
 import { SituationalSpotsPanel } from '@/components/situational-spots'
 import { PublicMoneyPanel } from '@/components/public-money'
+import { ImpliedTeamTotalsPanel } from '@/components/implied-team-totals'
+import { SpreadVsMLPanel } from '@/components/spread-vs-ml'
+import { SharpBookPanel } from '@/components/sharp-book-identifier'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -34,6 +40,9 @@ export default async function EVScannerPage() {
   const winProbs = calculateAllWinProbabilities(allGames)
   const consensus = analyzeAllConsensus(allGames)
   const fades = findFadeOpportunities(allGames)
+  const impliedTotals = analyzeAllImpliedTotals(allGames)
+  const spreadVsML = analyzeAllSpreadVsML(allGames)
+  const sharpBooks = identifySharpBooks(allGames)
 
   const totalEVCount = fullEV.allSorted.length
 
@@ -71,6 +80,15 @@ export default async function EVScannerPage() {
           </TabsTrigger>
           <TabsTrigger value="public">
             Public %
+          </TabsTrigger>
+          <TabsTrigger value="teamtotals">
+            Team Totals{impliedTotals.length > 0 ? ` (${impliedTotals.length})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="spreadml">
+            Spread vs ML
+          </TabsTrigger>
+          <TabsTrigger value="sharpbooks">
+            Sharp Books{sharpBooks.scores.length > 0 ? ` (${sharpBooks.scores.length})` : ''}
           </TabsTrigger>
         </TabsList>
 
@@ -142,6 +160,36 @@ export default async function EVScannerPage() {
               bookmaker consensus, and outlier detection. These are estimates — not actual handle data.
             </div>
             <PublicMoneyPanel games={allGames} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="teamtotals">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Implied team totals derived from game total + spread. Shows expected scoring per team
+              and identifies high/low scoring environments across bookmakers.
+            </div>
+            <ImpliedTeamTotalsPanel results={impliedTotals} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="spreadml">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Compares spread vs moneyline value for each side. Identifies when the ML offers better
+              risk/reward than the spread and vice versa based on favorite size and payout ratio.
+            </div>
+            <SpreadVsMLPanel result={spreadVsML} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="sharpbooks">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Ranks bookmakers by &ldquo;sharpness&rdquo; — how independently they set lines.
+              Sharp books deviate from consensus more often and consistently offer the best prices.
+            </div>
+            <SharpBookPanel result={sharpBooks} />
           </div>
         </TabsContent>
       </Tabs>
