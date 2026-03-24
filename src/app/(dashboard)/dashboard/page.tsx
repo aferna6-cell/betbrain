@@ -16,6 +16,7 @@ import { DashboardStats } from '@/components/dashboard-stats'
 import { DailySummary } from '@/components/daily-summary'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 import { WhatsNew } from '@/components/whats-new'
+import { TodaysAction } from '@/components/todays-action'
 import { TermTooltip } from '@/components/term-tooltip'
 import type { Database } from '@/lib/supabase/types'
 import type { NormalizedGame } from '@/lib/sports/config'
@@ -80,6 +81,7 @@ export default async function DashboardPage() {
         signalCount={signals.length}
       />
 
+      <TodaysAction />
       <DashboardStats />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
