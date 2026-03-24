@@ -27,6 +27,7 @@ import { AddAlertButton } from '@/components/add-alert-button'
 import { GameNotes } from '@/components/game-notes'
 import { LineShoppingPanel } from '@/components/line-shopping'
 import { HedgeCalculator } from '@/components/hedge-calculator'
+import { predictGameScript, getFlowLabel, getFlowColor } from '@/lib/game-script'
 import { formatImpliedProb, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
 import { formatGameTimeFull, timeAgo, RISK_COLORS } from '@/lib/format'
@@ -343,6 +344,88 @@ function BookmarkIcon({ filled }: { filled: boolean }) {
   )
 }
 
+function GameScriptTab({ game }: { game: NormalizedGame }) {
+  const script = predictGameScript(game)
+  const flowLabel = getFlowLabel(script.predictedFlow)
+  const flowColor = getFlowColor(script.predictedFlow)
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mb-1">Predicted Game Flow</p>
+          <p className={`text-xl font-bold ${flowColor}`}>{flowLabel}</p>
+        </div>
+        <Badge variant="outline" className="font-mono">
+          {script.confidence}% confidence
+        </Badge>
+      </div>
+
+      {/* Narrative */}
+      <div className="rounded-md bg-muted/20 px-4 py-3">
+        <p className="text-sm">{script.narrative}</p>
+      </div>
+
+      {/* Probability bars */}
+      <div className="space-y-2">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Outcome Probabilities</p>
+        {[
+          { label: 'Blowout', value: script.probabilities.blowout, color: 'bg-red-500' },
+          { label: 'Comfortable', value: script.probabilities.comfortable, color: 'bg-orange-500' },
+          { label: 'Close Game', value: script.probabilities.close, color: 'bg-blue-500' },
+          { label: 'Overtime', value: script.probabilities.overtime, color: 'bg-purple-500' },
+        ].map(({ label, value, color }) => (
+          <div key={label} className="flex items-center gap-2">
+            <span className="w-24 text-xs text-muted-foreground">{label}</span>
+            <div className="flex-1 h-4 rounded-full bg-muted/30 overflow-hidden">
+              <div className={`h-full rounded-full ${color}`} style={{ width: `${Math.max(value * 100, 2)}%` }} />
+            </div>
+            <span className="w-12 text-right text-xs font-mono font-medium">{(value * 100).toFixed(0)}%</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Scoring & spread info */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-md border border-border p-3">
+          <p className="text-xs text-muted-foreground">Scoring Environment</p>
+          <p className="text-sm font-medium">{script.scoring.scoringEnv}</p>
+          {script.scoring.expectedTotal && (
+            <p className="text-xs text-muted-foreground mt-1">Total: {script.scoring.expectedTotal}</p>
+          )}
+        </div>
+        <div className="rounded-md border border-border p-3">
+          <p className="text-xs text-muted-foreground">Spread Analysis</p>
+          <p className="text-sm font-medium">
+            {script.spreadAnalysis.consensusSpread !== null
+              ? `Consensus: ${script.spreadAnalysis.consensusSpread > 0 ? '+' : ''}${script.spreadAnalysis.consensusSpread}`
+              : 'No spread data'}
+          </p>
+          {script.spreadAnalysis.spreadRange > 0 && (
+            <p className="text-xs text-muted-foreground mt-1">
+              Range: {script.spreadAnalysis.spreadRange} pts
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Factors */}
+      {script.factors.length > 0 && (
+        <div>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Key Factors</p>
+          {script.factors.map((f, i) => (
+            <p key={i} className="text-xs text-muted-foreground">&bull; {f}</p>
+          ))}
+        </div>
+      )}
+
+      <p className="text-xs text-muted-foreground">
+        For informational purposes only. Not financial advice.
+      </p>
+    </div>
+  )
+}
+
 function AnalysisPanel({ game }: { game: NormalizedGame }) {
   const [analysis, setAnalysis] = useState<GameAnalysis | null>(null)
   const [loading, setLoading] = useState(false)
@@ -358,7 +441,7 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  async function handleAnalyze() {
+  async function handleAnalyze(forceRefresh: boolean = false) {
     setLoading(true)
     setError(null)
 
@@ -366,7 +449,7 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
       const response = await fetch('/api/analysis', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gameId: game.id, sport: game.sport }),
+        body: JSON.stringify({ gameId: game.id, sport: game.sport, forceRefresh }),
       })
 
       const data = await response.json()
@@ -377,6 +460,7 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
       }
 
       setAnalysis(data)
+      setSaved(false) // Reset saved state on re-analysis
     } catch {
       setError('Network error — please try again')
     } finally {
@@ -411,7 +495,7 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
           Generate an AI-powered breakdown of this matchup including key factors,
           value assessment, and risk analysis.
         </p>
-        <Button onClick={handleAnalyze} disabled={loading}>
+        <Button onClick={() => handleAnalyze(false)} disabled={loading}>
           {loading ? 'Analyzing...' : 'Generate Analysis'}
         </Button>
         {error && <p className="text-sm text-red-500">{error}</p>}
@@ -477,8 +561,18 @@ function AnalysisPanel({ game }: { game: NormalizedGame }) {
           >
             Share to X
           </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => handleAnalyze(true)}
+            disabled={loading}
+          >
+            {loading ? 'Re-analyzing...' : 'Re-analyze'}
+          </Button>
         </div>
       </div>
+      {error && <p className="text-sm text-red-500">{error}</p>}
 
       {/* Summary */}
       <div>
@@ -673,7 +767,8 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
           <TabsTrigger value={4}>H2H</TabsTrigger>
           <TabsTrigger value={5}>Hedge</TabsTrigger>
           <TabsTrigger value={6}>AI Analysis</TabsTrigger>
-          <TabsTrigger value={7}>Notes</TabsTrigger>
+          <TabsTrigger value={7}>Game Script</TabsTrigger>
+          <TabsTrigger value={8}>Notes</TabsTrigger>
         </TabsList>
 
         <TabsContent value={0} className="mt-4 rounded-lg border border-border bg-card p-6">
@@ -725,6 +820,10 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
         </TabsContent>
 
         <TabsContent value={7} className="mt-4 rounded-lg border border-border bg-card p-6">
+          <GameScriptTab game={game} />
+        </TabsContent>
+
+        <TabsContent value={8} className="mt-4 rounded-lg border border-border bg-card p-6">
           <GameNotes
             gameId={game.id}
             sport={game.sport}

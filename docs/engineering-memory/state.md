@@ -1,21 +1,21 @@
 # Engineering State
-## Current Session (2026-03-24, Session 8)
-- Build status: GREEN (2308 tests, all passing, clean build)
+## Current Session (2026-03-24, Session 10)
+- Build status: GREEN (2719 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 2308 (126 test files)
+- Test count: 2719 (144 test files)
 - In progress: (none)
-- Next up: Pick from remaining ideas list (pre-game checklist, unit sizing history, etc.)
+- Next up: Pick from remaining ideas list
 
 ## Key changes this session
-- Quality vs outcome matrix: 2x2 grid mapping process quality to outcomes (17 tests)
-- Streak probability calculator: continuation odds, expected streak length, unusual detection (23 tests)
-- CSV pick import: flexible column aliases, date normalization, drag-drop UI (22 tests)
-- Auto-grade from pick data: infer grading from metadata (CLV, timing, chase detection) (21 tests)
-- Weekly process grade: week-by-week grading trends with improving/declining detection (14 tests)
-- Fade tracker: contrarian vs public-side performance with sport breakdown (17 tests)
-- Bankroll milestone alerts: growth milestones, drawdown alerts, ATH tracking (17 tests)
-- Odds screen comparator: side-by-side diff at two timestamps (20 tests)
-- Pick confidence vs CLV scatter: scatter plot with Pearson correlation (11 tests)
-- Alert templates: save/reuse alert configs with 5 built-in starters (16 tests)
-- Updated backlog: checked off 10 items, added 20 new ideas
-- 178 new tests (2130 -> 2308)
+- Multi-market arbitrage scanner: spread + total arb detection with stake calculator (21 tests)
+- Game script predictor: predict blowout, close, OT from odds patterns (30 tests)
+- Daily slate: cross-sport same-day summary with ranked top games (20 tests)
+- Quick re-analyze button: force-refresh AI analysis bypassing 6hr cache
+- Parlay optimizer: find best N-leg combinations from today's games (22 tests)
+- Win probability panel: no-vig consensus probabilities with per-book breakdown (17 tests)
+- Game Script tab on game detail page with probability bars
+- Updated EV Scanner with 3 new tabs (Arbitrage, Game Scripts, Win Prob)
+- Updated dashboard with Daily Slate widget
+- Updated parlay page with Optimizer tab
+- 110 new tests (2609 -> 2719)
+- Added 15 new backlog ideas

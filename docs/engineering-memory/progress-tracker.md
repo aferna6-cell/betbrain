@@ -205,3 +205,51 @@ _What was built each session._
 - `/dashboard/bankroll` — Added bankroll milestones
 
 ### Commits: 3 (pushed via git push)
+
+## Session 2026-03-24 (Session 9)
+
+### Features Built
+1. **Multi-book account tracker** (`src/lib/multi-book-tracker.ts`, `src/components/multi-book-tracker.tsx`) — Track balances across sportsbooks. Deposits, withdrawals, adjustments. Portfolio summary with allocation bar, P/L per book. Wired into bankroll page. 38 tests.
+2. **Historical CLV distribution** (`src/lib/clv-distribution.ts`, `src/components/clv-distribution.tsx`) — Histogram of closing line value. Bucket analysis, shape detection (left-skewed/normal/right-skewed), sweet spot identification. Wired into analytics page. 24 tests.
+3. **EV attribution** (`src/lib/ev-attribution.ts`, `src/components/ev-attribution.tsx`) — 6-factor analysis: CLV, timing, sizing, sport selection, bet type, line shopping. Each scored 0-100 with contribution %, evidence, recommendations. Wired into analytics page. 14 tests.
+4. **Kelly bankroll simulator** (`src/lib/kelly-simulator.ts`, `src/components/kelly-simulator.tsx`) — Compare bankroll trajectories at flat 2%, quarter/half/three-quarter/full Kelly. SVG chart, results table, ruin probability, max drawdown. Wired into tools page. 17 tests.
+5. **Seasonal trend detector** (`src/lib/seasonal-trends.ts`, `src/components/seasonal-trends.tsx`) — Monthly ROI chart, day-of-week table, weekly timeline. Pattern detection, best/worst month/day. Weekly trend direction (improving/declining/stable). Wired into analytics page. 17 tests.
+6. **Bankroll drawdown heatmap** (`src/lib/drawdown-heatmap.ts`, `src/components/drawdown-heatmap.tsx`) — Calendar view of drawdown depth by day. 6 heat levels, month navigation, day detail popup. Max/avg drawdown, longest streak. Wired into bankroll page. 19 tests.
+7. **Smart bankroll alerts** (`src/lib/smart-bankroll-alerts.ts`, `src/components/smart-bankroll-alerts.tsx`) — 5 alert types: daily loss limit, consecutive losses, drawdown threshold, win rate drop, tilt detection. Configurable thresholds, dismissible, recommendations. Wired at top of bankroll page. 20 tests.
+8. **Pick dependency graph** (`src/lib/pick-dependencies.ts`, `src/components/pick-dependencies.tsx`) — Detect correlated picks: same game, same team, same day/sport. Union-find clustering with risk levels. Edge type breakdown, cluster detail. Wired into analytics page. 15 tests.
+
+### Bug Fixed
+- Seasonal trends: worstDay reducer had inverted comparison operator (`d.roi < w.roi ? w : d` should be `d.roi < w.roi ? d : w`)
+
+### Tests Added
+- 164 new tests (2445 to 2609 total)
+- New test files: multi-book-tracker (38), clv-distribution (24), ev-attribution (14), kelly-simulator (17), seasonal-trends (17), drawdown-heatmap (19), smart-bankroll-alerts (20), pick-dependencies (15)
+
+### Pages Updated
+- `/dashboard/bankroll` — Added smart bankroll alerts, multi-book tracker, drawdown heatmap
+- `/dashboard/analytics` — Added EV attribution, CLV distribution, seasonal trends, pick dependencies
+- `/dashboard/tools` — Added Kelly fraction simulator
+
+### Commits: 5 (pushed via git push)
+
+## Session 2026-03-24 (Session 10)
+
+### Features Built
+1. **Multi-market arbitrage scanner** (`src/lib/ev-scanner.ts` extension, `src/components/arbitrage-scanner.tsx`) — Extended arb detection from moneyline-only to cover spreads and totals. Stake calculator shows optimal split for any wager amount. Market-type color coding. New Arbitrage tab on EV Scanner. 21 tests.
+2. **Game script predictor** (`src/lib/game-script.ts`, `src/components/game-script-panel.tsx`) — Predicts game flow: blowout, comfortable, close, coin flip, OT candidate. Sport-specific thresholds for NBA/NFL/MLB/NHL. Probability distribution, scoring environment, narrative generation. New Game Scripts tab on EV Scanner + Game Script tab on game detail page. 30 tests.
+3. **Daily slate** (`src/lib/daily-slate.ts`, `src/components/daily-slate.tsx`) — Cross-sport same-day summary. Aggregates games, scores interest level per game, determines slate verdict (loaded/solid/average/light/empty). Sport pills with EV counts, top 5 ranked games. Added to dashboard. 20 tests.
+4. **Quick re-analyze button** — Added `forceRefresh` parameter to `analyzeGame()` and `/api/analysis` route. Re-analyze button on game detail page bypasses 6-hour cache. Resets saved state on re-analysis.
+5. **Parlay optimizer** (`src/lib/parlay-optimizer.ts`, `src/components/parlay-optimizer.tsx`) — Generates N-leg combinations from candidate picks, scores by EV + correlation risk + confidence. Filters impossible combos (opposing sides). Highlights best EV, safest, and best payout. Interactive pick selector with game grouping. New Optimizer tab on parlay page. 22 tests.
+6. **Win probability panel** (`src/lib/win-probability.ts`, `src/components/win-probability.tsx`) — No-vig consensus probabilities per game. Per-book breakdown with disagreement analysis, vig tilt detection, most/least bullish identification. Visual probability bars. New Win Prob tab on EV Scanner. 17 tests.
+
+### Tests Added
+- 110 new tests (2609 to 2719 total)
+- New test files: multi-market-arb (21), game-script (30), daily-slate (20), parlay-optimizer (22), win-probability (17)
+
+### Pages Updated
+- `/dashboard/ev` — Added Arbitrage, Game Scripts, Win Prob tabs
+- `/dashboard` — Added Daily Slate widget
+- `/dashboard/parlay` — Added Optimizer tab
+- `/dashboard/games/[gameId]` — Added Game Script tab, Re-analyze button
+
+### Commits: 6 (arb scanner, game script, daily slate, re-analyze+game-detail, parlay optimizer, win probability)

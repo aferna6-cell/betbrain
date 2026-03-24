@@ -11,9 +11,12 @@ import { getAllOdds, getOddsApiUsage } from '@/lib/sports/odds'
 import { scanForEV } from '@/lib/ev-scanner'
 import { analyzeAllConsensus } from '@/lib/consensus'
 import { detectSmartSignals } from '@/lib/signals'
+import { predictAllGameScripts } from '@/lib/game-script'
+import { buildDailySlate } from '@/lib/daily-slate'
 import { GamesDashboard } from '@/components/games-dashboard'
 import { DashboardStats } from '@/components/dashboard-stats'
 import { DailySummary } from '@/components/daily-summary'
+import { DailySlateWidget } from '@/components/daily-slate'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 import { WhatsNew } from '@/components/whats-new'
 import { TodaysAction } from '@/components/todays-action'
@@ -60,6 +63,8 @@ export default async function DashboardPage() {
   ])
 
   const divergences = consensus.filter((c) => c.divergence)
+  const gameScripts = predictAllGameScripts(allGames)
+  const dailySlate = buildDailySlate(allGames, evResult.opportunities, gameScripts)
 
   return (
     <div className="space-y-6">
@@ -84,6 +89,8 @@ export default async function DashboardPage() {
         topDivergence={divergences[0] ?? null}
         signalCount={signals.length}
       />
+
+      <DailySlateWidget slate={dailySlate} />
 
       <DailyReviewPrompt />
       <ResultsFeed games={allGames} />

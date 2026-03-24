@@ -20,6 +20,10 @@ import { ConfidenceClvScatterPanel } from '@/components/confidence-clv-scatter'
 import { TagPerformancePanel } from '@/components/pick-tags'
 import { ExpectedWinsChart } from '@/components/expected-wins'
 import { BetTimingPanel } from '@/components/bet-timing'
+import { CLVDistributionPanel } from '@/components/clv-distribution'
+import { SeasonalTrendsPanel } from '@/components/seasonal-trends'
+import { PickDependenciesPanel } from '@/components/pick-dependencies'
+import { EVAttributionPanel } from '@/components/ev-attribution'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -46,6 +50,15 @@ export default async function AnalyticsPage() {
         <p className="mt-1 text-muted-foreground">
           Your pick performance, activity metrics, and API usage at a glance.
         </p>
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <h2 className="text-xl font-bold mb-2">Edge Attribution</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Which factors contribute most to your edge? CLV, timing, sizing, sport selection,
+          bet type, and line shopping scored and ranked.
+        </p>
+        <EVAttributionPanel />
       </div>
 
       <div className="border-b border-border pb-6">
@@ -189,6 +202,33 @@ export default async function AnalyticsPage() {
           &quot;value&quot;, &quot;revenge game&quot;, or &quot;prime time&quot; to discover your best edges.
         </p>
         <TagPerformancePanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">CLV Distribution</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Histogram of your closing line value across all picks. Understand the shape
+          of your edge and where most value is captured.
+        </p>
+        <CLVDistributionPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Seasonal Trends</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Identify recurring performance patterns by month, week, and day of week.
+          Spot your best and worst calendar periods.
+        </p>
+        <SeasonalTrendsPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Pick Dependencies</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Visualize correlated picks: same game, same team, same day/sport clusters.
+          High correlation means concentrated risk.
+        </p>
+        <PickDependenciesPanel />
       </div>
 
       <div className="border-t border-border pt-6">
