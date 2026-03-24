@@ -234,21 +234,24 @@ Return ONLY the JSON object, no other text.`
 
 export async function analyzeGame(
   game: NormalizedGame,
-  userId: string
+  userId: string,
+  options?: { forceRefresh?: boolean }
 ): Promise<GameAnalysis> {
-  // Check cache first
-  const cached = await getCachedAnalysis(game.id)
-  if (cached) {
-    return {
-      insightId: cached.id,
-      summary: cached.summary,
-      keyFactors: cached.key_factors as string[],
-      valueAssessment: cached.value_assessment as GameAnalysis['valueAssessment'],
-      riskLevel: cached.risk_level,
-      confidence: cached.confidence,
-      disclaimer: AI_DISCLAIMER,
-      fromCache: true,
-      model: cached.model,
+  // Check cache first (unless force refresh requested)
+  if (!options?.forceRefresh) {
+    const cached = await getCachedAnalysis(game.id)
+    if (cached) {
+      return {
+        insightId: cached.id,
+        summary: cached.summary,
+        keyFactors: cached.key_factors as string[],
+        valueAssessment: cached.value_assessment as GameAnalysis['valueAssessment'],
+        riskLevel: cached.risk_level,
+        confidence: cached.confidence,
+        disclaimer: AI_DISCLAIMER,
+        fromCache: true,
+        model: cached.model,
+      }
     }
   }
 

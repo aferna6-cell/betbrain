@@ -10,7 +10,7 @@ import { SUPPORTED_SPORTS, isSport } from '@/lib/sports/config'
 
 export async function POST(request: Request) {
   return withAuthenticatedRoute(request, 'game analysis', async ({ user }) => {
-    let body: { gameId?: string; sport?: string }
+    let body: { gameId?: string; sport?: string; forceRefresh?: boolean }
 
     try {
       body = await request.json()
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       return badRequest('Invalid JSON body')
     }
 
-    const { gameId, sport } = body
+    const { gameId, sport, forceRefresh } = body
 
     if (!gameId || typeof gameId !== 'string') {
       return badRequest('Missing required field: gameId')
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     }
 
     try {
-      const analysis = await analyzeGame(game, user.id)
+      const analysis = await analyzeGame(game, user.id, { forceRefresh: !!forceRefresh })
       return NextResponse.json(analysis)
     } catch (error) {
       if (error instanceof AnalysisLimitError) {
