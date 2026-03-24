@@ -19,6 +19,7 @@ import { FadeTrackerPanel } from '@/components/fade-tracker'
 import { ConfidenceClvScatterPanel } from '@/components/confidence-clv-scatter'
 import { TagPerformancePanel } from '@/components/pick-tags'
 import { ExpectedWinsChart } from '@/components/expected-wins'
+import { BetTimingPanel } from '@/components/bet-timing'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -160,6 +161,15 @@ export default async function AnalyticsPage() {
           Compare your contrarian (underdog) plays vs public-side favorites. Are your fades profitable?
         </p>
         <FadeTrackerPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Bet Timing</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Are you better betting early or close to game time? Track ROI by
+          timing window to find your optimal betting schedule.
+        </p>
+        <BetTimingPanel />
       </div>
 
       <div className="border-t border-border pt-6">
