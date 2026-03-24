@@ -51,23 +51,18 @@ const features = [
   },
 ];
 
-const freeTier = [
-  "3 AI analyses per day",
+const allFeatures = [
+  "Unlimited AI analyses",
   "Odds comparison + implied probability",
   "Pick tracker with CLV tracking",
-  "Bankroll management dashboard",
-  "All 4 sports (NBA, NFL, MLB, NHL)",
-];
-
-const proTier = [
-  "Unlimited AI analyses",
+  "Bankroll management + Kelly sizing",
   "Smart Signals (multi-factor consensus)",
   "+EV scanner + arbitrage detection",
   "Line alerts on moneyline, spread, totals",
   "Auto-resolve NBA picks from scores",
   "Parlay EV calculator + prop analyzer",
   "Historical backtesting",
-  "All Free tier features",
+  "All 4 sports (NBA, NFL, MLB, NHL)",
 ];
 
 export default function LandingPage() {
@@ -397,74 +392,31 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Everything Included */}
       <section className="border-t border-zinc-800 bg-zinc-900/40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-24">
           <div className="mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-              Straightforward pricing
+              Everything included
             </h2>
             <p className="text-zinc-400 max-w-xl">
-              Start free. Upgrade when you need deeper analysis.
+              Personal analytics tool. All features. No limits. No subscriptions.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl">
-            {/* Free tier */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-7 flex flex-col">
-              <div className="mb-6">
-                <div className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-1">
-                  Free
-                </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-white">$0</span>
-                  <span className="text-zinc-500 text-sm">/ month</span>
-                </div>
-                <p className="text-sm text-zinc-500 mt-2">
-                  Everything you need to get started evaluating lines.
-                </p>
-              </div>
-
-              <ul className="space-y-2.5 mb-8 flex-1">
-                {freeTier.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-zinc-300">
-                    <span className="mt-0.5 w-4 h-4 flex-shrink-0 rounded-full border border-zinc-600 flex items-center justify-center text-zinc-400 text-[10px]">
-                      +
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/signup"
-                className="w-full inline-flex items-center justify-center px-5 py-2.5 rounded-md border border-zinc-700 hover:border-zinc-500 text-zinc-300 hover:text-white font-medium text-sm transition-colors"
-              >
-                Get Started Free
-              </Link>
-            </div>
-
-            {/* Pro tier */}
-            <div className="bg-zinc-900 border border-indigo-500/50 rounded-lg p-7 flex flex-col relative">
-              <div className="absolute top-4 right-4 text-xs font-medium text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-full">
-                Most popular
-              </div>
-
+          <div className="max-w-lg">
+            <div className="bg-zinc-900 border border-indigo-500/50 rounded-lg p-7 flex flex-col">
               <div className="mb-6">
                 <div className="text-xs font-medium text-indigo-400 uppercase tracking-wider mb-1">
-                  Pro
-                </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-white">$29</span>
-                  <span className="text-zinc-500 text-sm">/ month</span>
+                  Personal
                 </div>
                 <p className="text-sm text-zinc-500 mt-2">
-                  Unlimited analysis for serious, active bettors.
+                  All the analytics you need to find value and track results.
                 </p>
               </div>
 
-              <ul className="space-y-2.5 mb-8 flex-1">
-                {proTier.map((item) => (
+              <ul className="space-y-2.5 mb-8">
+                {allFeatures.map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-zinc-300">
                     <span className="mt-0.5 w-4 h-4 flex-shrink-0 rounded-full border border-indigo-500/50 bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-[10px]">
                       +
@@ -478,7 +430,7 @@ export default function LandingPage() {
                 href="/signup"
                 className="w-full inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition-colors"
               >
-                Start Pro Trial
+                Get Started
               </Link>
             </div>
           </div>

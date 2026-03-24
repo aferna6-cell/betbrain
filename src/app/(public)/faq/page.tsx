@@ -27,7 +27,7 @@ const faqs: { question: string; answer: string }[] = [
   {
     question: 'What sports do you cover?',
     answer:
-      'BetBrain currently covers four major professional sports leagues: NBA (basketball), NFL (football), MLB (baseball), and NHL (hockey). All leagues are available on the free tier with no additional setup required.',
+      'BetBrain currently covers four major professional sports leagues: NBA (basketball), NFL (football), MLB (baseball), and NHL (hockey). All leagues are available with no additional setup required.',
   },
   {
     question: 'How does the AI analysis work?',
@@ -37,17 +37,12 @@ const faqs: { question: string; answer: string }[] = [
   {
     question: 'What are Smart Signals?',
     answer:
-      'Smart Signals are games where multiple independent indicators align simultaneously — for example, significant bookmaker line variance combined with a high-confidence AI value assessment. When these signals converge, we flag the game for closer attention. Smart Signals are available to Pro subscribers.',
+      'Smart Signals are games where multiple independent indicators align simultaneously — for example, significant bookmaker line variance combined with a high-confidence AI value assessment. When these signals converge, we flag the game for closer attention.',
   },
   {
     question: 'Is BetBrain free?',
     answer:
-      'Yes, there is a free tier that includes 3 AI analyses per day, full odds comparison across all sports, and basic dashboard access. Pro is $29/month and includes unlimited AI analyses, Smart Signals, line movement alerts, and priority support.',
-  },
-  {
-    question: 'What is the API tier?',
-    answer:
-      'The API tier ($49/month) provides programmatic access to BetBrain analysis. It is intended for developers and power users who want to integrate our analysis data into their own workflows, spreadsheets, or applications.',
+      'BetBrain is a personal analytics tool with all features included. There are no paid tiers or subscriptions. You get unlimited AI analyses, Smart Signals, +EV scanning, line movement alerts, and everything else.',
   },
   {
     question: 'How accurate are the predictions?',
@@ -60,9 +55,9 @@ const faqs: { question: string; answer: string }[] = [
       'User data is stored securely in Supabase (PostgreSQL) with row-level security enforced at the database layer. Your picks, saved analyses, and account information are private and only accessible to your account. We do not sell user data to third parties.',
   },
   {
-    question: 'Can I cancel my subscription?',
+    question: 'Do I need an account?',
     answer:
-      'Yes, you can cancel your subscription at any time from the Billing page in your dashboard. Cancellation takes effect at the end of your current billing period. You retain Pro access until the period ends.',
+      'Yes, an account is needed to save picks, analyses, alerts, and bankroll data. Your data is stored securely and only accessible to you.',
   },
   {
     question: 'What odds formats do you support?',
