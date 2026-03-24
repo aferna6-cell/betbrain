@@ -10,7 +10,7 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
 - **Payments:** None (personal tool — Stripe code is legacy, tier checks bypassed)
-- **Testing:** Vitest (unit, 2308 tests) + Playwright (E2E, 24 smoke tests)
+- **Testing:** Vitest (unit, 2609 tests) + Playwright (E2E, 24 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
@@ -54,6 +54,14 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - `src/lib/odds-comparator.ts` — Side-by-side odds diff at two timestamps
 - `src/lib/confidence-clv-scatter.ts` — Confidence vs CLV scatter analysis
 - `src/lib/alert-templates.ts` — Save/reuse alert configurations
+- `src/lib/multi-book-tracker.ts` — Track balances across multiple sportsbooks
+- `src/lib/clv-distribution.ts` — Historical CLV distribution histogram
+- `src/lib/ev-attribution.ts` — 6-factor EV edge attribution analysis
+- `src/lib/kelly-simulator.ts` — Kelly fraction bankroll trajectory simulator
+- `src/lib/seasonal-trends.ts` — Monthly, weekly, day-of-week performance trends
+- `src/lib/drawdown-heatmap.ts` — Calendar view of bankroll drawdown depth
+- `src/lib/smart-bankroll-alerts.ts` — Configurable bankroll health alerts
+- `src/lib/pick-dependencies.ts` — Correlated picks detection and clustering
 - `src/lib/stripe.ts` — Stripe client singleton (legacy, bypassed)
 - `e2e/` — Playwright E2E smoke tests
 - `scripts/` — Health-check, daily review, post-deploy verification
@@ -67,7 +75,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (2308 tests)
+npm run test         # Run Vitest unit tests (2609 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md

@@ -81,3 +81,15 @@ Chase bets can be detected by looking at: (1) the previous pick was a loss, (2) 
 
 ## 2026-03-24 (Session 8): Pearson correlation needs sufficient sample size
 Pearson correlation with fewer than 10 data points is unreliable. The confidence-CLV scatter analysis correctly classifies any result with < 10 points as "insufficient" regardless of the computed correlation value. This prevents users from drawing conclusions from small samples.
+
+## 2026-03-24 (Session 9): Reducer comparator inversion bug
+When finding the minimum in a reduce() call, the comparator `(worst, d) => (d.roi < worst.roi ? worst : d)` is WRONG — it keeps the accumulator when `d` is smaller, effectively finding the maximum. The correct form is `(worst, d) => (d.roi < worst.roi ? d : worst)`. This is a common off-by-one-logic error. Always mentally trace: "when d is smaller, I want to keep d as the new worst."
+
+## 2026-03-24 (Session 9): TypeScript strict null checks in chained property access
+Even after a truthiness check like `if (group[i].pick_team && ...)`, TypeScript strict mode may still flag `group[i].pick_team.toLowerCase()` as "possibly null" because the narrow only applies within the same expression. Extract to a local variable first: `const team = group[i].pick_team; if (team) team.toLowerCase()`.
+
+## 2026-03-24 (Session 9): Union-find for clustering correlated picks
+Union-find (disjoint set) is the right algorithm for grouping correlated picks into clusters. O(n*alpha(n)) per operation, easy to implement. Path compression in find() keeps it fast. The key insight: iterate edges, union the connected nodes, then group by root to get clusters.
+
+## 2026-03-24 (Session 9): Smart alerts need deduplication by type
+When running periodic alert checks, the same condition (e.g., "5-game losing streak") will trigger every time. Deduplication by alert type prevents flooding. Keep only the most recent alert per type, and let users dismiss individually. Save dismissed state to localStorage to persist across page loads.
