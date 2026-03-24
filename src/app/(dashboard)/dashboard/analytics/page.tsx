@@ -7,6 +7,7 @@ import { ConfidenceCalibrationPanel } from '@/components/confidence-calibration'
 import { CLVTrendSection } from '@/components/clv-trend-section'
 import { HomeAwaySplits } from '@/components/home-away-splits'
 import { ModelAccuracyPanel } from '@/components/model-accuracy'
+import { SeasonSummaryPanel } from '@/components/season-summary'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -33,6 +34,14 @@ export default async function AnalyticsPage() {
         <p className="mt-1 text-muted-foreground">
           Your pick performance, activity metrics, and API usage at a glance.
         </p>
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <h2 className="text-xl font-bold mb-2">Season Summary</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Your overall season performance at a glance, with a letter grade and key highlights.
+        </p>
+        <SeasonSummaryPanel />
       </div>
 
       <AnalyticsDashboard data={analytics} />
