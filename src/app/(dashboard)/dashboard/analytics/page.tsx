@@ -6,6 +6,7 @@ import { TimeAnalysisPanel } from '@/components/time-analysis'
 import { ConfidenceCalibrationPanel } from '@/components/confidence-calibration'
 import { CLVTrendSection } from '@/components/clv-trend-section'
 import { HomeAwaySplits } from '@/components/home-away-splits'
+import { ModelAccuracyPanel } from '@/components/model-accuracy'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -67,6 +68,15 @@ export default async function AnalyticsPage() {
           Are your confidence ratings accurate? Track how well your stated confidence matches actual win rates.
         </p>
         <ConfidenceCalibrationPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">AI Model Accuracy</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          How well does the AI&apos;s confidence predict actual outcomes? Track prediction calibration,
+          Brier score, and accuracy by confidence level.
+        </p>
+        <ModelAccuracyPanel />
       </div>
     </div>
   )

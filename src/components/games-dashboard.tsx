@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { GameCard } from '@/components/game-card'
 import { WatchlistPanel } from '@/components/watchlist'
@@ -16,7 +16,11 @@ interface GamesDashboardProps {
     isExhausted: boolean
   }
   dataNotices: string[]
+  evGameIds?: string[]
+  signalGameIds?: string[]
 }
+
+type QuickFilter = 'none' | 'ev' | 'signals' | 'my-picks'
 
 const LEAGUES: { key: 'all' | Sport; label: string }[] = [
   { key: 'all', label: 'All' },
@@ -30,13 +34,49 @@ export function GamesDashboard({
   gamesBySport,
   apiUsage,
   dataNotices,
+  evGameIds = [],
+  signalGameIds = [],
 }: GamesDashboardProps) {
   const [activeLeague, setActiveLeague] = useState<'all' | Sport>('all')
+  const [quickFilter, setQuickFilter] = useState<QuickFilter>('none')
+  const [myPickGameIds, setMyPickGameIds] = useState<Set<string>>(new Set())
 
-  const filteredGames =
+  // Fetch user's pick game IDs for "My Picks" filter
+  const fetchMyPicks = useCallback(async () => {
+    try {
+      const res = await fetch('/api/picks')
+      if (!res.ok) return
+      const data = await res.json()
+      const picks = data.picks ?? []
+      const ids = new Set<string>(
+        picks.map((p: { external_game_id: string }) => p.external_game_id)
+      )
+      setMyPickGameIds(ids)
+    } catch {
+      // Silent
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchMyPicks()
+  }, [fetchMyPicks])
+
+  const evSet = new Set(evGameIds)
+  const signalSet = new Set(signalGameIds)
+
+  let filteredGames =
     activeLeague === 'all'
       ? Object.values(gamesBySport).flat()
       : gamesBySport[activeLeague] ?? []
+
+  // Apply quick filter
+  if (quickFilter === 'ev') {
+    filteredGames = filteredGames.filter((g) => evSet.has(g.id))
+  } else if (quickFilter === 'signals') {
+    filteredGames = filteredGames.filter((g) => signalSet.has(g.id))
+  } else if (quickFilter === 'my-picks') {
+    filteredGames = filteredGames.filter((g) => myPickGameIds.has(g.id))
+  }
 
   // Sort by commence time
   const sortedGames = [...filteredGames].sort(
@@ -94,6 +134,37 @@ export function GamesDashboard({
             {apiUsage.count}/{apiUsage.limit}
           </Badge>
         </div>
+      </div>
+
+      {/* Quick filters */}
+      <div className="flex flex-wrap gap-2">
+        {([
+          { key: 'none' as QuickFilter, label: 'All Games', count: null },
+          { key: 'ev' as QuickFilter, label: '+EV', count: evGameIds.length },
+          { key: 'signals' as QuickFilter, label: 'Signals', count: signalGameIds.length },
+          { key: 'my-picks' as QuickFilter, label: 'My Picks', count: myPickGameIds.size },
+        ] as const).map(({ key, label, count }) => (
+          <button
+            key={key}
+            onClick={() => setQuickFilter(quickFilter === key ? 'none' : key)}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors border ${
+              quickFilter === key
+                ? key === 'ev'
+                  ? 'bg-green-500/15 border-green-500/30 text-green-500'
+                  : key === 'signals'
+                    ? 'bg-blue-500/15 border-blue-500/30 text-blue-400'
+                    : key === 'my-picks'
+                      ? 'bg-purple-500/15 border-purple-500/30 text-purple-400'
+                      : 'bg-primary text-primary-foreground border-primary'
+                : 'border-border text-muted-foreground hover:text-foreground hover:bg-accent'
+            }`}
+          >
+            {label}
+            {count !== null && count > 0 && (
+              <span className="ml-1 opacity-70">{count}</span>
+            )}
+          </button>
+        ))}
       </div>
 
       {/* Rate limit warning */}

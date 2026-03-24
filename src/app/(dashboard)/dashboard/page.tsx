@@ -121,6 +121,8 @@ export default async function DashboardPage() {
         gamesBySport={gamesBySport}
         apiUsage={apiUsage}
         dataNotices={dataNotices}
+        evGameIds={evResult.opportunities.map((o) => o.game.id)}
+        signalGameIds={signals.map((s) => s.game.id)}
       />
     </div>
   )
