@@ -74,46 +74,65 @@
 - [ ] **Weather impact analysis** — For outdoor sports (NFL, MLB), factor in weather
 - [ ] **Referee/umpire tendencies** — Track how officials affect over/unders
 - [x] **Closing line value dashboard** — Visualize CLV trends over time with charts
-- [ ] **Bet grading system** — Rate bet quality separate from outcome (good process, bad result)
 - [x] **Smart bankroll allocation** — Auto-suggest how to split bankroll across sports
 - [ ] **Parlay optimizer** — Find the highest EV combination of legs
 - [x] **Risk-adjusted ROI** — Weight ROI by stake size and variance
 - [x] **Correlation matrix** — Show which sports/bet types your results correlate with
 - [ ] **Dark/light mode improvements** — Per-page theming, OLED dark mode
 - [x] **CLV trend chart** — Recharts line chart showing CLV trends over time on analytics page
-- [ ] **Quick analysis from Today's Action** — Button on pick cards to jump to game detail
+- [x] **Quick analysis from Today's Action** — Button on pick cards to jump to game detail _(Session 6)_
 - [x] **Closing odds auto-capture** — Background job to snapshot odds at game start time
 - [ ] **Results feed** — Real-time feed showing today's game results as they finalize
 - [x] **Pick templates** — Save common pick configurations for quick logging
 - [x] **Home/away splits** — Analytics showing performance on home vs away picks
 - [x] **Odds movement velocity alerts** — Alert when a line is moving unusually fast
-- [ ] **Daily review prompt** — End-of-day prompt asking to grade/reflect on today's picks
+- [x] **Daily review prompt** — End-of-day prompt asking to grade/reflect on today's picks _(Session 6)_
 - [x] **Bankroll graph on dashboard** — Mini sparkline of bankroll trend in stats grid
-- [ ] **Pick streak indicators in Today's Action** — Show win/loss streak per sport
+- [x] **Pick streak indicators in Today's Action** — Show win/loss streak per sport _(Session 6)_
 - [x] **Model accuracy tracking** — AI confidence vs actual outcomes over time
 - [ ] **Prop analysis history** — Past prop analyses with outcomes
 - [x] **Quick filters on dashboard** — "Only games I have picks on" / "Only with signals"
 - [x] **Copy analysis to clipboard** — One-click copy for sharing in group chats
-- [ ] **Performance by bookmaker** — Which book gives best CLV? Track and show.
+- [x] **Performance by bookmaker** — Which book gives best CLV? Track and show. _(Session 6)_
 - [x] **Alternate line calculator** — Show what alternate lines pay and their EV
-- [ ] **Public betting % estimates** — Use odds movement to estimate public money direction
+- [x] **Public betting % estimates** — Use odds movement to estimate public money direction _(Session 6)_
 - [x] **Season summary generator** — Auto-generate end-of-season report
 - [x] **Notification preferences** — Choose which event types trigger notifications
-- [ ] **Bankroll recovery calculator** — How many bets to recover from this drawdown?
+- [x] **Bankroll recovery calculator** — How many bets to recover from this drawdown? _(Session 6)_
+- [x] **Pre-bet risk scorecard UI** — Wire risk-assessment.ts into pick form with visual risk meter _(Session 6)_
+- [x] **Value plays page** — Dedicated /dashboard/value page with all value plays _(Session 6)_
+- [x] **Performance insights on profile** — Show top 3 insights on profile page _(Session 6)_
+- [x] **Line movement heatmap** — Visual heatmap of which games have the most line movement _(Session 6)_
+- [x] **Odds staleness indicator on game cards** — Show last update time relative to game start _(Session 6)_
 
-## New Ideas (Session 5 — 2026-03-24)
-- [ ] **Pre-bet risk scorecard UI** — Wire risk-assessment.ts into pick form with visual risk meter
-- [ ] **Value plays page** — Dedicated /dashboard/value page with all value plays, not just top 5
-- [ ] **Performance insights on profile** — Show top 3 insights on profile page as quick summary
+## Remaining Ideas
 - [ ] **Closing line auto-capture cron** — Background job to run matchClosingLines before game starts
-- [ ] **Bet grading system** — Rate bet quality separate from outcome (process vs result)
-- [ ] **Odds API budget optimizer** — Smart scheduling for popular vs low-interest sports
-- [ ] **Line movement heatmap** — Visual heatmap of which games have the most line movement
-- [ ] **Bankroll recovery calculator** — "How many bets at your current win rate to recover?"
 - [ ] **Custom signal builder** — User-defined signal criteria (CLV > 3% AND confidence > 70)
 - [ ] **Multi-sport same-day summary** — Cross-sport analysis for days with games in multiple leagues
-- [ ] **Odds staleness indicator on game cards** — Show last update time relative to game start
 - [ ] **Quick re-analyze button** — Re-run AI analysis with one click from picks tracker
 - [ ] **Performance by time-to-game** — Track ROI based on how far before game start the bet was placed
 - [ ] **Book-specific line shopping** — Show which book consistently has best lines per market type
 - [ ] **Pick import from CSV** — Upload historical picks for analysis
+- [ ] **Bet grading system** — Rate bet quality separate from outcome (process vs result)
+
+## New Ideas (Session 6 — 2026-03-24)
+- [ ] **Bet replay viewer** — Step through historical odds movement for a game you bet on
+- [ ] **Kelly fraction override** — Allow manual Kelly adjustment (quarter/half/full) per bet
+- [ ] **Hedge calculator on game detail** — Calculate hedge from game detail page for live hedging
+- [ ] **Profit calendar** — Monthly calendar view colored by daily P/L (green/red/gray)
+- [ ] **Bankroll allocation rebalancer** — Alert when sport allocation drifts from target
+- [ ] **Sharp book identifier** — Track which books are consistently early movers
+- [ ] **Game script predictor** — AI-powered prediction of game flow (blowout, close, OT)
+- [ ] **Pick dependency graph** — Visualize which picks are correlated (same game, same sport)
+- [ ] **Automated closing odds backfill** — For picks with missing closing_odds, estimate from historical data
+- [ ] **ROI by day-of-week heatmap** — Visual calendar showing best/worst days
+- [ ] **Odds movement replay** — Animate line movement over time for educational review
+- [ ] **EV decay tracker** — Track how EV of a spotted opportunity decays over time
+- [ ] **Prop market trends** — Track which prop markets are most +EV historically
+- [ ] **Reverse engineer fair odds** — Given a final score, what were the "true" odds?
+- [ ] **Alert templates** — Save common alert configurations for quick setup
+- [ ] **Cross-sport correlation alerts** — Alert when multiple sports show correlated sharp action
+- [ ] **Odds API usage forecast** — Predict when you'll exhaust monthly budget at current rate
+- [ ] **In-app changelog with feature tours** — Interactive walkthroughs of new features
+- [ ] **Player prop value scanner** — When Odds API props are available, scan for +EV props
+- [ ] **Bet sizing optimizer** — Suggest optimal unit sizes based on Kelly and recent performance

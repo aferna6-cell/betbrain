@@ -48,3 +48,12 @@ When rebasing onto a remote that also has engineering memory files, git shows ad
 
 ## 2026-03-24 (Session 5): Spread "best line" sorting
 For spread bets, "best" depends on which side you're betting. A higher spread line is better for the side receiving points. Sort by line value first (higher = better), then by implied probability (lower = better price) as tiebreaker.
+
+## 2026-03-24 (Session 6): NormalizedBookmakerOdds property names
+The interface uses `spread` and `total` (singular), not `spreads` and `totals`. The sub-interfaces are `NormalizedSpread` with `homeLine`/`awayLine` and `NormalizedTotal` with `line`. Test fixtures must match these exactly. Always check the interface definition before writing test helpers.
+
+## 2026-03-24 (Session 6): Risk scoring calibration
+The risk assessment composite score uses weighted factors (30% bankroll, 25% odds value, 15% concentration, 20% tilt, 10% unit sizing). Individual factor scores (0-100) get mapped to five severity levels. When wiring into UI, the assessment is recalculated on every form input change — use useMemo to avoid unnecessary recalculations, and skip assessment when odds is null or invalid.
+
+## 2026-03-24 (Session 6): localStorage data for client components
+Multiple features (risk scorecard, bankroll recovery, daily review) read from localStorage. Always: (1) guard with typeof window check, (2) wrap in try-catch since storage can be full or disabled, (3) provide sensible defaults, (4) load in useEffect not during render to avoid SSR mismatch.

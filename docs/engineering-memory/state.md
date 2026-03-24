@@ -1,20 +1,23 @@
 # Engineering State
-## Current Session (2026-03-24, Session 5)
-- Build status: GREEN (1941 tests, all passing, clean build)
+## Current Session (2026-03-24, Session 6)
+- Build status: GREEN (2013 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 1941 (104 test files)
+- Test count: 2013 (110 test files)
 - In progress: (none)
-- Next up: Wire risk-assessment into pick form UI, dedicated value plays page, closing line cron job
+- Next up: Pick from remaining ideas list (custom signal builder, profit calendar, etc.)
 
 ## Key changes this session
-- Fixed Google Fonts build failure (geist local package was already on remote)
-- Line shopping tool: best lines, juice comparison, key line discrepancies across bookmakers
-- Line Shopping tab on game detail page with edge summary, best lines table, discrepancy alerts
-- Bet calculator: single bet payout, hedge bet, parlay calculator with EV and Kelly
-- Value finder: composite scoring from +EV, line discrepancy, disagreement, low juice signals
-- Value plays widget on dashboard showing top 5 opportunities
-- Performance insights engine: 6-dimension analysis (bet type, sport, odds range, CLV, volume, timing)
-- Performance insights UI on analytics page with category filters
-- Closing line capture: automatic consensus odds matching for CLV tracking
-- Risk assessment engine: 5-factor pre-bet scoring (exposure, value, tilt, concentration, sizing)
+- Pre-bet risk scorecard UI with visual risk meter wired into pick form
+- Dedicated /dashboard/value page with sport/type/score filters
+- Performance insights summary on profile page (top 3 insights)
+- Quick "Analyze" link from Today's Action picks to game detail
+- Odds staleness indicator on game cards (stale data warning)
+- Line movement heatmap on Signals page (heat levels, intensity scoring)
+- Bankroll recovery calculator on bankroll page (3 scenarios, probability, timeline)
+- Public money estimator with "Public %" tab on EV Scanner
+- Pick streak indicators (win/loss streak badges) in Today's Action
+- Daily review prompt system (process grading, discipline/research ratings, chase tracking)
+- Review history with stats on journal page
+- Bookmaker performance tracker (CLV per book) on analytics page
 - Updated CLAUDE.md with new module inventory and test count
+- 72 new tests (1941 -> 2013)

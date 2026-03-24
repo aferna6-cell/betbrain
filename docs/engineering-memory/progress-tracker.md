@@ -139,3 +139,27 @@ _What was built each session._
 - New test files: line-shopping (33), bet-calculator (38), value-finder (15), performance-insights (18), closing-line-capture (24), risk-assessment (26)
 
 ### Commits: 7 (font fix resolution, line shopping, bet calculator, value finder, performance insights, closing line capture, risk assessment)
+
+## Session 2026-03-24 (Session 6)
+
+### Features Built
+1. **Pre-bet risk scorecard** (`src/components/risk-scorecard.tsx`) — Visual risk meter with 5-factor breakdown (bankroll exposure, odds value, concentration, tilt, unit sizing). Expandable detail view. Wired into pick form with live scoring.
+2. **Value plays page** (`/dashboard/value`, `src/components/value-plays-full.tsx`) — Full page showing all value plays with sport/type/score filters, stats summary (avg score, best score, games analyzed). Links to game detail.
+3. **Performance insights on profile** — Top 3 highest-confidence insights from betting history shown on profile page as quick summary cards.
+4. **Quick analysis from Today's Action** — "Analyze" link on each pick card to jump directly to game detail page.
+5. **Odds staleness indicator** — Stale odds warning on game cards when cached data is past TTL, showing time since last update.
+6. **Line movement heatmap** (`src/lib/line-movement-heatmap.ts`, `src/components/line-movement-heatmap.tsx`) — Visual grid of line activity across moneyline/spread/total markets. Intensity scoring (0-100), heat levels (cold/mild/warm/hot/fire). Sport filters, cold toggle. "Heatmap" tab on Signals page.
+7. **Bankroll recovery calculator** (`src/lib/bankroll-recovery.ts`, `src/components/bankroll-recovery.tsx`) — Estimate bets to recover from drawdown. Three scenarios (optimistic/expected/pessimistic), recovery probability within N bets, timeline estimates, negative EV warning. Added to bankroll page.
+8. **Public money estimator** (`src/lib/public-money.ts`, `src/components/public-money.tsx`) — Estimate public vs sharp sides using favorite bias, bookmaker consensus, outlier detection. Visual percentage bar, confidence scoring, divergence detection. "Public %" tab on EV Scanner.
+9. **Pick streak indicators** — Win/loss streak badges in Today's Action widget (e.g., "3W streak", "2L streak").
+10. **Daily review system** (`src/lib/daily-review.ts`, `src/components/daily-review.tsx`) — Process grading (A-F), discipline/bankroll/research ratings (1-5), chase tracking, lesson capture. Prompt appears on dashboard after 6 PM. Review history with stats on journal page. Trend detection (improving/declining).
+11. **Book performance tracker** (`src/lib/book-performance.ts`, `src/components/book-performance.tsx`) — CLV, win rate, ROI per bookmaker. Best CLV book identification. Color-coded table with brand dots. "Performance by Bookmaker" section on analytics page.
+
+### Tests Added
+- 72 new tests (1941 to 2013 total)
+- New test files: value-plays-page (10), line-movement-heatmap (11), bankroll-recovery (15), public-money (11), daily-review (12), book-performance (13)
+
+### New Routes
+- `/dashboard/value` — Dedicated value plays page
+
+### Commits: 6
