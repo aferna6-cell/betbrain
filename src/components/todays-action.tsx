@@ -102,6 +102,22 @@ export function TodaysAction() {
   const totalUnits = picks.reduce((s, p) => s + p.units, 0)
   const totalProfit = resolved.reduce((s, p) => s + (p.profit ?? 0), 0)
 
+  // Calculate current streak from resolved picks
+  const streakInfo = (() => {
+    if (resolved.length === 0) return null
+    const sorted = [...resolved].sort((a, b) =>
+      new Date(b.game_date).getTime() - new Date(a.game_date).getTime()
+    )
+    let streak = 0
+    const firstOutcome = sorted[0].outcome
+    if (firstOutcome === 'push') return null
+    for (const pick of sorted) {
+      if (pick.outcome === firstOutcome) streak++
+      else break
+    }
+    return streak >= 2 ? { type: firstOutcome as 'win' | 'loss', count: streak } : null
+  })()
+
   return (
     <div className="rounded-lg border border-border bg-card p-4 space-y-3">
       <div className="flex items-center justify-between">
@@ -128,6 +144,15 @@ export function TodaysAction() {
         {pending.length > 0 && (
           <Badge variant="outline" className="text-[10px]">
             {pending.length} pending
+          </Badge>
+        )}
+        {streakInfo && (
+          <Badge className={`text-[10px] ${
+            streakInfo.type === 'win'
+              ? 'bg-green-500/20 text-green-400'
+              : 'bg-red-500/20 text-red-400'
+          }`}>
+            {streakInfo.count}{streakInfo.type === 'win' ? 'W' : 'L'} streak
           </Badge>
         )}
       </div>

@@ -7,6 +7,7 @@ import { EVScannerView } from '@/components/ev-scanner-view'
 import { ConsensusView } from '@/components/consensus-indicator'
 import { FadePublicTool } from '@/components/fade-public'
 import { SituationalSpotsPanel } from '@/components/situational-spots'
+import { PublicMoneyPanel } from '@/components/public-money'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -48,6 +49,9 @@ export default async function EVScannerPage() {
           <TabsTrigger value="spots">
             Situations
           </TabsTrigger>
+          <TabsTrigger value="public">
+            Public %
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="ev">
@@ -79,6 +83,15 @@ export default async function EVScannerPage() {
               and other situational factors that historically affect game outcomes.
             </div>
             <SituationalSpotsPanel games={allGames} />
+          </div>
+        </TabsContent>
+        <TabsContent value="public">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Estimated public betting percentages based on odds patterns. Looks for favorite bias,
+              bookmaker consensus, and outlier detection. These are estimates — not actual handle data.
+            </div>
+            <PublicMoneyPanel games={allGames} />
           </div>
         </TabsContent>
       </Tabs>
