@@ -5,6 +5,7 @@ import { getSignalHistory, getSignalStats } from '@/lib/signal-history'
 import { SmartSignalsView } from '@/components/smart-signals'
 import { SignalHistoryView } from '@/components/signal-history'
 import { SteamMovesView } from '@/components/steam-moves'
+import { OddsVelocityPanel } from '@/components/odds-velocity'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -41,6 +42,9 @@ export default async function SignalsPage() {
           <TabsTrigger value="steam">
             Steam Moves
           </TabsTrigger>
+          <TabsTrigger value="velocity">
+            Line Velocity
+          </TabsTrigger>
           <TabsTrigger value="history">
             Hit Rate{stats.hitRate !== null ? ` — ${stats.hitRate}%` : ''}
           </TabsTrigger>
@@ -52,6 +56,16 @@ export default async function SignalsPage() {
 
         <TabsContent value="steam">
           <SteamMovesView />
+        </TabsContent>
+
+        <TabsContent value="velocity">
+          <div className="mt-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Lines moving rapidly across multiple books often signal sharp action or breaking news.
+              This view requires odds history snapshots to compare movement.
+            </p>
+            <OddsVelocityPanel alerts={[]} />
+          </div>
         </TabsContent>
 
         <TabsContent value="history">
