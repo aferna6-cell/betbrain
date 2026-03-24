@@ -10,6 +10,7 @@ import { ModelAccuracyPanel } from '@/components/model-accuracy'
 import { SeasonSummaryPanel } from '@/components/season-summary'
 import { CorrelationMatrixPanel } from '@/components/correlation-matrix'
 import { PerformanceInsights } from '@/components/performance-insights'
+import { BookPerformancePanel } from '@/components/book-performance'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -92,6 +93,15 @@ export default async function AnalyticsPage() {
           Brier score, and accuracy by confidence level.
         </p>
         <ModelAccuracyPanel />
+      </div>
+
+      <div className="border-t border-border pt-6">
+        <h2 className="text-xl font-bold mb-2">Performance by Bookmaker</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Which sportsbook consistently gives you the best closing line value?
+          Track CLV, win rate, and ROI per bookmaker.
+        </p>
+        <BookPerformancePanel />
       </div>
 
       <div className="border-t border-border pt-6">
