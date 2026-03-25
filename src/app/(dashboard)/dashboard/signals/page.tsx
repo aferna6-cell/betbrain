@@ -12,6 +12,8 @@ import { detectSharpFlow, type SharpSignal, type GameOddsTimeline, type OddsPoin
 import { trackConsensus } from '@/lib/consensus-line-tracker'
 import { ConsensusLineTrackerPanel } from '@/components/consensus-line-tracker'
 import { CustomSignalBuilder } from '@/components/custom-signal-builder'
+import { scanForRLM } from '@/lib/rlm-alerts'
+import { RLMAlertsPanel } from '@/components/rlm-alerts'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -31,6 +33,7 @@ export default async function SignalsPage() {
   const allGames = Array.from(oddsMap.values()).flatMap((r) => r.games)
   const signals = await detectSmartSignals(allGames)
   const consensusTracker = trackConsensus(allGames)
+  const rlmResult = scanForRLM(allGames)
 
   return (
     <div className="space-y-6">
@@ -60,6 +63,9 @@ export default async function SignalsPage() {
           </TabsTrigger>
           <TabsTrigger value="consensus">
             Consensus{consensusTracker.gamesWithDeviations > 0 ? ` (${consensusTracker.gamesWithDeviations})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="rlm">
+            RLM{rlmResult.alerts.length > 0 ? ` (${rlmResult.alerts.length})` : ''}
           </TabsTrigger>
           <TabsTrigger value="custom">
             Custom Rules
@@ -113,6 +119,17 @@ export default async function SignalsPage() {
               offer value (stale lines) or signal early movement.
             </p>
             <ConsensusLineTrackerPanel result={consensusTracker} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="rlm">
+          <div className="mt-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Reverse Line Movement detects games where the line moves against expected public action.
+              This is the strongest indicator of sharp money — pros betting enough to move the line
+              opposite to public sentiment.
+            </p>
+            <RLMAlertsPanel result={rlmResult} />
           </div>
         </TabsContent>
 
