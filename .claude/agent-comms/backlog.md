@@ -41,7 +41,6 @@
 - [ ] **Odds movement replay** — Animate line movement over time for educational review
 - [ ] **Prop market trends** — Track which prop markets are most +EV historically
 - [ ] **Reverse engineer fair odds** — Given a final score, what were the "true" odds?
-- [ ] **Cross-sport correlation alerts** — Alert when multiple sports show correlated sharp action
 - [ ] **Player prop value scanner** — When Odds API props are available, scan for +EV props
 - [ ] **Unit sizing history chart** — Track how your unit sizing changes over time
 - [ ] **Daily P/L notification** — Evening summary notification with day's P/L
@@ -66,26 +65,39 @@
 - [x] **EV decay sport aggregation** — aggregateBySort() (4 tests)
 - [x] **API cost per insight tracker** — Cost-effectiveness metrics (18 tests)
 
-## New Ideas (Session 13 — 2026-03-25)
+## Completed — Session 14 (2026-03-25)
+- [x] **Odds API request optimizer** — Smart refresh by game proximity (37 tests)
+- [x] **Smart pick journal integration** — Auto-fill journal from picks (35 tests)
+- [x] **Bet slip builder** — Multi-pick slip with EV + correlation warnings (30 tests)
+- [x] **Closing line prediction model** — Weighted regression on movement trajectory (24 tests)
+- [x] **Cross-sport sharp correlation** — Detect simultaneous sharp action (17 tests)
+- [x] **Bet slip panel UI** — Game detail Bet Slip tab
+- [x] **Cross-sport sharp panel UI** — Signals Cross-Sport tab
+- [x] **Closing line predictor panel UI** — Prediction card component
+
+## New Ideas (Session 14 — 2026-03-25)
 - [ ] [P1] [feat]: Live game state tracker — Show live scores and live EV for games in progress | Files: src/lib/live-tracker.ts, src/components/live-tracker.tsx | Done when: live scores shown for today's games
-- [ ] [P1] [feat]: Odds API request optimizer — Stagger refreshes by game time proximity | Files: src/lib/sports/odds.ts | Done when: fewer API calls with same data freshness
-- [ ] [P1] [feat]: Smart pick journal integration — Auto-fill journal from checklist and pick data | Files: src/lib/journal-auto.ts | Done when: journal entries auto-populated from picks
-- [ ] [P2] [feat]: Closing line prediction model — Predict where line will close from movement patterns | Files: src/lib/closing-line-predictor.ts | Done when: predictions within 3 pts for 60%+ of games
+- [ ] [P1] [feat]: Wire optimizer into odds fetcher — Use dynamic TTLs from optimizer in actual getOddsForSport | Files: src/lib/sports/odds.ts | Done when: optimizer TTLs used instead of flat 5min
+- [ ] [P1] [feat]: Auto-journal from picks page — Button to generate and save journal entry from today's picks | Files: src/components/journal-auto-generate.tsx | Done when: one-click journal generation works
 - [ ] [P2] [feat]: Multi-leg hedge optimizer — Optimal hedge stakes for live multi-leg bets | Files: src/lib/hedge-optimizer.ts | Done when: hedge calculator handles 3+ legs
-- [ ] [P2] [feat]: Cross-sport sharp correlation — Detect simultaneous sharp action across sports | Files: src/lib/cross-sport-sharp.ts | Done when: cross-sport signals shown
 - [ ] [P2] [feat]: Morning brief AI narrative — Claude-generated natural language brief | Files: src/lib/morning-brief.ts | Done when: AI-written brief paragraph shown
 - [ ] [P2] [feat]: Historical fatigue performance — Track W/L/ATS for B2B games in pick history | Files: src/lib/fatigue-model.ts | Done when: historical B2B stats shown
-- [ ] [P2] [feat]: Bet slip builder — Multi-pick slip with running EV and correlation warnings | Files: src/lib/bet-slip.ts | Done when: slip UI on game detail page
 - [ ] [P2] [feat]: Pick journal auto-tagging — Auto-detect pick types from metadata | Files: src/lib/pick-tagging.ts | Done when: tags auto-applied on pick creation
+- [ ] [P2] [feat]: Closing line predictor on game detail — Show predicted close on game page | Files: src/components/game-detail.tsx | Done when: prediction displayed in Line Movement tab
+- [ ] [P2] [feat]: Bet slip sharing via URL — Generate shareable slip link | Files: src/lib/bet-slip.ts | Done when: unique URL shows slip readonly
+- [ ] [P2] [feat]: Odds movement replay animation — Animate line movement over time | Files: src/components/odds-replay.tsx | Done when: playback controls on line movement chart
+- [ ] [P2] [feat]: Prop market value scanner — Scan props for +EV across books | Files: src/lib/prop-scanner.ts | Done when: +EV props listed with edge %
+- [ ] [P3] [test]: Odds request optimizer with real game schedules — NBA full-day slate | Files: src/lib/__tests__/odds-request-optimizer.test.ts | Done when: 8+ realistic scenario tests
+- [ ] [P3] [test]: Bet slip with 10+ legs and edge cases — Empty legs, all same game | Files: src/lib/__tests__/bet-slip.test.ts | Done when: 10+ edge case tests
+- [ ] [P3] [test]: Closing line predictor accuracy backtest — Compare predictions to actual closes | Files: src/lib/__tests__/closing-line-predictor.test.ts | Done when: accuracy metrics calculated
+- [ ] [P3] [test]: Cross-sport sharp with 4-sport simultaneous movement | Files: src/lib/__tests__/cross-sport-sharp.test.ts | Done when: 5+ multi-sport tests
+- [ ] [P3] [test]: Journal auto-fill with empty/null pick data | Files: src/lib/__tests__/journal-auto.test.ts | Done when: 5+ null-safety tests
 - [ ] [P3] [test]: Morning brief with multi-sport realistic data — 10+ games across 4 sports | Files: src/lib/__tests__/morning-brief.test.ts | Done when: 5+ scenario tests pass
 - [ ] [P3] [test]: Fatigue model with real NBA schedule data — Actual B2B sequences | Files: src/lib/__tests__/fatigue-model.test.ts | Done when: 8+ realistic scenario tests
 - [ ] [P3] [test]: Line velocity alerts cascading rules — Multiple rules same movement | Files: src/lib/__tests__/line-velocity-alerts.test.ts | Done when: 5+ cascade tests
 - [ ] [P3] [test]: API cost tracker month boundary conditions | Files: src/lib/__tests__/api-cost-tracker.test.ts | Done when: 5+ boundary tests
-- [ ] [P3] [test]: Custom signals with edge case games — Zero bookmakers | Files: src/lib/__tests__/custom-signals.test.ts | Done when: 10+ edge case tests pass
-- [ ] [P3] [test]: RLM alerts with historical odds data — Backtest accuracy | Files: src/lib/__tests__/rlm-alerts.test.ts | Done when: 8+ historical scenario tests
-- [ ] [P3] [test]: Closing line cron timing window — Verify timing logic | Files: src/app/api/cron/__tests__/closing-lines.test.ts | Done when: timing window tests added
 - [ ] [P3] [fix]: Custom signals auto-refresh on odds update | Files: src/components/custom-signal-builder.tsx | Done when: signals refresh automatically
 - [ ] [P3] [fix]: Morning brief cache in localStorage for offline viewing | Files: src/components/morning-brief.tsx | Done when: brief persists across page reloads
 - [ ] [P3] [fix]: Fatigue panel should fetch actual schedule from balldontlie API | Files: src/components/game-detail.tsx | Done when: real rest days shown
 - [ ] [P4] [chore]: Remove unused Stripe imports | Files: various | Done when: no Stripe imports outside webhook route
-- [ ] [P4] [chore]: Update CLAUDE.md with new lib files from Sessions 12-13 | Files: CLAUDE.md | Done when: all new libs listed
+- [ ] [P4] [chore]: Update CLAUDE.md with new lib files from Sessions 12-14 | Files: CLAUDE.md | Done when: all new libs listed

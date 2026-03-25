@@ -301,3 +301,27 @@ _What was built each session._
 - `/dashboard/signals` — Added Velocity Alerts tab
 
 ### Commits: 7 (morning brief lib, morning brief UI, fatigue model, velocity alerts, fixes, API cost tracker, session close)
+
+## Session 2026-03-25 (Session 14)
+
+### Features Built
+1. **Odds API request optimizer** (`src/lib/odds-request-optimizer.ts`) — Smart refresh scheduling based on game time proximity. 5 urgency tiers (imminent/today/tomorrow/upcoming/distant) with dynamic TTLs (2min-6hr). Daily budget pacing, conservation mode when budget is tight. Sport priority scoring. 37 tests.
+2. **Smart pick journal integration** (`src/lib/journal-auto.ts`) — Auto-generate journal entries from daily picks, checklist scores, and review data. Mood inference from outcomes + discipline. Lesson extraction (chase detection, underdog wins, volume warnings). Weekly summaries. 35 tests.
+3. **Bet slip builder** (`src/lib/bet-slip.ts`, `src/components/bet-slip-panel.tsx`) — Multi-pick slip with combined odds, per-leg EV, correlation warnings (same-game, opposing sides, sport concentration, negative EV, longshot, excessive stake). Round robin calculator. Shareable text export. Quick-add UI from game odds. Parlay/straight mode toggle. 30 tests.
+4. **Closing line prediction model** (`src/lib/closing-line-predictor.ts`, `src/components/closing-line-predictor.tsx`) — Weighted linear regression on line movement trajectory. Time-decay recency weighting, velocity acceleration detection, market consensus convergence. 5-factor confidence scoring. Movement profile analysis. Prediction error computation for backtesting. 24 tests.
+5. **Cross-sport sharp correlation** (`src/lib/cross-sport-sharp.ts`, `src/components/cross-sport-sharp.tsx`) — Detect simultaneous sharp line movements across multiple sports within configurable time windows. 5 pattern types: cross-sport steam, synchronized favorites/underdogs, coordinated totals, contrarian clusters. Strength scoring from sport count, movement count, book agreement, time tightness, magnitude. 17 tests.
+
+### UI Components
+- **BetSlipPanel** — Quick-add buttons for ML/spread/total, parlay/straight mode, running analysis, warnings. "Bet Slip" tab on game detail page.
+- **CrossSportSharpPanel** — Summary dashboard with correlation cards. "Cross-Sport" tab on Signals page.
+- **ClosingLinePredictorPanel** — Prediction card with confidence bar, velocity, reasoning display.
+
+### Tests Added
+- 143 new tests (3061 to 3204 total)
+- New test files: odds-request-optimizer (37), journal-auto (35), bet-slip (30), closing-line-predictor (24), cross-sport-sharp (17)
+
+### Pages Updated
+- `/dashboard/games/[gameId]` — Added Bet Slip tab
+- `/dashboard/signals` — Added Cross-Sport tab
+
+### Commits: 8 (5 feature libs, bet slip UI, cross-sport + closing line UI, session close)

@@ -2,6 +2,11 @@
 
 | Module | Test File | Tests | Status | Last Verified |
 |--------|-----------|-------|--------|---------------|
+| odds-request-optimizer | odds-request-optimizer.test.ts | 37 | PASS | 2026-03-25 |
+| journal-auto | journal-auto.test.ts | 35 | PASS | 2026-03-25 |
+| bet-slip | bet-slip.test.ts | 30 | PASS | 2026-03-25 |
+| closing-line-predictor | closing-line-predictor.test.ts | 24 | PASS | 2026-03-25 |
+| cross-sport-sharp | cross-sport-sharp.test.ts | 17 | PASS | 2026-03-25 |
 | morning-brief | morning-brief.test.ts | 25 | PASS | 2026-03-25 |
 | fatigue-model | fatigue-model.test.ts | 17 | PASS | 2026-03-25 |
 | line-velocity-alerts | line-velocity-alerts.test.ts | 24 | PASS | 2026-03-25 |
@@ -33,4 +38,4 @@
 | smart-bankroll-alerts | smart-bankroll-alerts.test.ts | 20 | PASS | 2026-03-25 |
 | pick-dependencies | pick-dependencies.test.ts | 15 | PASS | 2026-03-25 |
 
-**Total: 3061 tests across 161 test files — all PASS**
+**Total: 3204 tests across 166 test files — all PASS**

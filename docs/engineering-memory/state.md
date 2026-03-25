@@ -1,19 +1,19 @@
 # Engineering State
-## Current Session (2026-03-25, Session 13)
-- Build status: GREEN (3061 tests, all passing, clean build)
+## Current Session (2026-03-25, Session 14)
+- Build status: GREEN (3204 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 3061 (161 test files)
+- Test count: 3204 (166 test files)
 - In progress: (none)
-- Next up: Pick from remaining ideas list
+- Next up: Pick from backlog — P2/P3 features, more test coverage
 
 ## Key changes this session
-- Morning brief: AI-powered daily summary with top plays, caution alerts, sport takes, checklist (25 tests)
-- Morning brief UI: MorningBriefCard component + /api/brief route + dashboard integration
-- B2B fatigue model: 5-factor scoring for NBA/NHL with ATS impact estimation (17 tests)
-- Fatigue panel: FatiguePanel UI component + game detail "Fatigue" tab (NBA/NHL only)
-- Line velocity alerts: configurable threshold rules with cooldown, sport multipliers (24 tests)
-- Velocity alerts UI: rule management, dismissible alert cards, Signals page "Velocity Alerts" tab
-- Portfolio risk fix: added probability-weighted exposure factor for underdog-heavy portfolios
-- EV decay fix: added sport field + aggregateBySort() for cross-sport comparison
-- API cost tracker: cost-per-insight metrics, sport efficiency, optimization recommendations (18 tests)
-- Total: 5 new features, 2 fixes, 93 new tests (2968 -> 3061)
+- Odds API request optimizer: smart refresh scheduling by game proximity (37 tests)
+- Smart pick journal integration: auto-fill journal from pick data, checklist, reviews (35 tests)
+- Bet slip builder: multi-pick slip with EV, correlation warnings, round robin (30 tests)
+- Closing line prediction model: weighted regression on line movement trajectory (24 tests)
+- Cross-sport sharp correlation: detect simultaneous sharp action across sports (17 tests)
+- Bet slip panel UI: quick-add buttons, parlay/straight mode, warnings display on game detail page
+- Cross-sport sharp panel UI: summary dashboard + correlation cards on Signals page
+- Closing line predictor panel UI: prediction card with confidence bar, velocity display
+- Fixed detached HEAD: merged all work into master branch
+- Total: 5 new features, 3 UI components, 143 new tests (3061 -> 3204)

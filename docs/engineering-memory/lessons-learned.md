@@ -129,3 +129,12 @@ The morning brief aggregates data from multiple pure-function modules (daily-sla
 
 ## 2026-03-25 (Session 13): Sport-specific fatigue thresholds
 NBA B2B teams win ~44.5% with ~1.5pt ATS impact. NHL is similar but smaller ATS impact (~0.3). Road B2B amplifies the effect by ~50%. These numbers are historical averages — individual matchups vary. Always display as estimates, not guarantees.
+
+## 2026-03-25 (Session 14): JavaScript -0 in modulo operations
+`Math.round(x * 2) / 2` can produce `-0` for negative values near zero. `(-0) % 0.5` gives `-0` which is NOT `Object.is` equal to `0`. Use `Math.abs(value % 0.5)` in tests, or use `toBeCloseTo` instead of `toBe` for floating-point assertions.
+
+## 2026-03-25 (Session 14): Weighted linear regression for line prediction
+For closing line prediction, simple linear regression gives too much weight to old data. Weighting recent points 2x via `0.5 + 0.5 * recency` provides better predictions while still anchoring to the overall trend. The R-squared from weighted regression also serves as a good confidence signal.
+
+## 2026-03-25 (Session 14): Detached HEAD fix — fast-forward merge
+When all detached HEAD commits are ahead of master (no divergence), `git checkout master && git merge <hash>` does a fast-forward merge with zero conflicts. This is the clean way to recover from cherry-pick chains. Always check if it's a fast-forward before merging.
