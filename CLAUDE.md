@@ -10,7 +10,7 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - **AI:** Anthropic Claude API for game analysis
 - **Sports Data:** The Odds API (odds/lines) + balldontlie API (stats/scores)
 - **Payments:** None (personal tool — Stripe code is legacy, tier checks bypassed)
-- **Testing:** Vitest (unit, 2860 tests) + Playwright (E2E, 24 smoke tests)
+- **Testing:** Vitest (unit, 2968 tests) + Playwright (E2E, 24 smoke tests)
 - **Hosting:** Vercel
 
 ## Key Directories
@@ -74,10 +74,14 @@ AI-powered sports analytics dashboard. Surfaces data-driven insights across NBA,
 - `src/lib/sizing-confidence-matrix.ts` — Confidence x edge unit sizing grid
 - `src/lib/momentum-detector.ts` — Team streak tracking and momentum scoring
 - `src/lib/consensus-line-tracker.ts` — Market consensus with deviation detection
+- `src/lib/custom-signals.ts` — User-defined composite signal rules with AND/OR logic
+- `src/lib/ev-decay.ts` — EV opportunity decay tracking over time
+- `src/lib/rlm-alerts.ts` — Reverse line movement detection (sharp money signals)
+- `src/lib/portfolio-risk.ts` — Portfolio-level risk exposure analysis
 - `src/lib/stripe.ts` — Stripe client singleton (legacy, bypassed)
 - `e2e/` — Playwright E2E smoke tests
 - `scripts/` — Health-check, daily review, post-deploy verification
-- `vercel.json` — Cron job config (daily auto-resolve at 10am ET)
+- `vercel.json` — Cron job config (daily auto-resolve at 10am ET, closing line capture every 15min)
 - `docs/dev-knowledge/` — Architecture decisions, schema log, bug patterns
 
 ## Commands
@@ -87,7 +91,7 @@ npm run dev          # Local dev server
 npm run build        # Production build
 npm run lint         # Lint check
 npm run typecheck    # TypeScript check
-npm run test         # Run Vitest unit tests (2860 tests)
+npm run test         # Run Vitest unit tests (2968 tests)
 npm run test:watch   # Vitest in watch mode
 npm run test:e2e     # Run Playwright E2E smoke tests
 npm run health-check # Write docs/dev-knowledge/health-check-latest.md
