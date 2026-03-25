@@ -277,3 +277,27 @@ _What was built each session._
 - `/dashboard/analytics` — Added Team Momentum section
 
 ### Commits: 5 (4 feature commits + 1 session close)
+
+## Session 2026-03-25 (Session 13)
+
+### Features Built
+1. **Morning brief** (`src/lib/morning-brief.ts`, `src/components/morning-brief.tsx`, `/api/brief`) — AI-powered daily summary with top plays ranked by composite signal strength, caution alerts (losing streak, bankroll drawdown, tilt risk), sport quick takes, interactive daily checklist, copy to clipboard. Wired into dashboard above daily slate. 25 tests.
+2. **B2B fatigue model** (`src/lib/fatigue-model.ts`, `src/components/fatigue-panel.tsx`) — 5-factor fatigue scoring for NBA/NHL: rest differential (0-30), venue context (0-20), schedule density (0-20), travel penalty (0-15), B2B penalty (0-15). Historical ATS impact estimation, comparison panel, quick estimate for games without full schedule data. New "Fatigue" tab on game detail page (NBA/NHL only). 17 tests.
+3. **Line velocity alerts** (`src/lib/line-velocity-alerts.ts`, `src/components/line-velocity-alerts.tsx`) — Configurable alert rules with market/sport/threshold/window/minBooks. 4 preset rules. Alert evaluation with 30-min cooldown deduplication, 4 priority levels (low to critical), sport-specific sensitivity multipliers. Rule management UI + dismissible alerts. New "Velocity Alerts" tab on Signals page. 24 tests.
+4. **API cost tracker** (`src/lib/api-cost-tracker.ts`, `src/components/api-cost-tracker.tsx`) — Cost-per-insight metrics: calls per EV opportunity, cache hit rate, waste rate. Per-sport efficiency breakdown. Efficiency rating (excellent to wasteful). Optimization recommendations with budget pacing. 18 tests.
+
+### Bug Fixes
+5. **Portfolio risk probability weighting** (`src/lib/portfolio-risk.ts`) — Added Factor 8: probability-weighted exposure that flags underdog-heavy portfolios with higher expected loss probability. 5 new tests.
+6. **EV decay sport aggregation** (`src/lib/ev-decay.ts`) — Added `sport` field to EVDecayAnalysis and `aggregateBySort()` function for cross-sport comparison of line correction speeds. 4 new tests.
+
+### Tests Added
+- 93 new tests (2968 to 3061 total)
+- New test files: morning-brief (25), fatigue-model (17), line-velocity-alerts (24), api-cost-tracker (18)
+- Expanded: portfolio-risk (+5), ev-decay (+4)
+
+### Pages Updated
+- `/dashboard` — Added Morning Brief card above daily slate
+- `/dashboard/games/[gameId]` — Added Fatigue tab (NBA/NHL)
+- `/dashboard/signals` — Added Velocity Alerts tab
+
+### Commits: 7 (morning brief lib, morning brief UI, fatigue model, velocity alerts, fixes, API cost tracker, session close)

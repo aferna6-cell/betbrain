@@ -1,24 +1,19 @@
 # Engineering State
-## Current Session (2026-03-24, Session 11)
-- Build status: GREEN (2860 tests, all passing, clean build)
+## Current Session (2026-03-25, Session 13)
+- Build status: GREEN (3061 tests, all passing, clean build)
 - Blockers: (none)
-- Test count: 2860 (152 test files)
+- Test count: 3061 (161 test files)
 - In progress: (none)
 - Next up: Pick from remaining ideas list
 
 ## Key changes this session
-- Implied team totals: derive expected points from spread + total (24 tests)
-- Spread vs ML value calculator: when to bet spread vs moneyline (16 tests)
-- Sharp book identifier: score bookmakers by independence and best-line rate (11 tests)
-- Position sizing backtest: replay pick history with 5 staking strategies (24 tests)
-- Vig comparison by book: per-bookmaker vig across ML/spread/total (16 tests)
-- Bet sizing confidence matrix: interactive edge x confidence grid (14 tests)
-- Momentum detector: team streak tracking with hot/cold classification (22 tests)
-- Consensus line tracker: median-based market consensus with deviation detection (14 tests)
-- All 8 features have UI components wired into existing pages
-- EV Scanner page: +4 new tabs (Team Totals, Spread vs ML, Sharp Books, Vig Compare)
-- Signals page: +1 new tab (Consensus)
-- Tools page: +2 new sections (Sizing Confidence Matrix, Position Sizing Backtest)
-- Analytics page: +1 new section (Team Momentum)
-- 141 new tests (2719 -> 2860)
-- Added 20 new backlog ideas (incl. 5 test, 2 fix items)
+- Morning brief: AI-powered daily summary with top plays, caution alerts, sport takes, checklist (25 tests)
+- Morning brief UI: MorningBriefCard component + /api/brief route + dashboard integration
+- B2B fatigue model: 5-factor scoring for NBA/NHL with ATS impact estimation (17 tests)
+- Fatigue panel: FatiguePanel UI component + game detail "Fatigue" tab (NBA/NHL only)
+- Line velocity alerts: configurable threshold rules with cooldown, sport multipliers (24 tests)
+- Velocity alerts UI: rule management, dismissible alert cards, Signals page "Velocity Alerts" tab
+- Portfolio risk fix: added probability-weighted exposure factor for underdog-heavy portfolios
+- EV decay fix: added sport field + aggregateBySort() for cross-sport comparison
+- API cost tracker: cost-per-insight metrics, sport efficiency, optimization recommendations (18 tests)
+- Total: 5 new features, 2 fixes, 93 new tests (2968 -> 3061)

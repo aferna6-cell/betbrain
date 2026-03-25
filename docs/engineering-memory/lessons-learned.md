@@ -117,3 +117,15 @@ The anti-Martingale strategy (increase after wins) must reset to base unit after
 
 ## 2026-03-24 (Session 11): Detached HEAD from cherry-pick chains
 When multiple sessions cherry-pick work without proper branch management, git can end up in detached HEAD. Fix: checkout master, then merge the detached commit. The merge strategy handles file-level conflicts better than cherry-picking individual commits.
+
+## 2026-03-25 (Session 13): Check for existing features before building new ones
+The pregame checklist (src/lib/pregame-checklist.ts) was already implemented and wired into the picks tracker. Building a duplicate `pre-bet-checklist.ts` wasted time. Always grep for similar patterns before creating a new module: `find src -name "*checklist*" -o -name "*pregame*"`.
+
+## 2026-03-25 (Session 13): Detached HEAD persists across sessions
+The git HEAD is detached because earlier sessions used cherry-pick chains. All commits work fine on detached HEAD but need to be merged into master before pushing. Use `git checkout master && git merge <commit>` to bring the work back to a named branch.
+
+## 2026-03-25 (Session 13): Morning brief data architecture
+The morning brief aggregates data from multiple pure-function modules (daily-slate, ev-scanner, game-script, situational-spots). Rather than creating a new API endpoint that fetches data independently, it's better to generate the brief alongside existing data fetches on the dashboard page. This avoids redundant API calls and leverages the existing cache layer.
+
+## 2026-03-25 (Session 13): Sport-specific fatigue thresholds
+NBA B2B teams win ~44.5% with ~1.5pt ATS impact. NHL is similar but smaller ATS impact (~0.3). Road B2B amplifies the effect by ~50%. These numbers are historical averages — individual matchups vary. Always display as estimates, not guarantees.
