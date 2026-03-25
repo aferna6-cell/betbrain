@@ -28,6 +28,7 @@ import { GameNotes } from '@/components/game-notes'
 import { LineShoppingPanel } from '@/components/line-shopping'
 import { HedgeCalculator } from '@/components/hedge-calculator'
 import { predictGameScript, getFlowLabel, getFlowColor } from '@/lib/game-script'
+import { BetSlipPanel } from '@/components/bet-slip-panel'
 import { quickFatigueEstimate } from '@/lib/fatigue-model'
 import { formatImpliedProb, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
@@ -844,6 +845,7 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
           <TabsTrigger value={6}>AI Analysis</TabsTrigger>
           <TabsTrigger value={7}>Game Script</TabsTrigger>
           <TabsTrigger value={8}>Notes</TabsTrigger>
+          <TabsTrigger value={10}>Bet Slip</TabsTrigger>
           {(game.sport === 'nba' || game.sport === 'nhl') && (
             <TabsTrigger value={9}>Fatigue</TabsTrigger>
           )}
@@ -908,6 +910,10 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
             homeTeam={game.homeTeam}
             awayTeam={game.awayTeam}
           />
+        </TabsContent>
+
+        <TabsContent value={10} className="mt-4 rounded-lg border border-border bg-card p-6">
+          <BetSlipPanel game={game} />
         </TabsContent>
 
         {(game.sport === 'nba' || game.sport === 'nhl') && (
