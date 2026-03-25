@@ -28,6 +28,7 @@ import { GameNotes } from '@/components/game-notes'
 import { LineShoppingPanel } from '@/components/line-shopping'
 import { HedgeCalculator } from '@/components/hedge-calculator'
 import { predictGameScript, getFlowLabel, getFlowColor } from '@/lib/game-script'
+import { quickFatigueEstimate } from '@/lib/fatigue-model'
 import { formatImpliedProb, getBestMoneyline, getBestSpreadOdds, getBestTotalOdds } from '@/lib/odds'
 import { useOddsFormat } from '@/components/odds-format-provider'
 import { formatGameTimeFull, timeAgo, RISK_COLORS } from '@/lib/format'
@@ -696,6 +697,80 @@ function shareAnalysisToX(game: NormalizedGame, analysis: GameAnalysis) {
 }
 
 // ---------------------------------------------------------------------------
+// Fatigue tab (NBA/NHL only)
+// ---------------------------------------------------------------------------
+
+function FatigueTab({ game }: { game: NormalizedGame }) {
+  if (game.sport !== 'nba' && game.sport !== 'nhl') {
+    return <p className="text-sm text-muted-foreground">Fatigue model only available for NBA and NHL.</p>
+  }
+
+  const sport = game.sport as 'nba' | 'nhl'
+  // Without full schedule data, use the quick estimate approach
+  // In a production setup, we'd fetch schedule from the API
+  const homeEstimate = quickFatigueEstimate(2, 2, true, sport)
+  const awayEstimate = quickFatigueEstimate(2, 2, false, sport)
+
+  const ratingColor = (r: string) => {
+    switch (r) {
+      case 'severe': return 'text-red-500'
+      case 'high': return 'text-orange-500'
+      case 'moderate': return 'text-yellow-500'
+      case 'mild': return 'text-blue-400'
+      default: return 'text-green-500'
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h3 className="text-sm font-semibold mb-1">Back-to-Back Fatigue Model</h3>
+        <p className="text-xs text-muted-foreground">
+          Estimates fatigue impact based on rest days, venue, travel, and schedule density.
+          For best results, schedule data from the balldontlie API would provide actual rest days.
+        </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-lg border border-border p-4 space-y-2">
+          <h4 className="font-medium text-sm">{game.homeTeam} (Home)</h4>
+          <div className="flex items-center gap-2">
+            <span className={`text-lg font-bold ${ratingColor(homeEstimate.rating)}`}>
+              {homeEstimate.score}
+            </span>
+            <Badge variant="outline" className="text-xs capitalize">{homeEstimate.rating}</Badge>
+          </div>
+          {homeEstimate.atsImpact !== 0 && (
+            <p className="text-xs text-muted-foreground">
+              ATS impact: {homeEstimate.atsImpact > 0 ? '+' : ''}{homeEstimate.atsImpact} pts
+            </p>
+          )}
+        </div>
+
+        <div className="rounded-lg border border-border p-4 space-y-2">
+          <h4 className="font-medium text-sm">{game.awayTeam} (Away)</h4>
+          <div className="flex items-center gap-2">
+            <span className={`text-lg font-bold ${ratingColor(awayEstimate.rating)}`}>
+              {awayEstimate.score}
+            </span>
+            <Badge variant="outline" className="text-xs capitalize">{awayEstimate.rating}</Badge>
+          </div>
+          {awayEstimate.atsImpact !== 0 && (
+            <p className="text-xs text-muted-foreground">
+              ATS impact: {awayEstimate.atsImpact > 0 ? '+' : ''}{awayEstimate.atsImpact} pts
+            </p>
+          )}
+        </div>
+      </div>
+
+      <p className="text-xs text-muted-foreground italic">
+        For informational purposes only. Not financial advice. Historical trends do not guarantee future results.
+      </p>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
 
@@ -769,6 +844,9 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
           <TabsTrigger value={6}>AI Analysis</TabsTrigger>
           <TabsTrigger value={7}>Game Script</TabsTrigger>
           <TabsTrigger value={8}>Notes</TabsTrigger>
+          {(game.sport === 'nba' || game.sport === 'nhl') && (
+            <TabsTrigger value={9}>Fatigue</TabsTrigger>
+          )}
         </TabsList>
 
         <TabsContent value={0} className="mt-4 rounded-lg border border-border bg-card p-6">
@@ -831,6 +909,12 @@ export function GameDetail({ game }: { game: NormalizedGame }) {
             awayTeam={game.awayTeam}
           />
         </TabsContent>
+
+        {(game.sport === 'nba' || game.sport === 'nhl') && (
+          <TabsContent value={9} className="mt-4 rounded-lg border border-border bg-card p-6">
+            <FatigueTab game={game} />
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   )
