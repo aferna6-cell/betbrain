@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/resolve",
       "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/closing-lines",
+      "schedule": "*/15 * * * *"
     }
   ]
 }
