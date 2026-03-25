@@ -208,4 +208,12 @@
 **Decision:** A React context (`OddsFormatProvider`) stores the user's preferred odds format (American/Decimal). An `OddsDisplay` client component reads the context and formats any American odds value into the chosen display format. Server components pass raw American odds; the client component handles formatting.
 **Why:** 13 files use `formatOdds` — wrapping every usage in the context would require making them all client components. Instead, only the main odds values on game cards use `OddsDisplay` (client boundary). The bookmaker comparison grid stays server-rendered with American odds. This minimizes the client JS footprint while still giving users a toggle.
 
+### ADR-2026-03-25-001: Model Builder Architecture
+**Decision:** Composable model components with user-facing "build your own" UI.
+**Why:** Rithmm proves users want ownership of their predictions. Pre-validated components ensure statistical validity. This is the primary retention driver for top competitors.
+
+### ADR-2026-03-25-002: Odds Data Strategy
+**Decision:** Primary — SportsDataIO API. Fallback — ESPN undocumented API for scores/stats.
+**Why:** SportsDataIO has 19 years of reliability. $300-500/mo justified with >50 paying users. The Odds API free tier (500 req/month) is insufficient for real-time line movement detection.
+
 _Add new decisions below._
