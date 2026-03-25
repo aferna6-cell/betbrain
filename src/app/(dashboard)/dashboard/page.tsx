@@ -13,6 +13,7 @@ import { analyzeAllConsensus } from '@/lib/consensus'
 import { detectSmartSignals } from '@/lib/signals'
 import { predictAllGameScripts } from '@/lib/game-script'
 import { buildDailySlate } from '@/lib/daily-slate'
+import { generateMorningBrief } from '@/lib/morning-brief'
 import { GamesDashboard } from '@/components/games-dashboard'
 import { DashboardStats } from '@/components/dashboard-stats'
 import { DailySummary } from '@/components/daily-summary'
@@ -23,6 +24,7 @@ import { TodaysAction } from '@/components/todays-action'
 import { BankrollSparkline } from '@/components/bankroll-sparkline'
 import { ValuePlaysWidget } from '@/components/value-plays'
 import { DailyReviewPrompt } from '@/components/daily-review'
+import { MorningBriefCard } from '@/components/morning-brief'
 import { TermTooltip } from '@/components/term-tooltip'
 import { ResultsFeed } from '@/components/results-feed'
 import type { Database } from '@/lib/supabase/types'
@@ -65,6 +67,7 @@ export default async function DashboardPage() {
   const divergences = consensus.filter((c) => c.divergence)
   const gameScripts = predictAllGameScripts(allGames)
   const dailySlate = buildDailySlate(allGames, evResult.opportunities, gameScripts)
+  const morningBrief = generateMorningBrief(allGames, evResult.opportunities, gameScripts, [], null)
 
   return (
     <div className="space-y-6">
@@ -90,6 +93,7 @@ export default async function DashboardPage() {
         signalCount={signals.length}
       />
 
+      <MorningBriefCard brief={morningBrief} />
       <DailySlateWidget slate={dailySlate} />
 
       <DailyReviewPrompt />
