@@ -11,6 +11,7 @@ import { SharpMoneyFlowPanel } from '@/components/sharp-money-flow'
 import { detectSharpFlow, type SharpSignal, type GameOddsTimeline, type OddsPoint } from '@/lib/sharp-money-flow'
 import { trackConsensus } from '@/lib/consensus-line-tracker'
 import { ConsensusLineTrackerPanel } from '@/components/consensus-line-tracker'
+import { CustomSignalBuilder } from '@/components/custom-signal-builder'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -59,6 +60,9 @@ export default async function SignalsPage() {
           </TabsTrigger>
           <TabsTrigger value="consensus">
             Consensus{consensusTracker.gamesWithDeviations > 0 ? ` (${consensusTracker.gamesWithDeviations})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="custom">
+            Custom Rules
           </TabsTrigger>
           <TabsTrigger value="history">
             Hit Rate{stats.hitRate !== null ? ` — ${stats.hitRate}%` : ''}
@@ -109,6 +113,12 @@ export default async function SignalsPage() {
               offer value (stale lines) or signal early movement.
             </p>
             <ConsensusLineTrackerPanel result={consensusTracker} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="custom">
+          <div className="mt-4">
+            <CustomSignalBuilder games={allGames} />
           </div>
         </TabsContent>
 
