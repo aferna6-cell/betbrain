@@ -8,6 +8,7 @@ import {
   calculateEVAtPoint,
   analyzeEVDecay,
   summarizeEVDecay,
+  aggregateBySort,
   type OddsSnapshot,
   type EVDecayAnalysis,
 } from '@/lib/ev-decay'
@@ -325,5 +326,55 @@ describe('summarizeEVDecay', () => {
 
     const summary = summarizeEVDecay(analyses)
     expect(summary.fullyCorrectedCount).toBe(2)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// aggregateBySort
+// ---------------------------------------------------------------------------
+
+describe('aggregateBySort', () => {
+  it('groups analyses by sport', () => {
+    const analyses: EVDecayAnalysis[] = [
+      { gameId: 'g1', sport: 'nba', side: 'home', team: 'A', decayPoints: [], initialEV: 3, finalEV: 1, halfLife: 30, decayPercent: 67, correctionSpeed: 2, commenceTime: '' },
+      { gameId: 'g2', sport: 'nba', side: 'home', team: 'B', decayPoints: [], initialEV: 4, finalEV: 0, halfLife: 20, decayPercent: 100, correctionSpeed: 3, commenceTime: '' },
+      { gameId: 'g3', sport: 'nfl', side: 'home', team: 'C', decayPoints: [], initialEV: 2, finalEV: 1.5, halfLife: null, decayPercent: 25, correctionSpeed: 0.5, commenceTime: '' },
+    ]
+
+    const result = aggregateBySort(analyses)
+    expect(result.length).toBe(2)
+
+    const nba = result.find(r => r.sport === 'nba')!
+    expect(nba.count).toBe(2)
+    expect(nba.avgHalfLife).toBe(25) // avg of 30 and 20
+    expect(nba.fullyCorrectedCount).toBe(1)
+    expect(nba.avgInitialEV).toBe(3.5)
+
+    const nfl = result.find(r => r.sport === 'nfl')!
+    expect(nfl.count).toBe(1)
+    expect(nfl.avgHalfLife).toBeNull() // only one with null half-life
+  })
+
+  it('handles empty array', () => {
+    expect(aggregateBySort([]).length).toBe(0)
+  })
+
+  it('puts unknown sport for analyses without sport field', () => {
+    const analyses: EVDecayAnalysis[] = [
+      { gameId: 'g1', side: 'home', team: 'A', decayPoints: [], initialEV: 3, finalEV: 1, halfLife: 30, decayPercent: 67, correctionSpeed: 2, commenceTime: '' },
+    ]
+    const result = aggregateBySort(analyses)
+    expect(result[0].sport).toBe('unknown')
+  })
+
+  it('sorts by count descending', () => {
+    const analyses: EVDecayAnalysis[] = [
+      { gameId: 'g1', sport: 'nhl', side: 'home', team: 'A', decayPoints: [], initialEV: 3, finalEV: 1, halfLife: 30, decayPercent: 67, correctionSpeed: 2, commenceTime: '' },
+      { gameId: 'g2', sport: 'nba', side: 'home', team: 'B', decayPoints: [], initialEV: 4, finalEV: 0, halfLife: 20, decayPercent: 100, correctionSpeed: 3, commenceTime: '' },
+      { gameId: 'g3', sport: 'nba', side: 'home', team: 'C', decayPoints: [], initialEV: 2, finalEV: 1.5, halfLife: null, decayPercent: 25, correctionSpeed: 0.5, commenceTime: '' },
+    ]
+    const result = aggregateBySort(analyses)
+    expect(result[0].sport).toBe('nba') // 2 games
+    expect(result[1].sport).toBe('nhl') // 1 game
   })
 })

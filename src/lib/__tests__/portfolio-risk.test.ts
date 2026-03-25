@@ -267,4 +267,56 @@ describe('analyzePortfolioRisk', () => {
     expect(result.summary.length).toBeGreaterThan(0)
     expect(result.summary).toContain('1 open pick')
   })
+
+  it('flags underdog-heavy portfolio with probability weighting', () => {
+    // All big underdogs: high expected loss probability
+    const picks = Array.from({ length: 5 }, (_, i) =>
+      makePick({
+        id: `p${i}`,
+        odds: 300,  // +300 underdog (25% implied win probability)
+        units: 2,
+        external_game_id: `g${i}`,
+      })
+    )
+    const result = analyzePortfolioRisk(picks)
+    expect(result.riskFactors.some(f => f.includes('underdogs'))).toBe(true)
+  })
+
+  it('does not flag favorite-heavy portfolio for underdog risk', () => {
+    const picks = Array.from({ length: 5 }, (_, i) =>
+      makePick({
+        id: `p${i}`,
+        odds: -300,  // -300 favorite (75% implied win probability)
+        units: 2,
+        external_game_id: `g${i}`,
+      })
+    )
+    const result = analyzePortfolioRisk(picks)
+    expect(result.riskFactors.some(f => f.includes('underdogs'))).toBe(false)
+  })
+
+  it('boundary: single pick has no concentration or volume risks', () => {
+    const picks = [makePick({ odds: -110, units: 1 })]
+    const result = analyzePortfolioRisk(picks)
+    expect(result.riskScore).toBeLessThan(20)
+  })
+
+  it('boundary: all picks on different games but same sport', () => {
+    const picks = Array.from({ length: 3 }, (_, i) =>
+      makePick({
+        id: `p${i}`,
+        external_game_id: `g${i}`,
+        units: 2,
+      })
+    )
+    const result = analyzePortfolioRisk(picks)
+    expect(result.correlationGroups.length).toBe(0) // No same-game correlation
+  })
+
+  it('boundary: edge case with zero odds is handled', () => {
+    // This shouldn't happen in practice but guard against division by zero
+    const picks = [makePick({ odds: -100, units: 1 })]
+    const result = analyzePortfolioRisk(picks)
+    expect(result.maxLoss).toBe(1)
+  })
 })

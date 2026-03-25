@@ -38,6 +38,7 @@ export interface EVDecayPoint {
 
 export interface EVDecayAnalysis {
   gameId: string
+  sport?: string
   side: 'home' | 'away'
   team: string
   /** Chronological EV decay points */
@@ -172,7 +173,8 @@ export function analyzeEVDecay(
   gameId: string,
   side: 'home' | 'away',
   team: string,
-  intervalMinutes: number = 15
+  intervalMinutes: number = 15,
+  sport?: string
 ): EVDecayAnalysis | null {
   const gameTime = new Date(commenceTime).getTime()
   const groups = groupSnapshotsByTime(snapshots, intervalMinutes)
@@ -238,6 +240,7 @@ export function analyzeEVDecay(
 
   return {
     gameId,
+    sport,
     side,
     team,
     decayPoints,
@@ -293,4 +296,56 @@ export function summarizeEVDecay(
     fullyCorrectedCount,
     avgInitialEV,
   }
+}
+
+// ---------------------------------------------------------------------------
+// Sport-level aggregation
+// ---------------------------------------------------------------------------
+
+export interface SportDecaySummary {
+  sport: string
+  count: number
+  avgHalfLife: number | null
+  avgCorrectionSpeed: number
+  avgInitialEV: number
+  fullyCorrectedCount: number
+}
+
+/**
+ * Aggregate EV decay by sport for cross-sport comparison.
+ * Shows which sport's lines get corrected fastest.
+ */
+export function aggregateBySort(
+  analyses: EVDecayAnalysis[]
+): SportDecaySummary[] {
+  const bySport = new Map<string, EVDecayAnalysis[]>()
+  for (const a of analyses) {
+    const sport = a.sport ?? 'unknown'
+    if (!bySport.has(sport)) bySport.set(sport, [])
+    bySport.get(sport)!.push(a)
+  }
+
+  const results: SportDecaySummary[] = []
+  for (const [sport, sportAnalyses] of bySport) {
+    const halfLives = sportAnalyses
+      .map(a => a.halfLife)
+      .filter((h): h is number => h !== null)
+
+    results.push({
+      sport,
+      count: sportAnalyses.length,
+      avgHalfLife: halfLives.length > 0
+        ? Math.round(halfLives.reduce((s, v) => s + v, 0) / halfLives.length)
+        : null,
+      avgCorrectionSpeed: sportAnalyses.length > 0
+        ? Math.round((sportAnalyses.reduce((s, a) => s + a.correctionSpeed, 0) / sportAnalyses.length) * 100) / 100
+        : 0,
+      avgInitialEV: sportAnalyses.length > 0
+        ? Math.round((sportAnalyses.reduce((s, a) => s + a.initialEV, 0) / sportAnalyses.length) * 100) / 100
+        : 0,
+      fullyCorrectedCount: sportAnalyses.filter(a => a.finalEV <= 0).length,
+    })
+  }
+
+  return results.sort((a, b) => b.count - a.count)
 }

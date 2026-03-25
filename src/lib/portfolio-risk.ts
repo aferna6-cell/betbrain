@@ -262,6 +262,21 @@ export function analyzePortfolioRisk(picks: PickForRisk[]): PortfolioRiskResult 
     riskFactors.push(`${heavyFavPicks.length} heavy favorite picks — high loss risk if upset`)
   }
 
+  // Factor 8: Probability-weighted exposure
+  // Underdogs lose more often, so units on them represent higher expected loss
+  const probabilityWeightedRisk = picks.reduce((sum, p) => {
+    const impliedProb = p.odds < 0
+      ? Math.abs(p.odds) / (Math.abs(p.odds) + 100)
+      : 100 / (p.odds + 100)
+    // Expected loss = units * (1 - winProb), scaled to 0-1 per unit
+    return sum + p.units * (1 - impliedProb)
+  }, 0)
+  const avgExpectedLossPerUnit = totalUnits > 0 ? probabilityWeightedRisk / totalUnits : 0
+  if (avgExpectedLossPerUnit > 0.6) {
+    riskScore += 10
+    riskFactors.push(`Portfolio skews toward underdogs (avg loss probability ${(avgExpectedLossPerUnit * 100).toFixed(0)}%) — higher variance`)
+  }
+
   riskScore = Math.min(100, riskScore)
 
   // Calculate max loss and max win
