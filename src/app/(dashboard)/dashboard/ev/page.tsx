@@ -21,6 +21,8 @@ import { ImpliedTeamTotalsPanel } from '@/components/implied-team-totals'
 import { SpreadVsMLPanel } from '@/components/spread-vs-ml'
 import { SharpBookPanel } from '@/components/sharp-book-identifier'
 import { VigComparisonPanel } from '@/components/vig-comparison'
+import { EVDecayPanel } from '@/components/ev-decay'
+import { summarizeEVDecay } from '@/lib/ev-decay'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -46,6 +48,7 @@ export default async function EVScannerPage() {
   const spreadVsML = analyzeAllSpreadVsML(allGames)
   const sharpBooks = identifySharpBooks(allGames)
   const vigComparison = compareVig(allGames)
+  const evDecaySummary = summarizeEVDecay([]) // Populated when odds history is available
 
   const totalEVCount = fullEV.allSorted.length
 
@@ -95,6 +98,9 @@ export default async function EVScannerPage() {
           </TabsTrigger>
           <TabsTrigger value="vig">
             Vig Compare
+          </TabsTrigger>
+          <TabsTrigger value="decay">
+            EV Decay
           </TabsTrigger>
         </TabsList>
 
@@ -206,6 +212,16 @@ export default async function EVScannerPage() {
               and total markets. Lower vig = more value for the bettor.
             </div>
             <VigComparisonPanel result={vigComparison} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="decay">
+          <div className="space-y-4">
+            <div className="bg-muted/20 rounded-lg p-3 text-sm text-muted-foreground">
+              Tracks how +EV opportunities erode over time as the market corrects.
+              Shows half-life, correction speed, and decay curves for spotted value.
+            </div>
+            <EVDecayPanel summary={evDecaySummary} />
           </div>
         </TabsContent>
       </Tabs>
