@@ -9,6 +9,7 @@ import { PickImportPanel } from '@/components/pick-import'
 import { KellySimulatorPanel } from '@/components/kelly-simulator'
 import { PositionSizingBacktestPanel } from '@/components/position-sizing-backtest'
 import { SizingConfidenceMatrixPanel } from '@/components/sizing-confidence-matrix'
+import { PortfolioRiskPanel } from '@/components/portfolio-risk'
 import { getOddsApiUsage } from '@/lib/sports/odds'
 
 export const metadata: Metadata = {
@@ -37,6 +38,15 @@ export default async function ToolsPage() {
           Monitor your Odds API usage and forecast when you&apos;ll run out of requests this month.
         </p>
         <ApiUsageForecastPanel usedRequests={apiUsage.count} monthlyBudget={apiUsage.limit} />
+      </div>
+
+      <div className="border-b border-border pb-6">
+        <h2 className="text-xl font-bold mb-2">Portfolio Risk Gauge</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Real-time portfolio-level risk exposure visualization. Shows sport concentration,
+          correlated bets, and overall risk score for your open picks.
+        </p>
+        <PortfolioRiskPanel />
       </div>
 
       <div className="border-b border-border pb-6">
