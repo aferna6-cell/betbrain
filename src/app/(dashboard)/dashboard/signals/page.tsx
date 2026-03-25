@@ -15,6 +15,7 @@ import { CustomSignalBuilder } from '@/components/custom-signal-builder'
 import { scanForRLM } from '@/lib/rlm-alerts'
 import { RLMAlertsPanel } from '@/components/rlm-alerts'
 import { LineVelocityAlerts } from '@/components/line-velocity-alerts'
+import { CrossSportSharpPanel } from '@/components/cross-sport-sharp'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -70,6 +71,9 @@ export default async function SignalsPage() {
           </TabsTrigger>
           <TabsTrigger value="vel-alerts">
             Velocity Alerts
+          </TabsTrigger>
+          <TabsTrigger value="cross-sport">
+            Cross-Sport
           </TabsTrigger>
           <TabsTrigger value="custom">
             Custom Rules
@@ -145,6 +149,16 @@ export default async function SignalsPage() {
               to prevent spam. Supports sport-specific sensitivity.
             </p>
             <LineVelocityAlerts />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="cross-sport">
+          <div className="mt-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Detects simultaneous sharp line movements across multiple sports within a 30-minute window.
+              Cross-sport correlations may indicate syndicate plays or coordinated sharp action.
+            </p>
+            <CrossSportSharpPanel games={allGames} />
           </div>
         </TabsContent>
 
