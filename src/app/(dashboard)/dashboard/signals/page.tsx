@@ -14,6 +14,7 @@ import { ConsensusLineTrackerPanel } from '@/components/consensus-line-tracker'
 import { CustomSignalBuilder } from '@/components/custom-signal-builder'
 import { scanForRLM } from '@/lib/rlm-alerts'
 import { RLMAlertsPanel } from '@/components/rlm-alerts'
+import { LineVelocityAlerts } from '@/components/line-velocity-alerts'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export const dynamic = 'force-dynamic'
@@ -66,6 +67,9 @@ export default async function SignalsPage() {
           </TabsTrigger>
           <TabsTrigger value="rlm">
             RLM{rlmResult.alerts.length > 0 ? ` (${rlmResult.alerts.length})` : ''}
+          </TabsTrigger>
+          <TabsTrigger value="vel-alerts">
+            Velocity Alerts
           </TabsTrigger>
           <TabsTrigger value="custom">
             Custom Rules
@@ -130,6 +134,17 @@ export default async function SignalsPage() {
               opposite to public sentiment.
             </p>
             <RLMAlertsPanel result={rlmResult} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="vel-alerts">
+          <div className="mt-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Configure custom velocity thresholds per market type. Alerts fire when
+              line movement exceeds your thresholds within the time window, with cooldown
+              to prevent spam. Supports sport-specific sensitivity.
+            </p>
+            <LineVelocityAlerts />
           </div>
         </TabsContent>
 
