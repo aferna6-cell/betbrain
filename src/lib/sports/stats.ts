@@ -403,21 +403,29 @@ async function bdlFetch<T>(
     }
   }
 
-  const response = await fetch(url.toString(), {
-    headers: {
-      Authorization: getBalldontlieApiKey(),
-    },
-    // Do not cache at the HTTP layer; caching is managed by Supabase.
-    cache: 'no-store',
-  })
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10_000)
 
-  if (!response.ok) {
-    throw new Error(
-      `balldontlie API error: ${response.status} ${response.statusText} — ${url.toString()}`
-    )
+  try {
+    const response = await fetch(url.toString(), {
+      headers: {
+        Authorization: getBalldontlieApiKey(),
+      },
+      // Do not cache at the HTTP layer; caching is managed by Supabase.
+      cache: 'no-store',
+      signal: controller.signal,
+    })
+
+    if (!response.ok) {
+      throw new Error(
+        `balldontlie API error: ${response.status} ${response.statusText} — ${url.toString()}`
+      )
+    }
+
+    return response.json() as Promise<T>
+  } finally {
+    clearTimeout(timeout)
   }
-
-  return response.json() as Promise<T>
 }
 
 /**
@@ -442,13 +450,17 @@ async function trackApiUsage(): Promise<void> {
     // the same way as The Odds API, but we track at 10 000 calls/month as a
     // conservative internal limit.
     const MONTHLY_LIMIT = 10_000
-    const { data } = await supabase
+    const { data, error: usageError } = await supabase
       .from('api_usage')
       .select('call_count')
       .eq('api_name', 'balldontlie')
       .eq('month', month)
       .is('user_id', null)
       .limit(1)
+
+    if (usageError) {
+      console.error('[stats] trackApiUsage query failed:', usageError.message)
+    }
 
     const rows = data as Pick<ApiUsageRow, 'call_count'>[] | null
     const callCount = rows?.[0]?.call_count ?? 0

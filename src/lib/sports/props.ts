@@ -180,7 +180,7 @@ async function readPropCache(gameId: string): Promise<PropOddsResult | null> {
   const supabase = await createServiceClient()
   const now = new Date().toISOString()
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('odds_cache')
     .select('data, expires_at, created_at')
     .eq('external_game_id', gameId)
@@ -188,6 +188,11 @@ async function readPropCache(gameId: string): Promise<PropOddsResult | null> {
     .gt('expires_at', now)
     .order('expires_at', { ascending: false })
     .limit(1)
+
+  if (error) {
+    console.error('[props] readPropCache failed:', error.message)
+    return null
+  }
 
   const rows = (data as Pick<OddsCache, 'data' | 'expires_at' | 'created_at'>[] | null) ?? []
   if (rows.length === 0) return null
@@ -248,13 +253,18 @@ async function getApiUsageCount(): Promise<number> {
   const supabase = await createServiceClient()
   const month = currentMonth()
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('api_usage')
     .select('call_count')
     .eq('api_name', 'odds')
     .eq('month', month)
     .is('user_id', null)
     .maybeSingle()
+
+  if (error) {
+    console.error('[props] getApiUsageCount failed:', error.message)
+    return 0
+  }
 
   const row = data as Pick<ApiUsageRow, 'call_count'> | null
   return row?.call_count ?? 0
@@ -298,20 +308,28 @@ async function fetchPropsFromApi(
   url.searchParams.set('markets', markets.join(','))
   url.searchParams.set('oddsFormat', 'american')
 
-  const response = await fetch(url.toString(), {
-    // Disable Next.js data cache — we manage our own TTL via Supabase.
-    cache: 'no-store',
-  })
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10_000)
 
-  if (response.status === 429) {
-    throw new PropRateLimitError('The Odds API rate limit reached (429)')
+  try {
+    const response = await fetch(url.toString(), {
+      // Disable Next.js data cache — we manage our own TTL via Supabase.
+      cache: 'no-store',
+      signal: controller.signal,
+    })
+
+    if (response.status === 429) {
+      throw new PropRateLimitError('The Odds API rate limit reached (429)')
+    }
+
+    if (!response.ok) {
+      throw new Error(`The Odds API error: ${response.status} ${response.statusText}`)
+    }
+
+    return response.json() as Promise<PropApiGame>
+  } finally {
+    clearTimeout(timeout)
   }
-
-  if (!response.ok) {
-    throw new Error(`The Odds API error: ${response.status} ${response.statusText}`)
-  }
-
-  return response.json() as Promise<PropApiGame>
 }
 
 // ---------------------------------------------------------------------------

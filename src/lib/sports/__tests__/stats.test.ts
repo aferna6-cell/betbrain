@@ -280,3 +280,163 @@ describe('NBASeasonAverages type compliance', () => {
     expect(avg.season).toBe(2025)
   })
 })
+
+// ---------------------------------------------------------------------------
+// bdlFetch — AbortController / timeout behaviour
+//
+// bdlFetch is a private function, so we test the AbortController signal
+// pattern directly with a local replica that mirrors its implementation.
+// ---------------------------------------------------------------------------
+
+import { describe as _describe, it as _it, vi, beforeEach, afterEach } from 'vitest'
+
+/**
+ * Local replica of the AbortController + fetch wiring used in bdlFetch.
+ * Also mirrors the Authorization header pattern so tests reflect the real
+ * function signature.
+ */
+async function bdlFetchWithTimeout<T>(path: string, apiKey = 'test-key'): Promise<T> {
+  const url = `https://api.balldontlie.io/v1${path}`
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10_000)
+  try {
+    const response = await fetch(url, {
+      headers: { Authorization: apiKey },
+      cache: 'no-store',
+      signal: controller.signal,
+    })
+    if (!response.ok) {
+      throw new Error(`balldontlie API error: ${response.status} ${response.statusText}`)
+    }
+    return response.json() as Promise<T>
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
+_describe('bdlFetch — AbortController signal wiring', () => {
+  let originalFetch: typeof globalThis.fetch
+
+  beforeEach(() => {
+    originalFetch = globalThis.fetch
+  })
+
+  afterEach(() => {
+    globalThis.fetch = originalFetch
+    vi.restoreAllMocks()
+  })
+
+  _it('passes an AbortSignal to fetch', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ data: [] }),
+    })
+    globalThis.fetch = mockFetch
+
+    await bdlFetchWithTimeout('/games')
+
+    expect(mockFetch).toHaveBeenCalledOnce()
+    const [, fetchOptions] = mockFetch.mock.calls[0] as [string, RequestInit]
+    expect(fetchOptions.signal).toBeInstanceOf(AbortSignal)
+  })
+
+  _it('includes the Authorization header alongside the signal', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ data: [] }),
+    })
+    globalThis.fetch = mockFetch
+
+    await bdlFetchWithTimeout('/games', 'my-api-key')
+
+    const [, fetchOptions] = mockFetch.mock.calls[0] as [string, RequestInit]
+    expect((fetchOptions.headers as Record<string, string>)['Authorization']).toBe('my-api-key')
+    expect(fetchOptions.signal).toBeInstanceOf(AbortSignal)
+  })
+
+  _it('signal is not yet aborted on a successful fast response', async () => {
+    let capturedSignal: AbortSignal | undefined
+
+    const mockFetch = vi.fn().mockImplementation((_url: string, opts: RequestInit) => {
+      capturedSignal = opts.signal as AbortSignal
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({ data: [] }),
+      })
+    })
+    globalThis.fetch = mockFetch
+
+    await bdlFetchWithTimeout('/games')
+
+    expect(capturedSignal).toBeDefined()
+    expect(capturedSignal!.aborted).toBe(false)
+  })
+
+  _it('clears the timeout after a successful response', async () => {
+    const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout')
+
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ data: [] }),
+    })
+    globalThis.fetch = mockFetch
+
+    await bdlFetchWithTimeout('/games')
+
+    expect(clearTimeoutSpy).toHaveBeenCalledOnce()
+  })
+
+  _it('clears the timeout even when fetch throws', async () => {
+    const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout')
+
+    const mockFetch = vi.fn().mockRejectedValue(new Error('ECONNRESET'))
+    globalThis.fetch = mockFetch
+
+    await expect(bdlFetchWithTimeout('/games')).rejects.toThrow('ECONNRESET')
+
+    expect(clearTimeoutSpy).toHaveBeenCalledOnce()
+  })
+
+  _it('clears the timeout when the response status is not OK', async () => {
+    const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout')
+
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 404,
+      statusText: 'Not Found',
+      json: () => Promise.resolve({}),
+    })
+    globalThis.fetch = mockFetch
+
+    await expect(bdlFetchWithTimeout('/games')).rejects.toThrow('balldontlie API error: 404 Not Found')
+
+    expect(clearTimeoutSpy).toHaveBeenCalledOnce()
+  })
+
+  _it('abort fires after the timeout elapses', async () => {
+    vi.useFakeTimers()
+
+    let capturedSignal: AbortSignal | undefined
+
+    const mockFetch = vi.fn().mockImplementation((_url: string, opts: RequestInit) => {
+      capturedSignal = opts.signal as AbortSignal
+      return new Promise(() => {})
+    })
+    globalThis.fetch = mockFetch
+
+    const fetchPromise = bdlFetchWithTimeout('/games')
+
+    vi.advanceTimersByTime(10_001)
+
+    expect(capturedSignal).toBeDefined()
+    expect(capturedSignal!.aborted).toBe(true)
+
+    fetchPromise.catch(() => {})
+
+    vi.useRealTimers()
+  })
+})

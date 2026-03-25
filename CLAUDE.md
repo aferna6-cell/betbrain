@@ -102,8 +102,13 @@ npm run evening:auto # Run scripts/daily/evening-auto.sh
 
 - NEVER hardcode API keys — use environment variables via `src/lib/env.ts`
 - NEVER handle real money or bets — analytics only
+- NEVER add new features without running the test suite first
+- NEVER skip security review on auth or payment endpoints
 - ALWAYS cache sports API data in Supabase to stay within rate limits
 - ALWAYS include disclaimer on AI insights: "For informational purposes only"
+- ALL data pipeline code MUST handle malformed/missing data gracefully
+- ALL external API calls MUST have timeout, retry, and error handling
+- ALL prediction outputs MUST include confidence intervals
 - The Odds API free tier: 500 requests/month — cache aggressively
 - Every AI analysis must be structured: summary, key factors, value assessment, risk level
 - Dark theme throughout the dashboard
@@ -111,6 +116,13 @@ npm run evening:auto # Run scripts/daily/evening-auto.sh
 - All features are unlimited (analysis limits bypassed)
 - Stage specific files when committing (`git add <files>`) — never `git add .` or `git add -A`
 - Do NOT auto-push — only push when explicitly asked
+
+## Key Competitors (Updated 2026-03-25)
+
+- **Rithmm:** No-code custom AI model builder — #1 feature competitor
+- **ParlaySavant:** Conversational AI + real-time odds + custom model building
+- **Leans.AI (Remi):** Free daily AI picks
+- **Sports-AI.dev:** AI-powered value bet identification
 
 ## Database Tables
 

@@ -145,11 +145,16 @@ async function readOddsCache(sport: Sport): Promise<OddsCache[]> {
   const supabase = await createServiceClient()
   const now = new Date().toISOString()
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('odds_cache')
     .select('*')
     .eq('sport', sport)
     .gt('expires_at', now)
+
+  if (error) {
+    console.error('[odds] readOddsCache failed:', error.message)
+    return []
+  }
 
   return (data as OddsCache[] | null) ?? []
 }
@@ -308,13 +313,18 @@ async function getApiUsageCount(): Promise<number> {
   const supabase = await createServiceClient()
   const month = currentMonth()
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('api_usage')
     .select('call_count')
     .eq('api_name', 'odds')
     .eq('month', month)
     .is('user_id', null)
     .maybeSingle()
+
+  if (error) {
+    console.error('[odds] getApiUsageCount failed:', error.message)
+    return 0
+  }
 
   const row = data as Pick<ApiUsageRow, 'call_count'> | null
   return row?.call_count ?? 0
@@ -354,20 +364,28 @@ async function fetchOddsFromApi(sport: Sport): Promise<OddsApiGame[]> {
   url.searchParams.set('markets', 'h2h,spreads,totals')
   url.searchParams.set('oddsFormat', 'american')
 
-  const response = await fetch(url.toString(), {
-    // Disable Next.js data cache — we manage our own TTL via Supabase.
-    cache: 'no-store',
-  })
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10_000)
 
-  if (response.status === 429) {
-    throw new RateLimitError('The Odds API rate limit reached (429)')
+  try {
+    const response = await fetch(url.toString(), {
+      // Disable Next.js data cache — we manage our own TTL via Supabase.
+      cache: 'no-store',
+      signal: controller.signal,
+    })
+
+    if (response.status === 429) {
+      throw new RateLimitError('The Odds API rate limit reached (429)')
+    }
+
+    if (!response.ok) {
+      throw new Error(`The Odds API error: ${response.status} ${response.statusText}`)
+    }
+
+    return response.json() as Promise<OddsApiGame[]>
+  } finally {
+    clearTimeout(timeout)
   }
-
-  if (!response.ok) {
-    throw new Error(`The Odds API error: ${response.status} ${response.statusText}`)
-  }
-
-  return response.json() as Promise<OddsApiGame[]>
 }
 
 // ---------------------------------------------------------------------------
@@ -501,12 +519,17 @@ export async function getAllOdds(): Promise<Map<Sport, OddsResult>> {
 export async function getGameById(gameId: string): Promise<NormalizedGame | null> {
   const supabase = await createServiceClient()
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('odds_cache')
     .select('*')
     .eq('external_game_id', gameId)
     .order('expires_at', { ascending: false })
     .limit(1)
+
+  if (error) {
+    console.error('[odds] getGameById failed:', error.message)
+    return null
+  }
 
   const rows = (data as OddsCache[] | null) ?? []
   if (rows.length === 0) return null

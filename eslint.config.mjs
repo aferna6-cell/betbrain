@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Build artifacts and temp files:
+    "tmp/**",
+    "supabase/.temp/**",
   ]),
 ]);
 
